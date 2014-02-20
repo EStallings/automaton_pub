@@ -2,6 +2,8 @@
 
 //On load function is executed automatically when the window is loaded
 window.onload = function(){
+
+  //Declare global variables
   Canvas = document.getElementById('automatonCanvas');
   
   //Register new event handlers
@@ -19,7 +21,8 @@ window.onload = function(){
   Canvas.onblur = onBlur;
   Canvas.onfocus = onFocus;
   
-  
+ 
+  Game.run();
 }
 
 
