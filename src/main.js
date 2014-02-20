@@ -3,7 +3,7 @@
 //On load function is executed automatically when the window is loaded
 window.onload = function(){
   Canvas = document.getElementById('automatonCanvas');
-  
+  alert('hi');
 }
 
 
