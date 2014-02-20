@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Automaton </title>
+<meta name="description" content="Automaton game for CS 460 at UNM">
+<meta charset="UTF-8">
+
+<!-- This is the equivalent of a #include preprocessor directive in C. EVERY file must be included in the HTML or it won't be loaded! -->
+<script type="text/javascript" src="main.js"> </script>
+
+
+
+<head>
+<body>
+
+
+<canvas id="automatonCanvas" width="800" height="600" style="border:2px solid #000000">
+</canvas>
+
+
+</body>
+</html>
