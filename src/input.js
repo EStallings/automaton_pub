@@ -14,36 +14,43 @@ getMousePos = function(evt){
 //Stub
 mouseMove = function(evt){
   var mousePos = getMousePos(evt);
+
 }
 
 //Stub
 mouseClick = function(evt){
   var mousePos = getMousePos(evt);
+
 }
 
 //Stub
 mouseDblClick = function(evt){
   var mousePos = getMousePos(evt);
+
 }
 
 //Stub
 mouseDown = function(evt){
   var mousePos = getMousePos(evt);
+
 }
 
 //Stub
 mouseUp = function(evt){
   var mousePos = getMousePos(evt);
+
 }
 
 //Stub
 mouseOver = function(evt){
   var mousePos = getMousePos(evt);
+
 }
 
 //Stub
 mouseOut = function(evt){
   var mousePos = getMousePos(evt);
+
 }
 
 
@@ -72,13 +79,13 @@ keyUp = function(evt){
 */
 
 onResize = function(evt){
-
+  alert('resized!');
 }
 
 onBlur = function(evt){
-
+  alert('focus lost');
 }
 
 onFocus = function(evt){
-
+  alert('focus gained');
 }
