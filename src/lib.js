@@ -36,6 +36,16 @@ Array.prototype.map = function(predicate){
 	return ret;
 }
 
+//Modifies Array to have a fold method. Stores all outputs in a variable and returns it.
+//Start is mostly needed for type safety
+Array.prototype.fold = function(predicate, start){
+	var ret = start;
+	for(var i = 0; i < this.length; i++){
+		ret = predicate(this[i], ret);
+	}
+	return ret;
+}
+
 //Modifies Array to have an addAll method. Returns length to keep with conventions for other means of adding to arrays.
 Array.prototype.addAll = function(array){
 	for(var i = 0; i < array.length; i++){

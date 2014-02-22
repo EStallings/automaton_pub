@@ -2,7 +2,7 @@ function Cell(x,y){
 	this.x = x;
 	this.y = y;
 
-	this.instructions   = [null, null, null, null]; //initialize this guy! INTENTIONAL.
+	this.instructions   = {"R":null, "G":null, "B":null, "Y":null};
 	this.automatons		= [];
 	this.tokens 		= [];
 	this.streams 		= [];
@@ -45,26 +45,26 @@ function Cell(x,y){
 		return this.tokens.pop();
 	}
 
-	this.getInstruction(color){
+	this.getInstruction = function(color){
 		return this.instructions[color];
 	}
 
 
-	this.resetInstructions(){
-		this.instructions = [];
+	this.resetInstructions = function(){
+		this.instructions = {"R":null, "G":null, "B":null, "Y":null};
 		this.instFlags = {"R":false, "G":false, "B":false, "Y":false};
 	}
 
-	this.resetInstruction(color){
+	this.resetInstruction = function(color){
 		this.instructions[color] = null;
 		this.instFlags[color] = false;
 	}
 
-	this.removeAutomaton(automaton){
+	this.removeAutomaton = function(automaton){
 		return this.automatons.remove(automaton);
 	}
 
-	this.removeStream(stream){
+	this.removeStream = function(stream){
 		return this.streams.remove(stream);
 	}
 

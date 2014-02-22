@@ -21,8 +21,6 @@ window.onload = function(){
   Canvas.onblur = onBlur;
   Canvas.onfocus = onFocus;
   
- 
-  Game.run();
 }
 
 
