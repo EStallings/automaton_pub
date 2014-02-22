@@ -1,4 +1,7 @@
-Game = {
+//Just a gameloop found on the internet, PLEASE DO NOT USE
+
+
+GameLoop = {
 
   
 
