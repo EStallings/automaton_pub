@@ -9,7 +9,12 @@ function Instruction(x,y,color,type, id){
 	this.toString = function(){
 		return "i," + this.id + "," + this.x + "," + this.y + "," + this.color + "," + this.type;
 	}
+
+	this.drawSelf = function(context, offsetX, offsetY, currentScale){
+		
+	}
 }
+
 Instruction.staticInfo = new StaticInfo();
 
 Instruction.fromString = function(str){

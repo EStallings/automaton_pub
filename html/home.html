@@ -16,7 +16,7 @@ Luke Balaoro, Ezra Stallings, Kevin Dilts, Khabbab Saleem, and Cameron Smith
 <!-- This is the equivalent of a #include preprocessor directive in C. EVERY file must be included in the HTML or it won't be loaded! -->
 <script type="text/javascript" src="../src/main.js"> </script>
 <script type="text/javascript" src="../src/input.js"> </script>
-<script type="text/javascript" src="../src/game.js"> </script>
+<script type="text/javascript" src="../src/engine.js"> </script>
 
 <script type="text/javascript" src="../src/lib.js"> </script>
 <script type="text/javascript" src="../src/util.js"> </script>
@@ -30,13 +30,31 @@ Luke Balaoro, Ezra Stallings, Kevin Dilts, Khabbab Saleem, and Cameron Smith
 <script type="text/javascript" src="../src/game/token.js"> </script>
 
 
+<script type="text/javascript" src="../src/render/util.js"> </script>
+<script type="text/javascript" src="../src/render/gameview.js"> </script>
+<script type="text/javascript" src="../src/render/guiview.js"> </script>
+<script type="text/javascript" src="../src/render/guicomponents.js"> </script>
+
+
+<script type="text/javascript" src="../src/extern/FPSMeter.js"> </script>
+
+
 
 
 <head>
 <body>
 <h1> Automaton </h1>
 
-<canvas id="automatonCanvas" width="800" height="600" style="border:2px solid #000000">
+<div style="position:relative">
+<canvas id="automatonCanvas" width="800" height="600" style="z-index:1;position:absolute;left:0xp;top:0px;border:2px solid #000000">
+	This text is displayed if your browser does not support the HTML5 canvas
+</canvas>
+
+<canvas id="guiCanvas" width="800" height="600" style="z-index:2;position:absolute;left:0xp;top:0px;border:2px solid #000000">
+
+
+
+</div>
 </canvas>
 
 

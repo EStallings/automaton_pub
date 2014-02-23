@@ -3,24 +3,28 @@
 //On load function is executed automatically when the window is loaded
 window.onload = function(){
 
-  //Declare global variables
-  Canvas = document.getElementById('automatonCanvas');
+
   
-  //Register new event handlers
-  Canvas.onmouseover = mouseOver;
-  Canvas.onmousemove = mouseMove;
-  Canvas.onmousedown = mouseDown;
-  Canvas.onmouseup = mouseUp;
-  Canvas.onclick = mouseClick;
-  Canvas.ondblclick = mouseDblClick;
-  Canvas.onmouseout = mouseOut;
-  Canvas.onkeydown = keyDown;
-  Canvas.onkeyup = keyUp;
-  Canvas.onkeypress = keyPress;  
-  Canvas.onresize = onResize;
-  Canvas.onblur = onBlur;
-  Canvas.onfocus = onFocus;
-  
+
+  GameView = new _GameView();
+  GuiView = new _GuiView();
+  InputHandler = new _InputHandler(GuiView.canvas);
+  Engine = new _Engine();
+
+
+  Engine.run({render:Render, update:Update,canvas:GameView.canvas});
+
 }
+
+
+function Render(){
+  GameView.draw();
+  GuiView.draw();
+}
+
+function Update(){
+
+}
+
 
 

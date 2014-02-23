@@ -1,11 +1,11 @@
 //Just a gameloop found on the internet, PLEASE DO NOT USE
 
 
-GameLoop = {
+function _Engine () {
 
   
 
-  run: function(options) {
+  this.run = function(options) {
 
     var now,
         dt       = 0,
@@ -15,7 +15,7 @@ GameLoop = {
         slowStep = slow * step,
         update   = options.update,
         render   = options.render,
-        fpsmeter = new FPSMeter(options.fpsmeter || { decimals: 0, graph: true, theme: 'dark', left: '5px' });
+        fpsmeter = new FPSMeter(options.fpsmeter || { decimals: 0, graph: true, theme: 'dark', left: '500px' });
 
     function frame() {
       fpsmeter.tickStart();
@@ -33,6 +33,4 @@ GameLoop = {
 
     requestAnimationFrame(frame);
   }
-
- 
 }

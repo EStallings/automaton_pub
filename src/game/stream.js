@@ -12,6 +12,10 @@ function Stream(x, y, type,color, id){
 		var str = "s," + this.id  + "," + this.x + "," + this.y + "," + this.type + "," + this.color + "" + ts + "";
 		return str;
 	}
+	
+	this.drawSelf = function(context, offsetX, offsetY, currentScale){
+		
+	}
 }
 
 Stream.staticInfo = new StaticInfo();

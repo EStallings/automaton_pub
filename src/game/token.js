@@ -10,6 +10,10 @@ function Token(x,y,number,id){
 	this.toString = function(){
 		return "t," + this.id + "," +  this.x + "," + this.y + "," + this.number;
 	}
+
+	this.drawSelf = function(context, offsetX, offsetY, currentScale){
+		
+	}
 }
 
 Token.staticInfo = new StaticInfo();

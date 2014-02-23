@@ -14,7 +14,7 @@ function Level(){
 	this.name 		    = "";
 	this.width 			 = 0;
 	this.height			 = 0;
-	this.grid 	   = [[],[]]; //How to initialize a 2d array
+	this.grid 	  		= [];  
 	this.maxTokens 		 = 0;
 	this.maxAutomatons	 = 0;
 	this.maxInstructions = 0;
@@ -166,8 +166,133 @@ function LoadLevel(levelString){
 
 	console.log(brk);
 
-	var name = brk[0];
-	var width = brk[1];
-	var height = brk[2];
+	level.name = brk.shift();
+	level.width = brk.shift();
+	level.height = brk.shift();
+	level.maxTokens = brk.shift();
+	level.maxInstructions = brk.shift();
+	level.maxAutomatons = brk.shift();
 
+	while(brk.length){
+		var str = brk.shift();
+		switch(str[0]){
+			case 't':
+				var token = Token.fromString(str);
+				level.addToken(token);
+			break;
+			case 'a':
+				var auto = Automaton.fromString(str);
+				level.addAutomaton(auto);
+			break;
+			case 's':
+				var stream = Stream.fromString(str);
+				level.addStream(stream);
+			break;
+			case 'i':
+				var inst = Instruction.fromString(str);
+				level.addInstruction(inst);
+			break;
+			default:
+				console.log("Something went wrong while loading the level!");
+			break;
+		}
+	}
+	return level;
 }
+
+
+/*
+
+
+If you want a test case, here:
+
+
+HARDCODED:
+
+var a1 = new Automaton(1,32,"N", {"R":true,"G":true,"B":false,"Y":false});
+var a2 = new Automaton(25,26,"S", {"R":true,"G":true,"B":false,"Y":true});
+var a3 = new Automaton(31,14,"E", {"R":false,"G":true,"B":true,"Y":false});
+var a4 = new Automaton(26,52,"W", {"R":true,"G":false,"B":false,"Y":false});
+var a5 = new Automaton(15,21,"E", {"R":false,"G":false,"B":true,"Y":true});
+
+var s1 = new Stream(1, 1, "in", "B");
+var s2 = new Stream(56, 102, "out", "R");
+
+s1.tokens = [1,2,5,6,4,9];
+s2.tokens = [8,3,6,2,5,7,0];
+
+var t0 = new Token(3,6,1);
+var t1 = new Token(4,2,2);
+var t2 = new Token(23,86,3);
+var t3 = new Token(6,23,4);
+var t4 = new Token(8,42,5);
+var t5 = new Token(6,21,6);
+var t6 = new Token(4,53,7);
+var t7 = new Token(2,22,8);
+var t8 = new Token(4,11,9);
+var t9 = new Token(1,12,0);
+
+var i1 = new Instruction(1,2,"R",200);
+var i2 = new Instruction(1,2,"G",12);
+var i3 = new Instruction(1,3,"R",2);
+var i4 = new Instruction(1,32,"R",20);
+var i5= new Instruction(1,12,"R",21);
+
+var level = new Level();
+level.maxInstructions = Number.MAX_VALUE;
+level.maxTokens = Number.MAX_VALUE;
+level.maxAutomatons = Number.MAX_VALUE;
+level.addAutomaton(a1);
+level.addAutomaton(a2);
+level.addAutomaton(a3);
+level.addAutomaton(a4);
+level.addAutomaton(a5);
+
+level.addStream(s1);
+level.addStream(s2);
+
+level.addToken(t0);
+level.addToken(t1);
+level.addToken(t2);
+level.addToken(t3);
+level.addToken(t4);
+level.addToken(t5);
+level.addToken(t6);
+level.addToken(t7);
+level.addToken(t8);
+level.addToken(t9);
+
+level.addInstruction(i1);
+level.addInstruction(i2);
+level.addInstruction(i3);
+level.addInstruction(i4);
+level.addInstruction(i5);
+
+
+
+
+AS A STRING (for the LoadLevel function) (Sorry, it's long)
+
+";0;0;1.7976931348623157e+308;1.7976931348623157e+308;1.7976931348623157e+308;t,0,3,6,1;t,1,4,2,2;t,2,23,86,3;t,3,6,23,4;t,4,8,42,5;t,5,6,21,6;t,6,4,53,7;t,7,2,22,8;t,8,4,11,9;t,9,1,12,0;a,0,1,1,N,true,true,false,false,-1;a,1,25,25,S,true,true,false,true,-1;a,2,31,31,E,false,true,true,false,-1;a,3,26,26,W,true,false,false,false,-1;a,4,15,15,E,false,false,true,true,-1;i,0,1,2,R,200;i,1,1,2,G,12;i,2,1,3,R,2;i,3,1,32,R,20;i,4,1,12,R,21;s,0,1,1,in,B,1,2,5,6,4,9;s,1,56,102,out,R,8,3,6,2,5,7,0"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/

@@ -33,6 +33,14 @@ function isNumeric(n) {
   return (!isNaN(parseFloat(n)) && isFinite(n));
 }
 
+function isIntegral(n){
+	return (isNumeric(n) && n % 1 === 0)
+}
+
 function parseBoolean(string){
 	return (string === 'true');
+}
+
+function timestamp() {
+  return window.performance && window.performance.now ? window.performance.now() : new Date().getTime();
 }

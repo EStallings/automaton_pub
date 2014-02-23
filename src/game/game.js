@@ -11,7 +11,7 @@ function Game(){
 		this.currentLevel = LoadLevel(stringFormat); //this is a method inside of the level.js file that returns a level.
 	}
 
-	this.logicStep = function(){
+	this.update = function(){
 		
 	}
 
