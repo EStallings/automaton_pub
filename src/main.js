@@ -5,14 +5,14 @@ window.onload = function(){
 
 
   
+	GuiView = new _GuiView();
+	GameView = new _GameView();
+	  
+	InputHandler = new _InputHandler(GuiView.canvas);
+	Engine = new _Engine();
 
-  GameView = new _GameView();
-  GuiView = new _GuiView();
-  InputHandler = new _InputHandler(GuiView.canvas);
-  Engine = new _Engine();
 
-
-  Engine.run({render:Render, update:Update,canvas:GameView.canvas});
+	Engine.run({render:Render, update:Update,canvas:GameView.canvas});
 
 }
 

@@ -16,11 +16,20 @@ _GameView = function(){
 	this.offsetX = 0;
 	this.offsetY = 0;
 
+	this.safeZone = 100; //amount extra to draw to avoid jumpiness
+
 	this.canvas = document.getElementById('automatonCanvas');
   	this.context = this.canvas.getContext('2d');
 
   	trackTransforms(this.context);
 
+	//
+
+	//for testing
+	this.hudText1 = new GuiRawText(new Rect(100,100), Rgba(0,0,0,1), "", Font(20));
+
+	this.hudText2 = new GuiRawText(new Rect(100,200), Rgba(0,0,0,1), "", Font(20));
+	//
 
   	this.loadLevel = function(level){
   		this.level = level;
@@ -40,10 +49,18 @@ _GameView = function(){
 	}
 
 	this.draw = function(){
+		 if(RMB_DOWN){
+	      this.translate(-(MOVE_POINT.x - CLICK_POINT.x)/(this.canvas.width/2), 
+	      	-(MOVE_POINT.y - CLICK_POINT.y)/(this.canvas.height/2));
+	    }
+		
 		//Clear artifacts
 		var p1 = this.context.transformedPoint(0,0);
 		var p2 = this.context.transformedPoint(this.canvas.width, this.canvas.height);
 		this.context.clearRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
+
+		this.hudText1.t = "oX = " + this.offsetX + ", oY = " + this.offsetY + 
+		"\n p1 " + p1.x + "," + p1.y + "; p2 " + p2.x + "," + p2.y;
 		//Will have to do more obviously. Does not yet account for offset...
 		if(this.level){
 			for(var i = 0; i < this.level.tokens.length; i++){
@@ -67,25 +84,27 @@ _GameView = function(){
 
 	this.drawGrid = function(){
 		this.context.strokeStyle = "#000000";
-		var oX = (this.offsetX & this.baseGridSize);
-		var oY = (this.offsetY & this.baseGridSize);
+		var oX = (this.offsetX % this.baseGridSize) * this.currentScale;
+		var oY = (this.offsetY % this.baseGridSize) * this.currentScale;
 
 		var p1 = this.context.transformedPoint(0 - oX, 0 - oY);
 		var p2 = this.context.transformedPoint(this.canvas.width + oX, this.canvas.height + oY);
 
+		this.hudText2.t = "oX = " + oX + ", oY = " + oY + 
+		"\n p1 " + p1.x + "," + p1.y + "; p2 " + p2.x + "," + p2.y;
 
 		for(var x = p1.x; x < p2.x; x += this.baseGridSize * this.currentScale){
 			
 			this.context.beginPath();
-			this.context.moveTo(x, p1.y);
-			this.context.lineTo(x, p2.y);
+			this.context.moveTo(x, p1.y - this.safeZone);
+			this.context.lineTo(x, p2.y + this.safeZone);
 			this.context.stroke();
 		}
 
 		for(var y = p1.y; y < p2.y; y += this.baseGridSize * this.currentScale){
 			this.context.beginPath()
-			this.context.moveTo(p1.x, y);
-			this.context.lineTo(p2.x, y);
+			this.context.moveTo(p1.x - this.safeZone, y);
+			this.context.lineTo(p2.x + this.safeZone, y);
 			this.context.stroke();
 		}
 	}
@@ -104,6 +123,14 @@ _GameView = function(){
 
 	this.findCellAtPoint = function(x, y){
 		//TODO write me!
+	}
+
+
+	this.doClicking = function(x, y, lmb, rmb, evt){
+		if(lmb){
+		}
+		else if (rmb){
+		}
 	}
 
 

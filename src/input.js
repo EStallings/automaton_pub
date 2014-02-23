@@ -10,14 +10,17 @@ getMousePos = function(evt){
      };
 }
 
+LMB_DOWN = false;
+RMB_DOWN = false;
+CLICK_POINT = {x:NaN, y:NaN};
+MOVE_POINT = {x:NaN, y:NaN};
 
 function _InputHandler(canvas){
 
   this.canvas = canvas;
-  
-  this.mouseClick     = function(evt){ /* write me! */ 
-    var mpos = getMousePos(evt);
-    var e = evt;
+
+  this.mouseClick     = function(e){ /* write me! */ 
+    var mpos = getMousePos(e);
 
     //Doing it this way because some people have mice with like 30 buttons
     var lmb = false;
@@ -32,9 +35,9 @@ function _InputHandler(canvas){
     else if (e.which === 3)
       lmb = true;
 
-    if(!GuiView.doClicking(mpos.x, mpos.y, lmb, rmb, evt)) //GUI gets priority
+    if(!GuiView.doClicking(mpos.x, mpos.y, lmb, rmb, e)) //GUI gets priority
     {
-      //Do game code here
+      GameView.doClicking(mpos.x, mpos.y, lmb, rmb, e);
 
     }
   }
@@ -43,7 +46,7 @@ function _InputHandler(canvas){
     //console.log(evt.which);
 
     ///Horribly hardcoded for testing
-    var amt = 1;
+    var amt = 5;
     switch(evt.which){
       case 37:
         //left arrow
@@ -68,12 +71,43 @@ function _InputHandler(canvas){
 
   }
 
+  this.mouseDown      = function(e){ /* write me! */ 
+
+    //Doing it this way because some people have mice with like 30 buttons
+    if ( !e.which && e.button !== undefined ) {
+      e.which = ( e.button & 1 ? 1 : ( e.button & 2 ? 3 : ( e.button & 4 ? 2 : 0 ) ) );
+    }
+    
+    LMB_DOWN = (e.which === 1) ? true : LMB_DOWN;
+    RMB_DOWN = (e.which === 3) ? true : RMB_DOWN;
+    CLICK_POINT = getMousePos(e);
+
+  }
+  this.mouseUp        = function(e){ /* write me! */ 
+    //Doing it this way because some people have mice with like 30 buttons
+    var lmb = false;
+    var rmb = false;
+
+    if ( !e.which && e.button !== undefined ) {
+      e.which = ( e.button & 1 ? 1 : ( e.button & 2 ? 3 : ( e.button & 4 ? 2 : 0 ) ) );
+    }
+    
+    LMB_DOWN = (e.which === 1) ? false : LMB_DOWN;
+    RMB_DOWN = (e.which === 3) ? false : RMB_DOWN;
+    CLICK_POINT = {x:NaN, y:NaN};
+  }
+  this.mouseMove      = function(evt){ /* write me! */ 
+    var mpos = getMousePos(evt);
+    MOVE_POINT = mpos;
+    
+  }
+
   ///Change these!
   
-  this.mouseMove      = function(evt){ /* write me! */ }
+  
+
+
   this.mouseDblClick  = function(evt){ /* write me! */ }
-  this.mouseDown      = function(evt){ /* write me! */ }
-  this.mouseUp        = function(evt){ /* write me! */ }
   this.mouseOver      = function(evt){ /* write me! */ }
   this.mouseOut       = function(evt){ /* write me! */ } 
   this.keyPress       = function(evt){ /* write me! */ }
