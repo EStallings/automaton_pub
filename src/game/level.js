@@ -25,12 +25,12 @@ function Level(){
 	
 
 	//Does not actually add -- just ensures capacity of the level!
-	this.ensureCapacity(thing, things, maxthings, errstring)
+	this.ensureCapacity = function(thing, things, maxthings, errstring)
 	{
 		//Check list size
 		if(things.length === maxthings && maxthings > 0){
 		    console.error("Cannot add another " + errstring + "!");
-		    return;
+		    return false;
 	  	}
 	  
 		//Check level size
@@ -43,13 +43,14 @@ function Level(){
 		}
 		 
 		//Guarantee cell at location
-		if(grid[x] === undefined){
-		  	grid[x] = [];
+		if(this.grid[x] === undefined){
+		  	this.grid[x] = [];
 		}
 		  
-		if(grid[x][y] === undefined){
-			grid[x][y] = new Cell(x, y);
+		if(this.grid[x][y] === undefined){
+			this.grid[x][y] = new Cell(x, y);
 		}
+		return true;
 	}
 
 	/////////
@@ -58,28 +59,28 @@ function Level(){
 	
 	this.addToken = function(token){
 	 	if(!this.ensureCapacity(token, this.tokens, this.maxTokens, "token")) return false;
-	    if(!grid[token.x][token.y].addToken(token)) return false;
+	    if(!this.grid[token.x][token.y].addToken(token)) return false;
   	    this.tokens.push(token);
   	    return true;
 	}
 	
  	this.addAutomaton = function(automaton){
 	    if(!this.ensureCapacity(automaton, this.automatons, this.maxAutomatons, "automaton")) return false;
-	    grid[automaton.x][automaton.y].addAutomaton(automaton);
+	    this.grid[automaton.x][automaton.y].addAutomaton(automaton);
 	    this.automatons.push(automaton);
 	    return true;
 	}
 	
 	this.addInstruction = function(instruction){
 		if(!this.ensureCapacity(instruction, this.instructions, this.maxInstructions, "instruction")) return false;
-		if(!grid[instruction.x][instruction.y].addInstruction(instruction)) return false;
+		if(!this.grid[instruction.x][instruction.y].addInstruction(instruction)) return false;
 		this.instructions.push(instruction);
 		return true;
 	}
 	
 	this.addStream = function(stream){
    		if(!this.ensureCapacity(stream, this.streams, Number.MAX_VALUE, "stream")) return false;
-   		if(!grid[stream.x][stream.y].addStream(stream)) return false;
+   		if(!this.grid[stream.x][stream.y].addStream(stream)) return false;
     	this.streams.push(stream);
     	return true;
 	}
@@ -134,11 +135,12 @@ function Level(){
 	this.toString = function(){
 		var builder = [];
 		var stringy = function(thing){ return thing.toString();};
-		builder.add(this.width);
-		builder.add(this.height);
-		builder.add(this.maxTokens);
-		builder.add(this.maxInstructions);
-		builder.add(this.maxAutomatons);
+		builder.push(this.name);
+		builder.push(this.width);
+		builder.push(this.height);
+		builder.push(this.maxTokens);
+		builder.push(this.maxInstructions);
+		builder.push(this.maxAutomatons);
 
 		builder.addAll(this.tokens.map(stringy));
 		builder.addAll(this.automatons.map(stringy));
@@ -159,5 +161,13 @@ function MakeLevel(width, height, maxTokens, maxAutomatons, maxInstructions){
 
 //Stub
 function LoadLevel(levelString){
+	var brk = levelString.split(";");
+	var level = new Level();
+
+	console.log(brk);
+
+	var name = brk[0];
+	var width = brk[1];
+	var height = brk[2];
 
 }

@@ -9,7 +9,7 @@ function Cell(x,y){
 	this.instFlags = {"R":false, "G":false, "B":false, "Y":false};
 
 	this.addInstruction = function(instruction){
-		if(instFlags[instruction.color]) return false;
+		if(this.instFlags[instruction.color]) return false;
 		this.instructions[instruction.color] = instruction;
 		return true;
 	}
