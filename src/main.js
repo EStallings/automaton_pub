@@ -18,6 +18,7 @@ window.onload = function(){
 	FIRSTCYCLE = true;
 	INTERPOLATE = 0;
 
+	LevelManager = new _LevelManager();
   
 	GuiView = new _GuiView();
 	GameView = new _GameView();
@@ -29,7 +30,7 @@ window.onload = function(){
 	Engine.run({render:Render, update:Update,canvas:GameView.canvas});
 
 	//this is super-duper test-casey
-	GameView.level = LoadLevel(";0;0;1.7976931348623157e+308;1.7976931348623157e+308;" 
+	LevelManager.loadLevelFromString(";0;0;1.7976931348623157e+308;1.7976931348623157e+308;" 
 		+"1.7976931348623157e+308;t,0,3,6,1;t,1,4,2,2;t,2,23,86,3;t,3,6,23,4;t,4,8,42"
 		+",5;t,5,6,21,6;t,6,4,53,7;t,7,2,22,8;t,8,4,11,9;t,9,1,12,0;a,0,1,1,N,true,tr"
 		+"ue,false,false,-1;a,1,25,25,S,true,true,false,true,-1;a,2,31,31,E,false,tru"

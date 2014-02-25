@@ -90,10 +90,8 @@ function Level(){
 	////////
 
 	this.removeToken = function(token){
-		return this.removeToken(token.x, token.y); //Guaranteed for tokens since only one can exist in a cell
-	}
-
-	this.removeToken = function(x, y){
+		var x = token.x;
+		var y = token.y;
 		var c = this.grid[x][y];
 		if(!c) 
 			return null;
@@ -104,6 +102,8 @@ function Level(){
 	}
 
 	this.removeAutomaton = function(automaton){
+		var x = automaton.x;
+		var y = automaton.y;
 		var c = this.grid[x][y];
 		if(!c)
 			return null;
@@ -113,6 +113,8 @@ function Level(){
 	}
 
 	this.removeStream = function(stream){
+		var x = stream.x;
+		var y = stream.y;
 		var c = this.grid[x][y];
 		if(!c)
 			return null;
@@ -150,6 +152,8 @@ function Level(){
 	}
 }
 
+
+
 function MakeLevel(width, height, maxTokens, maxAutomatons, maxInstructions){
     var level = Level();
     level.width = width;
@@ -159,47 +163,8 @@ function MakeLevel(width, height, maxTokens, maxAutomatons, maxInstructions){
     level.maxAutomatons = maxAutomatons;
 }
 
-//Stub
-function LoadLevel(levelString){
-	var brk = levelString.split(";");
-	var level = new Level();
 
-	console.log(brk);
 
-	level.name = brk.shift();
-	level.width = brk.shift();
-	level.height = brk.shift();
-	level.maxTokens = brk.shift();
-	level.maxInstructions = brk.shift();
-	level.maxAutomatons = brk.shift();
-
-	while(brk.length){
-		var str = brk.shift();
-		switch(str[0]){
-			case 't':
-				var token = Token.fromString(str);
-				level.addToken(token);
-			break;
-			case 'a':
-				var auto = Automaton.fromString(str);
-				level.addAutomaton(auto);
-			break;
-			case 's':
-				var stream = Stream.fromString(str);
-				level.addStream(stream);
-			break;
-			case 'i':
-				var inst = Instruction.fromString(str);
-				level.addInstruction(inst);
-			break;
-			default:
-				console.log("Something went wrong while loading the level!");
-			break;
-		}
-	}
-
-	return level;
-}
 
 
 /*

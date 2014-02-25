@@ -31,14 +31,9 @@ _GameView = function(){
 	this.hudText1 = new GuiRawText(new Rect(10,500), Rgba(0,0,0,1), "", Font(20));
 
 	this.hudText2 = new GuiRawText(new Rect(10,550), Rgba(0,0,0,1), "", Font(20));
-	//
+	//such comment
 
-  	this.loadLevel = function(level){
-  		this.level = level;
-  		this.drawObjects = [[],[],[],[],[]];
-  		this.scaleFactor = 2;
-  		this.currentScale = 1;
-  	}
+
 
 	this.zoom = function(amount){
 		if(Math.abs(this.curZoom + amount) > this.maxZoom) return;
@@ -73,7 +68,7 @@ _GameView = function(){
 
 		this.gridSize = this.baseGridSize * this.currentScale;
 		this.safeZone = (this.baseGridSize * this.baseGridSize) / this.currentScale;
-		
+		this.level = LevelManager.level;
 		
 		//Non-critical
 		this.hudText1.t = "mpos: " + mpos.x + "," + mpos.y;
