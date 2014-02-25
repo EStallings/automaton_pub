@@ -197,6 +197,7 @@ function LoadLevel(levelString){
 			break;
 		}
 	}
+
 	return level;
 }
 

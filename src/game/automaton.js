@@ -12,16 +12,19 @@ function Automaton(x,y,direction,cFlags, id){
 		return "a," + this.id + "," +  this.x + "," + this.x + "," + this.direction + "," + cString + "," + this.tokenHolding;
 	}
 
-	this.drawSelf = function(context, offsetX, offsetY, currentScale){
+	this.drawSelf = function(context, currentScale){
 
 		context.strokeStyle = "0x000000";
 		context.beginPath();
+		var unit = GameView.baseGridSize;
 
+		var x = this.x * unit;
+		var y = this.y * unit;
 		 
-		context.arc((this.x * 50 + offsetX), (this.y * 50 + offsetY), 15, 0, 2*Math.PI);
+		context.arc(x, y, 15 * currentScale, 0, 2*Math.PI);
 		context.stroke();
 
-		context.fillText((this.id + " " + this.x + "," + this.y), (this.x * 15 + offsetX), (this.y * 15 + offsetY));
+		context.fillText((this.id + " " + x + "," + y), x, y);
 	}
 }
 

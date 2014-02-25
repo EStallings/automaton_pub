@@ -10,14 +10,16 @@ getMousePos = function(evt){
      };
 }
 
-LMB_DOWN = false;
-RMB_DOWN = false;
-CLICK_POINT = {x:NaN, y:NaN};
-MOVE_POINT = {x:NaN, y:NaN};
 
 function _InputHandler(canvas){
 
   this.canvas = canvas;
+  this.context = GameView.canvas.getContext('2d');
+  trackTransforms(this.context);
+  this.lastX=canvas.width/2;
+  this.lastY=canvas.height/2;
+  this.dragStart = null,
+  this.dragged = false;
 
   this.mouseClick     = function(e){ /* write me! */ 
     var mpos = getMousePos(e);
@@ -42,71 +44,49 @@ function _InputHandler(canvas){
     }
   }
 
-  this.keyDown        = function(evt){ /* write me! */ 
-    //console.log(evt.which);
+  this.mouseDown      = function(evt){ /* write me! */ 
 
-    ///Horribly hardcoded for testing
-    var amt = 5;
-    switch(evt.which){
-      case 37:
-        //left arrow
-        GameView.translate(-amt,0);
-      break;
-      case 38:
-        //up
-        GameView.translate(0, -amt);
-      break;
-      case 39:
-        //right
-        GameView.translate(amt, 0);
-      break;
-      case 40:
-        //down
-        GameView.translate(0, amt);
-      break;
-      default:
-
-      break;
-    }
+    document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
+      InputHandler.lastX = evt.offsetX || (evt.pageX - InputHandler.canvas.offsetLeft);
+      InputHandler.lastY = evt.offsetY || (evt.pageY - InputHandler.canvas.offsetTop);
+      InputHandler.dragStart = InputHandler.context.transformedPoint(InputHandler.lastX, InputHandler.lastY);
+      InputHandler.dragged = false;
 
   }
 
-  this.mouseDown      = function(e){ /* write me! */ 
-
-    //Doing it this way because some people have mice with like 30 buttons
-    if ( !e.which && e.button !== undefined ) {
-      e.which = ( e.button & 1 ? 1 : ( e.button & 2 ? 3 : ( e.button & 4 ? 2 : 0 ) ) );
-    }
-    
-    LMB_DOWN = (e.which === 1) ? true : LMB_DOWN;
-    RMB_DOWN = (e.which === 3) ? true : RMB_DOWN;
-    CLICK_POINT = getMousePos(e);
-
+  this.mouseUp        = function(evt){ /* write me! */ 
+     InputHandler.dragStart = null;
+      if (!InputHandler.dragged) GameView.zoom(evt.shiftKey ? -1 : 1 );
   }
-  this.mouseUp        = function(e){ /* write me! */ 
-    //Doing it this way because some people have mice with like 30 buttons
-    var lmb = false;
-    var rmb = false;
 
-    if ( !e.which && e.button !== undefined ) {
-      e.which = ( e.button & 1 ? 1 : ( e.button & 2 ? 3 : ( e.button & 4 ? 2 : 0 ) ) );
-    }
-    
-    LMB_DOWN = (e.which === 1) ? false : LMB_DOWN;
-    RMB_DOWN = (e.which === 3) ? false : RMB_DOWN;
-    CLICK_POINT = {x:NaN, y:NaN};
-  }
   this.mouseMove      = function(evt){ /* write me! */ 
-    var mpos = getMousePos(evt);
-    MOVE_POINT = mpos;
-    
+     var imageSpace = InputHandler.context.transformedPoint(
+        evt.pageX-InputHandler.canvas.offsetLeft,
+        evt.pageY-InputHandler.canvas.offsetTop
+      );
+
+      InputHandler.lastX = evt.offsetX || (evt.pageX - InputHandler.canvas.offsetLeft);
+      InputHandler.lastY = evt.offsetY || (evt.pageY - InputHandler.canvas.offsetTop);
+      InputHandler.dragged = true;
+      if (InputHandler.dragStart){
+        var pt = InputHandler.context.transformedPoint(InputHandler.lastX,InputHandler.lastY);
+        var x = pt.x-InputHandler.dragStart.x;
+        var y = pt.y-InputHandler.dragStart.y;
+        InputHandler.context.translate(x, y);
+        GameView.offsetX -= x;
+        GameView.offsetY -= y;
+      }
   }
+
+  this.handleScroll   = function(evt){
+      var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
+      if (delta) GameView.zoom(delta);
+      return evt.preventDefault() && false;
+  }
+
 
   ///Change these!
   
-  
-
-
   this.mouseDblClick  = function(evt){ /* write me! */ }
   this.mouseOver      = function(evt){ /* write me! */ }
   this.mouseOut       = function(evt){ /* write me! */ } 
@@ -115,7 +95,7 @@ function _InputHandler(canvas){
   this.onResize       = function(evt){ /* write me! */ }
   this.onBlur         = function(evt){ /* write me! */ }
   this.onFocus        = function(evt){ /* write me! */ }
-
+  this.keyDown        = function(evt){ /* write me! */ }
  
   
   //Not this \/
@@ -136,6 +116,9 @@ function _InputHandler(canvas){
   this.canvas.addEventListener('resize'   , that.onResize       ,false);
   this.canvas.addEventListener('blur'     , that.onBlur         ,false);
   this.canvas.addEventListener('focus'    , that.onFocus        ,false);
+
+  this.canvas.addEventListener('mousewheel', that.handleScroll, false);
+  this.canvas.addEventListener('DOMMouseScroll', that.handleScroll, false);
 
 
   //God DAMN the right mouse button.
