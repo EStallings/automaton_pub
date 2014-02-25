@@ -44,6 +44,7 @@ _GuiView = function(){
 	this.draw = function(){
 		//Clear artifacts
 		this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
+		this.context.fill
 
 		for(var layer = 0; layer < this.drawObjects.length; layer++){
 			for(var i = 0; i < this.drawObjects[layer].length; i++){
