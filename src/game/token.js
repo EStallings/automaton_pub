@@ -11,8 +11,20 @@ function Token(x,y,number,id){
 		return "t," + this.id + "," +  this.x + "," + this.y + "," + this.number;
 	}
 
-	this.drawSelf = function(context, offsetX, offsetY, currentScale){
-		
+	this.drawSelf = function(context, currentScale, unit){
+
+		var s = context.strokeStyle;
+		context.strokeStyle = "#F00BAA";
+		context.beginPath();
+
+		var x = this.x * unit + unit/2;
+		var y = this.y * unit + unit/2;
+		 
+		context.arc(x, y, 10 * currentScale, 0, 2*Math.PI);
+		context.stroke();
+
+		context.fillText(("T:" + this.id), x, y);
+		context.strokeStyle = s;
 	}
 }
 

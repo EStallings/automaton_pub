@@ -49,9 +49,12 @@ function trackTransforms(ctx){
 			xform.f = f;
 			return setTransform.call(ctx,a,b,c,d,e,f);
 		};
+
 		var pt  = svg.createSVGPoint();
 		ctx.transformedPoint = function(x,y){
 			pt.x=x; pt.y=y;
 			return pt.matrixTransform(xform.inverse());
 		}
+
+		
 	}
