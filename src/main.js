@@ -3,6 +3,20 @@
 //On load function is executed automatically when the window is loaded
 window.onload = function(){
 
+	RED = 'R';
+	GREEN = 'G';
+	BLUE = 'B';
+	YELLOW = 'Y';
+
+	LEFT = 'W';
+	RIGHT = 'E';
+	UP = 'N';
+	DOWN = 'S';
+
+	LASTCYCLETICK = 0;
+	NEXTCYCLETICK = 0;
+	FIRSTCYCLE = true;
+	INTERPOLATE = 0;
 
   
 	GuiView = new _GuiView();
@@ -30,8 +44,19 @@ function Render(){
   GuiView.draw();
 }
 
-function Update(){
+function Update(tick){
+	if(FIRSTCYCLE) {
+		NEXTCYCLETICK = tick;
+		FIRSTCYCLE = false;
+	}
 
+	if(tick < NEXTCYCLETICK){
+		//do updating
+		//do verifying
+		//do moving
+
+	}
+	INTERPOLATE = (tick -LASTCYCLETICK) / (NEXTCYCLETICK - LASTCYCLETICK);
 }
 
 

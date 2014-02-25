@@ -1,4 +1,4 @@
-//Just a gameloop found on the internet, PLEASE DO NOT USE
+//From t3h w3bs
 
 
 function _Engine () {

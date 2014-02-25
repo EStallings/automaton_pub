@@ -14,16 +14,24 @@ function Token(x,y,number,id){
 	this.drawSelf = function(context, currentScale, unit){
 
 		var s = context.strokeStyle;
-		context.strokeStyle = "#F00BAA";
-		context.beginPath();
+		context.fillStyle = '#ffffff';
 
 		var x = this.x * unit + unit/2;
 		var y = this.y * unit + unit/2;
 		 
-		context.arc(x, y, 10 * currentScale, 0, 2*Math.PI);
+		context.beginPath();
+		context.arc(x, y, 18 * currentScale, 0, 2*Math.PI);
+		context.fill();
+		
+		context.strokeStyle = '#3f3f3f';
+		context.beginPath();
+		context.arc(x, y, 18 * currentScale, 0, 2*Math.PI);
 		context.stroke();
 
-		context.fillText(("T:" + this.id), x, y);
+		context.fillStyle = "#000000";
+		context.font = "bold 11px arial";
+		context.textAlign = 'center';
+		context.fillText(this.number + "", x, y + (4 * currentScale));
 		context.strokeStyle = s;
 	}
 }

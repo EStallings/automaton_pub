@@ -58,12 +58,14 @@ _GameView = function(){
 		//Clear artifacts
 		var p1 = this.context.transformedPoint(0,0);
 		var p2 = this.context.transformedPoint(this.canvas.width, this.canvas.height);
-		this.context.clearRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
+		//this.context.clearRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
+		this.context.fillStyle = '#000000';
+		this.context.fillRect(p1.x, p1.y, p2.x-p1.x, p2.y-p1.y);
 
-		//A reference image, just in case you want to make sure things are scaling/moving right
-		// var img = new Image;
-		// img.src = 'http://phrogz.net/tmp/grid_512.png'
-		// this.context.drawImage(img, 0, 0);
+		//very reference image, just in case much want to make sure things are such scaling/moving right
+		// var wow = new Image;
+		// wow.src = 'https://pbs.twimg.com/profile_images/378800000822867536/3f5a00acf72df93528b6bb7cd0a4fd0c.jpeg'
+		// this.context.drawImage(wow, 0, 0);
 
 		var mpos = InputHandler.mousePosition;
 		var wCoord = this.worldCoord(mpos.x, mpos.y);
@@ -124,6 +126,8 @@ _GameView = function(){
 		var p1 = this.context.transformedPoint(0, 0);
 		var m2 = this.gridToWorld(p1.x, p1.y);
 
+		this.context.strokeStyle = '#2f122f';
+
 		for(var x = m2.x; x < m2.x + (this.canvas.width + this.safeZone); x += this.gridSize){
 			this.context.beginPath();
 			this.context.moveTo(x, m2.y);
@@ -137,14 +141,7 @@ _GameView = function(){
 			this.context.stroke();
 		}		
 
-		this.context.fillStyle = "#000000"
 		
-	}
-
-
-
-	this.findCellAtPoint = function(x, y){
-		//TODO write me!
 	}
 
 
