@@ -12,19 +12,18 @@ function Automaton(x,y,direction,cFlags, id){
 		return "a," + this.id + "," +  this.x + "," + this.x + "," + this.direction + "," + cString + "," + this.tokenHolding;
 	}
 
-	this.drawSelf = function(context, currentScale){
+	this.drawSelf = function(context, currentScale, unit){
 
 		context.strokeStyle = "0x000000";
 		context.beginPath();
-		var unit = GameView.baseGridSize;
 
-		var x = this.x * unit;
-		var y = this.y * unit;
+		var x = this.x * unit + unit/2;
+		var y = this.y * unit + unit/2;
 		 
 		context.arc(x, y, 15 * currentScale, 0, 2*Math.PI);
 		context.stroke();
 
-		context.fillText((this.id + " " + x + "," + y), x, y);
+		context.fillText(("A:" + this.id), x, y);
 	}
 }
 

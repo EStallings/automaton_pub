@@ -18,11 +18,12 @@ function _InputHandler(canvas){
   trackTransforms(this.context);
   this.lastX=canvas.width/2;
   this.lastY=canvas.height/2;
-  this.dragStart = null,
+  this.mousePosition = {x:0,y:0};
+  this.dragStart = null;
   this.dragged = false;
 
   this.mouseClick     = function(e){ /* write me! */ 
-    var mpos = getMousePos(e);
+    var mousePosition = getMousePos(e);
 
     //Doing it this way because some people have mice with like 30 buttons
     var lmb = false;
@@ -37,9 +38,9 @@ function _InputHandler(canvas){
     else if (e.which === 3)
       lmb = true;
 
-    if(!GuiView.doClicking(mpos.x, mpos.y, lmb, rmb, e)) //GUI gets priority
+    if(!GuiView.doClicking(mousePosition.x, mousePosition.y, lmb, rmb, e)) //GUI gets priority
     {
-      GameView.doClicking(mpos.x, mpos.y, lmb, rmb, e);
+      GameView.doClicking(mousePosition.x, mousePosition.y, lmb, rmb, e);
 
     }
   }
@@ -56,10 +57,11 @@ function _InputHandler(canvas){
 
   this.mouseUp        = function(evt){ /* write me! */ 
      InputHandler.dragStart = null;
-      if (!InputHandler.dragged) GameView.zoom(evt.shiftKey ? -1 : 1 );
+      //if (!InputHandler.dragged) GameView.zoom(evt.shiftKey ? -1 : 1 );
   }
 
   this.mouseMove      = function(evt){ /* write me! */ 
+    InputHandler.mousePosition = getMousePos(evt);
      var imageSpace = InputHandler.context.transformedPoint(
         evt.pageX-InputHandler.canvas.offsetLeft,
         evt.pageY-InputHandler.canvas.offsetTop
@@ -73,8 +75,6 @@ function _InputHandler(canvas){
         var x = pt.x-InputHandler.dragStart.x;
         var y = pt.y-InputHandler.dragStart.y;
         InputHandler.context.translate(x, y);
-        GameView.offsetX -= x;
-        GameView.offsetY -= y;
       }
   }
 
