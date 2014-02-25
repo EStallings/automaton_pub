@@ -95,9 +95,10 @@ _GameView = function(){
 
 	this.drawGrid = function(){
 		this.context.strokeStyle = "#000000";
+		
 		var off = this.baseGridSize * this.currentScale * this.currentScale;
-		var oX = (this.offsetX) % (off);
-		var oY = (this.offsetY) % (off);
+		var oX = (this.offsetX * this.currentScale) % off;
+		var oY = (this.offsetY * this.currentScale) % off;
 
 		var p1 = this.context.transformedPoint(0 - oX, 0 - oY);
 		var p2 = this.context.transformedPoint(this.canvas.width + oX, this.canvas.height + oY);
@@ -121,6 +122,10 @@ _GameView = function(){
 			this.context.lineTo(p2.x + this.safeZone, y);
 			this.context.stroke();
 		}
+
+		this.context.fillRect(p1.x, p1.y, 10, 10);
+
+
 	}
 
 
