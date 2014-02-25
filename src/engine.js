@@ -1,21 +1,21 @@
 //From t3h w3bs
 
 
-function _Engine () {
-
+function _Engine (options) {
+  this.options = options;
   
 
-  this.run = function(options) {
+  this.run = function() {
 
     var now,
         dt       = 0,
         last     = timestamp(),
-        slow     = options.slow || 1, // slow motion scaling factor
-        step     = 1/options.fps,
+        slow     = this.options.slow || 1, // slow motion scaling factor
+        step     = 1/this.options.fps,
         slowStep = slow * step,
-        update   = options.update,
-        render   = options.render,
-        fpsmeter = new FPSMeter(options.fpsmeter || { decimals: 0, graph: true, theme: 'dark', left: '500px' });
+        update   = this.options.update,
+        render   = this.options.render,
+        fpsmeter = new FPSMeter(this.options.fpsmeter || { decimals: 0, graph: true, theme: 'dark', left: '500px' });
 
     function frame() {
       fpsmeter.tickStart();
@@ -28,8 +28,11 @@ function _Engine () {
       render(dt/slow);
       last = now;
       fpsmeter.tick();
-      requestAnimationFrame(frame, options.canvas);
+
+      requestAnimationFrame(frame, that.options.canvas);
     }
+
+    var that = this;
 
     requestAnimationFrame(frame);
   }

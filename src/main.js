@@ -13,9 +13,9 @@ window.onload = function(){
 	UP = 'N';
 	DOWN = 'S';
 
-	LASTCYCLETICK = 0;
-	NEXTCYCLETICK = 0;
-	FIRSTCYCLE = true;
+	DRAWTICK = UPDATETICK = new Date().getTime();
+	NEXTUPDATETICK = UPDATETICK + 1000;
+
 	INTERPOLATE = 0;
 
 	LevelManager = new _LevelManager();
@@ -24,10 +24,14 @@ window.onload = function(){
 	GameView = new _GameView();
 	  
 	InputHandler = new _InputHandler(GuiView.canvas);
-	Engine = new _Engine();
+	Engine = new _Engine({render:Render, update:Update, fps:2, canvas:GameView.canvas});
 
+	SimulationContext = new SimulationContext();
+	PlanningContext = new PlanningContext();
 
-	Engine.run({render:Render, update:Update,canvas:GameView.canvas});
+	CurrentContext = PlanningContext;
+
+	
 
 	//this is super-duper test-casey
 	LevelManager.loadLevelFromString(";0;0;1.7976931348623157e+308;1.7976931348623157e+308;" 
@@ -37,27 +41,33 @@ window.onload = function(){
 		+"e,true,false,-1;a,3,26,26,W,true,false,false,false,-1;a,4,15,15,E,false,fal"
 		+"se,true,true,-1;i,0,1,2,R,200;i,1,1,2,G,12;i,2,1,3,R,2;i,3,1,32,R,20;i,4,1,"
 		+"12,R,21;s,0,1,1,in,B,1,2,5,6,4,9;s,1,56,102,out,R,8,3,6,2,5,7,0");
+	setFPS(2);
+	Engine.run();
+}
+
+function setFPS(fps){
+	FRAMERATE = new Date(fps * 1000).getTime();
+	Engine.options.fps = fps;
 }
 
 
 function Render(){
   GameView.draw();
   GuiView.draw();
+  DRAWTICK = new Date().getTime();
+
+  INTERPOLATE = (DRAWTICK - UPDATETICK) / (NEXTUPDATETICK - UPDATETICK);
+  
 }
 
 function Update(tick){
-	if(FIRSTCYCLE) {
-		NEXTCYCLETICK = tick;
-		FIRSTCYCLE = false;
-	}
+	UPDATETICK = new Date().getTime();
+	NEXTUPDATETICK = UPDATETICK + FRAMERATE;
 
-	if(tick < NEXTCYCLETICK){
-		//do updating
-		//do verifying
-		//do moving
-
-	}
-	INTERPOLATE = (tick -LASTCYCLETICK) / (NEXTCYCLETICK - LASTCYCLETICK);
+	//console.log("did an update");
+	CurrentContext.update();
+	
+	
 }
 
 

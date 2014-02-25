@@ -1,15 +1,13 @@
-function Game(){
-
-	this.currentLevel = null;
+function SimulationContext(){
 
 
-	this.loadLevel = function(levelName){
-		//Ohh boy. Server stuff?
+	this.update = function(){
+		
 	}
 
-	this.loadLevel = function(stringFormat){
-		this.currentLevel = LoadLevel(stringFormat); //this is a method inside of the level.js file that returns a level.
-	}
+}
+
+function PlanningContext(){
 
 	this.update = function(){
 		
