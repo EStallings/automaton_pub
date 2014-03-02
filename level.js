@@ -3,7 +3,7 @@ Application.PlannningLevel = function(){
 	this.width;
 	this.height;
 	this.grid = []; // grid[x][y][color] = instruction
-	this.undoRedoStack = [];
+	this.undoRedoStack = []; // what about level resizing
 	
 	this.getCell = function(x,y){};
 	this.removeCell = function(x,y){};

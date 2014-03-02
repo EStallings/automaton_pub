@@ -30,7 +30,7 @@ Application.SimulationLevel = function(){
 	this.instructions = [];
 	this.streams = [];
 
-	// TODO these are in the simulator
+	// these are in the simulator
 	// this.lastCycleTick;
 	// this.nextCycleTick;
 	// this.cycles;
