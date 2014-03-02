@@ -168,7 +168,7 @@ Application.makeInputHandler = function(){
 				input.lButton.drag = false;
 		input.lButton.dragStart = null;
 
-				if(!input.lButton.killClick)
+				if(!input.lButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
 					input.executeMouse(input.mouseTypes.LEFT_CLICK, {x:input.mousePos.x, y:input.mousePos.y}, e);
 
 				input.lButton.killClick = false;
@@ -179,7 +179,7 @@ Application.makeInputHandler = function(){
 				input.mButton.drag = false;
 				input.mButton.dragStart = null;
 				
-				if(!input.mButton.killClick)
+				if(!input.mButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
 					input.executeMouse(input.mouseTypes.MIDDLE_CLICK, {x:input.mousePos.x, y:input.mousePos.y}, e);
 
 				input.mButton.killClick = false;
@@ -190,7 +190,7 @@ Application.makeInputHandler = function(){
 				input.rButton.drag = false;
 				input.rButton.dragStart = null;
 
-				if(!input.rButton.killClick)
+				if(!input.rButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
 					input.executeMouse(input.mouseTypes.RIGHT_CLICK, {x:input.mousePos.x, y:input.mousePos.y}, e);
 
 				input.rButton.killClick = false;
