@@ -6,6 +6,9 @@ window.onload = function(){
 	Application.Gui = Application.makeGui();
 	Application.Engine = Application.makeEngine(); // calls rendering and updating
 
+	lvl = new Application.PlanningLevel();
+	lvl.insert(new Application.PlanningInstruction(1,1,0,'left arrow'));
+
 	Application.Engine.run(); // do we call it here?
 }
 

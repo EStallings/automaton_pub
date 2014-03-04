@@ -73,16 +73,17 @@ Application.PlanningLevel = function(){
 		this.value = value;
 	}
 
-	/*this.modify = function(instruction, parameter, value){
-		if(this.contains(instruction.x, instruction.y, instruction.color)){
+	this.modify = function(instruction, parameter, value){
+		console.warn('instruction: ' + instruction.x + ', ' + instruction.y + ', ' + instruction.color + ', ' + instruction.type);
+		/*if(this.contains(instruction.x, instruction.y, instruction.color)){
 			// update undo stack
 			this.undoStack.push(new this.modifyOp(instruction, parameter, value));
 
 			// update grid
 			console.warn('param: ' + this.getCell(instruction.x,instruction.y)[instruction.color][parameter]);
 			this.getCell(instruction.x, instruction.y)[instruction.color][parameter] = value;
-		}
-	}*/
+		}*/
+	}
 
 	this.copy = function(x, y, color, newX, newY){
 		// update undo stack
