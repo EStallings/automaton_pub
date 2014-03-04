@@ -126,9 +126,9 @@ Application.makeInputHandler = function(){
 		var input = Application.InputHandler;
 		
 		//update current mouse position
-		if(e.toElement === null) return;
+		if(e.currentTarget === null) return;
 
-		var rect = e.toElement.getBoundingClientRect();
+		var rect = e.currentTarget.getBoundingClientRect();
 
 		input.mousePos = {
 			x:e.clientX - rect.left,
