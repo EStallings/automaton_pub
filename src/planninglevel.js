@@ -1,21 +1,28 @@
 Application.PlanningLevel = function(){
-	this.width;
-	this.height;
+	this.width;	this.height;
 	this.numColors = 4;
 	this.grid = []; // grid[x][y][color] = instruction
 	this.undoStack = [];
 	this.redoStack = [];
-	this.deletions = []; // stack that holds deleted instructions for undo/redo
-
-	this.getCell = function(x,y){ return this.grid[x][y]; };
+	
+	this.getCell = function(x,y){
+		if(this.grid[x]){
+			return this.grid[x][y];
+		}
+	};
 
 	// clears an entire cell
 	this.removeCell = function(x,y){
 		for(var c = 0; c < this.numColors; c++){
-			if(this.grid[x][y][c]){ this.grid[x][y][c] = null; };
+			if(this.grid[x]){
+				if(this.grid[x][y]){
+					this.grid[x][y][c] = null;
+				}
+			}
 		}
 	};
 	
+	// TODO update to make sure grid[x][y][c] exists before trying to apply the function
 	this.forEachCell = function(f){
 		for(var y = 0; y < this.height; y++){
 			for(var x = 0; x < this.width; x++){
@@ -26,68 +33,100 @@ Application.PlanningLevel = function(){
 		}
 	};
 
-	// moves an instruction from one cell to another, does the reverse if r is set to 1
-	this.moveOp = function(x,y,c,nx,ny,r){
-
-		this.x = x; this.y = y; this.c = c;
-		this.nx = nx; this.ny = ny; this.r = r;
-
-		this.apply = function(){
-			if(this.r !== 1){
-				this.grid[nx][ny][c] = this.grid[x][y][c];
-				this.grid[x][y][c] = null;
-			}
-			else{
-				this.moveOp(nx,ny,c,x,y,0);
-			}
-		}
-	};
+	//this.moveOp = function(){}; // TODO
 
 	//this.modifyOp = function(x,y,){}; // TODO
 	
-	// inserts an instruction, does the reverse if r is set to 1
-	// TODO update stacks when apply is called
-	this.insertOp = function(ins,r){
-		
-		this.x = ins.x; this.y = ins.y;
-		this.ins = ins; this.r = r;
-
-		this.apply = function(){ // TODO the 'this' points to the operation, not the planning level
-			if(r !== 1){
-				this.grid[x][y][c] = ins; // TODO make this safe
-			}
-			else{
-				this.grid[x][y][c] = null;
-			}
-		}
+	this.insertOp = function(instruction){		
+		this.instruction = instruction;
+		this.opId = 'insert';
 	};
 	
-	// deletes an instruction, does the reverse if r is set to 1
-	this.deleteOp = function(x,y,c,r){
-		
-		this.x = x; this.y = y;
-		this.c = c; this.r = r;
+	this.deleteOp = function(instruction){		
+		this.instruction = instruction;
+		console.warn('deleteOp: ' + instruction);
+		this.opId = 'delete';
+	};
 
-		this.apply = function(){
-			if(r !== 1){
-				this.deletions.push(this.grid[x][y][c]);
-				this.grid[x][y][c] = null;
+	this.insert = function(instruction){
+
+		// update undo stack
+		this.undoStack.push(new this.insertOp(instruction));
+
+		// update grid
+		if(this.grid[instruction.x]){
+			if(this.grid[instruction.x][instruction.y]){
+				if(this.grid[instruction.x][instruction.y][instruction.color]){
+					this.grid[instruction.x][instruction.y][instruction.color] = instruction;
+				}
 			}
-			else{
-				this.grid[x][y][c] = this.deletions.pop();
+			else {
+				this.grid[instruction.x][instruction.y] = [];
+				this.grid[instruction.x][instruction.y][instruction.color] = instruction;
+			}
+		}
+		else {
+			this.grid[instruction.x] = [];
+			this.grid[instruction.x][instruction.y] = [];
+			this.grid[instruction.x][instruction.y][instruction.color] = instruction;
+		}
+
+	};
+
+	this.delete = function(x,y,color){
+		if(this.grid[x]){
+			if(this.grid[x][y]){
+				if(this.grid[x][y][color]){
+
+					// update undo stack
+					this.undoStack.push(new this.deleteOp(this.getCell(x,y)[color]));
+
+					// update grid
+					this.grid[x][y][color] = null;
+				}
 			}
 		}
 	};
 
-	// TODO
 	this.undo = function(){
 
+		// update stacks
+		var op = this.undoStack.pop();
+		this.redoStack.push(op);
+
+		console.warn('undo op: ' + op.opId + ' ins: ' + op.instruction.x);
+
+		// update grid
+		if(op.opId === 'insert'){
+
+			this.delete(op.instruction.x, op.instruction.y, op.instruction.color);
+			this.undoStack.pop();
+		}
+		else if(op.opId === 'delete'){
+			this.insert(op.instruction);
+			this.undoStack.pop();
+		}
 	};
 
 	// TODO
-	this.redo = function(){
+	/*this.redo = function(){
 
-	};
+		// update stacks
+		var op = this.redoStack.pop();
+		this.undoStack.push(op);
+
+		console.warn('redo op: ' + op.opId + ' ins: ' + op.instruction.x);
+
+		// update grid
+		if(op.opId === 'insert'){
+			this.insert(op.instruction);
+			this.undoStack.pop();
+		}
+		else if(op.opId === 'delete'){
+			this.delete(op.instruction.x, op.instruction.y, op.instruction.color);
+			this.undoStack.pop();
+		}
+	};*/
 
 	// TODO
 	this.generateParseString = function(){};
