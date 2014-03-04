@@ -2,12 +2,12 @@ Application.InstructionActions = {}; // TODO populate with action methods
 
 Application.InstructionSymbols = {}; // TODO populate with drawing methods
 
-Application.PlanningInstruction = function(){
+Application.PlanningInstruction = function(x,y,c,t){
 	// this.level;
-	this.x;
-	this.y;
-	this.color;
-	this.type;
+	this.x = x;
+	this.y = y;
+	this.color = c;
+	this.type = t;
 	// this.attributes; // this should only be used for stuff like stream config...
 
 	this.generateSimulationInstruction = function(){

@@ -46,14 +46,15 @@ Application.PlanningLevel = function(){
 	//this.modifyOp = function(x,y,){}; // TODO
 	
 	// inserts an instruction, does the reverse if r is set to 1
-	this.insertOp = function(x,y,ins,r){
+	// TODO update stacks when apply is called
+	this.insertOp = function(ins,r){
 		
-		this.x = x; this.y = y;
+		this.x = ins.x; this.y = ins.y;
 		this.ins = ins; this.r = r;
 
-		this.apply = function(){
+		this.apply = function(){ // TODO the 'this' points to the operation, not the planning level
 			if(r !== 1){
-				this.grid[x][y][c] = ins;
+				this.grid[x][y][c] = ins; // TODO make this safe
 			}
 			else{
 				this.grid[x][y][c] = null;
