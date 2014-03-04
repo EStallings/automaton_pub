@@ -7,12 +7,27 @@ Application.PlanningLevel = function(){
 	this.redoStack = [];
 	this.deletions = []; // stack that holds deleted instructions for undo/redo
 
-	this.getCell = function(x,y){ return this.grid[x][y]; };
+	this.getCell = function(x,y){ 
+		//Note: I edited this to prevent a potential crash and/or undefined being passed around.
+		if(!this.grid[x] || !this.grid[x][y])
+			return null;
+
+		return this.grid[x][y]; 
+	};
+
+	//le sigh. I really wish this weren't how stupid JavaScript is, but, alas
+	//this is _exactly_ how stupid JavaScript is. Gotta do this :(
+	this.contains = function(x, y, c){
+		return (this.grid[x] && this.grid[x][y] && this.grid[x][y][c]);
+	}
 
 	// clears an entire cell
 	this.removeCell = function(x,y){
 		for(var c = 0; c < this.numColors; c++){
-			if(this.grid[x][y][c]){ this.grid[x][y][c] = null; };
+
+			if(this.contains(x, y, c)){ 
+				this.grid[x][y][c] = null; 
+			}
 		}
 	};
 	
@@ -20,14 +35,16 @@ Application.PlanningLevel = function(){
 		for(var y = 0; y < this.height; y++){
 			for(var x = 0; x < this.width; x++){
 				for(var c = 0; c < this.numColors; c++){
-					if(this.grid[x][y][c]){ f(this.grid[x][y][c]); };
+					if(this.contains(x, y, c)){ 
+						f(this.grid[x][y][c]); 
+					}
 				}
 			}
 		}
 	};
 
 	// moves an instruction from one cell to another, does the reverse if r is set to 1
-	this.moveOp = function(x,y,c,nx,ny,r){
+	this.moveOp = function(x, y, c, nx, ny, r){
 
 		this.x = x; this.y = y; this.c = c;
 		this.nx = nx; this.ny = ny; this.r = r;
@@ -90,8 +107,12 @@ Application.PlanningLevel = function(){
 	};
 
 	// TODO
-	this.generateParseString = function(){};
+	this.generateParseString = function(){
+		
+	};
 	
 	// TODO
-	this.generateSimulationLevel = function(){};
+	this.generateSimulationLevel = function(){
+		
+	};
 }
