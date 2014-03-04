@@ -4,12 +4,20 @@ Application.PlanningLevel = function(){
 	this.grid = []; // grid[x][y][color] = instruction
 	this.undoStack = [];
 	this.redoStack = [];
-	
-	this.getCell = function(x,y){
-		if(this.grid[x]){
-			return this.grid[x][y];
-		}
+
+	this.getCell = function(x,y){ 
+		//Note: I edited this to prevent a potential crash and/or undefined being passed around.
+		if(!this.grid[x] || !this.grid[x][y])
+			return null;
+
+		return this.grid[x][y]; 
 	};
+
+	//le sigh. I really wish this weren't how stupid JavaScript is, but, alas
+	//this is _exactly_ how stupid JavaScript is. Gotta do this :(
+	this.contains = function(x, y, c){
+		return (this.grid[x] && this.grid[x][y] && this.grid[x][y][c]);
+	}
 
 	// clears an entire cell
 	this.removeCell = function(x,y){
@@ -27,7 +35,9 @@ Application.PlanningLevel = function(){
 		for(var y = 0; y < this.height; y++){
 			for(var x = 0; x < this.width; x++){
 				for(var c = 0; c < this.numColors; c++){
-					if(this.grid[x][y][c]){ f(this.grid[x][y][c]); };
+					if(this.contains(x, y, c)){ 
+						f(this.grid[x][y][c]); 
+					}
 				}
 			}
 		}
@@ -129,8 +139,12 @@ Application.PlanningLevel = function(){
 	};*/
 
 	// TODO
-	this.generateParseString = function(){};
+	this.generateParseString = function(){
+		
+	};
 	
 	// TODO
-	this.generateSimulationLevel = function(){};
+	this.generateSimulationLevel = function(){
+		
+	};
 }
