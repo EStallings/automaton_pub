@@ -30,7 +30,6 @@ Application.PlanningLevel = function(){
 		}
 	};
 	
-	// TODO update to make sure grid[x][y][c] exists before trying to apply the function
 	this.forEachCell = function(f){
 		for(var y = 0; y < this.height; y++){
 			for(var x = 0; x < this.width; x++){
@@ -42,8 +41,6 @@ Application.PlanningLevel = function(){
 			}
 		}
 	};
-
-	//this.moveOp = function(){}; // TODO
 
 	//this.modifyOp = function(x,y,){}; // TODO
 	
@@ -58,6 +55,80 @@ Application.PlanningLevel = function(){
 		this.opId = 'delete';
 	};
 
+	this.moveOp = function(instruction, newX, newY){
+		this.instruction = instruction;
+		this.newX = newX; this.newY = newY;
+		this.opId = 'move';
+	}
+
+	this.copyOp = function(instruction, newX, newY){
+		this.instruction = instruction;
+		this.newX = newX; this.newY = newY;
+		this.opId = 'copy';
+	}
+
+	this.copy = function(x, y, color, newX, newY){
+		// update undo stack
+		this.undoStack.push(new this.copyOp(this.getCell(x,y)[color], newX, newY));
+
+		// update grid
+		if(this.contains(x,y,color)){
+			if(this.contains(newX, newY, color)){
+				this.grid[newX][newY][color] = this.getCell(x,y)[color];
+			}
+			else{
+				if(this.grid[newX]){
+					if(this.grid[newX][newY]){
+						this.grid[newX][newY][color] = this.getCell(x,y)[color];
+					}
+					else{
+						this.grid[newX][newY] = [];
+						this.grid[newX][newY][color] = this.getCell(x,y)[color];
+					}
+				}
+				else{
+					this.grid[newX] = [];
+					this.grid[newX][newY] = [];
+					this.grid[newX][newY][color] = this.getCell(x,y)[color];
+				}
+			}
+		}
+	}
+
+	this.move = function(x, y, color, newX, newY){
+
+		// update undo stack
+		this.undoStack.push(new this.moveOp(this.getCell(x,y)[color], newX, newY));
+
+		// update grid
+		if(this.contains(x,y,color)){
+			if(this.contains(newX, newY, color)){
+				this.grid[newX][newY][color] = this.getCell(x,y)[color];
+				this.getCell(x,y)[color] = null;
+			}
+			else{
+				if(this.grid[newX]){
+					if(this.grid[newX][newY]){
+						this.grid[newX][newY][color] = this.getCell(x,y)[color];
+						this.getCell(x,y)[color] = null;						
+					}
+					else{
+						this.grid[newX][newY] = [];
+						this.grid[newX][newY][color] = this.getCell(x,y)[color];
+						this.getCell(x,y)[color] = null;
+					}
+				}
+				else{
+					this.grid[newX] = [];
+					this.grid[newX][newY] = [];
+					this.grid[newX][newY][color] = this.getCell(x,y)[color];
+					this.getCell(x,y)[color] = null;
+				}
+			}
+		}
+
+	}
+
 	this.insert = function(instruction){
 
 		// update undo stack
@@ -66,9 +137,7 @@ Application.PlanningLevel = function(){
 		// update grid
 		if(this.grid[instruction.x]){
 			if(this.grid[instruction.x][instruction.y]){
-				if(this.grid[instruction.x][instruction.y][instruction.color]){
-					this.grid[instruction.x][instruction.y][instruction.color] = instruction;
-				}
+				this.grid[instruction.x][instruction.y][instruction.color] = instruction;
 			}
 			else {
 				this.grid[instruction.x][instruction.y] = [];
@@ -116,10 +185,17 @@ Application.PlanningLevel = function(){
 			this.insert(op.instruction);
 			this.undoStack.pop();
 		}
+		else if(op.opId === 'move'){
+			this.move(op.newX, op.newY, op.instruction.color, op.instruction.x, op.instruction.y)
+			this.undoStack.pop();
+		}
+		else if(op.opId === 'copy'){
+			this.delete(op.newX, op.newY, op.instruction.color);
+			this.undoStack.pop();
+		}
 	};
 
-	// TODO
-	/*this.redo = function(){
+	this.redo = function(){
 
 		// update stacks
 		var op = this.redoStack.pop();
@@ -136,7 +212,15 @@ Application.PlanningLevel = function(){
 			this.delete(op.instruction.x, op.instruction.y, op.instruction.color);
 			this.undoStack.pop();
 		}
-	};*/
+		else if(op.opId === 'move'){
+			this.move(op.instruction.x, op.instruction.y, op.instruction.color, op.newX, op.newY);
+			this.undoStack.pop();
+		}
+		else if(op.opId === 'copy'){
+			this.insert(new Application.PlanningInstruction(op.newX, op.newY, op.instruction.color, op.instruction.type));
+			this.undoStack.pop();
+		}
+	};
 
 	// TODO
 	this.generateParseString = function(){
