@@ -67,6 +67,22 @@ Application.PlanningLevel = function(){
 		this.opId = 'copy';
 	}
 
+	this.modifyOp = function(instruction, parameter, value){
+		this.instruction = instruction;
+		this.parameter = parameter;
+		this.value = value;
+	}
+
+	this.modify = function(instruction, parameter, value){
+		if(this.contains(instruction.x, instruction.y, instruction.color)){
+			// update undo stack
+			this.undoStack.push(new this.modifyOp(instruction, parameter, value));
+
+			// update grid
+			this.getCell()
+		}
+	}
+
 	this.copy = function(x, y, color, newX, newY){
 		// update undo stack
 		this.undoStack.push(new this.copyOp(this.getCell(x,y)[color], newX, newY));
