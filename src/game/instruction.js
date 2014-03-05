@@ -1,8 +1,8 @@
-Application.InstructionActions = {}; // TODO populate with action methods
+App.InstructionActions = {}; // TODO populate with action methods
 
-Application.InstructionSymbols = {}; // TODO populate with drawing methods
+App.InstructionSymbols = {}; // TODO populate with drawing methods
 
-Application.PlanningInstruction = function(x,y,color,type){
+App.PlanningInstruction = function(x,y,color,type){
 	// this.level;
 	this.x = x;
 	this.y = y;
@@ -15,7 +15,7 @@ Application.PlanningInstruction = function(x,y,color,type){
 	}
 }
 
-Application.SimulationInstruction = function(level,x,y,color,type){ // what about attributes?
+App.SimulationInstruction = function(level,x,y,color,type){ // what about attributes?
 	this.level = level;
 	this.x = x;
 	this.y = y;

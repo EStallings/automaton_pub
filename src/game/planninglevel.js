@@ -1,4 +1,4 @@
-Application.PlanningLevel = function(){
+App.PlanningLevel = function(){
 	this.name;
 	this.width;	this.height;
 	this.numColors = 4;
@@ -246,7 +246,7 @@ Application.PlanningLevel = function(){
 			that.undoStack.pop();
 		}
 		else if(op.opId === 'copy'){
-			that.insert(new Application.PlanningInstruction(op.newX, op.newY, op.instruction.color, op.instruction.type));
+			that.insert(new App.PlanningInstruction(op.newX, op.newY, op.instruction.color, op.instruction.type));
 			that.undoStack.pop();
 		}
 		else if(op.opId === 'modify'){

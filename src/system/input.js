@@ -1,6 +1,6 @@
 // deals with all keyboard, mouse, and window input
 // TODO add event listeners to the inputCanvas
-Application.makeInputHandler = function(){
+App.makeInputHandler = function(){
 	var input = {};
 
 	input.DRAGGING_PREVENTS_CLICKING = true;
@@ -33,7 +33,7 @@ Application.makeInputHandler = function(){
 	input.mouseRegistry = {'GUI':[], 'GAME':[]};
 
 //	//for now:
-	input.canvas = Application.Canvases.addNewLayer('inputCanvas', 10); // TODO: z value for this should be the largest...
+	input.canvas = App.Canvases.addNewLayer('inputCanvas', 10); // TODO: z value for this should be the largest...
 	input.context = input.canvas.getContext('2d');
 	
 	input.mousePos = {x:0, y:0};
@@ -130,7 +130,7 @@ Application.makeInputHandler = function(){
 
 	var handle_mouseMove 	= function(e){
 		
-		var input = Application.InputHandler;
+		var input = App.InputHandler;
 		
 		//update current mouse position
 		if(e.currentTarget === null) return;
@@ -155,7 +155,7 @@ Application.makeInputHandler = function(){
 
 	var handle_mouseUp 		= function(e){
 		
-		var input = Application.InputHandler;
+		var input = App.InputHandler;
 		
 		//determine which mouse button & update status accordingly
 		switch(e.button){
@@ -198,7 +198,7 @@ Application.makeInputHandler = function(){
 	
 	
 	var handle_mouseDown 	= function(e){
-		var input = Application.InputHandler;
+		var input = App.InputHandler;
 
 		//determine which mouse button & update status accordingly
 		switch(e.button){
@@ -223,7 +223,7 @@ Application.makeInputHandler = function(){
 	
 	var handle_mouseWheel 	= function(e){
 		console.debug("from mousewheel");
-		var input = Application.InputHandler;
+		var input = App.InputHandler;
 
 
 
@@ -231,7 +231,7 @@ Application.makeInputHandler = function(){
 	
 
 	var handle_keyDown 		= function(e){
-		var input = Application.InputHandler;
+		var input = App.InputHandler;
 		var key = input.keyCodeToChar[e.keyCode];
 				
 		input.executeKey(key, e);
@@ -239,7 +239,7 @@ Application.makeInputHandler = function(){
 	}// TODO
 	
 	var handle_keyUp 		= function(e){
-		var input = Application.InputHandler;
+		var input = App.InputHandler;
 		var key = input.keyCodeToChar[e.keyCode];
 		
 		if(input.keyRegistry[key])
@@ -250,7 +250,7 @@ Application.makeInputHandler = function(){
 	//Unused - doesn't do what you'd think :/
 	var handle_keyPress 	= function(e){
 		//console.debug("from keypress: " + e.keyCode);
-		var input = Application.InputHandler;
+		var input = App.InputHandler;
 
 
 	}// TODO
@@ -258,7 +258,7 @@ Application.makeInputHandler = function(){
 	//For now, unused
 	var handle_mouseOver 	= function(e){
 		//console.debug("from mouseover");
-		//var input = Application.InputHandler;
+		//var input = App.InputHandler;
 
 
 	}// TODO
@@ -266,7 +266,7 @@ Application.makeInputHandler = function(){
 	//For now, unused
 	var handle_mouseOut 	= function(e){
 		//console.debug("from mouseout");
-		//var input = Application.InputHandler;
+		//var input = App.InputHandler;
 	}// TODO
 
 	//TODO Touch support

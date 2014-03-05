@@ -5,16 +5,16 @@
 	putting it all in main. Stupid fucking JavaScript.
 */
 
-Application = {}; // top level object | everything should be stored within here
+App = {}; // top level object | everything should be stored within here
 
-Application.COLORS = {
+App.COLORS = {
 	RED    : 0,
 	GREEN  : 1,
 	BLUE   : 2,
 	YELLOW : 3
 };
 
-Application.DIRECTIONS = {
+App.DIRECTIONS = {
 	UP    : 0,
 	LEFT  : 1,
 	DOWN  : 2,

@@ -1,5 +1,5 @@
 // holds data, contains update & render for game layer
-Application.makeGame = function(){
+App.makeGame = function(){
 	var game = {};
 	
 	//TODO  set up canvases here?
@@ -42,7 +42,7 @@ Application.makeGame = function(){
 	};
 
 	game.enterPlanningMode = function(levelString){
-		Application.changeMenu('planning'); 
+		App.changeMenu('planning'); 
 		if(this.mode === this.modes.PLANNING)
 			return;
 
@@ -58,7 +58,7 @@ Application.makeGame = function(){
 		if(this.mode === this.modes.SIMULATION)
 			return;
 		this.mode = this.modes.SIMULATION;
-		Application.changeMenu('simulation');
+		App.changeMenu('simulation');
 
 		this.topLevelSimulationLevel = this.topLevelPlanningLevel.generateSimulationLevel();
 		this.currentRenderedLevel = this.topLevelSimulationLevel;
@@ -69,7 +69,7 @@ Application.makeGame = function(){
 		this.mode = this.modes.PLANNING;
 
 		var split = inputString.split(";");
-		var lev = new Application.PlanningLevel();
+		var lev = new App.PlanningLevel();
 		if(split.length > 0){
 			var levDat = split[0].split(',');
 			lev.name = levDat[0];
@@ -82,7 +82,7 @@ Application.makeGame = function(){
 				var y = parseInt(instDat[1]);
 				var col = instDat[2];
 				var typ = parseInt(instDat[3]);
-				var inst = new Application.PlanningInstruction(x, y, col, typ);
+				var inst = new App.PlanningInstruction(x, y, col, typ);
 				lev.insert(inst);
 			}
 		}

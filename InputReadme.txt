@@ -4,11 +4,11 @@ To use the input handler, please use the following conventions:
 
 To register for a mouse event, use the following syntax:
 
-Application.InputHandler.registerMouse(type, callback, layer);
+App.InputHandler.registerMouse(type, callback, layer);
 
 ---
 
-"type" is one of these events inside of (Application.InputHandler.mouseTypes):
+"type" is one of these events inside of (App.InputHandler.mouseTypes):
 
 ---
 MOVE
@@ -35,13 +35,13 @@ In other words, use "myFunction", NOT "myFunction()"
 
 EXAMPLE:
 
-Application.InputHandler.registerMouse(Application.InputHandler.mouseTypes.MOVE, myFunction, 'GUI');
+App.InputHandler.registerMouse(App.InputHandler.mouseTypes.MOVE, myFunction, 'GUI');
 
 ----------------
 
 To register for a keyboard event is simpler. Call the following:
 
-Application.InputHandler.registerKey(key, callback, repeat);
+App.InputHandler.registerKey(key, callback, repeat);
 
 ---
 
@@ -59,4 +59,4 @@ repeat is a boolean determining whether or not to repeatedly call the callback f
 
 EXAMPLE:
 
-Application.InputHandler.registerKey("E, myFunction, false);
+App.InputHandler.registerKey("E, myFunction, false);

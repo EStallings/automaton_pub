@@ -1,8 +1,8 @@
 // TODO: WRITE THIS ========================================================= //
 
-Application.makeGUI = function(){
+App.makeGUI = function(){
 	var gui = {};
-	gui.gfx = Application.Canvases.addNewLayer("GUI",0);
+	gui.gfx = App.Canvases.addNewLayer("GUI",0);
 
 	gui.menus = [];
 	gui.currentMenu;
@@ -24,7 +24,7 @@ Application.makeGUI = function(){
 	// =========================================================== //
 
 
-Application.GuiFrame = function(){
+App.GuiFrame = function(){
 	this.components = [];
 
 	this.update = function(){
@@ -34,16 +34,16 @@ Application.GuiFrame = function(){
 
 	this.render = function(){
 		// TODO: THE GUI SHOULD HAVE A REFERENCE TO ITS OWN CANVAS | CLEAR THE GUI INSIDE GUI'S RENDER, NOT HERE
-		var guiCanvas = Application.Canvases.layers['GUI'];                          // TODO: CLEAN THIS UP
-		guiCanvas.getContext('2d').clearRect(0,0,Application.Canvases.width, Application.Canvases.height); // TODO: CLEAN THIS UP
+		var guiCanvas = App.Canvases.layers['GUI'];                                                // TODO: CLEAN THIS UP
+		guiCanvas.getContext('2d').clearRect(0,0,App.Canvases.width, App.Canvases.height); // TODO: CLEAN THIS UP
 
 		for(var c in this.components)if(this.components[c].render)
 			this.components[c].render();
 	};
 }
 
-Application.CheckGuiClick = function(data,evt){
-	var gui = Application.Gui;
+App.CheckGuiClick = function(data,evt){
+	var gui = App.Gui;
 	var ret = false;
 	var x = data.x;
 	var y = data.y;
@@ -60,8 +60,8 @@ Application.CheckGuiClick = function(data,evt){
 	return ret;
 }
 
-Application.Button = function(menuName,x,y,width,height,text,callback){
-	Application.Menus[menuName].components.push(this);
+App.Button = function(menuName,x,y,width,height,text,callback){
+	App.Menus[menuName].components.push(this);
 
 	this.x = x;
 	this.y = y;
@@ -69,7 +69,7 @@ Application.Button = function(menuName,x,y,width,height,text,callback){
 	this.height = height;
 	this.text = text;
 	this.callback = callback;
-	this.gfx = Application.GuiCanvas.getContext("2d");
+	this.gfx = App.GuiCanvas.getContext("2d");
 
 	this.render = function(){
 		this.gfx.fillStyle = "rgb(0,0,0)";
@@ -81,23 +81,23 @@ Application.Button = function(menuName,x,y,width,height,text,callback){
 	}
 }
 
-Application.changeMenu = function(menuName){
-	if(Application.Menus[menuName])
-		Application.Gui = Application.Menus[menuName];
+App.changeMenu = function(menuName){
+	if(App.Menus[menuName])
+		App.Gui = App.Menus[menuName];
 }
 
 function constructMenus(){
-	Application.GuiCanvas = Application.Canvases.addNewLayer("GUI",0);
+	App.GuiCanvas = App.Canvases.addNewLayer("GUI",0);
 
-	Application.Menus = [];
+	App.Menus = [];
 
-	Application.Menus['mainMenu'] = new Application.GuiFrame();
-	new Application.Button('mainMenu',10,10,100,30,'PLAY',function(){Application.Game.enterPlanningMode();});	
-	new Application.Button('mainMenu',10,50,100,30,'LIBRARY',function(){alert("BAR");});
-	new Application.Button('mainMenu',10,90,100,30,'EDITOR',function(){Application.Game.enterPlanningMode();});
+	App.Menus['mainMenu'] = new App.GuiFrame();
+	new App.Button('mainMenu',10,10,100,30,'PLAY',function(){App.Game.enterPlanningMode();});	
+	new App.Button('mainMenu',10,50,100,30,'LIBRARY',function(){alert("BAR");});
+	new App.Button('mainMenu',10,90,100,30,'EDITOR',function(){App.Game.enterPlanningMode();});
 
-	Application.Menus['planning'] = new Application.GuiFrame();
-	new Application.Button('planning',10,10,100,30,'Main Menu',function(){Application.changeMenu('mainMenu');});
+	App.Menus['planning'] = new App.GuiFrame();
+	new App.Button('planning',10,10,100,30,'Main Menu',function(){App.changeMenu('mainMenu');});
 
-	Application.Menus['simulation'] = new Application.GuiFrame();
+	App.Menus['simulation'] = new App.GuiFrame();
 }

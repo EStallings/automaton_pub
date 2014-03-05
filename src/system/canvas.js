@@ -1,4 +1,4 @@
-Application.createCanvasArray = function(){
+App.createCanvasArray = function(){
 	var canvases = {};
 	canvases.width;
 	canvases.height;

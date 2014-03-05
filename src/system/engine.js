@@ -1,5 +1,5 @@
 // contains master loop | calls rendering and updating for everything
-Application.makeEngine = function(){
+App.makeEngine = function(){
 	var engine = {};
 	engine.tick    = 0;
 	engine.elapsed = 0;
@@ -26,14 +26,14 @@ Application.makeEngine = function(){
 
 	// calls all appropriate update functions
 	engine.update = function(){
-		Application.Game.update();
-		Application.Gui.update();
+		App.Game.update();
+		App.Gui.update();
 	};
 
 	// calls all appropriate render functions
 	engine.render = function(){
-		Application.Game.render();
-		Application.Gui.render();
+		App.Game.render();
+		App.Gui.render();
 	};
 
 	return engine;

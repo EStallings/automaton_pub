@@ -1,5 +1,5 @@
 // users can't edit
-Application.SimulationLevel = function(){
+App.SimulationLevel = function(){
 	this.width;
 	this.height;
 	this.grid = []; 
