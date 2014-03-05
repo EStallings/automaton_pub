@@ -1,3 +1,4 @@
+// contains master loop | calls rendering and updating for everything
 Application.makeEngine = function(){
 	var engine = {};
 	engine.tick    = 0;

@@ -1,3 +1,29 @@
+// TODO: WRITE THIS ========================================================= //
+
+Application.makeGUI = function(){
+	var gui = {};
+	gui.gfx = Application.Canvases.addNewLayer("GUI",0);
+
+	gui.menus = [];
+	gui.currentMenu;
+
+	gui.addNewMenu = function(){}
+	gui.setCurrentMenu = function(){}
+
+	gui.addNewButton = function(menu){}
+
+	gui.update = function(){}
+	gui.render = function(){}
+}
+
+// ========================================================================== //
+
+
+	// =========================================================== //
+	// = EVERYTHING BELOW IS TEMP, THE ABOVE NEEDS TO BE WRITTEN = //
+	// =========================================================== //
+
+
 Application.GuiFrame = function(){
 	this.components = [];
 
@@ -9,7 +35,7 @@ Application.GuiFrame = function(){
 	this.render = function(){
 		// TODO: THE GUI SHOULD HAVE A REFERENCE TO ITS OWN CANVAS | CLEAR THE GUI INSIDE GUI'S RENDER, NOT HERE
 		var guiCanvas = Application.Canvases.layers['GUI'];                          // TODO: CLEAN THIS UP
-		guiCanvas.getContext('2d').clearRect(0,0,guiCanvas.width, guiCanvas.height); // TODO: CLEAN THIS UP
+		guiCanvas.getContext('2d').clearRect(0,0,Application.Canvases.width, Application.Canvases.height); // TODO: CLEAN THIS UP
 
 		for(var c in this.components)if(this.components[c].render)
 			this.components[c].render();
@@ -60,7 +86,6 @@ Application.changeMenu = function(menuName){
 		Application.Gui = Application.Menus[menuName];
 }
 
-//a TEMPORARY function!!!!!!!!!
 function constructMenus(){
 	Application.GuiCanvas = Application.Canvases.addNewLayer("GUI",0);
 

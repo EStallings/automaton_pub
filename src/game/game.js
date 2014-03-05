@@ -1,3 +1,4 @@
+// holds data, contains update & render for game layer
 Application.makeGame = function(){
 	var game = {};
 	
