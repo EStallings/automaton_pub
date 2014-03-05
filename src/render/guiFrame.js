@@ -62,6 +62,8 @@ Application.changeMenu = function(menuName){
 	}
 }
 
+
+//a TEMPORARY function!!!!!!!!!
 function constructMenus(){
 	var canvas = Application.Canvases.layers['GUI'];
 	var gfx = canvas.getContext('2d');
@@ -72,12 +74,11 @@ function constructMenus(){
 
 	Application.Menus['mainMenu'] = new Application.GuiFrame();
 	Application.Menus['mainMenu'].comps.push(new Application.Button(10,10,100,30,'PLAY',function(){Application.Game.enterPlanningMode(); },gfx));	
-
 	Application.Menus['mainMenu'].comps.push(new Application.Button(10,50,100,30,'LIBRARY',function(){alert("BAR");},gfx));
 	Application.Menus['mainMenu'].comps.push(new Application.Button(10,90,100,30,'EDITOR',function(){Application.Game.enterPlanningMode();},gfx));
 
 	Application.Menus['planning'] = new Application.GuiFrame();
-
+	Application.Menus['planning'].comps.push(new Application.Button(10,90,100,30,'Main Menu',function(){Application.changeMenu('mainMenu'); },gfx));
 
 	Application.Menus['simulation'] = new Application.GuiFrame();
 

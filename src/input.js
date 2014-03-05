@@ -4,6 +4,7 @@ Application.makeInputHandler = function(){
 	var input = {};
 
 	input.DRAGGING_PREVENTS_CLICKING = true;
+	input.MIN_DRAG_DIST = 20;
 
 	// types of events that can be registered for
 	input.mouseTypes = {
@@ -42,30 +43,38 @@ Application.makeInputHandler = function(){
 	input.context = input.canvas.getContext('2d');
 
 	input.mousePos = {x:0, y:0};
+	input.buttons = {
 
-	// right mouse button
-	input.rButton = {
-		button:false,
-		dragStart:null,
-		drag:false,
-		killClick:false
-	};
+		// right mouse button
+		rButton : {
+			type:input.mouseTypes.RIGHT_CLICK,
+			dragType:input.mouseTypes.RIGHT_DRAG,
+			button:false,
+			dragStart:null,
+			drag:false,
+			killClick:false
+		},
+		
+		// left mouse button
+		lButton : {
+			type:input.mouseTypes.LEFT_CLICK,
+			dragType:input.mouseTypes.LEFT_DRAG,
+			button:false,
+			dragStart:null,
+			drag:false,
+			killClick:false
+		},
 
-	// left mouse button
-	input.lButton = {
-		button:false,
-		dragStart:null,
-		drag:false,
-		killClick:false
-	};
-
-	// middle mouse button
-	input.mButton = {
-		button:false,
-		dragStart:null,
-		drag:false,
-		killClick:false
-	};
+		// middle mouse button
+		mButton : {
+			type:input.mouseTypes.MIDDLE_CLICK,
+			dragType:input.mouseTypes.MIDDLE_DRAG,
+			button:false,
+			dragStart:null,
+			drag:false,
+			killClick:false
+		}
+	}
 
 	input.touch = {
 		time:0, //the time elapsed in the current touch
@@ -121,6 +130,10 @@ Application.makeInputHandler = function(){
 	//Section evt handlers
 	/////////
 
+	var sqrdist = function(o1, o2){
+		return Math.abs(o1.x-o2.x) + Math.abs(o1.y-o2.y);
+	}
+
 	var handle_mouseMove 	= function(e){
 		
 		var input = Application.InputHandler;
@@ -135,24 +148,14 @@ Application.makeInputHandler = function(){
 			y:e.clientY - rect.top
 		};
 	
-		//handle click+drag
 
-		if(input.lButton.button){
-			input.lButton.drag = true;
-			input.lButton.killClick = true;
-			input.executeMouse(input.mouseTypes.LEFT_DRAG, {START:input.lButton.dragStart, END:input.mousePos}, e);
-		}
-
-		if(input.mButton.button){
-			input.mButton.drag = true;
-			input.mButton.killClick = true;
-			input.executeMouse(input.mouseTypes.MIDDLE_DRAG, {START:input.mButton.dragStart, END:input.mousePos}, e);	
-		}
-
-		if(input.rButton.button){
-			input.rButton.drag = true;
-			input.rButton.killClick = true;
-			input.executeMouse(input.mouseTypes.RIGHT_DRAG, {START:input.rButton.dragStart, END:input.mousePos}, e);
+		for(var b in input.buttons){
+			var but = input.buttons[b];
+			if(but.button && sqrdist(input.mousePos, but.dragStart) > input.MIN_DRAG_DIST){
+				but.drag = true;
+				but.killClick = true;
+				input.executeMouse(but.dragType, {START:but.dragStart, END: input.mousePos}, e);
+			}
 		}
 	}
 
@@ -164,36 +167,36 @@ Application.makeInputHandler = function(){
 		switch(e.button){
 
 			case 0:
-				input.lButton.button = false;
-				input.lButton.drag = false;
-		input.lButton.dragStart = null;
+				input.buttons.lButton.button = false;
+				input.buttons.lButton.drag = false;
+		input.buttons.lButton.dragStart = null;
 
-				if(!input.lButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
+				if(!input.buttons.lButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
 					input.executeMouse(input.mouseTypes.LEFT_CLICK, {x:input.mousePos.x, y:input.mousePos.y}, e);
 
-				input.lButton.killClick = false;
+				input.buttons.lButton.killClick = false;
 				break;
 
 			case 1:
-				input.mButton.button = false;
-				input.mButton.drag = false;
-				input.mButton.dragStart = null;
+				input.buttons.mButton.button = false;
+				input.buttons.mButton.drag = false;
+				input.buttons.mButton.dragStart = null;
 				
-				if(!input.mButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
+				if(!input.buttons.mButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
 					input.executeMouse(input.mouseTypes.MIDDLE_CLICK, {x:input.mousePos.x, y:input.mousePos.y}, e);
 
-				input.mButton.killClick = false;
+				input.buttons.mButton.killClick = false;
 				break;
 
 			case 2:
-				input.rButton.button = false;
-				input.rButton.drag = false;
-				input.rButton.dragStart = null;
+				input.buttons.rButton.button = false;
+				input.buttons.rButton.drag = false;
+				input.buttons.rButton.dragStart = null;
 
-				if(!input.rButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
+				if(!input.buttons.rButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
 					input.executeMouse(input.mouseTypes.RIGHT_CLICK, {x:input.mousePos.x, y:input.mousePos.y}, e);
 
-				input.rButton.killClick = false;
+				input.buttons.rButton.killClick = false;
 				break;
 
 		}
@@ -207,18 +210,18 @@ Application.makeInputHandler = function(){
 		switch(e.button){
 
 			case 0:
-				input.lButton.button = true;
-				input.lButton.dragStart = input.mousePos;
+				input.buttons.lButton.button = true;
+				input.buttons.lButton.dragStart = input.mousePos;
 				break;
 
 			case 1:
-				input.mButton.button = true;
-				input.mButton.dragStart = input.mousePos;
+				input.buttons.mButton.button = true;
+				input.buttons.mButton.dragStart = input.mousePos;
 				break;
 
 			case 2:
-				input.rButton.button = true;
-				input.rButton.dragStart = input.mousePos;
+				input.buttons.rButton.button = true;
+				input.buttons.rButton.dragStart = input.mousePos;
 				break;
 
 		}

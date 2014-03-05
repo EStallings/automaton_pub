@@ -41,11 +41,12 @@ Application.makeGame = function(){
 	};
 
 	game.enterPlanningMode = function(levelString){
+		Application.changeMenu('planning'); 
 		if(this.mode === this.modes.PLANNING)
 			return;
 
 		this.mode = this.modes.PLANNING;
-		Application.changeMenu('planning'); 
+		
 
 
 
