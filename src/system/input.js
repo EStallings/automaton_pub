@@ -34,11 +34,10 @@ Application.makeInputHandler = function(){
 
 	// create first canvas and get its context
 	// For later:
-	//input.canvas = Application.Canvases.makeNewLayer('inputCanvas', 0);
+	//input.canvas = Application.Canvases.addNewLayer('inputCanvas', 0);
 	
 	//for now:
 	input.canvas = document.getElementById("canvas");
-
 
 	input.context = input.canvas.getContext('2d');
 

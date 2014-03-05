@@ -1,25 +1,29 @@
-<html>
-<head>
+<!DOCTYPE html><html><head>
+	<title>Automaton</title>
+	<meta name="description" content="Automaton">
+	<meta charset="UTF-8">
+	<style>*{position:absolute;margin:0px;}</style>
 
-<!-- Stupid javascript. Read the comment in application.js for more explanation -->
-<script type="text/javascript" src="src/application.js"></script>
-<script type="text/javascript" src="src/engine.js"></script>
+	<script type="text/javascript" src="src/system/util.js"></script>
+	<script type="text/javascript" src="src/system/application.js"></script> <!-- this must be first -->
+	<script type="text/javascript" src="src/system/canvas.js"></script>
+	<script type="text/javascript" src="src/system/engine.js"></script>
+	<script type="text/javascript" src="src/system/input.js"></script>
 
-<script type="text/javascript" src="src/render/guiFrame.js"></script>
+	<script type="text/javascript" src="src/gui/guiFrame.js"></script>
 
-<script type="text/javascript" src="src/input.js"></script>
+	<script type="text/javascript" src="src/game/game.js"></script>
+	<script type="text/javascript" src="src/game/instruction.js"></script>
+	<script type="text/javascript" src="src/game/planninglevel.js"></script>
+	<script type="text/javascript" src="src/game/simulationlevel.js"></script>
+	<script type="text/javascript" src="src/game/simulationObjects.js"></script>
 
-<script type="text/javascript" src="src/game/game.js"></script>
-<script type="text/javascript" src="src/game/instruction.js"></script>
-<script type="text/javascript" src="src/game/planninglevel.js"></script>
-<script type="text/javascript" src="src/game/simulationlevel.js"></script>
-<script type="text/javascript" src="src/game/simulationObjects.js"></script>
+	<script type="text/javascript" src="src/main.js"></script> <!-- this must be last -->
 
-<!-- it is important to load main last to allow everything else to load -->
-<script type="text/javascript" src="src/main.js"></script>
-</head>
-<body>
-<canvas id="canvas" width = "800" height = "600" style = "position:absolute; z-index:1; border:2px solid #000000"></canvas>
-<canvas id="guiCanvas" width = "800" height = "600" style = "position:absolute; z-index:0; border:2px solid #000000"></canvas>
-</body>
-</html>
+</head><body bgcolor="000000">
+
+	<!-- TODO: REMOVE THESE, THESE SHOULD BE DYNAMICALLY CREATED USING Application.Canvases.addNewLayer(name,z) -->
+	<canvas id="canvas" width = "800" height = "600" style = "position:absolute; z-index:1; border:2px solid #000000"></canvas>
+	<canvas id="guiCanvas" width = "800" height = "600" style = "position:absolute; z-index:0; border:2px solid #000000"></canvas>
+
+</body></html>
