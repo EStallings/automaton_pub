@@ -32,15 +32,10 @@ Application.makeInputHandler = function(){
 	input.keyRegistry = [];
 	input.mouseRegistry = {'GUI':[], 'GAME':[]};
 
-	// create first canvas and get its context
-	// For later:
-	//input.canvas = Application.Canvases.addNewLayer('inputCanvas', 0);
-	
-	//for now:
-	input.canvas = document.getElementById("canvas");
-
+//	//for now:
+	input.canvas = Application.Canvases.addNewLayer('inputCanvas', 0);
 	input.context = input.canvas.getContext('2d');
-
+	
 	input.mousePos = {x:0, y:0};
 	input.buttons = {
 
