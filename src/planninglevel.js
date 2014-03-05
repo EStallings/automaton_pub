@@ -17,7 +17,7 @@ Application.PlanningLevel = function(){
 	//this is _exactly_ how stupid JavaScript is. Gotta do this :(
 	this.contains = function(x, y, c){
 		return (this.grid[x] && this.grid[x][y] && this.grid[x][y][c]);
-	}
+	};
 
 	// clears an entire cell
 	this.removeCell = function(x,y){
@@ -41,8 +41,6 @@ Application.PlanningLevel = function(){
 			}
 		}
 	};
-
-	//this.modifyOp = function(x,y,){}; // TODO
 	
 	this.insertOp = function(instruction){		
 		this.instruction = instruction;
@@ -59,31 +57,32 @@ Application.PlanningLevel = function(){
 		this.instruction = instruction;
 		this.newX = newX; this.newY = newY;
 		this.opId = 'move';
-	}
+	};
 
 	this.copyOp = function(instruction, newX, newY){
 		this.instruction = instruction;
 		this.newX = newX; this.newY = newY;
 		this.opId = 'copy';
-	}
+	};
 
 	this.modifyOp = function(instruction, parameter, value){
 		this.instruction = instruction;
 		this.parameter = parameter;
 		this.value = value;
-	}
+	};
 
 	this.modify = function(instruction, parameter, value){
-		console.warn('instruction: ' + instruction.x + ', ' + instruction.y + ', ' + instruction.color + ', ' + instruction.type);
-		/*if(this.contains(instruction.x, instruction.y, instruction.color)){
+		console.warn('b');
+		//console.warn('instruction: ' + instruction.x + ', ' + instruction.y + ', ' + instruction.color + ', ' + instruction.type);
+		//if(this.contains(instruction.x, instruction.y, instruction.color)){
 			// update undo stack
-			this.undoStack.push(new this.modifyOp(instruction, parameter, value));
+		//	this.undoStack.push(new this.modifyOp(instruction, parameter, value));
 
 			// update grid
-			console.warn('param: ' + this.getCell(instruction.x,instruction.y)[instruction.color][parameter]);
-			this.getCell(instruction.x, instruction.y)[instruction.color][parameter] = value;
-		}*/
-	}
+		//	console.warn('param: ' + this.getCell(instruction.x,instruction.y)[instruction.color][parameter]);
+		//	this.getCell(instruction.x, instruction.y)[instruction.color][parameter] = value;
+		//}
+	};
 
 	this.copy = function(x, y, color, newX, newY){
 		// update undo stack

@@ -11,5 +11,10 @@ window.onload = function(){
 	Application.Engine = Application.makeEngine(); // calls rendering and updating
 
 	Application.Engine.run(); // do we call it here?
+
+	lvl = new Application.PlanningLevel();
+	lvl.insert(new Application.PlanningInstruction(1,1,1,'left'));
+	lvl.insert(new Application.PlanningInstruction(1,1,3,'up'));
+	
 }
 
