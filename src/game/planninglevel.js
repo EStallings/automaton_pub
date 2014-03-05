@@ -67,19 +67,28 @@ Application.PlanningLevel = function(){
 		this.opId = 'copy';
 	}
 
-	this.modifyOp = function(instruction, parameter, value){
+	this.modifyOp = function(instruction, parameter, newValue, oldValue){
 		this.instruction = instruction;
 		this.parameter = parameter;
-		this.value = value;
+		this.newValue = newValue;
+		this.oldValue = oldValue;
+		this.opId = 'modify';
 	}
 
 	this.modify = function(instruction, parameter, value){
 		if(this.contains(instruction.x, instruction.y, instruction.color)){
+			var oldColor = instruction.color;
 			// update undo stack
-			this.undoStack.push(new this.modifyOp(instruction, parameter, value));
+			this.undoStack.push(new this.modifyOp(instruction, parameter, value, instruction[parameter]));
 
-			// update grid
-			this.getCell()
+			// update instruction
+			this.getCell(instruction.x, instruction.y)[instruction.color][parameter] = value;
+
+			// update grid if the color changed
+			if(parameter === 'color'){
+				this.getCell(instruction.x, instruction.y)[value] = this.getCell(instruction.x, instruction.y)[oldColor];
+				this.getCell(instruction.x, instruction.y)[oldColor] = null;
+			}
 		}
 	}
 
@@ -209,6 +218,10 @@ Application.PlanningLevel = function(){
 			this.delete(op.newX, op.newY, op.instruction.color);
 			this.undoStack.pop();
 		}
+		else if(op.opId === 'modify'){
+			this.modify(op.instruction, op.parameter, op.oldValue);
+			this.undoStack.pop();
+		}
 	};
 
 	this.redo = function(){
@@ -234,6 +247,10 @@ Application.PlanningLevel = function(){
 		}
 		else if(op.opId === 'copy'){
 			this.insert(new Application.PlanningInstruction(op.newX, op.newY, op.instruction.color, op.instruction.type));
+			this.undoStack.pop();
+		}
+		else if(op.opId === 'modify'){
+			this.modify(op.instruction, op.parameter, op.newValue);
 			this.undoStack.pop();
 		}
 	};
