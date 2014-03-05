@@ -1,4 +1,5 @@
 Application.PlanningLevel = function(){
+	this.name;
 	this.width;	this.height;
 	this.numColors = 4;
 	this.grid = []; // grid[x][y][color] = instruction
@@ -256,7 +257,19 @@ Application.PlanningLevel = function(){
 
 	// TODO
 	this.generateParseString = function(){
-		
+		var strings = [];
+		strings.push(this.name + "," + this.width + "," + this.height + ";");
+
+		for(var i in this.grid){
+			for(var j in this.grid[i]){
+				for(var c in this.grid[i][j]){
+					var inst = this.grid[i][j][c];
+					strings.push(inst.x + "," + inst.y + "," + inst.color + "," + inst.type);
+				}
+			}
+		}
+
+		return strings.join();
 	};
 	
 	// TODO

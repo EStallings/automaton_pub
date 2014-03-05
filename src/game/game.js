@@ -46,12 +46,11 @@ Application.makeGame = function(){
 			return;
 
 		this.mode = this.modes.PLANNING;
-		
 
+		if(levelString)
+			this.loadNewLevel(levelString);
 
-
-		//TODO make sure the simulation level is overwritten in a safe way
-		//--unsure of specific requirements
+		this.currentRenderedLevel = this.topLevelPlanningLevel;
 	}
 
 	game.enterSimulationMode = function(){
@@ -60,12 +59,35 @@ Application.makeGame = function(){
 		this.mode = this.modes.SIMULATION;
 		Application.changeMenu('simulation');
 
-		var simLevel = this.topLevelPlanningLevel.generateSimulationLevel();
+		this.topLevelSimulationLevel = this.topLevelPlanningLevel.generateSimulationLevel();
+		this.currentRenderedLevel = this.topLevelSimulationLevel;
 		//as far as I know, this is all that really needs to be done.
 	}
 
 	game.loadNewLevel = function(inputString){
 		this.mode = this.modes.PLANNING;
+
+		var split = inputString.split(";");
+		var lev = new Application.PlanningLevel();
+		if(split.length > 0){
+			var levDat = split[0].split(',');
+			lev.name = levDat[0];
+			lev.width = parseInt(levDat[1]);
+			lev.height = parseInt(levDat[2]);
+
+			for(var i = 1; i < split.length; i++){
+				var instDat = split[i].split(',');
+				var x = parseInt(instDat[0]);
+				var y = parseInt(instDat[1]);
+				var col = instDat[2];
+				var typ = parseInt(instDat[3]);
+				var inst = new Application.PlanningInstruction(x, y, col, typ);
+				lev.insert(inst);
+			}
+		}
+
+		this.topLevelPlanningLevel = lev;
+		this.currentRenderedLevel = lev;
 		//TODO clear old undo-redo cache
 
 		//TODO load planning level from string and set it as our planning level
