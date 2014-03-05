@@ -33,7 +33,7 @@ Application.makeInputHandler = function(){
 	input.mouseRegistry = {'GUI':[], 'GAME':[]};
 
 //	//for now:
-	input.canvas = Application.Canvases.addNewLayer('inputCanvas', 0);
+	input.canvas = Application.Canvases.addNewLayer('inputCanvas', 10); // TODO: z value for this should be the largest...
 	input.context = input.canvas.getContext('2d');
 	
 	input.mousePos = {x:0, y:0};
