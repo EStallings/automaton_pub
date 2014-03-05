@@ -31,6 +31,9 @@ Application.makeEngine = function(){
 
 	engine.render = function(){
 		Application.Game.render();
+		var guiCanvas = Application.Canvases.layers['GUI'];
+		guiCanvas.getContext('2d').clearRect(0,0,guiCanvas.width, guiCanvas.height);
+		
 		Application.Gui.render();
 	};
 

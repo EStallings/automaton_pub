@@ -5,6 +5,8 @@
 <script type="text/javascript" src="src/application.js"></script>
 <script type="text/javascript" src="src/engine.js"></script>
 
+<script type="text/javascript" src="src/render/guiFrame.js"></script>
+
 <script type="text/javascript" src="src/input.js"></script>
 
 <script type="text/javascript" src="src/game/game.js"></script>
@@ -17,6 +19,7 @@
 <script type="text/javascript" src="src/main.js"></script>
 </head>
 <body>
-<canvas id="canvas" width = "800" height = "600" style = "border:2px solid #000000"></canvas>
+<canvas id="canvas" width = "800" height = "600" style = "position:absolute; z-index:1; border:2px solid #000000"></canvas>
+<canvas id="guiCanvas" width = "800" height = "600" style = "position:absolute; z-index:0; border:2px solid #000000"></canvas>
 </body>
 </html>

@@ -26,6 +26,8 @@ Application.makeCanvases = function(){
 	canvases.width;
 	canvases.height;
 	canvases.layers = {};
+	//canvases.layers['INPUT'] = document.getElementById('inputCanvas');
+	canvases.layers['GUI'] = document.getElementById("guiCanvas");
 
 	// resizes all canvases to browser window
 	canvases.resize = function(){} // TODO, this is dependant on inputHandler...
@@ -36,16 +38,7 @@ Application.makeCanvases = function(){
 	return canvases;
 }
 
-Application.makeGui = function(){
-	var gui = {};
 
-	// set up canvases here?
-
-	gui.render = function(){}; // TODO
-	gui.update = function(){}; // TODO
-
-	return gui;
-}
 
 
 

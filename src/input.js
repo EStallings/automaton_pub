@@ -76,11 +76,11 @@ Application.makeInputHandler = function(){
 
 	//TODO registering a function to be called back under specified conditions for mouse events
 	input.registerMouse = function(type, callback, layer){
-		if(!this.mouseRegistry.layer)
+		if(!this.mouseRegistry[layer])
 			console.error("Tried to assign a function to an invalid layer: " + layer);
 
-		if(!this.mouseRegistry.layer[type])
-			this.mouseRegistry.layer[type] = callback;
+		if(!this.mouseRegistry[layer][type])
+			this.mouseRegistry[layer][type] = callback;
 
 		else
 			console.error("Tried to assign multiple functions to a single mouse action on the same layer!: " + type);

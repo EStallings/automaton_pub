@@ -40,12 +40,14 @@ Application.makeGame = function(){
 		}
 	};
 
-	game.enterPlanningMode = function(){
+	game.enterPlanningMode = function(levelString){
 		if(this.mode === this.modes.PLANNING)
 			return;
-		this.mode = this.modes.PLANNING;
 
-		var simLevel = this.topLevelPlanningLevel.generateSimulationLevel();
+		this.mode = this.modes.PLANNING;
+		Application.changeMenu('planning'); 
+
+
 
 		//TODO make sure the simulation level is overwritten in a safe way
 		//--unsure of specific requirements
@@ -55,6 +57,9 @@ Application.makeGame = function(){
 		if(this.mode === this.modes.SIMULATION)
 			return;
 		this.mode = this.modes.SIMULATION;
+		Application.changeMenu('simulation');
+
+		var simLevel = this.topLevelPlanningLevel.generateSimulationLevel();
 		//as far as I know, this is all that really needs to be done.
 	}
 
