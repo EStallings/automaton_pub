@@ -38,7 +38,43 @@ Application.makeCanvases = function(){
 	return canvases;
 }
 
+/*
+Application.createCanvasArray = function(){
+	var canvases = {};
+	canvases.width;
+	canvases.height;
+	canvases.layers = [];
 
+	canvases.addNewLayer = function(name,z){
+		var layer = document.createElement("canvas");
+		layer.id = name;
+		layer.width = canvases.width;
+		layer.height = canvases.height;
+		layer.style.zIndex = z;
+		layer.style.position = "absolute";
+		document.body.appendChild(layer);
+
+		canvases.layers[name] = layer;
+		return layer;
+	}
+
+	window.onresize = function(){
+		canvases.width = window.innerWidth;
+		canvases.height = window.innerHeight;
+
+		for(var i in canvases.layers){
+			var layer = canvases.layers[i];
+			layer.width = canvases.width;
+			layer.height = canvases.height;
+		}
+
+		// TODO: everything needs to be re-rendered
+	}
+
+	window.onresize(); // initializes width and height
+	return canvases;
+}
+*/
 
 
 
