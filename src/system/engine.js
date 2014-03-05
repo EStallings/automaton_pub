@@ -30,11 +30,6 @@ Application.makeEngine = function(){
 	// calls all appropriate render functions
 	engine.render = function(){
 		Application.Game.render();
-
-		// TODO: THE GUI SHOULD HAVE A REFERENCE TO ITS OWN CANVAS | CLEAR THE GUI INSIDE GUI'S RENDER, NOT HERE
-		var guiCanvas = Application.Canvases.layers['GUI'];                          // TODO: CLEAN THIS UP
-		guiCanvas.getContext('2d').clearRect(0,0,guiCanvas.width, guiCanvas.height); // TODO: CLEAN THIS UP
-		
 		Application.Gui.render();
 	};
 

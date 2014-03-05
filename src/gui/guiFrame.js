@@ -7,12 +7,16 @@ Application.GuiFrame = function(){
 	};
 
 	this.render = function(){
+		// TODO: THE GUI SHOULD HAVE A REFERENCE TO ITS OWN CANVAS | CLEAR THE GUI INSIDE GUI'S RENDER, NOT HERE
+		var guiCanvas = Application.Canvases.layers['GUI'];                          // TODO: CLEAN THIS UP
+		guiCanvas.getContext('2d').clearRect(0,0,guiCanvas.width, guiCanvas.height); // TODO: CLEAN THIS UP
+
 		for(var c in this.components)if(this.components[c].render)
 			this.components[c].render();
 	};
 }
 
-Application.CheckGuiClick = function(data, evt){
+Application.CheckGuiClick = function(data,evt){
 	var gui = Application.Gui;
 	var ret = false;
 	var x = data.x;
@@ -30,14 +34,16 @@ Application.CheckGuiClick = function(data, evt){
 	return ret;
 }
 
-Application.Button = function(x,y,width,height,text,callback,gfx){
+Application.Button = function(menuName,x,y,width,height,text,callback){
+	Application.Menus[menuName].components.push(this);
+
 	this.x = x;
 	this.y = y;
 	this.width = width;
 	this.height = height;
 	this.text = text;
 	this.callback = callback;
-	this.gfx = gfx;
+	this.gfx = Application.GuiCanvas.getContext("2d");
 
 	this.render = function(){
 		this.gfx.fillStyle = "rgb(0,0,0)";
@@ -56,18 +62,17 @@ Application.changeMenu = function(menuName){
 
 //a TEMPORARY function!!!!!!!!!
 function constructMenus(){
-	var canvas = Application.Canvases.addNewLayer('GUI',0);
-	var gfx = canvas.getContext('2d');
+	Application.GuiCanvas = Application.Canvases.addNewLayer("GUI",0);
 
 	Application.Menus = [];
 
 	Application.Menus['mainMenu'] = new Application.GuiFrame();
-	Application.Menus['mainMenu'].components.push(new Application.Button(10,10,100,30,'PLAY',function(){Application.Game.enterPlanningMode(); },gfx));	
-	Application.Menus['mainMenu'].components.push(new Application.Button(10,50,100,30,'LIBRARY',function(){alert("BAR");},gfx));
-	Application.Menus['mainMenu'].components.push(new Application.Button(10,90,100,30,'EDITOR',function(){Application.Game.enterPlanningMode();},gfx));
+	new Application.Button('mainMenu',10,10,100,30,'PLAY',function(){Application.Game.enterPlanningMode();});	
+	new Application.Button('mainMenu',10,50,100,30,'LIBRARY',function(){alert("BAR");});
+	new Application.Button('mainMenu',10,90,100,30,'EDITOR',function(){Application.Game.enterPlanningMode();});
 
 	Application.Menus['planning'] = new Application.GuiFrame();
-	Application.Menus['planning'].components.push(new Application.Button(10,10,100,30,'Main Menu',function(){Application.changeMenu('mainMenu'); },gfx));
+	new Application.Button('planning',10,10,100,30,'Main Menu',function(){Application.changeMenu('mainMenu');});
 
 	Application.Menus['simulation'] = new Application.GuiFrame();
 }
