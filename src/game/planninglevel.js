@@ -5,44 +5,44 @@ Application.PlanningLevel = function(){
 	this.undoStack = [];
 	this.redoStack = [];
 
+	var that = this;
+
 	this.getCell = function(x,y){ 
 		//Note: I edited this to prevent a potential crash and/or undefined being passed around.
-		if(!this.grid[x] || !this.grid[x][y])
+		if(!that.grid[x] || !that.grid[x][y])
 			return null;
 
-		return this.grid[x][y]; 
+		return that.grid[x][y]; 
 	};
 
 	//le sigh. I really wish this weren't how stupid JavaScript is, but, alas
 	//this is _exactly_ how stupid JavaScript is. Gotta do this :(
 	this.contains = function(x, y, c){
-		return (this.grid[x] && this.grid[x][y] && this.grid[x][y][c]);
+		return (that.grid[x] && that.grid[x][y] && that.grid[x][y][c]);
 	}
 
 	// clears an entire cell
 	this.removeCell = function(x,y){
-		for(var c = 0; c < this.numColors; c++){
-			if(this.grid[x]){
-				if(this.grid[x][y]){
-					this.grid[x][y][c] = null;
+		for(var c = 0; c < that.numColors; c++){
+			if(that.grid[x]){
+				if(that.grid[x][y]){
+					that.grid[x][y][c] = null;
 				}
 			}
 		}
 	};
 	
 	this.forEachCell = function(f){
-		for(var y = 0; y < this.height; y++){
-			for(var x = 0; x < this.width; x++){
-				for(var c = 0; c < this.numColors; c++){
-					if(this.contains(x, y, c)){ 
-						f(this.grid[x][y][c]); 
+		for(var y = 0; y < that.height; y++){
+			for(var x = 0; x < that.width; x++){
+				for(var c = 0; c < that.numColors; c++){
+					if(that.contains(x, y, c)){ 
+						f(that.grid[x][y][c]); 
 					}
 				}
 			}
 		}
 	};
-
-	//this.modifyOp = function(x,y,){}; // TODO
 	
 	this.insertOp = function(instruction){		
 		this.instruction = instruction;
@@ -51,7 +51,6 @@ Application.PlanningLevel = function(){
 	
 	this.deleteOp = function(instruction){		
 		this.instruction = instruction;
-		console.warn('deleteOp: ' + instruction);
 		this.opId = 'delete';
 	};
 
@@ -76,45 +75,45 @@ Application.PlanningLevel = function(){
 	}
 
 	this.modify = function(instruction, parameter, value){
-		if(this.contains(instruction.x, instruction.y, instruction.color)){
+		if(that.contains(instruction.x, instruction.y, instruction.color)){
 			var oldColor = instruction.color;
 			// update undo stack
-			this.undoStack.push(new this.modifyOp(instruction, parameter, value, instruction[parameter]));
+			that.undoStack.push(new that.modifyOp(instruction, parameter, value, instruction[parameter]));
 
 			// update instruction
-			this.getCell(instruction.x, instruction.y)[instruction.color][parameter] = value;
+			that.getCell(instruction.x, instruction.y)[instruction.color][parameter] = value;
 
 			// update grid if the color changed
 			if(parameter === 'color'){
-				this.getCell(instruction.x, instruction.y)[value] = this.getCell(instruction.x, instruction.y)[oldColor];
-				this.getCell(instruction.x, instruction.y)[oldColor] = null;
+				that.getCell(instruction.x, instruction.y)[value] = that.getCell(instruction.x, instruction.y)[oldColor];
+				that.getCell(instruction.x, instruction.y)[oldColor] = null;
 			}
 		}
 	}
 
 	this.copy = function(x, y, color, newX, newY){
 		// update undo stack
-		this.undoStack.push(new this.copyOp(this.getCell(x,y)[color], newX, newY));
+		that.undoStack.push(new that.copyOp(that.getCell(x,y)[color], newX, newY));
 
 		// update grid
-		if(this.contains(x,y,color)){
-			if(this.contains(newX, newY, color)){
-				this.grid[newX][newY][color] = this.getCell(x,y)[color];
+		if(that.contains(x,y,color)){
+			if(that.contains(newX, newY, color)){
+				that.grid[newX][newY][color] = that.getCell(x,y)[color];
 			}
 			else{
-				if(this.grid[newX]){
-					if(this.grid[newX][newY]){
-						this.grid[newX][newY][color] = this.getCell(x,y)[color];
+				if(that.grid[newX]){
+					if(that.grid[newX][newY]){
+						that.grid[newX][newY][color] = that.getCell(x,y)[color];
 					}
 					else{
-						this.grid[newX][newY] = [];
-						this.grid[newX][newY][color] = this.getCell(x,y)[color];
+						that.grid[newX][newY] = [];
+						that.grid[newX][newY][color] = that.getCell(x,y)[color];
 					}
 				}
 				else{
-					this.grid[newX] = [];
-					this.grid[newX][newY] = [];
-					this.grid[newX][newY][color] = this.getCell(x,y)[color];
+					that.grid[newX] = [];
+					that.grid[newX][newY] = [];
+					that.grid[newX][newY][color] = that.getCell(x,y)[color];
 				}
 			}
 		}
@@ -123,31 +122,31 @@ Application.PlanningLevel = function(){
 	this.move = function(x, y, color, newX, newY){
 
 		// update undo stack
-		this.undoStack.push(new this.moveOp(this.getCell(x,y)[color], newX, newY));
+		that.undoStack.push(new that.moveOp(that.getCell(x,y)[color], newX, newY));
 
 		// update grid
-		if(this.contains(x,y,color)){
-			if(this.contains(newX, newY, color)){
-				this.grid[newX][newY][color] = this.getCell(x,y)[color];
-				this.getCell(x,y)[color] = null;
+		if(that.contains(x,y,color)){
+			if(that.contains(newX, newY, color)){
+				that.grid[newX][newY][color] = that.getCell(x,y)[color];
+				that.getCell(x,y)[color] = null;
 			}
 			else{
-				if(this.grid[newX]){
-					if(this.grid[newX][newY]){
-						this.grid[newX][newY][color] = this.getCell(x,y)[color];
-						this.getCell(x,y)[color] = null;						
+				if(that.grid[newX]){
+					if(that.grid[newX][newY]){
+						that.grid[newX][newY][color] = that.getCell(x,y)[color];
+						that.getCell(x,y)[color] = null;						
 					}
 					else{
-						this.grid[newX][newY] = [];
-						this.grid[newX][newY][color] = this.getCell(x,y)[color];
-						this.getCell(x,y)[color] = null;
+						that.grid[newX][newY] = [];
+						that.grid[newX][newY][color] = that.getCell(x,y)[color];
+						that.getCell(x,y)[color] = null;
 					}
 				}
 				else{
-					this.grid[newX] = [];
-					this.grid[newX][newY] = [];
-					this.grid[newX][newY][color] = this.getCell(x,y)[color];
-					this.getCell(x,y)[color] = null;
+					that.grid[newX] = [];
+					that.grid[newX][newY] = [];
+					that.grid[newX][newY][color] = that.getCell(x,y)[color];
+					that.getCell(x,y)[color] = null;
 				}
 			}
 		}
@@ -157,36 +156,36 @@ Application.PlanningLevel = function(){
 	this.insert = function(instruction){
 
 		// update undo stack
-		this.undoStack.push(new this.insertOp(instruction));
+		that.undoStack.push(new that.insertOp(instruction));
 
 		// update grid
-		if(this.grid[instruction.x]){
-			if(this.grid[instruction.x][instruction.y]){
-				this.grid[instruction.x][instruction.y][instruction.color] = instruction;
+		if(that.grid[instruction.x]){
+			if(that.grid[instruction.x][instruction.y]){
+				that.grid[instruction.x][instruction.y][instruction.color] = instruction;
 			}
 			else {
-				this.grid[instruction.x][instruction.y] = [];
-				this.grid[instruction.x][instruction.y][instruction.color] = instruction;
+				that.grid[instruction.x][instruction.y] = [];
+				that.grid[instruction.x][instruction.y][instruction.color] = instruction;
 			}
 		}
 		else {
-			this.grid[instruction.x] = [];
-			this.grid[instruction.x][instruction.y] = [];
-			this.grid[instruction.x][instruction.y][instruction.color] = instruction;
+			that.grid[instruction.x] = [];
+			that.grid[instruction.x][instruction.y] = [];
+			that.grid[instruction.x][instruction.y][instruction.color] = instruction;
 		}
 
 	};
 
 	this.delete = function(x,y,color){
-		if(this.grid[x]){
-			if(this.grid[x][y]){
-				if(this.grid[x][y][color]){
+		if(that.grid[x]){
+			if(that.grid[x][y]){
+				if(that.grid[x][y][color]){
 
 					// update undo stack
-					this.undoStack.push(new this.deleteOp(this.getCell(x,y)[color]));
+					that.undoStack.push(new that.deleteOp(that.getCell(x,y)[color]));
 
 					// update grid
-					this.grid[x][y][color] = null;
+					that.grid[x][y][color] = null;
 				}
 			}
 		}
@@ -195,63 +194,63 @@ Application.PlanningLevel = function(){
 	this.undo = function(){
 
 		// update stacks
-		var op = this.undoStack.pop();
-		this.redoStack.push(op);
+		var op = that.undoStack.pop();
+		that.redoStack.push(op);
 
-		console.warn('undo op: ' + op.opId + ' ins: ' + op.instruction.x);
+		console.warn('undo op: ' + op.opId);
 
 		// update grid
 		if(op.opId === 'insert'){
 
-			this.delete(op.instruction.x, op.instruction.y, op.instruction.color);
-			this.undoStack.pop();
+			that.delete(op.instruction.x, op.instruction.y, op.instruction.color);
+			that.undoStack.pop();
 		}
 		else if(op.opId === 'delete'){
-			this.insert(op.instruction);
-			this.undoStack.pop();
+			that.insert(op.instruction);
+			that.undoStack.pop();
 		}
 		else if(op.opId === 'move'){
-			this.move(op.newX, op.newY, op.instruction.color, op.instruction.x, op.instruction.y)
-			this.undoStack.pop();
+			that.move(op.newX, op.newY, op.instruction.color, op.instruction.x, op.instruction.y)
+			that.undoStack.pop();
 		}
 		else if(op.opId === 'copy'){
-			this.delete(op.newX, op.newY, op.instruction.color);
-			this.undoStack.pop();
+			that.delete(op.newX, op.newY, op.instruction.color);
+			that.undoStack.pop();
 		}
 		else if(op.opId === 'modify'){
-			this.modify(op.instruction, op.parameter, op.oldValue);
-			this.undoStack.pop();
+			that.modify(op.instruction, op.parameter, op.oldValue);
+			that.undoStack.pop();
 		}
 	};
 
 	this.redo = function(){
 
 		// update stacks
-		var op = this.redoStack.pop();
-		this.undoStack.push(op);
+		var op = that.redoStack.pop();
+		that.undoStack.push(op);
 
-		console.warn('redo op: ' + op.opId + ' ins: ' + op.instruction.x);
+		console.warn('redo op: ' + op.opId);
 
 		// update grid
 		if(op.opId === 'insert'){
-			this.insert(op.instruction);
-			this.undoStack.pop();
+			that.insert(op.instruction);
+			that.undoStack.pop();
 		}
 		else if(op.opId === 'delete'){
-			this.delete(op.instruction.x, op.instruction.y, op.instruction.color);
-			this.undoStack.pop();
+			that.delete(op.instruction.x, op.instruction.y, op.instruction.color);
+			that.undoStack.pop();
 		}
 		else if(op.opId === 'move'){
-			this.move(op.instruction.x, op.instruction.y, op.instruction.color, op.newX, op.newY);
-			this.undoStack.pop();
+			that.move(op.instruction.x, op.instruction.y, op.instruction.color, op.newX, op.newY);
+			that.undoStack.pop();
 		}
 		else if(op.opId === 'copy'){
-			this.insert(new Application.PlanningInstruction(op.newX, op.newY, op.instruction.color, op.instruction.type));
-			this.undoStack.pop();
+			that.insert(new Application.PlanningInstruction(op.newX, op.newY, op.instruction.color, op.instruction.type));
+			that.undoStack.pop();
 		}
 		else if(op.opId === 'modify'){
-			this.modify(op.instruction, op.parameter, op.newValue);
-			this.undoStack.pop();
+			that.modify(op.instruction, op.parameter, op.newValue);
+			that.undoStack.pop();
 		}
 	};
 
