@@ -1,17 +1,16 @@
 Application.makeEngine = function(){
 	var engine = {};
-
-	engine.tick = 0;
+	engine.tick    = 0;
 	engine.elapsed = 0;
 
-	// TODO
+	// starts the engine | time-dependant engine initializations should go here
 	engine.run = function(){
 		Application.Engine.tick = new Date().getTime();
 		Application.Engine.elapsed = 1;
 		requestAnimationFrame(Application.Engine.frame);
 	};
 
-	// TODO if we want this fixed-update, we're gonna need updateTick and renderTick, at this point, I feel fixed-updates are unnecessary
+	// called once per frame | calculates time, updates, and renders everything
 	engine.frame = function(){
 		requestAnimationFrame(Application.Engine.frame);
 		var currentTick = new Date().getTime();
@@ -22,17 +21,19 @@ Application.makeEngine = function(){
 		Application.Engine.render();
 	};
 
-	engine.setUpdateSpeed = function(){}; // TODO
-
+	// calls all appropriate update functions
 	engine.update = function(){
 		Application.Game.update();
 		Application.Gui.update();
 	};
 
+	// calls all appropriate render functions
 	engine.render = function(){
 		Application.Game.render();
-		var guiCanvas = Application.Canvases.layers['GUI'];
-		guiCanvas.getContext('2d').clearRect(0,0,guiCanvas.width, guiCanvas.height);
+
+		// TODO: THE GUI SHOULD HAVE A REFERENCE TO ITS OWN CANVAS | CLEAR THE GUI INSIDE GUI'S RENDER, NOT HERE
+		var guiCanvas = Application.Canvases.layers['GUI'];                          // TODO: CLEAN THIS UP
+		guiCanvas.getContext('2d').clearRect(0,0,guiCanvas.width, guiCanvas.height); // TODO: CLEAN THIS UP
 		
 		Application.Gui.render();
 	};
