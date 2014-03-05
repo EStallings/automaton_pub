@@ -2,23 +2,25 @@ Application.makeEngine = function(){
 	var engine = {};
 	engine.tick    = 0;
 	engine.elapsed = 0;
+	engine.fps     = 0;
 
 	// starts the engine | time-dependant engine initializations should go here
 	engine.run = function(){
-		Application.Engine.tick = new Date().getTime();
-		Application.Engine.elapsed = 1;
-		requestAnimationFrame(Application.Engine.frame);
+		engine.tick = new Date().getTime();
+		engine.elapsed = 1;
+		requestAnimationFrame(engine.frame);
 	};
 
 	// called once per frame | calculates time, updates, and renders everything
 	engine.frame = function(){
-		requestAnimationFrame(Application.Engine.frame);
+		requestAnimationFrame(engine.frame);
 		var currentTick = new Date().getTime();
-		Application.Engine.elapsed = currentTick - Application.Engine.tick;
-		Application.Engine.tick = currentTick;
+		engine.elapsed = currentTick - engine.tick;
+		engine.tick = currentTick;
+		if(engine.elapsed>0)engine.fps = 1000/engine.elapsed;
 		
-		Application.Engine.update();
-		Application.Engine.render();
+		engine.update();
+		engine.render();
 	};
 
 	// calls all appropriate update functions
