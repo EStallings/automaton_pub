@@ -1,5 +1,5 @@
 window.onload = function(){
-	debug("Initializing application");
+	// console.debug("Initializing application"); // TODO: CLEANUP & DELETE
 	App.Canvases     = App.createCanvasArray();
 	App.InputHandler = App.makeInputHandler();
 
