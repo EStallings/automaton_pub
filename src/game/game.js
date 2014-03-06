@@ -3,6 +3,7 @@ App.makeGame = function(){
 
 	// TODO: make canvas layers for each object type
 	game.gfx = App.Canvases.addNewLayer("game",-1).getContext("2d");
+	game.gfx.lineWidth = 2; // interestingly enough, making this an even number gives a HUGE performance boost
 
 	game.modes = {SIMULATION:'sim',PLANNING:'plan'}; // why are these strings?
 	game.mode = game.modes.SIMULATION; // XXX: AT ITS CURRENT STATE, THIS NEEDS TO BE INITIALIZED TO SIMULATION
@@ -15,10 +16,11 @@ App.makeGame = function(){
 	game.nextCycleTick;
 	game.cycles;
 	game.simulationSpeed = 500;
+	game.interpolation;
 
-	game.renderX;
-	game.renderY;
-	game.cellSize;
+	game.renderX = 0;
+	game.renderY = 0;
+	game.cellSize = 6*Math.pow(2,3);
 
 	// ========================================================== //
 
@@ -40,32 +42,39 @@ App.makeGame = function(){
 	}
 
 	game.dynamicRender = function(){
-		// clear background
+		game.interpolation = (App.Engine.tick-game.lastCycleTick)
+		                   / (game.nextCycleTick-game.lastCycleTick);
+
+		// clear backgrounds
 		game.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-	//	game.gfx.fillStyle = "#ff0000"; // DELETE
-	//	game.gfx.fillRect(15,15,App.Canvases.width-30,App.Canvases.height-30); // DELETE
 
 		// pan grid
 		game.gfx.save();
 		game.gfx.translate(game.renderX,game.renderY);
 
+		game.currentSimulationLevel.render(); // DELETE
+
 		// render level
-		if(game.mode === game.modes.PLANNING &&
-		   game.currentPlanningLevel !== undefined)
-			game.currentPlanningLevel.render();
-		else if(game.currentSimulationLevel !== undefined)
-			game.currentSimulationLevel.render();
+	//	if(game.mode === game.modes.PLANNING &&
+	//	   game.currentPlanningLevel !== undefined)
+	//		// TODO: CALL DYNAMIC RENDER METHODS ONLY
+	//		game.currentPlanningLevel.render();
+	//	else if(game.currentSimulationLevel !== undefined)
+	//		// TODO: CALL DYNAMIC RENDER METHODS ONLY
+	//		game.currentSimulationLevel.render();
 
 		game.gfx.restore();
-
-	//	// render cycles
-	//	gfx.fillStyle = "#ffffff";
-	//	gfx.textAlign = "left";
-	//	gfx.fillText("Cycle: "+this.cycles+" | FPS: "+Math.ceil(1000/elapsed),0,this.height*cellSize+28);
 	}
 
+	// TODO: call initial static rendering
 	game.staticRender = function(){
+		// clear backgrounds
 
+		// pan grid
+		game.gfx.save();
+		game.gfx.translate(game.renderX,game.renderY);
+
+		game.gfx.restore();
 	}
 
 	// TODO: call staticRender inside pan and zoom

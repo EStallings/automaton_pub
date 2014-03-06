@@ -1,6 +1,7 @@
-App.SimulationLevel = function(){
-	this.width;
-	this.height;
+App.SimulationLevel = function(width,height){
+	this.gfx    = App.Game.gfx; // TODO: CHANGE THIS TO GRIDthis.gfx
+	this.width  = width;
+	this.height = height;
 	this.grid         = [];
 	this.tokens       = [];
 	this.automatons   = [];
@@ -45,45 +46,63 @@ App.SimulationLevel = function(){
 */
 	}
 
+	// TODO: THE GRID STUFF SHOULD BE CALLED IN STATIC RENDER
 	this.render = function(){
-		print("TEST");
-/*
-		var w = this.width*cellSize;
-		var h = this.height*cellSize;
+		var cs = App.Game.cellSize;
+		var w = this.width*cs;
+		var h = this.height*cs;
 
-		// draw grid
-		gfx.strokeStyle = "#111111";
-		for(var i=0;i<w;i+=cellSize)gfx.drawLine(i,0,i,h);
-		for(var j=0;j<h;j+=cellSize)gfx.drawLine(0,j,w,j);
-		gfx.strokeStyle = "#444444";
-		for(var i=0;i<=w;i+=cellSize)for(var j=0;j<=h;j+=cellSize){
-			gfx.beginPath();
-			gfx.moveTo(i-4,j);
-			gfx.lineTo(i+4,j);
-			gfx.moveTo(i,j-4);
-			gfx.lineTo(i,j+4);
-			gfx.stroke();
-		}gfx.strokeStyle = "#222222";
-		for(var i=cellSize/2;i<w;i+=cellSize)for(var j=cellSize/2;j<h;j+=cellSize){
-			gfx.beginPath();
-			gfx.moveTo(i-4,j);
-			gfx.lineTo(i+4,j);
-			gfx.moveTo(i,j-4);
-			gfx.lineTo(i,j+4);
-			gfx.moveTo(i-7,j);
-			gfx.arc(i,j,7,-Math.PI,Math.PI);
-			gfx.stroke();
+		// draw grid lines
+		this.gfx.strokeStyle = "#111111";
+		this.gfx.beginPath();
+		for(var i=0;i<=w;i+=cs){
+			this.gfx.moveTo(i,0);
+			this.gfx.lineTo(i,h);
+		}for(var j=0;j<=h;j+=cs){
+			this.gfx.moveTo(0,j);
+			this.gfx.lineTo(w,j);
+		}this.gfx.stroke();
+
+		// draw grid corners
+		this.gfx.strokeStyle = "#444444";
+		for(var i=0;i<=w;i+=cs)
+		for(var j=0;j<=h;j+=cs){
+			this.gfx.beginPath();
+			this.gfx.moveTo(i-4,j);
+			this.gfx.lineTo(i+4,j);
+			this.gfx.moveTo(i,j-4);
+			this.gfx.lineTo(i,j+4);
+			this.gfx.stroke();
+		}
+
+		this.gfx.strokeStyle = "#222222";
+		for(var i=cs/2;i<w;i+=cs)
+		for(var j=cs/2;j<h;j+=cs){
+			this.gfx.beginPath();
+			this.gfx.moveTo(i-4,j);
+			this.gfx.lineTo(i+4,j);
+			this.gfx.moveTo(i,j-4);
+			this.gfx.lineTo(i,j+4);
+			this.gfx.moveTo(i-7,j);
+			this.gfx.arc(i,j,7,-Math.PI,Math.PI);
+			this.gfx.stroke();
 		}
 
 		// draw level bounds
-		gfx.strokeStyle = "#ffffff";
-		gfx.drawLine(0-4,0-4,w+4,0-4);
-		gfx.drawLine(0-4,0-4,0-4,h+4);
-		gfx.drawLine(0-4,h+4,w+4,h+4);
-		gfx.drawLine(w+4,0-4,w+4,h+4);
+		this.gfx.strokeStyle = "#ffffff";
+		this.gfx.beginPath();
+		this.gfx.moveTo(0-4,0-4);
+		this.gfx.lineTo(w+4,0-4);
+		this.gfx.moveTo(0-4,0-4);
+		this.gfx.lineTo(0-4,h+4);
+		this.gfx.moveTo(0-4,h+4);
+		this.gfx.lineTo(w+4,h+4);
+		this.gfx.moveTo(w+4,0-4);
+		this.gfx.lineTo(w+4,h+4);
+		this.gfx.stroke();
 
+/*
 		// render level
-		var interpolation = (tick-this.lastCycleTick)/(this.nextCycleTick-this.lastCycleTick);
 		this.forEachCell(2); // render cells
 		for(var i in this.automatons)this.automatons[i].render(interpolation);
 */
