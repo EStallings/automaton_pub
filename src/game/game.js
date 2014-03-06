@@ -3,10 +3,12 @@ App.makeGame = function(){
 
 	// TODO: make canvas layers for each object type
 	game.gfx = App.Canvases.addNewLayer("game",-1).getContext("2d");
-	game.gfx.lineWidth = 2; // interestingly enough, making this an even number gives a HUGE performance boost
+	game.gfx.lineWidth = 2; // interestingly enough, making game an even number gives a HUGE performance boost
+	game.gridGfx = App.Canvases.addNewLayer("grid",-1).getContext("2d");
+	game.gridGfx.lineWidth = 2;
 
 	game.modes = {SIMULATION:'sim',PLANNING:'plan'}; // why are these strings?
-	game.mode = game.modes.SIMULATION; // XXX: AT ITS CURRENT STATE, THIS NEEDS TO BE INITIALIZED TO SIMULATION
+	game.mode = game.modes.SIMULATION; // XXX: AT ITS CURRENT STATE, game NEEDS TO BE INITIALIZED TO SIMULATION
 
 	game.currentPlanningLevel;
 	game.currentSimulationLevel;
@@ -18,8 +20,8 @@ App.makeGame = function(){
 	game.simulationSpeed = 500;
 	game.interpolation;
 
-	game.renderX = 0;
-	game.renderY = 0;
+	game.renderX = 0; // XXX: CONSIDER KEEPING THIS FLOORED FOR PERFORMANCE
+	game.renderY = 0; // XXX: CONSIDER KEEPING THIS FLOORED FOR PERFORMANCE
 	game.cellSize = 6*Math.pow(2,3);
 
 	// ========================================================== //
@@ -48,7 +50,7 @@ App.makeGame = function(){
 		// clear canvas backgrounds
 		game.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-		// pan grid
+		// pan level
 		game.gfx.save();
 		game.gfx.translate(game.renderX,game.renderY);
 
@@ -60,9 +62,7 @@ App.makeGame = function(){
 	//		game.currentPlanningLevel.render();
 	//	else if(game.currentSimulationLevel !== undefined)
 	//		// TODO: CALL DYNAMIC RENDER METHODS ONLY
-			game.currentSimulationLevel.staticRender(); // DELETE
 			game.currentSimulationLevel.dynamicRender();
-	//		game.currentSimulationLevel.render();
 
 		game.gfx.restore();
 	}
@@ -70,19 +70,58 @@ App.makeGame = function(){
 	// TODO: call initial static rendering
 	game.staticRender = function(){
 		// clear canvas backgrounds
+		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-		// pan grid
-		game.gfx.save();
-		game.gfx.translate(game.renderX,game.renderY);
+		game.renderX = Math.floor(App.Engine.tick * 0.02); // DELETE
+		game.renderY = Math.floor(App.Engine.tick * 0.03); // DELETE
+
+		// setup grid vars
+		var cs = game.cellSize;
+		var w = App.Canvases.width;
+		var h = App.Canvases.height;
+		var rx = fmod(game.renderX,cs);
+		var ry = fmod(game.renderY,cs);
+
+		// draw grid lines
+		game.gridGfx.strokeStyle = "#111111";
+		game.gridGfx.beginPath();
+		for(var i=rx;i<=w;i+=cs){
+			game.gridGfx.moveTo(i,0);game.gridGfx.lineTo(i,h);
+		}for(var j=ry;j<=h;j+=cs){
+			game.gridGfx.moveTo(0,j);game.gridGfx.lineTo(w,j);
+		}game.gridGfx.stroke();
+
+		// draw cell corners
+		game.gridGfx.strokeStyle = "#444444";
+		game.gridGfx.beginPath();
+		for(var i=rx;i<=w;i+=cs)
+		for(var j=ry;j<=h;j+=cs){
+			game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
+			game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
+		}game.gridGfx.stroke();
+
+		// draw cell centers
+		game.gridGfx.strokeStyle = "#222222";
+		game.gridGfx.beginPath();
+		for(var i=rx-cs/2;i<w+cs;i+=cs)
+		for(var j=ry-cs/2;j<h+cs;j+=cs){
+			game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
+			game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
+			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
+		}game.gridGfx.stroke();
+
+		// pan level | XXX: EVERY CANVAS MUST BE PANNED
+		game.gridGfx.save();
+		game.gridGfx.translate(game.renderX,game.renderY);
 
 		// render level
 	//	if(game.mode === game.modes.PLANNING &&
 	//	   game.currentPlanningLevel !== undefined)
 	//		game.currentPlanningLevel.render();
 	//	else if(game.currentSimulationLevel !== undefined)
-	//		game.currentSimulationLevel.staticRender(); // DELETE
+			game.currentSimulationLevel.staticRender();
 
-		game.gfx.restore();
+		game.gridGfx.restore();
 	}
 
 	// TODO: call staticRender inside pan and zoom
@@ -115,14 +154,14 @@ App.makeGame = function(){
 		// TODO: SETUP CYCLE VARIABLES
 	}
 
-	// TODO: IMPLEMENT THIS
+	// TODO: IMPLEMENT game
 	game.simulationError = function(errorCode){
 		// TODO: stop simulation
 		// TODO: display error
 		// TODO: go back to planning mode
 	}
 
-	// TODO: IMPLEMENT THIS
+	// TODO: IMPLEMENT game
 	game.simulationSuccess = function(){
 		// TODO: stop simulation
 		// TODO: display scores
@@ -135,7 +174,7 @@ App.makeGame = function(){
 
 	// ========================================================== //
 
-	game.createNewLevel = function(){} // TODO: implement this
+	game.createNewLevel = function(){} // TODO: implement game
 
 	game.loadNewLevel = function(inputString){
 		var split = inputString.split(";");

@@ -1,5 +1,5 @@
 App.SimulationLevel = function(width,height){
-	this.gfx    = App.Game.gfx; // TODO: CHANGE THIS TO GRIDthis.gfx
+	this.gfx    = App.Game.gridGfx; // TODO: CHANGE THIS TO GRIDthis.gfx
 	this.width  = width;
 	this.height = height;
 	this.grid         = [];
@@ -51,37 +51,8 @@ App.SimulationLevel = function(width,height){
 		var cs = App.Game.cellSize;
 		var w = this.width*cs;  // DELETE
 		var h = this.height*cs; // DELETE
-
 		var rx = fmod(App.Game.renderX,App.Game.cellSize);
 		var ry = fmod(App.Game.renderY,App.Game.cellSize);
-
-		// draw grid lines
-		this.gfx.strokeStyle = "#111111";
-		this.gfx.beginPath();
-		for(var i=0;i<=w;i+=cs){
-			this.gfx.moveTo(i,0);this.gfx.lineTo(i,h);
-		}for(var j=0;j<=h;j+=cs){
-			this.gfx.moveTo(0,j);this.gfx.lineTo(w,j);
-		}this.gfx.stroke();
-
-		// draw cell corners
-		this.gfx.strokeStyle = "#444444";
-		this.gfx.beginPath();
-		for(var i=0;i<=w;i+=cs)
-		for(var j=0;j<=h;j+=cs){
-			this.gfx.moveTo(i-4,j);this.gfx.lineTo(i+4,j);
-			this.gfx.moveTo(i,j-4);this.gfx.lineTo(i,j+4);
-		}this.gfx.stroke();
-
-		// draw cell centers
-		this.gfx.strokeStyle = "#222222";
-		this.gfx.beginPath();
-		for(var i=cs/2;i<w;i+=cs)
-		for(var j=cs/2;j<h;j+=cs){
-			this.gfx.moveTo(i-4,j);this.gfx.lineTo(i+4,j);
-			this.gfx.moveTo(i,j-4);this.gfx.lineTo(i,j+4);
-			this.gfx.moveTo(i-7,j);this.gfx.arc(i,j,7,-Math.PI,Math.PI);
-		}this.gfx.stroke();
 
 		// draw level bounds
 		this.gfx.strokeStyle = "#ffffff";
