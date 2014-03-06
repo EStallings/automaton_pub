@@ -94,8 +94,11 @@ App.makeGame = function(){
 		// TODO: SETUP CYCLE VARIABLES
 	}
 
+	// TODO: IMPLEMENT THIS
 	game.simulationError = function(errorCode){
-
+		// TODO: stop simulation
+		// TODO: display error
+		// TODO: go back to planning mode
 	}
 
 	// ========================================================== //

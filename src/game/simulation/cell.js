@@ -1,4 +1,4 @@
-function Cell(level,x,y){
+App.SimulationCell = function(level,x,y){
 	this.level = level;
 	this.x = x;
 	this.y = y;
@@ -19,7 +19,6 @@ function Cell(level,x,y){
 		// process all instructions
 		for(var a in this.automatons)
 		for(var i in this.instructions) // TODO: this NEEDS to execute in color order (rgby)
-		// TODO: if colors match
 			this.instructions[i].execute(this.automatons[a]);
 */
 	}
