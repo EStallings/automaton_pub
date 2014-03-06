@@ -101,6 +101,17 @@ App.makeGame = function(){
 		// TODO: go back to planning mode
 	}
 
+	// TODO: IMPLEMENT THIS
+	game.simulationSuccess = function(){
+		// TODO: stop simulation
+		// TODO: display scores
+		//       instruction count
+		//       ticks elapsed
+		//       automaton count (fork?) (min max total)
+		//       cell usage
+		// TODO: exit/next level...
+	}
+
 	// ========================================================== //
 
 	game.createNewLevel = function(){} // TODO: implement this
