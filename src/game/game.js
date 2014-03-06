@@ -1,14 +1,14 @@
-// holds data, contains update & render for game layer
 App.makeGame = function(){
 	var game = {};
-	
-	//TODO  set up canvases here?
-	game.modes = {SIMULATION:'sim', PLANNING:'plan'};
-	game.mode = game.modes.PLANNING; // planning or simulation
 
-	game.topLevelPlanningLevel;
-	game.topLevelSimulationLevel;
-	game.currentRenderedLevel;
+	// TODO: SETUP CANVASES
+
+	game.modes = {SIMULATION:'sim', PLANNING:'plan'}; // why are these strings?
+	game.mode = game.modes.SIMULATION; // XXX: AT ITS CURRENT STATE, THIS NEEDS TO BE INITIALIZED TO SIMULATION
+
+	game.currentPlanningLevel;
+	game.currentSimulationLevel;
+	// game.currentRenderedLevel; // only applicable when functions come into play
 
 	game.lastCycleTick;
 	game.nextCycleTick;
@@ -16,58 +16,50 @@ App.makeGame = function(){
 	game.simulationSpeed;
 
 	game.update = function(){
-		if(this.mode === this.modes.PLANNING){
-			//TODO Do nothing, I believe.
-			return;
+		if(game.mode === game.modes.PLANNING){
+			// Do nothing, I believe. -- lets have a planning mode
+			// update anyways, theres a possibility of time-dependant
+			// animations for example.
+		}else{
 		}
-		//TODO else, simulation level
-
-		//? Interpolation ?
-		//Loop over gameplay objects and update internal state
-		//--Unsure which objects need updating. Just automatons?
-
-		//--Do we preserve the current state while we make changes to avoid
-		//--non-deterministic behavior? I'll discuss this with the group in more
-		//--detail, but basically if we don't do this, order of which cell gets updated
-		//--could radically alter gameplay in a way that looks random to users.
 	};
 
 	game.render = function(){
-		if(this.mode === this.modes.PLANNING){
-			//TODO render planning mode
-		}
-		else{
-			//TODO render simulation mode
+		if(game.mode === game.modes.PLANNING){
+		}else{
 		}
 	};
 
+	// ========================================================== //
+
 	game.enterPlanningMode = function(levelString){
-		App.changeMenu('planning'); 
-		if(this.mode === this.modes.PLANNING)
-			return;
+		if(game.mode === game.modes.PLANNING)return;
+		game.mode = game.modes.PLANNING;
+		App.changeMenu('planning'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
 
-		this.mode = this.modes.PLANNING;
+		if(levelString)game.currentPlanningLevel = game.loadNewLevel(levelString);
+		else game.currentPlanningLevel = game.createNewLevel();
+		game.currentRenderedLevel = game.currentPlanningLevel;
 
-		if(levelString)
-			this.loadNewLevel(levelString);
-
-		this.currentRenderedLevel = this.topLevelPlanningLevel;
+		// TODO clear old undo-redo cache
 	}
 
 	game.enterSimulationMode = function(){
-		if(this.mode === this.modes.SIMULATION)
-			return;
-		this.mode = this.modes.SIMULATION;
-		App.changeMenu('simulation');
+		if(game.mode === game.modes.SIMULATION)return;
+		game.mode = game.modes.SIMULATION;
+		App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
+		game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel();
+		game.currentRenderedLevel = game.currentSimulationLevel;
 
-		this.topLevelSimulationLevel = this.topLevelPlanningLevel.generateSimulationLevel();
-		this.currentRenderedLevel = this.topLevelSimulationLevel;
-		//as far as I know, this is all that really needs to be done.
+		// TODO: CALL INSTRUCTION start() FUNCTIONS
+		// TODO: SETUP CYCLE VARIABLES
 	}
 
-	game.loadNewLevel = function(inputString){
-		this.mode = this.modes.PLANNING;
+	// ========================================================== //
 
+	game.createNewLevel = function(){} // TODO: implement this
+
+	game.loadNewLevel = function(inputString){
 		var split = inputString.split(";");
 		var lev = new App.PlanningLevel();
 		if(split.length > 0){
@@ -85,13 +77,7 @@ App.makeGame = function(){
 				var inst = new App.PlanningInstruction(x, y, col, typ);
 				lev.insert(inst);
 			}
-		}
-
-		this.topLevelPlanningLevel = lev;
-		this.currentRenderedLevel = lev;
-		//TODO clear old undo-redo cache
-
-		//TODO load planning level from string and set it as our planning level
+		}return lev;
 	}
 
 	return game;
