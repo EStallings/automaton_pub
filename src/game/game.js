@@ -94,6 +94,10 @@ App.makeGame = function(){
 		// TODO: SETUP CYCLE VARIABLES
 	}
 
+	game.simulationError = function(errorCode){
+
+	}
+
 	// ========================================================== //
 
 	game.createNewLevel = function(){} // TODO: implement this
