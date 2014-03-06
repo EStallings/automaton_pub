@@ -16,7 +16,7 @@ App.SimulationLevel = function(width,height){
 		var i = this.grid[x];
 		if(i === undefined)i = this.grid[x] = [];
 		var j = i[y];
-		if(j === undefined)j = i[y] = new Cell(this,x,y);
+		if(j === undefined)j = i[y] = new App.SimulationCell(this,x,y);
 		return j;
 	}
 
@@ -46,65 +46,59 @@ App.SimulationLevel = function(width,height){
 */
 	}
 
-	// TODO: THE GRID STUFF SHOULD BE CALLED IN STATIC RENDER
-	this.render = function(){
+	// TODO: OPTIMIZE GRID RENDERING, MOVE GRID RENDERING TO GAME
+	this.staticRender = function(){
 		var cs = App.Game.cellSize;
-		var w = this.width*cs;
-		var h = this.height*cs;
+		var w = this.width*cs;  // DELETE
+		var h = this.height*cs; // DELETE
+
+		var rx = fmod(App.Game.renderX,App.Game.cellSize);
+		var ry = fmod(App.Game.renderY,App.Game.cellSize);
 
 		// draw grid lines
 		this.gfx.strokeStyle = "#111111";
 		this.gfx.beginPath();
 		for(var i=0;i<=w;i+=cs){
-			this.gfx.moveTo(i,0);
-			this.gfx.lineTo(i,h);
+			this.gfx.moveTo(i,0);this.gfx.lineTo(i,h);
 		}for(var j=0;j<=h;j+=cs){
-			this.gfx.moveTo(0,j);
-			this.gfx.lineTo(w,j);
+			this.gfx.moveTo(0,j);this.gfx.lineTo(w,j);
 		}this.gfx.stroke();
 
-		// draw grid corners
+		// draw cell corners
 		this.gfx.strokeStyle = "#444444";
+		this.gfx.beginPath();
 		for(var i=0;i<=w;i+=cs)
 		for(var j=0;j<=h;j+=cs){
-			this.gfx.beginPath();
-			this.gfx.moveTo(i-4,j);
-			this.gfx.lineTo(i+4,j);
-			this.gfx.moveTo(i,j-4);
-			this.gfx.lineTo(i,j+4);
-			this.gfx.stroke();
-		}
+			this.gfx.moveTo(i-4,j);this.gfx.lineTo(i+4,j);
+			this.gfx.moveTo(i,j-4);this.gfx.lineTo(i,j+4);
+		}this.gfx.stroke();
 
+		// draw cell centers
 		this.gfx.strokeStyle = "#222222";
+		this.gfx.beginPath();
 		for(var i=cs/2;i<w;i+=cs)
 		for(var j=cs/2;j<h;j+=cs){
-			this.gfx.beginPath();
-			this.gfx.moveTo(i-4,j);
-			this.gfx.lineTo(i+4,j);
-			this.gfx.moveTo(i,j-4);
-			this.gfx.lineTo(i,j+4);
-			this.gfx.moveTo(i-7,j);
-			this.gfx.arc(i,j,7,-Math.PI,Math.PI);
-			this.gfx.stroke();
-		}
+			this.gfx.moveTo(i-4,j);this.gfx.lineTo(i+4,j);
+			this.gfx.moveTo(i,j-4);this.gfx.lineTo(i,j+4);
+			this.gfx.moveTo(i-7,j);this.gfx.arc(i,j,7,-Math.PI,Math.PI);
+		}this.gfx.stroke();
 
 		// draw level bounds
 		this.gfx.strokeStyle = "#ffffff";
 		this.gfx.beginPath();
-		this.gfx.moveTo(0-4,0-4);
-		this.gfx.lineTo(w+4,0-4);
-		this.gfx.moveTo(0-4,0-4);
-		this.gfx.lineTo(0-4,h+4);
-		this.gfx.moveTo(0-4,h+4);
-		this.gfx.lineTo(w+4,h+4);
-		this.gfx.moveTo(w+4,0-4);
-		this.gfx.lineTo(w+4,h+4);
+		this.gfx.moveTo(0-4,0-4);this.gfx.lineTo(w+4,0-4);
+		this.gfx.moveTo(0-4,0-4);this.gfx.lineTo(0-4,h+4);
+		this.gfx.moveTo(0-4,h+4);this.gfx.lineTo(w+4,h+4);
+		this.gfx.moveTo(w+4,0-4);this.gfx.lineTo(w+4,h+4);
 		this.gfx.stroke();
 
-/*
-		// render level
-		this.forEachCell(2); // render cells
-		for(var i in this.automatons)this.automatons[i].render(interpolation);
-*/
+		// TODO: render static tokens
+		// TODO: render static instruction layers
+		// TODO: render any other static stuff
+	}
+
+	this.dynamicRender = function(){
+		for(var i in this.automatons)this.automatons[i].render();
+		// TODO: render sfx animation layers
 	}
 }

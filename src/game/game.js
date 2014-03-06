@@ -45,14 +45,13 @@ App.makeGame = function(){
 		game.interpolation = (App.Engine.tick-game.lastCycleTick)
 		                   / (game.nextCycleTick-game.lastCycleTick);
 
-		// clear backgrounds
+		// clear canvas backgrounds
 		game.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
 		// pan grid
 		game.gfx.save();
 		game.gfx.translate(game.renderX,game.renderY);
 
-		game.currentSimulationLevel.render(); // DELETE
 
 		// render level
 	//	if(game.mode === game.modes.PLANNING &&
@@ -61,6 +60,8 @@ App.makeGame = function(){
 	//		game.currentPlanningLevel.render();
 	//	else if(game.currentSimulationLevel !== undefined)
 	//		// TODO: CALL DYNAMIC RENDER METHODS ONLY
+			game.currentSimulationLevel.staticRender(); // DELETE
+			game.currentSimulationLevel.dynamicRender();
 	//		game.currentSimulationLevel.render();
 
 		game.gfx.restore();
@@ -68,11 +69,18 @@ App.makeGame = function(){
 
 	// TODO: call initial static rendering
 	game.staticRender = function(){
-		// clear backgrounds
+		// clear canvas backgrounds
 
 		// pan grid
 		game.gfx.save();
 		game.gfx.translate(game.renderX,game.renderY);
+
+		// render level
+	//	if(game.mode === game.modes.PLANNING &&
+	//	   game.currentPlanningLevel !== undefined)
+	//		game.currentPlanningLevel.render();
+	//	else if(game.currentSimulationLevel !== undefined)
+	//		game.currentSimulationLevel.staticRender(); // DELETE
 
 		game.gfx.restore();
 	}

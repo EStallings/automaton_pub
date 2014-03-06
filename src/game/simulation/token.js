@@ -1,4 +1,4 @@
-App.Token = function(level,x,y,number){
+App.SimulationToken = function(level,x,y,number){
 	level.tokens.push(this);
 	level.getCell(x,y).tokens.push(this);
 

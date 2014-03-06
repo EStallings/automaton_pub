@@ -3,14 +3,15 @@ App.SimulationAutomaton = function(level,x,y,direction,red,green,blue,yellow){
 	level.getCell(x,y).automatons.push(this);
 
 	this.level = level;
+	this.cell = level.getCell(x,y);
 	this.x = x;
 	this.y = y;
 	this.direction = direction;
 	this.colorFlags = [];             // TODO: STREAMLINE THIS
-	this.colorFlags[RED] = red;       // TODO: STREAMLINE THIS
-	this.colorFlags[GREEN] = green;   // TODO: STREAMLINE THIS
-	this.colorFlags[BLUE] = blue;     // TODO: STREAMLINE THIS
-	this.colorFlags[YELLOW] = yellow; // TODO: STREAMLINE THIS
+	this.colorFlags[App.COLORS.RED] = red;       // TODO: STREAMLINE THIS
+	this.colorFlags[App.COLORS.GREEN] = green;   // TODO: STREAMLINE THIS
+	this.colorFlags[App.COLORS.BLUE] = blue;     // TODO: STREAMLINE THIS
+	this.colorFlags[App.COLORS.YELLOW] = yellow; // TODO: STREAMLINE THIS
 	this.tokenHeld = undefined;
 
 	this.update = function(){
