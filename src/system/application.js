@@ -11,7 +11,10 @@ App.COLORS = {
 	RED    : 0,
 	GREEN  : 1,
 	BLUE   : 2,
-	YELLOW : 3
+	YELLOW : 3,
+	WHITE  : 4,
+	BLACK  : 5,
+	GRAY   : 6
 };
 
 App.DIRECTIONS = {
