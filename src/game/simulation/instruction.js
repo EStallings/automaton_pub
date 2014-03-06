@@ -23,6 +23,7 @@ App.SimulationInstruction = function(level,x,y,color,type){ // what about attrib
 }
 */
 
+/*
 // TODO: visual feedback on execution
 // TODO: 0switch, +-switch, %2switch
 
@@ -33,6 +34,7 @@ var cs8 = cellSize/16;
 var cs3o4 = 3*cs4;
 var cs3o8 = 3*cs8;
 var cs5o8 = 5*cs8;
+*/
 
 App.SimulationInstruction = function(level,x,y,color,type){
 	// TODO: return if instruction is already present, this will get garbage collected

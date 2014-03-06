@@ -4,7 +4,7 @@ App.makeGame = function(){
 	// TODO: make canvas layers for each object type
 	game.gfx = App.Canvases.addNewLayer("game",-1).getContext("2d");
 
-	game.modes = {SIMULATION:'sim', PLANNING:'plan'}; // why are these strings?
+	game.modes = {SIMULATION:'sim',PLANNING:'plan'}; // why are these strings?
 	game.mode = game.modes.SIMULATION; // XXX: AT ITS CURRENT STATE, THIS NEEDS TO BE INITIALIZED TO SIMULATION
 
 	game.currentPlanningLevel;
@@ -19,9 +19,6 @@ App.makeGame = function(){
 	game.renderX;
 	game.renderY;
 	game.cellSize;
-
-	// TODO: game.pan(x,y){}
-	// TODO: game.zoom(f){} // from cursor or center?
 
 	// ========================================================== //
 
@@ -40,10 +37,9 @@ App.makeGame = function(){
 			game.nextCycleTick += game.simulationSpeed;
 			++game.cycles;
 		}
-	};
+	}
 
-	// TODO: GFX IS CURRENTLY ONLY ONE LAYER. THIS NEEDS TO BE MULTIPLE PER OBJECT
-	game.render = function(){
+	game.dynamicRender = function(){
 		// clear background
 		game.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 	//	game.gfx.fillStyle = "#ff0000"; // DELETE
@@ -66,7 +62,15 @@ App.makeGame = function(){
 	//	gfx.fillStyle = "#ffffff";
 	//	gfx.textAlign = "left";
 	//	gfx.fillText("Cycle: "+this.cycles+" | FPS: "+Math.ceil(1000/elapsed),0,this.height*cellSize+28);
-	};
+	}
+
+	game.staticRender = function(){
+
+	}
+
+	// TODO: call staticRender inside pan and zoom
+	// TODO: game.pan(x,y){}
+	// TODO: game.zoom(f){} // from cursor or center?
 
 	// ========================================================== //
 

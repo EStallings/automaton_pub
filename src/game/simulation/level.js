@@ -46,6 +46,7 @@ App.SimulationLevel = function(){
 	}
 
 	this.render = function(){
+		print("TEST");
 /*
 		var w = this.width*cellSize;
 		var h = this.height*cellSize;
