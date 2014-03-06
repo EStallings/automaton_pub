@@ -1,7 +1,8 @@
 App.makeGame = function(){
 	var game = {};
 
-	// TODO: SETUP CANVASES
+	// TODO: make canvas layers for each object type
+	game.gfx = App.Canvases.addNewLayer("game",-1).getContext("2d");
 
 	game.modes = {SIMULATION:'sim', PLANNING:'plan'}; // why are these strings?
 	game.mode = game.modes.SIMULATION; // XXX: AT ITS CURRENT STATE, THIS NEEDS TO BE INITIALIZED TO SIMULATION
@@ -13,21 +14,58 @@ App.makeGame = function(){
 	game.lastCycleTick;
 	game.nextCycleTick;
 	game.cycles;
-	game.simulationSpeed;
+	game.simulationSpeed = 500;
+
+	game.renderX;
+	game.renderY;
+	game.cellSize;
+
+	// TODO: game.pan(x,y){}
+	// TODO: game.zoom(f){} // from cursor or center?
+
+	// ========================================================== //
 
 	game.update = function(){
-		if(game.mode === game.modes.PLANNING){
+		if(game.mode === game.modes.PLANNING &&
+		   game.currentPlanningLevel !== undefined)
 			// Do nothing, I believe. -- lets have a planning mode
 			// update anyways, theres a possibility of time-dependant
 			// animations for example.
-		}else{
+			game.currentPlanningLevel.update();
+		else if(game.currentSimulationLevel !== undefined)
+		while(App.Engine.tick > game.nextCycleTick){
+			if(game.simulationSpeed <= 0)break; // TODO: change to pause
+			game.currentSimulationLevel.update();
+			game.lastCycleTick = game.nextCycleTick;
+			game.nextCycleTick += game.simulationSpeed;
+			++game.cycles;
 		}
 	};
 
+	// TODO: GFX IS CURRENTLY ONLY ONE LAYER. THIS NEEDS TO BE MULTIPLE PER OBJECT
 	game.render = function(){
-		if(game.mode === game.modes.PLANNING){
-		}else{
-		}
+		// clear background
+		game.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+	//	game.gfx.fillStyle = "#ff0000"; // DELETE
+	//	game.gfx.fillRect(15,15,App.Canvases.width-30,App.Canvases.height-30); // DELETE
+
+		// pan grid
+		game.gfx.save();
+		game.gfx.translate(game.renderX,game.renderY);
+
+		// render level
+		if(game.mode === game.modes.PLANNING &&
+		   game.currentPlanningLevel !== undefined)
+			game.currentPlanningLevel.render();
+		else if(game.currentSimulationLevel !== undefined)
+			game.currentSimulationLevel.render();
+
+		game.gfx.restore();
+
+	//	// render cycles
+	//	gfx.fillStyle = "#ffffff";
+	//	gfx.textAlign = "left";
+	//	gfx.fillText("Cycle: "+this.cycles+" | FPS: "+Math.ceil(1000/elapsed),0,this.height*cellSize+28);
 	};
 
 	// ========================================================== //
@@ -41,7 +79,8 @@ App.makeGame = function(){
 		else game.currentPlanningLevel = game.createNewLevel();
 		game.currentRenderedLevel = game.currentPlanningLevel;
 
-		// TODO clear old undo-redo cache
+		// TODO: clear old undo-redo cache
+		// TODO: setup render vars (center level, default zoom)
 	}
 
 	game.enterSimulationMode = function(){
