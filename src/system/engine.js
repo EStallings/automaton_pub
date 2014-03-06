@@ -18,7 +18,7 @@ App.makeEngine = function(){
 		var currentTick = new Date().getTime();
 		engine.elapsed = currentTick - engine.tick;
 		engine.tick = currentTick;
-		if(engine.elapsed>0)engine.fps = 1000/engine.elapsed;
+		if (engine.elapsed>0) engine.fps = 1000/engine.elapsed;
 		
 		engine.update();
 		engine.render();
