@@ -15,8 +15,9 @@ App.SimulationAutomaton = function(level,x,y,direction,red,green,blue,yellow){
 	this.colorFlags[App.COLORS.YELLOW] = yellow; // TODO: STREAMLINE THIS
 	this.tokenHeld = undefined;
 
-	this.update = function(){
-		// TODO: MOVE FUNCTIONALITY FROM cell.update() HERE
+	this.process = function(){
+		for(var i in App.COLORS)if(this.cell.instructions[i])
+			this.cell.instructions[i].execute(a);
 	}
 
 	this.move = function(){
@@ -25,13 +26,13 @@ App.SimulationAutomaton = function(level,x,y,direction,red,green,blue,yellow){
 		oldCell.automatons.splice(oldCell.automatons.indexOf(this),1);
 
 		// move automaton
-		var w = level.width;
-		var h = level.height;
+		var w = this.level.width;
+		var h = this.level.height;
 		switch(this.direction){
-			case App.DIRECTIONS.UP    : --this.y;if(h!=0&&this.y<0 )this.y=h-1;break;
-			case App.DIRECTIONS.DOWN  : ++this.y;if(h!=0&&this.y>=h)this.y=0;  break;
-			case App.DIRECTIONS.LEFT  : --this.x;if(w!=0&&this.x<0 )this.x=w-1;break;
-			case App.DIRECTIONS.RIGHT : ++this.x;if(w!=0&&this.x>=w)this.x=0;  break;
+			case App.DIRECTIONS.UP    : this.y = addr(this.y-1,this.level.height);break;
+			case App.DIRECTIONS.DOWN  : this.y = addr(this.y+1,this.level.height);break;
+			case App.DIRECTIONS.LEFT  : this.x = addr(this.x-1,this.level.width);break;
+			case App.DIRECTIONS.RIGHT : this.x = addr(this.x+1,this.level.width);break;
 		}
 
 		// add to new cell

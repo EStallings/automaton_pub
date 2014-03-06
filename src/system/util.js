@@ -1,4 +1,6 @@
-function fmod(a,b){
+// should fmod and addr be in App...?
+
+function fmod(a,b){ // you should only be using this for integer values
 	var c=a%b;
 	if(c<0)return c+b;
 	return c;

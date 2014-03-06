@@ -1,33 +1,87 @@
 App.makeGame = function(){
 	var game = {};
 
-	// TODO: make canvas layers for each object type
-	game.gfx = App.Canvases.addNewLayer("game",-1).getContext("2d");
-	game.gfx.lineWidth = 2; // interestingly enough, making game an even number gives a HUGE performance boost
-	game.gridGfx  = App.Canvases.addNewLayer("grid" ,-3).getContext("2d");
-	game.tokenSGfx = App.Canvases.addNewLayer("token dynamic",-2).getContext("2d");
-	game.tokenDGfx = App.Canvases.addNewLayer("token static",-2).getContext("2d");
-	game.automGfx = App.Canvases.addNewLayer("autom",-1).getContext("2d");
-	game.automGfx.lineWidth = 4;
+	// ========================================================== //
+	// ====================== MODE-SPECIFIC ===================== //
+	// ========================================================== //
 
 	game.modes = {SIMULATION:'sim',PLANNING:'plan'}; // why are these strings?
 	game.mode = game.modes.PLANNING;
 
 	game.currentPlanningLevel;
 	game.currentSimulationLevel;
-	// game.currentRenderedLevel; // only applicable when functions come into play
+
+	game.enterPlanningMode = function(levelString){
+		if(game.mode === game.modes.PLANNING)return;
+		game.mode = game.modes.PLANNING;
+		App.changeMenu('planning'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
+
+		if(levelString)game.currentPlanningLevel = game.loadNewLevel(levelString);
+		else game.currentPlanningLevel = game.createNewLevel();
+
+		// TODO: clear old undo-redo cache
+		// TODO: setup render vars (center level, default zoom)
+	}
+
+	game.enterSimulationMode = function(){
+		if(game.mode === game.modes.SIMULATION)return;
+		game.mode = game.modes.SIMULATION;
+		App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
+		// game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel(); // TODO: IMPLEMENT THIS
+
+		// TODO: CALL INSTRUCTION start() FUNCTIONS
+		// TODO: SETUP CYCLE VARIABLES
+		game.nextCycleTick = App.Engine.tick;
+		game.cycles = 0;
+	}
+
+	game.simulationError = function(errorCode){
+		// TODO: stop simulation
+		// TODO: display error
+		// TODO: go back to planning mode
+	}
+
+	game.simulationSuccess = function(){
+		// TODO: stop simulation
+		// TODO: display scores
+		//       instruction count
+		//       ticks elapsed
+		//       automaton count (fork?) (min max total)
+		//       cell usage
+		// TODO: exit/next level...
+	}
+
+	game.createNewLevel = function(){} // TODO: implement?
+
+	game.loadNewLevel = function(inputString){
+		var split = inputString.split(";");
+		var lev = new App.PlanningLevel();
+		if(split.length > 0){
+			var levDat = split[0].split(',');
+			lev.name = levDat[0];
+			lev.width = parseInt(levDat[1]);
+			lev.height = parseInt(levDat[2]);
+
+			for(var i = 1; i < split.length; i++){
+				var instDat = split[i].split(',');
+				var x = parseInt(instDat[0]);
+				var y = parseInt(instDat[1]);
+				var col = instDat[2];
+				var typ = parseInt(instDat[3]);
+				var inst = new App.PlanningInstruction(x, y, col, typ);
+				lev.insert(inst);
+			}
+		}return lev;
+	}
+
+	// ========================================================== //
+	// ===================== UPDATE-SPECIFIC ==================== //
+	// ========================================================== //
 
 	game.lastCycleTick;
 	game.nextCycleTick;
 	game.cycles;
 	game.simulationSpeed = 500;
-	game.interpolation;
-
-	game.renderX = 0; // XXX: CONSIDER KEEPING THIS FLOORED FOR PERFORMANCE
-	game.renderY = 0; // XXX: CONSIDER KEEPING THIS FLOORED FOR PERFORMANCE
-	game.cellSize = 6*Math.pow(2,3);
-
-	// ========================================================== //
 
 	game.update = function(){
 		if(game.mode === game.modes.PLANNING &&
@@ -46,42 +100,48 @@ App.makeGame = function(){
 		}
 	}
 
+	// ========================================================== //
+	// ===================== RENDER-SPECIFIC ==================== //
+	// ========================================================== //
+
+	// TODO: make canvas layers for each object type
+	// for each canvas layer, set gfx properties that are constant here
+
+	game.gridGfx = App.Canvases.addNewLayer("grid",-5).getContext("2d");
+	game.gridGfx.lineWidth = 2;
+
+	game.borderGfx = App.Canvases.addNewLayer("border",-4).getContext("2d");
+	game.borderGfx.lineWidth = 2;
+
+	game.tokenDGfx = App.Canvases.addNewLayer("token static",-3).getContext("2d");
+	game.tokenSGfx = App.Canvases.addNewLayer("token dynamic",-2).getContext("2d");
+
+	game.automGfx = App.Canvases.addNewLayer("autom",-1).getContext("2d");
+	game.automGfx.lineWidth = 4;
+
+	game.renderX = 0; // XXX: CONSIDER KEEPING THIS FLOORED FOR PERFORMANCE
+	game.renderY = 0; // XXX: CONSIDER KEEPING THIS FLOORED FOR PERFORMANCE
+	game.cellSize = 6*Math.pow(2,3);
+	game.interpolation;
+
+	game.setRenderX = function(x){}
+	game.setRenderY = function(y){}
+	game.setCellSize = function(s){}
+
+	// TODO: game.beginPan(x,y){}
+	// TODO: game.pan(x,y){}
+	// TODO: game.zoom(f){} // from cursor or center?
+
 	game.translateCanvas = function(gfx){
 		gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		gfx.save();
 		gfx.translate(App.Game.renderX,App.Game.renderY);
 	}
 
-	game.dynamicRender = function(){
-		game.interpolation = (App.Engine.tick-game.lastCycleTick)
-		                   / (game.nextCycleTick-game.lastCycleTick);
-
-		// clear canvas backgrounds
-		game.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-
-		// pan level
-		game.gfx.save();
-		game.gfx.translate(game.renderX,game.renderY);
-
-
-		// render level
-	//	if(game.mode === game.modes.PLANNING &&
-	//	   game.currentPlanningLevel !== undefined)
-	//		// TODO: CALL DYNAMIC RENDER METHODS ONLY
-	//		game.currentPlanningLevel.render();
-	//	else if(game.currentSimulationLevel !== undefined)
-	//		// TODO: CALL DYNAMIC RENDER METHODS ONLY
-			game.currentSimulationLevel.dynamicRender();
-
-		game.gfx.restore();
-	}
-
 	// TODO: call initial static rendering
 	game.staticRender = function(){
-		// clear canvas backgrounds
+		// grid will always be rendering
 		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-		game.gridGfx.lineWidth = 2;
-
 		game.renderX = Math.sin(App.Engine.tick * 0.0002)*50+60; // DELETE
 		game.renderY = Math.sin(App.Engine.tick * 0.0005)*30+40; // DELETE
 
@@ -120,95 +180,26 @@ App.makeGame = function(){
 			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
 		}game.gridGfx.stroke();
 
-		// pan level | XXX: EVERY CANVAS MUST BE PANNED | LIST OF STATIC CANVASES?
-		game.gridGfx.save();
-		game.gridGfx.translate(game.renderX,game.renderY);
-
-		// render level
 	//	if(game.mode === game.modes.PLANNING &&
 	//	   game.currentPlanningLevel !== undefined)
 	//		game.currentPlanningLevel.render();
 	//	else if(game.currentSimulationLevel !== undefined)
 			game.currentSimulationLevel.staticRender();
-
-		game.gridGfx.restore();
 	}
 
-	// TODO: call staticRender inside pan and zoom
-	// TODO: game.beginPan(x,y){}
-	// TODO: game.pan(x,y){}
-	// TODO: game.zoom(f){} // from cursor or center?
+	game.dynamicRender = function(){
+		game.interpolation = (App.Engine.tick-game.lastCycleTick)
+		                   / (game.nextCycleTick-game.lastCycleTick);
 
-	// ========================================================== //
-
-	game.enterPlanningMode = function(levelString){
-		if(game.mode === game.modes.PLANNING)return;
-		game.mode = game.modes.PLANNING;
-		App.changeMenu('planning'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
-
-		if(levelString)game.currentPlanningLevel = game.loadNewLevel(levelString);
-		else game.currentPlanningLevel = game.createNewLevel();
-		game.currentRenderedLevel = game.currentPlanningLevel;
-
-		// TODO: clear old undo-redo cache
-		// TODO: setup render vars (center level, default zoom)
-	}
-
-	game.enterSimulationMode = function(){
-		if(game.mode === game.modes.SIMULATION)return;
-		game.mode = game.modes.SIMULATION;
-		App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
-	//	game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel(); // TODO: IMPLEMENT THIS
-		game.currentRenderedLevel = game.currentSimulationLevel;
-
-		// TODO: CALL INSTRUCTION start() FUNCTIONS
-		// TODO: SETUP CYCLE VARIABLES
-		game.nextCycleTick = App.Engine.tick;
-		game.cycles = 0;
-	}
-
-	// TODO: IMPLEMENT game
-	game.simulationError = function(errorCode){
-		// TODO: stop simulation
-		// TODO: display error
-		// TODO: go back to planning mode
-	}
-
-	// TODO: IMPLEMENT game
-	game.simulationSuccess = function(){
-		// TODO: stop simulation
-		// TODO: display scores
-		//       instruction count
-		//       ticks elapsed
-		//       automaton count (fork?) (min max total)
-		//       cell usage
-		// TODO: exit/next level...
+		// render level
+	//	if(game.mode === game.modes.PLANNING &&
+	//	   game.currentPlanningLevel !== undefined)
+	//		game.currentPlanningLevel.render(); // TODO: dynamic render
+	//	else if(game.currentSimulationLevel !== undefined)
+			game.currentSimulationLevel.dynamicRender();
 	}
 
 	// ========================================================== //
-
-	game.createNewLevel = function(){} // TODO: implement game
-
-	game.loadNewLevel = function(inputString){
-		var split = inputString.split(";");
-		var lev = new App.PlanningLevel();
-		if(split.length > 0){
-			var levDat = split[0].split(',');
-			lev.name = levDat[0];
-			lev.width = parseInt(levDat[1]);
-			lev.height = parseInt(levDat[2]);
-
-			for(var i = 1; i < split.length; i++){
-				var instDat = split[i].split(',');
-				var x = parseInt(instDat[0]);
-				var y = parseInt(instDat[1]);
-				var col = instDat[2];
-				var typ = parseInt(instDat[3]);
-				var inst = new App.PlanningInstruction(x, y, col, typ);
-				lev.insert(inst);
-			}
-		}return lev;
-	}
 
 	return game;
 }

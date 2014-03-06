@@ -38,6 +38,7 @@ var cs5o8 = 5*cs8;
 
 App.SimulationInstruction = function(level,x,y,color,type){
 	// TODO: return if instruction is already present, this will get garbage collected
+	// TODO: planning level shouldn't be trying to put conflicting instructions here...
 
 	level.instructions.push(this);
 	level.getCell(x,y).instructions[color] = this;
@@ -53,6 +54,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 	this.execute; // everything
 	this.special; // streams
 	this.render;  // everything
+
 /*
 	this.action;    // this gets assigned below
 	this.renderSym; // this gets assigned below

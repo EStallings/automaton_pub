@@ -1,5 +1,5 @@
 App.SimulationLevel = function(width,height){
-	this.gfx    = App.Game.gridGfx; // TODO: CHANGE THIS TO GRIDthis.gfx
+	this.gfx    = App.Game.borderGfx; // TODO: CHANGE THIS TO GRIDthis.gfx
 	this.width  = width;
 	this.height = height;
 	this.grid         = [];
@@ -28,40 +28,35 @@ App.SimulationLevel = function(width,height){
 		i[y] = undefined;
 	}
 
-	this.forEachCell = function(f){
-		for(var i in this.grid)for(var j in this.grid[i]){
-			var cell = this.grid[i][j];
-			if(cell === undefined)continue;
-			this.grid[i][j][f]();
-		}
-	}
-
 	// ========================================================== //
 
 	this.update = function(){
-/*
-		this.forEachCell(0); // update cells
-		this.forEachCell(1); // verify cells
-*/
+		// cell verification
+		for(var i in this.grid)for(var j in this.grid[i]){
+			var cell = this.grid[i][j];
+			if(cell === undefined)continue;
+			this.grid[i][j].verify();
+		}
+
+		// ALL automatons MUST be processes before theyre moved
+		for(var i in this.automatons)this.automatons[i].process();
 		for(var i in this.automatons)this.automatons[i].move();
 	}
 
-	// TODO: OPTIMIZE GRID RENDERING, MOVE GRID RENDERING TO GAME
 	this.staticRender = function(){
+		// draw level bounds | XXX: SHOULD WE EVEN RENDER THIS...
+		App.Game.translateCanvas(this.gfx);
 		var cs = App.Game.cellSize;
-		var w = this.width*cs;  // DELETE
-		var h = this.height*cs; // DELETE
-		var rx = fmod(App.Game.renderX,App.Game.cellSize);
-		var ry = fmod(App.Game.renderY,App.Game.cellSize);
-
-		// draw level bounds
-		this.gfx.strokeStyle = "#ffffff";
+		var w = this.width*cs;
+		var h = this.height*cs;
+		this.gfx.strokeStyle = "#888888";
 		this.gfx.beginPath();
 		this.gfx.moveTo(0-4,0-4);this.gfx.lineTo(w+4,0-4);
 		this.gfx.moveTo(0-4,0-4);this.gfx.lineTo(0-4,h+4);
 		this.gfx.moveTo(0-4,h+4);this.gfx.lineTo(w+4,h+4);
 		this.gfx.moveTo(w+4,0-4);this.gfx.lineTo(w+4,h+4);
 		this.gfx.stroke();
+		this.gfx.restore();
 
 		// TODO: render static tokens
 		// TODO: render static instruction layers
@@ -69,7 +64,6 @@ App.SimulationLevel = function(width,height){
 	}
 
 	this.dynamicRender = function(){
-		App.Game.automGfx.lineWidth = 4;
 		App.Game.translateCanvas(App.Game.automGfx);
 		for(var i in this.automatons)this.automatons[i].render();
 		App.Game.automGfx.restore();

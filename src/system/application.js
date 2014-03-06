@@ -11,10 +11,12 @@ App.COLORS = {
 	RED    : 0,
 	GREEN  : 1,
 	BLUE   : 2,
-	YELLOW : 3,
-	WHITE  : 4,
-	BLACK  : 5,
-	GRAY   : 6
+	YELLOW : 3//,
+	// what are the additional 3 colors for?
+	// automs iterate over App.COLORS to access instruction execution funcs
+//	WHITE  : 4,
+//	BLACK  : 5,
+//	GRAY   : 6
 };
 
 App.DIRECTIONS = {
