@@ -11,8 +11,8 @@ App.SimulationLevel = function(width,height){
 	// ========================================================== //
 
 	this.getCell = function(x,y){
-		x = addr(x,this.width);  // wrap-around
-		y = addr(y,this.height); // wrap-around
+		x = addr(x,this.width);  // wrap-around, assuming toroidal rendering
+		y = addr(y,this.height); // wrap-around, assuming toroidal rendering
 		var i = this.grid[x];
 		if(i === undefined)i = this.grid[x] = [];
 		var j = i[y];
@@ -21,8 +21,8 @@ App.SimulationLevel = function(width,height){
 	}
 
 	this.removeCell = function(x,y){
-		x = addr(x,this.width);  // wrap-around
-		y = addr(y,this.height); // wrap-around
+		x = addr(x,this.width);  // wrap-around, assuming toroidal rendering
+		y = addr(y,this.height); // wrap-around, assuming toroidal rendering
 		var i = this.grid[x];
 		if(i === undefined)return;
 		i[y] = undefined;
@@ -42,8 +42,8 @@ App.SimulationLevel = function(width,height){
 /*
 		this.forEachCell(0); // update cells
 		this.forEachCell(1); // verify cells
-		for(var i in this.automatons)this.automatons[i].move();
 */
+		for(var i in this.automatons)this.automatons[i].move();
 	}
 
 	// TODO: OPTIMIZE GRID RENDERING, MOVE GRID RENDERING TO GAME
@@ -69,7 +69,13 @@ App.SimulationLevel = function(width,height){
 	}
 
 	this.dynamicRender = function(){
+		App.Game.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		App.Game.automGfx.save();
+		App.Game.automGfx.translate(App.Game.renderX,App.Game.renderY);
+		App.Game.automGfx.lineWidth = 4;
 		for(var i in this.automatons)this.automatons[i].render();
+		App.Game.automGfx.restore();
+
 		// TODO: render sfx animation layers
 	}
 }

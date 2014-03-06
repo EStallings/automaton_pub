@@ -4,10 +4,12 @@ App.makeGame = function(){
 	// TODO: make canvas layers for each object type
 	game.gfx = App.Canvases.addNewLayer("game",-1).getContext("2d");
 	game.gfx.lineWidth = 2; // interestingly enough, making game an even number gives a HUGE performance boost
-	game.gridGfx = App.Canvases.addNewLayer("grid",-1).getContext("2d");
+	game.gridGfx  = App.Canvases.addNewLayer("grid" ,-3).getContext("2d");
+	game.tokenGfx = App.Canvases.addNewLayer("token",-2).getContext("2d"); // XXX: STATIC VS DYNAMIC TOKENS
+	game.automGfx = App.Canvases.addNewLayer("autom",-1).getContext("2d");
 
 	game.modes = {SIMULATION:'sim',PLANNING:'plan'}; // why are these strings?
-	game.mode = game.modes.SIMULATION; // XXX: AT ITS CURRENT STATE, game NEEDS TO BE INITIALIZED TO SIMULATION
+	game.mode = game.modes.PLANNING;
 
 	game.currentPlanningLevel;
 	game.currentSimulationLevel;
@@ -124,6 +126,8 @@ App.makeGame = function(){
 		game.gridGfx.restore();
 	}
 
+	game.translateCanvas
+
 	// TODO: call staticRender inside pan and zoom
 	// TODO: game.beginPan(x,y){}
 	// TODO: game.pan(x,y){}
@@ -148,11 +152,13 @@ App.makeGame = function(){
 		if(game.mode === game.modes.SIMULATION)return;
 		game.mode = game.modes.SIMULATION;
 		App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
-		game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel();
+	//	game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel(); // TODO: IMPLEMENT THIS
 		game.currentRenderedLevel = game.currentSimulationLevel;
 
 		// TODO: CALL INSTRUCTION start() FUNCTIONS
 		// TODO: SETUP CYCLE VARIABLES
+		game.nextCycleTick = App.Engine.tick;
+		game.cycles = 0;
 	}
 
 	// TODO: IMPLEMENT game
