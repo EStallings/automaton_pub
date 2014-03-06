@@ -71,10 +71,15 @@ App.Button = function(menuName,x,y,width,height,text,callback){
 	this.callback = callback;
 	this.gfx = App.GuiCanvas.getContext("2d");
 
+	var textX = this.x + (this.width / 2); // for centering text
+	var textY = this.y + (this.height / 2); // for centering text
+
 	this.render = function(){
 		this.gfx.fillStyle = "rgb(0,0,0)";
 		this.gfx.fillRect(this.x,this.y,this.width,this.height);
 		this.gfx.fillStyle = "rgb(255,255,255)";
+		// this.gfx.textAlign = 'center';
+		// this.gfx.fillText(this.text, textX, textY)
 		this.gfx.fillText(this.text, this.x + 5, this.y + 20);
 		this.gfx.strokeStyle = "rgb(255,255,255)";
 		this.gfx.strokeRect(this.x,this.y,this.width,this.height);
