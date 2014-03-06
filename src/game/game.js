@@ -5,7 +5,6 @@ App.makeGame = function(){
 	game.gfx = App.Canvases.addNewLayer("game",-1).getContext("2d");
 	game.gfx.lineWidth = 2; // interestingly enough, making game an even number gives a HUGE performance boost
 	game.gridGfx = App.Canvases.addNewLayer("grid",-1).getContext("2d");
-	game.gridGfx.lineWidth = 2;
 
 	game.modes = {SIMULATION:'sim',PLANNING:'plan'}; // why are these strings?
 	game.mode = game.modes.SIMULATION; // XXX: AT ITS CURRENT STATE, game NEEDS TO BE INITIALIZED TO SIMULATION
@@ -71,9 +70,10 @@ App.makeGame = function(){
 	game.staticRender = function(){
 		// clear canvas backgrounds
 		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.gridGfx.lineWidth = 2;
 
-		game.renderX = Math.floor(App.Engine.tick * 0.02); // DELETE
-		game.renderY = Math.floor(App.Engine.tick * 0.03); // DELETE
+		game.renderX = Math.sin(App.Engine.tick * 0.0002)*50+60; // DELETE
+		game.renderY = Math.sin(App.Engine.tick * 0.0005)*30+40; // DELETE
 
 		// setup grid vars
 		var cs = game.cellSize;
@@ -110,7 +110,7 @@ App.makeGame = function(){
 			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
 		}game.gridGfx.stroke();
 
-		// pan level | XXX: EVERY CANVAS MUST BE PANNED
+		// pan level | XXX: EVERY CANVAS MUST BE PANNED | LIST OF STATIC CANVASES?
 		game.gridGfx.save();
 		game.gridGfx.translate(game.renderX,game.renderY);
 
@@ -125,6 +125,7 @@ App.makeGame = function(){
 	}
 
 	// TODO: call staticRender inside pan and zoom
+	// TODO: game.beginPan(x,y){}
 	// TODO: game.pan(x,y){}
 	// TODO: game.zoom(f){} // from cursor or center?
 
