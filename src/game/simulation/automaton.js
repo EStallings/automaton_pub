@@ -52,7 +52,7 @@ App.SimulationAutomaton = function(level,x,y,direction,red,green,blue,yellow){
 
 		// TODO: CALL TOKEN DYNAMIC RENDER?
 		// render token if holding one
-		if(this.tokenHeld != undefined)this.tokenHeld.render(x*c,y*c);
+		if(this.tokenHeld != undefined)this.tokenHeld.dynamicRender(x*c,y*c);
 
 		// render automaton
 		if(this.colorFlags[App.COLORS.RED]){

@@ -5,8 +5,10 @@ App.makeGame = function(){
 	game.gfx = App.Canvases.addNewLayer("game",-1).getContext("2d");
 	game.gfx.lineWidth = 2; // interestingly enough, making game an even number gives a HUGE performance boost
 	game.gridGfx  = App.Canvases.addNewLayer("grid" ,-3).getContext("2d");
-	game.tokenGfx = App.Canvases.addNewLayer("token",-2).getContext("2d"); // XXX: STATIC VS DYNAMIC TOKENS
+	game.tokenSGfx = App.Canvases.addNewLayer("token dynamic",-2).getContext("2d");
+	game.tokenDGfx = App.Canvases.addNewLayer("token static",-2).getContext("2d");
 	game.automGfx = App.Canvases.addNewLayer("autom",-1).getContext("2d");
+	game.automGfx.lineWidth = 4;
 
 	game.modes = {SIMULATION:'sim',PLANNING:'plan'}; // why are these strings?
 	game.mode = game.modes.PLANNING;
@@ -42,6 +44,12 @@ App.makeGame = function(){
 			game.nextCycleTick += game.simulationSpeed;
 			++game.cycles;
 		}
+	}
+
+	game.translateCanvas = function(gfx){
+		gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		gfx.save();
+		gfx.translate(App.Game.renderX,App.Game.renderY);
 	}
 
 	game.dynamicRender = function(){
@@ -125,8 +133,6 @@ App.makeGame = function(){
 
 		game.gridGfx.restore();
 	}
-
-	game.translateCanvas
 
 	// TODO: call staticRender inside pan and zoom
 	// TODO: game.beginPan(x,y){}

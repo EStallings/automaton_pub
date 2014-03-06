@@ -69,10 +69,8 @@ App.SimulationLevel = function(width,height){
 	}
 
 	this.dynamicRender = function(){
-		App.Game.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-		App.Game.automGfx.save();
-		App.Game.automGfx.translate(App.Game.renderX,App.Game.renderY);
 		App.Game.automGfx.lineWidth = 4;
+		App.Game.translateCanvas(App.Game.automGfx);
 		for(var i in this.automatons)this.automatons[i].render();
 		App.Game.automGfx.restore();
 
