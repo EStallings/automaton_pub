@@ -10,8 +10,19 @@ function setupTestLevel(){
 	var test = new App.SimulationAutomaton(testLevel,3,2,App.DIRECTIONS.RIGHT,false,true,false,false);
 	test.tokenHeld = new App.SimulationToken(testLevel,3,2,0); // DELETE, this breaks stuff
 
-	for(var i=0;i<5;++i)for(var j=0;j<5;++j)for(var c=0;c<4;++c)
-	new App.SimulationInstruction(testLevel,i,j,c,"u");
+	for(var c=0;c<4;++c){
+		new App.SimulationInstruction(testLevel,0,0,c,"u");
+		new App.SimulationInstruction(testLevel,1,0,c,"d");
+		new App.SimulationInstruction(testLevel,2,0,c,"l");
+		new App.SimulationInstruction(testLevel,3,0,c,"r");
+		new App.SimulationInstruction(testLevel,4,0,c,"c");
+		new App.SimulationInstruction(testLevel,0,1,c,"w");
+		new App.SimulationInstruction(testLevel,1,1,c,"t");
+		new App.SimulationInstruction(testLevel,2,1,c,"+");
+		new App.SimulationInstruction(testLevel,3,1,c,"-");
+		new App.SimulationInstruction(testLevel,4,1,c,"i");
+		new App.SimulationInstruction(testLevel,0,2,c,"o");
+	}
 
 	App.Game.currentSimulationLevel = testLevel;
 	App.Game.enterSimulationMode();

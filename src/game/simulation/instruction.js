@@ -2,13 +2,13 @@
 // TODO: visual feedback on execution
 // TODO: 0switch, +-switch, %2switch
 
-var cs2 = cellSize/4;
-var cs4 = cellSize/8;
-var cs8 = cellSize/16;
+var cs/4 = cellSize/4;
+var cs/8 = cellSize/8;
+var cs/16 = cellSize/16;
 
-var cs3o4 = 3*cs4;
-var cs3o8 = 3*cs8;
-var cs5o8 = 5*cs8;
+var 3*cs/8 = 3*cs/8;
+var 3*cs/16 = 3*cs/16;
+var 5*cs/16 = 5*cs/16;
 */
 
 App.SimulationInstruction = function(level,x,y,color,type){
@@ -29,76 +29,101 @@ App.SimulationInstruction = function(level,x,y,color,type){
 	this.rFunc;
 
 	switch(type){
+
 		case "u": // Up
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = UP;
 			};this.rFunc = function(){
-var cs = App.Game.cellSize;
-var cs2 = cs/4;
-var cs4 = cs/8;
-var cs8 = cs/16;
-
-var cs3o4 = 3*cs4;
-var cs3o8 = 3*cs8;
-var cs5o8 = 5*cs8;
-				this.gfx.moveTo(cs2,cs4);
-				this.gfx.lineTo(cs4,cs3o4);
-				this.gfx.lineTo(cs3o4,cs3o4);
-				this.gfx.lineTo(cs2,cs4);
+				var cs = App.Game.cellSize;
+				this.gfx.moveTo(cs/4,cs/8);
+				this.gfx.lineTo(cs/8,3*cs/8);
+				this.gfx.lineTo(3*cs/8,3*cs/8);
+				this.gfx.lineTo(cs/4,cs/8);
 				this.gfx.stroke();
 			};break;
-}/*
+
 		case "d": // Down
-			this.action = function(a){a.direction = DOWN;}
-			this.renderSym = function(){
-				gfx.beginPath();
-				gfx.moveTo(cs2,cs3o4);
-				gfx.lineTo(cs4,cs4);
-				gfx.lineTo(cs3o4,cs4);
-				gfx.lineTo(cs2,cs3o4);
-				gfx.stroke();
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				a.direction = DOWN;
+			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(cs/4,3*cs/8);
+				this.gfx.lineTo(cs/8,cs/8);
+				this.gfx.lineTo(3*cs/8,cs/8);
+				this.gfx.lineTo(cs/4,3*cs/8);
+				this.gfx.stroke();
 			};break;
+
 		case "l": // Left
-			this.action = function(a){a.direction = LEFT;}
-			this.renderSym = function(){
-				gfx.beginPath();
-				gfx.moveTo(cs4,cs2);
-				gfx.lineTo(cs3o4,cs4);
-				gfx.lineTo(cs3o4,cs3o4);
-				gfx.lineTo(cs4,cs2);
-				gfx.stroke();
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				a.direction = LEFT;
+			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(cs/8,cs/4);
+				this.gfx.lineTo(3*cs/8,cs/8);
+				this.gfx.lineTo(3*cs/8,3*cs/8);
+				this.gfx.lineTo(cs/8,cs/4);
+				this.gfx.stroke();
 			};break;
+
 		case "r": // Right
-			this.action = function(a){a.direction = RIGHT;}
-			this.renderSym = function(){
-				gfx.beginPath();
-				gfx.moveTo(cs3o4,cs2);
-				gfx.lineTo(cs4,cs4);
-				gfx.lineTo(cs4,cs3o4);
-				gfx.lineTo(cs3o4,cs2);
-				gfx.stroke();
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				a.direction = RIGHT;
+			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(3*cs/8,cs/4);
+				this.gfx.lineTo(cs/8,cs/8);
+				this.gfx.lineTo(cs/8,3*cs/8);
+				this.gfx.lineTo(3*cs/8,cs/4);
+				this.gfx.stroke();
 			};break;
+
 		case "c": // rotate cCw
-			this.action = function(a){a.direction = (a.direction+1)%4;}
-			this.renderSym = function(){
-				gfx.beginPath();
-				gfx.arc(cs2,cs2,cs4,Math.PI,Math.PI/2);
-				gfx.moveTo(cs4,cs2);
-				gfx.lineTo(cs4,cs4);
-				gfx.stroke();
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				a.direction = (a.direction+1)%4;
+			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.arc(cs/4,cs/4,cs/8,Math.PI,Math.PI/2);
+				this.gfx.moveTo(cs/8,cs/4);
+				this.gfx.lineTo(cs/8,cs/8);
+				this.gfx.stroke();
 			};break;
+
 		case "w": // rotate cW
-			this.action = function(a){a.direction = (a.direction+3)%4;}
-			this.renderSym = function(){
-				gfx.beginPath();
-				gfx.arc(cs2,cs2,cs4,Math.PI/2,2*Math.PI);
-				gfx.moveTo(cs3o4,cs2);
-				gfx.lineTo(cs3o4,cs4);
-				gfx.stroke();
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				a.direction = (a.direction+3)%4;
+			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.arc(cs/4,cs/4,cs/8,Math.PI/2,2*Math.PI);
+				this.gfx.moveTo(3*cs/8,cs/4);
+				this.gfx.lineTo(3*cs/8,cs/8);
+				this.gfx.stroke();
 			};break;
+
+		case "g": // TODO: Grab
+			this.execute = function(a){
+			};this.rFunc = function(){
+			};break;
+
+		case "?": // TODO: drop
+			this.execute = function(a){
+			};this.rFunc = function(){
+			};break;
+
 		case "t": // Toggle grab/drop
-			this.action = function(a){
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined){
 					if(this.cell.tokens.length !== 0){
 						a.tokenHeld = this.cell.tokens[0];
@@ -110,123 +135,153 @@ var cs5o8 = 5*cs8;
 					a.tokenHeld = undefined;
 					// new Audio("test.ogg").play();
 				}
-			};this.renderSym = function(){
-				gfx.beginPath();
-				gfx.moveTo(cs4,cs3o4);
-				gfx.lineTo(cs3o4,cs3o4);
-				gfx.moveTo(cs2,cs4);
-				gfx.lineTo(cs2,cs3o4);
-				gfx.moveTo(cs3o8,cs3o8);
-				gfx.lineTo(cs2,cs4);
-				gfx.lineTo(cs5o8,cs3o8);
-				gfx.moveTo(cs3o8,cs5o8);
-				gfx.lineTo(cs2,cs3o4);
-				gfx.lineTo(cs5o8,cs5o8);
-				gfx.stroke();
+			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(cs/8,3*cs/8);
+				this.gfx.lineTo(3*cs/8,3*cs/8);
+				this.gfx.moveTo(cs/4,cs/8);
+				this.gfx.lineTo(cs/4,3*cs/8);
+				this.gfx.moveTo(3*cs/16,3*cs/16);
+				this.gfx.lineTo(cs/4,cs/8);
+				this.gfx.lineTo(5*cs/16,3*cs/16);
+				this.gfx.moveTo(3*cs/16,5*cs/16);
+				this.gfx.lineTo(cs/4,3*cs/8);
+				this.gfx.lineTo(5*cs/16,5*cs/16);
+				this.gfx.stroke();
 			};break;
+
 		case "+": // increment
-			this.action = function(a){if(a.tokenHeld !== undefined)++a.tokenHeld.number;}
-			this.renderSym = function(){
-				gfx.beginPath();
-				gfx.moveTo(cs4,cs2);
-				gfx.lineTo(cs3o4,cs2);
-				gfx.moveTo(cs2,cs4);
-				gfx.lineTo(cs2,cs3o4);
-				gfx.stroke();
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld !== undefined)++a.tokenHeld.number;
+			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(cs/8,cs/4);
+				this.gfx.lineTo(3*cs/8,cs/4);
+				this.gfx.moveTo(cs/4,cs/8);
+				this.gfx.lineTo(cs/4,3*cs/8);
+				this.gfx.stroke();
 			};break;
+
 		case "-": // decrement
-			this.action = function(a){if(a.tokenHeld !== undefined)--a.tokenHeld.number;}
-			this.renderSym = function(){
-				gfx.beginPath();
-				gfx.moveTo(cs4,cs2);
-				gfx.lineTo(cs3o4,cs2);
-				gfx.stroke();
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld !== undefined)--a.tokenHeld.number;
+			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(cs/8,cs/4);
+				this.gfx.lineTo(3*cs/8,cs/4);
+				this.gfx.stroke();
 			};break;
+
 		case "i": // In
-			this.action = function(a){
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
 				for(var i in this.level.streams)
 					this.level.streams[i].IO(INPUT,this.color);
-			};this.renderSym = function(){
-				gfx.beginPath();
-				gfx.moveTo(cs2,cs4);
-				gfx.lineTo(cs2,cs3o4);
-				gfx.moveTo(cs4,cs4);
-				gfx.lineTo(cs3o4,cs4);
-				gfx.moveTo(cs4,cs3o4);
-				gfx.lineTo(cs3o4,cs3o4);
-				gfx.stroke();
+			};this.rFunc = function(){
+				// TODO: this should NOT be an I (streams)
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(cs/4,cs/8);
+				this.gfx.lineTo(cs/4,3*cs/8);
+				this.gfx.moveTo(cs/8,cs/8);
+				this.gfx.lineTo(3*cs/8,cs/8);
+				this.gfx.moveTo(cs/8,3*cs/8);
+				this.gfx.lineTo(3*cs/8,3*cs/8);
+				this.gfx.stroke();
 			};break;
+
 		case "o": // Out
-			this.action = function(a){
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
 				for(var i in this.level.streams)
 					this.level.streams[i].IO(OUTPUT,this.color);
-			};this.renderSym = function(){
-				gfx.drawCircle(cs2,cs2,cs4,-Math.PI,Math.PI);
+			};this.rFunc = function(){
+				// TODO: this should NOT be an O (streams)
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.arc(cs/4,cs/4,cs/8,-Math.PI,Math.PI);
+				this.gfx.stroke();
 			};break;
-		case "a": // Autom spawn
+
+		case "a": // TODO: Autom spawn
 			// TODO: add to special spawn list in level
-			this.action = function(a){} // do nothing
-			this.renderSym = function(){}
-			break;
-		case "s": // Switch
-			this.action = function(a){}
-			this.renderSym = function(){}
-			break;
-		case "y": // sYnc
+			this.execute = function(a){ // do nothing
+			};this.rFunc = function(){
+			};break;
+
+		case "s": // TODO: Switch
+			this.execute = function(a){
+			};this.rFunc = function(){
+			};break;
+
+		case "y": // TODO: sYnc
+			// TODO: override this.render
 			// TODO: custom syms for each color
-			this.action = function(a){
-			};this.renderSym = function(){}
-			break;
-		case "p": // Pause
-			this.action = function(a){}
-			this.renderSym = function(){}
-			break;
-		case "m": // streaM
+			this.execute = function(a){
+			};this.rFunc = function(){
+			};break;
+
+		case "p": // TODO: Pause
+			this.execute = function(a){
+			};this.rFunc = function(){
+			};break;
+
+		case "m": // TODO: streaM
 			// TODO: add to special stream list in level
 			// TODO: special render function for stream (add stream render layer)
-			this.action = function(a){}
-			this.renderSym = function(){}
-			break;
+			this.execute = function(a){
+			};this.rFunc = function(){
+			};break;
+
+		case "?": // TODO: color toggle
+			// TODO: this doesn't have a color check
+			this.execute = function(a){
+			};this.rFunc = function(){
+			};break;
 	}
-*/
 
 	// TODO: DYNAMICALLY CREATE RENDER FUNCTION SO YOU DONT HAVE TO DO THIS EVERY TIME
 	this.render = function(){
-		var cellSize = App.Game.cellSize;
+		var cs = App.Game.cellSize;
 
 		this.gfx.save();
 		switch(this.color){
 			case App.COLORS.RED:
-				this.gfx.translate(this.x*cellSize,this.y*cellSize);
+				this.gfx.translate(this.x*cs,this.y*cs);
 				this.gfx.fillStyle="#660000";
-				this.gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
+				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
 				this.gfx.strokeStyle="#ff0000";
 				break;
 			case App.COLORS.GREEN:
-				this.gfx.translate(this.x*cellSize+cellSize/2,this.y*cellSize);
+				this.gfx.translate(this.x*cs+cs/2,this.y*cs);
 				this.gfx.fillStyle="#006600";
-				this.gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
+				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
 				this.gfx.strokeStyle="#00ff00";
 				break;
 			case App.COLORS.BLUE:
-				this.gfx.translate(this.x*cellSize,this.y*cellSize+cellSize/2);
+				this.gfx.translate(this.x*cs,this.y*cs+cs/2);
 				this.gfx.fillStyle="#000066";
-				this.gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
+				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
 				this.gfx.strokeStyle="#0000ff";
 				break;
 			case App.COLORS.YELLOW:
-				this.gfx.translate(this.x*cellSize+cellSize/2,this.y*cellSize+cellSize/2);
+				this.gfx.translate(this.x*cs+cs/2,this.y*cs+cs/2);
 				this.gfx.fillStyle="#666600";
-				this.gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
+				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
 				this.gfx.strokeStyle="#ffff00";
 				break;
 		}
 
 		this.gfx.beginPath();
 		this.gfx.moveTo(2,2);
-		this.gfx.lineTo(2,cellSize/2-2);
-		this.gfx.lineTo(cellSize/2-2,cellSize/2-2);
-		this.gfx.lineTo(cellSize/2-2,2);
+		this.gfx.lineTo(2,cs/2-2);
+		this.gfx.lineTo(cs/2-2,cs/2-2);
+		this.gfx.lineTo(cs/2-2,2);
 		this.gfx.lineTo(2,2);
 		this.gfx.stroke();
 
