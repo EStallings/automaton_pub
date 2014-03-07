@@ -20,10 +20,18 @@ App.PlanningLevel = function(){
 		return that.grid[x][y]; 
 	};
 
+	// returns the instruction at x,y, color
+	this.getInstruction = function(x,y,color){
+		if(!that.grid[x] || !that.grid[x][y] || !that.grid[x][y][color])
+			return null;
+
+			return that.grid[x][y][color];
+	};
+
 	// checks whether or not an instruction in a grid cell has been defined or not
 	this.contains = function(x, y, c){
-		return (that.grid[x] && that.grid[x][y] && that.grid[x][y][c]);
-	}
+		return (!!that.grid[x] && !!that.grid[x][y] && !!that.grid[x][y][c]); // added !!
+	};
 
 	// clears an entire cell
 	this.removeCell = function(x,y){
@@ -99,22 +107,22 @@ App.PlanningLevel = function(){
 			that.undoStack.push(new that.modifyOp(instruction, parameter, value, instruction[parameter]));
 
 			// update instruction
-			that.getCell(instruction.x, instruction.y)[instruction.color][parameter] = value;
+			that.grid[instruction.x][instruction.y][instruction.color][parameter] = value;
 
 			// update grid if the color changed
 			if(parameter === 'color'){
 				// if the location the cell would be moved to is free
-				if(!that.getCell(instruction.x,instruction.y)[value]){
-					that.getCell(instruction.x, instruction.y)[value] = that.getCell(instruction.x, instruction.y)[oldColor];
-					that.getCell(instruction.x, instruction.y)[oldColor] = null;
+				if(!that.getInstruction(instruction.x, instruction.y,value)){
+					that.grid[instruction.x][instruction.y][value] = that.getInstruction(instruction.x, instruction.y,oldColor);
+					that.grid[instruction.x][instruction.y][oldColor] = null;
 				// if the location is not empty, and the user setting is set to overwrite
 				} else if(that.userOverlapSetting === 1){
 					// store the old instruction into the modiyOp object
-					that.undoStack[that.undoStack.length-1].overWritten = that.getCell(instruction.x,instruction.y)[value];
+					that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(instruction.x,instruction.y,value);
 
 					// perform the overwrite
-					that.getCell(instruction.x, instruction.y)[value] = that.getCell(instruction.x, instruction.y)[oldColor];
-					that.getCell(instruction.x, instruction.y)[oldColor] = null;
+					that.grid[instruction.x][instruction.y][value] = that.getInstruction(instruction.x, instruction.y,oldColor);
+					that.grid[instruction.x][instruction.y][oldColor] = null;
 				}
 			}
 		}
@@ -123,22 +131,33 @@ App.PlanningLevel = function(){
 	// this function performs a copy operation on an instruction,
 	// and creates and pushes a copyOp object onto the undo stack.
 
-	// TODO I think this may also overwrite instructions
 	this.copy = function(x, y, color, newX, newY){
 		// update undo stack
-		that.undoStack.push(new that.copyOp(that.getCell(x,y)[color], newX, newY));
+		that.undoStack.push(new that.copyOp(that.getInstruction(x,y,color), newX, newY));
+
+		// make sure there is an instruction at the specified coordinate
+		if(!that.contains(x,y,color)){ return; }
 
 		// update grid
-		if(that.contains(x,y,color)){
-			if(!that.getCell(newX,newY)[color]){
-				// TODO
-			} else if(that.userOverlapSetting === 1){
-				// store the old instruction
-				that.undoStack[that.undoStack.length-1].overWritten = that.getCell(x,y)[color];
-
-				// overwrite
-				that.grid[newX][newY][color] = that.getCell(x,y)[color];
+		if(!that.getInstruction(newX,newY,color)){
+			// place the copy
+			if(that.grid[newX] && that.grid[newX][newY] ){
+				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+			} else if(that.grid[newX]){
+				that.grid[newX][newY] = [];
+				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+			} else {
+				that.grid[newX] = [];
+				that.grid[newX][newY] = [];
+				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 			}
+
+		} else if(that.userOverlapSetting === 1){
+			// store the old instruction
+			that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(x,y,color);
+
+			// overwrite
+			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 		}
 		/*if(that.contains(x,y,color)){
 			if(that.contains(newX, newY, color)){
@@ -170,31 +189,31 @@ App.PlanningLevel = function(){
 	this.move = function(x, y, color, newX, newY){
 
 		// update undo stack
-		that.undoStack.push(new that.moveOp(that.getCell(x,y)[color], newX, newY));
+		that.undoStack.push(new that.moveOp(that.getInstruction(x,y,color), newX, newY));
 
 		// update grid
 		if(that.contains(x,y,color)){
 			if(that.contains(newX, newY, color)){
-				that.grid[newX][newY][color] = that.getCell(x,y)[color];
-				that.getCell(x,y)[color] = null;
+				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+				that.grid[x][y][color] = null;
 			}
 			else{
 				if(that.grid[newX]){
 					if(that.grid[newX][newY]){
-						that.grid[newX][newY][color] = that.getCell(x,y)[color];
-						that.getCell(x,y)[color] = null;						
+						that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+						that.grid[x][y][color] = null;
 					}
 					else{
 						that.grid[newX][newY] = [];
-						that.grid[newX][newY][color] = that.getCell(x,y)[color];
-						that.getCell(x,y)[color] = null;
+						that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+						that.grid[x][y][color] = null;
 					}
 				}
 				else{
 					that.grid[newX] = [];
 					that.grid[newX][newY] = [];
-					that.grid[newX][newY][color] = that.getCell(x,y)[color];
-					that.getCell(x,y)[color] = null;
+					that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+					that.grid[x][y][color] = null;
 				}
 			}
 		}
@@ -236,7 +255,7 @@ App.PlanningLevel = function(){
 				if(that.grid[x][y][color]){
 
 					// update undo stack
-					that.undoStack.push(new that.deleteOp(that.getCell(x,y)[color]));
+					that.undoStack.push(new that.deleteOp(that.getInstruction(x,y,color)));
 
 					// update grid
 					that.grid[x][y][color] = null;
