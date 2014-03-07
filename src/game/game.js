@@ -154,8 +154,8 @@ App.makeGame = function(){
 		game.staticRender();
 	}
 
-	App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_CLICK,game.beginPan,"GAME");
-	App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_DRAG,game.pan,"GAME");
+	// App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_CLICK,game.beginPan,"GAME");
+	// App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_DRAG,game.pan,"GAME");
 
 	game.translateCanvas = function(gfx){
 		gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);

@@ -1,0 +1,3 @@
+App.makeGameInput = function(){
+	
+}

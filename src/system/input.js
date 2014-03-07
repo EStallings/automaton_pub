@@ -3,91 +3,15 @@
 App.makeInputHandler = function(){
 	var input = {};
 
-	input.DRAGGING_PREVENTS_CLICKING = true;
-	input.MIN_DRAG_DIST = 20;
-
-	// types of events that can be registered for
-	input.mouseTypes = {
-		MOVE:'move',
-
-		LEFT_CLICK:'left click',
-		RIGHT_CLICK:'right click',
-		MIDDLE_CLICK:'middle click',
-
-		LEFT_DRAG:'left drag',
-		RIGHT_DRAG:'right drag',
-		MIDDLE_DRAG:'middle drag',
-
-		SCROLL:'scroll',
-	};
-
-	input.registryTypes = {
-		func:'func',
-		shft:'shft',
-		alt:'alt',
-		cntrl:'cntrl'
-	};
-
 	// stores callback events associated with a type of event and a layer
-	input.keyRegistry = [];
-	input.mouseRegistry = {'GUI':[], 'GAME':[]};
-
-//	//for now:
+		//for now:
 	input.canvas = App.Canvases.addNewLayer('inputCanvas', 10); // TODO: z value for this should be the largest...
 	input.context = input.canvas.getContext('2d');
+	input.Gui = App.makeGuiInput();
+	input.Game = App.makeGameInput();
 	
-	input.mousePos = {x:0, y:0};
-	input.buttons = {
-
-		// right mouse button
-		rButton : {
-			type:input.mouseTypes.RIGHT_CLICK,
-			dragType:input.mouseTypes.RIGHT_DRAG,
-			button:false,
-			dragStart:null,
-			drag:false,
-			killClick:false
-		},
-		
-		// left mouse button
-		lButton : {
-			type:input.mouseTypes.LEFT_CLICK,
-			dragType:input.mouseTypes.LEFT_DRAG,
-			button:false,
-			dragStart:null,
-			drag:false,
-			killClick:false
-		},
-
-		// middle mouse button
-		mButton : {
-			type:input.mouseTypes.MIDDLE_CLICK,
-			dragType:input.mouseTypes.MIDDLE_DRAG,
-			button:false,
-			dragStart:null,
-			drag:false,
-			killClick:false
-		}
-	}
-
-	input.touch = {
-		time:0, //the time elapsed in the current touch
-		button:0, //the button currently being emulated
-		spread:0 //the spread between two fingers; use this guy to zoom!
-	}
-	
-
-	//TODO registering a function to be called back under specified conditions for mouse events
-	input.registerMouse = function(type, callback, layer){
-		if(!this.mouseRegistry[layer])
-			console.error("Tried to assign a function to an invalid layer: " + layer);
-
-		if(!this.mouseRegistry[layer][type])
-			this.mouseRegistry[layer][type] = callback;
-
-		else
-			console.error("Tried to assign multiple functions to a single mouse action on the same layer!: " + type);
-	}
+	input.keyRegistry = [];
+	input.keysDown = [];
 
 	//TODO registering a function to be called back under specified conditions for keyboard events
 	//if repeat is false, holding a key down will not fire multiple events.
@@ -96,20 +20,6 @@ App.makeInputHandler = function(){
 			this.keyRegistry[key] = {c:callback, r:repeat, n:0};
 		else
 			console.error("Tried to assign multiple functions to a single keypress!!!: " + key + " , " + callback);
-	}
-
-	input.executeMouse = function(typ, data, evt){
-		console.debug("Executing: " + typ + " - " + data + " - " + evt);
-		var guiList = this.mouseRegistry['GUI'];
-		var gameList = this.mouseRegistry['GAME'];
-		var flag = true;
-
-		if(guiList[typ])
-			flag = guiList[typ](data, evt);
-
-		if(flag && gameList[typ])
-			gameList[typ](data, evt);
-
 	}
 
 	input.executeKey = function(key, evt){
@@ -124,15 +34,10 @@ App.makeInputHandler = function(){
 	//Section evt handlers
 	/////////
 
-	var sqrdist = function(o1, o2){
-		return Math.abs(o1.x-o2.x) + Math.abs(o1.y-o2.y);
-	}
 
-	var handle_mouseMove 	= function(e){
-		
+	var handle_mouseMove 	= function(e){	
 		var input = App.InputHandler;
-		
-		//update current mouse position
+	
 		if(e.currentTarget === null) return;
 
 		var rect = e.currentTarget.getBoundingClientRect();
@@ -143,108 +48,43 @@ App.makeInputHandler = function(){
 		};
 	
 
-		for(var b in input.buttons){
-			var but = input.buttons[b];
-			if(but.button && sqrdist(input.mousePos, but.dragStart) > input.MIN_DRAG_DIST){
-				but.drag = true;
-				but.killClick = true;
-				input.executeMouse(but.dragType, {START:but.dragStart, END: input.mousePos}, e);
-			}
-		}
+		
 	}
 
 	var handle_mouseUp 		= function(e){
-		
 		var input = App.InputHandler;
-		
-		//determine which mouse button & update status accordingly
-		switch(e.button){
-
-			case 0:
-				input.buttons.lButton.button = false;
-				input.buttons.lButton.drag = false;
-		input.buttons.lButton.dragStart = null;
-
-				if(!input.buttons.lButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
-					input.executeMouse(input.mouseTypes.LEFT_CLICK, {x:input.mousePos.x, y:input.mousePos.y}, e);
-
-				input.buttons.lButton.killClick = false;
-				break;
-
-			case 1:
-				input.buttons.mButton.button = false;
-				input.buttons.mButton.drag = false;
-				input.buttons.mButton.dragStart = null;
-				
-				if(!input.buttons.mButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
-					input.executeMouse(input.mouseTypes.MIDDLE_CLICK, {x:input.mousePos.x, y:input.mousePos.y}, e);
-
-				input.buttons.mButton.killClick = false;
-				break;
-
-			case 2:
-				input.buttons.rButton.button = false;
-				input.buttons.rButton.drag = false;
-				input.buttons.rButton.dragStart = null;
-
-				if(!input.buttons.rButton.killClick && input.DRAGGING_PREVENTS_CLICKING)
-					input.executeMouse(input.mouseTypes.RIGHT_CLICK, {x:input.mousePos.x, y:input.mousePos.y}, e);
-
-				input.buttons.rButton.killClick = false;
-				break;
-
-		}
 	}
 	
 	
 	var handle_mouseDown 	= function(e){
 		var input = App.InputHandler;
 
-		//determine which mouse button & update status accordingly
-		switch(e.button){
-
-			case 0:
-				input.buttons.lButton.button = true;
-				input.buttons.lButton.dragStart = input.mousePos;
-				break;
-
-			case 1:
-				input.buttons.mButton.button = true;
-				input.buttons.mButton.dragStart = input.mousePos;
-				break;
-
-			case 2:
-				input.buttons.rButton.button = true;
-				input.buttons.rButton.dragStart = input.mousePos;
-				break;
-
-		}
-	}// TODO
+	}
 	
 	var handle_mouseWheel 	= function(e){
-		console.debug("from mousewheel");
 		var input = App.InputHandler;
 
-
-
-	}// TODO
+	}
 	
 
 	var handle_keyDown 		= function(e){
 		var input = App.InputHandler;
 		var key = input.keyCodeToChar[e.keyCode];
-				
+		if(input.keysDown[key]) return;
+
+		input.keysDown[key] = true;
+				console.log(" " + key);
 		input.executeKey(key, e);
 
-	}// TODO
+	}
 	
 	var handle_keyUp 		= function(e){
 		var input = App.InputHandler;
 		var key = input.keyCodeToChar[e.keyCode];
-		
+		input.keysDown[key] = false;
 		if(input.keyRegistry[key])
 			input.keyRegistry[key].n = 0;
-	}// TODO
+	}
 
 
 	//Unused - doesn't do what you'd think :/
