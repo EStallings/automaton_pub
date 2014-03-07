@@ -140,7 +140,7 @@ App.makeGame = function(){
 		game.panMouseX = x;
 		game.panMouseY = y;
 		game.panRenderX = game.renderX;
-		game.panRenderY = game.renderX;
+		game.panRenderY = game.renderY;
 	}
 
 	game.pan = function(x,y){
