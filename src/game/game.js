@@ -127,8 +127,8 @@ App.makeGame = function(){
 	game.cellSize = 3*Math.pow(2,3);
 	game.interpolation;
 
-	game.goalRenderX = 10;
-	game.goalRenderY = 10;
+	game.goalRenderX = 16;
+	game.goalRenderY = 82;
 	game.goalCellSize = 3*Math.pow(2,game.cellSizeFactor);
 
 		/*+------------------------------------------+*/
@@ -279,6 +279,12 @@ App.makeGame = function(){
 		game.tempGfx.fillText("Speed: "+game.simulationSpeed+" ms/tick",11,44);
 		game.tempGfx.fillText("Tick: "+App.Engine.tick                 ,11,55);
 		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor             ,11,66);
+
+		game.tempGfx.fillText("Pan X: "+game.renderX                   ,132,22);
+		game.tempGfx.fillText("Pan Y: "+game.renderY                   ,132,33);
+		game.tempGfx.fillText("Cell Size: "+game.cellSize              ,132,44);
+		if(game.requestStaticRenderUpdate)game.tempGfx.fillStyle = "#ff0000";
+		game.tempGfx.fillText("Static Render: "+game.requestStaticRenderUpdate,132,55);
 	}
 
 	// ========================================================== //
