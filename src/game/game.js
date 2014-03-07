@@ -5,11 +5,15 @@ App.makeGame = function(){
 	// ====================== MODE-SPECIFIC ===================== //
 	// ========================================================== //
 
+		/*+------------------------------------------+*/
+
 	game.modes = {SIMULATION:'sim',PLANNING:'plan'}; // why are these strings?
 	game.mode = game.modes.PLANNING;
 
 	game.currentPlanningLevel;
 	game.currentSimulationLevel;
+
+		/*+------------------------------------------+*/
 
 	game.enterPlanningMode = function(levelString){
 		if(game.mode === game.modes.PLANNING)return;
@@ -35,6 +39,8 @@ App.makeGame = function(){
 		game.cycles = 0;
 	}
 
+		/*+------------------------------------------+*/
+
 	game.simulationError = function(errorCode){
 		// TODO: stop simulation
 		// TODO: display error
@@ -50,6 +56,8 @@ App.makeGame = function(){
 		//       cell usage
 		// TODO: exit/next level...
 	}
+
+		/*+------------------------------------------+*/
 
 	game.createNewLevel = function(){} // TODO: implement?
 
@@ -83,12 +91,11 @@ App.makeGame = function(){
 	game.cycles;
 	game.simulationSpeed = 500;
 
+		/*+------------------------------------------+*/
+
 	game.update = function(){
 		if(game.mode === game.modes.PLANNING &&
 		   game.currentPlanningLevel !== undefined)
-			// Do nothing, I believe. -- lets have a planning mode
-			// update anyways, theres a possibility of time-dependant
-			// animations for example.
 			game.currentPlanningLevel.update();
 		else if(game.currentSimulationLevel !== undefined)
 		while(App.Engine.tick > game.nextCycleTick){
@@ -104,33 +111,47 @@ App.makeGame = function(){
 	// ===================== RENDER-SPECIFIC ==================== //
 	// ========================================================== //
 
-	// TODO: make canvas layers for each object type
-	// for each canvas layer, set gfx properties that are constant here
+	game.gridGfx   = App.Canvases.addNewLayer("grid"          ,-5).getContext("2d");
+	game.borderGfx = App.Canvases.addNewLayer("border"        ,-4).getContext("2d");
+	game.tokenDGfx = App.Canvases.addNewLayer("token static"  ,-3).getContext("2d");
+	game.tokenSGfx = App.Canvases.addNewLayer("token dynamic" ,-2).getContext("2d");
+	game.automGfx  = App.Canvases.addNewLayer("autom"         ,-1).getContext("2d");
+	game.tempGfx   = App.Canvases.addNewLayer("gameTemp"       ,0).getContext("2d");
 
-	game.gridGfx = App.Canvases.addNewLayer("grid",-5).getContext("2d");
-	game.gridGfx.lineWidth = 2;
-
-	game.borderGfx = App.Canvases.addNewLayer("border",-4).getContext("2d");
-	game.borderGfx.lineWidth = 2;
-
-	game.tokenDGfx = App.Canvases.addNewLayer("token static",-3).getContext("2d");
-	game.tokenSGfx = App.Canvases.addNewLayer("token dynamic",-2).getContext("2d");
-
-	game.automGfx = App.Canvases.addNewLayer("autom",-1).getContext("2d");
-	game.automGfx.lineWidth = 4;
+		/*+------------------------------------------+*/
 
 	game.renderX = 0; // XXX: CONSIDER KEEPING THIS FLOORED FOR PERFORMANCE
 	game.renderY = 0; // XXX: CONSIDER KEEPING THIS FLOORED FOR PERFORMANCE
-	game.cellSize = 6*Math.pow(2,3);
+	game.cellSizeFactor = 3;
+	game.cellSize = 6*Math.pow(2,game.cellSizeFactor);
 	game.interpolation;
 
-	game.setRenderX = function(x){}
-	game.setRenderY = function(y){}
-	game.setCellSize = function(s){}
+		/*+------------------------------------------+*/
 
-	// TODO: game.beginPan(x,y){}
-	// TODO: game.pan(x,y){}
-	// TODO: game.zoom(f){} // from cursor or center?
+	game.panRenderX;
+	game.panRenderY;
+	game.panMouseX;
+	game.panMouseY;
+
+	game.beginPan = function(x,y){
+		game.panMouseX = x;
+		game.panMouseY = y;
+		game.panRenderX = game.renderX;
+		game.panRenderY = game.renderX;
+	}
+
+	game.pan = function(x,y){
+		game.renderX = game.panRenderX+(x-game.panMouseX); // TODO: SCALING ADJUSTMENT
+		game.renderY = game.panRenderY+(y-game.panMouseY); // TODO: SCALING ADJUSTMENT
+		game.staticRender();
+	}
+
+	game.zoom = function(f){
+		game.cellSizeFactor += f;
+		game.cellSize = 6*Math.pow(2,game.cellSizeFactor);
+		// TODO: PAN ADJUSTMENT
+		game.staticRender();
+	}
 
 	game.translateCanvas = function(gfx){
 		gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
@@ -138,12 +159,16 @@ App.makeGame = function(){
 		gfx.translate(App.Game.renderX,App.Game.renderY);
 	}
 
-	// TODO: call initial static rendering
+		/*+------------------------------------------+*/
+
+	// TODO: CALL INITIAL STATIC RENDERING WHEN?
 	game.staticRender = function(){
-		// grid will always be rendering
 		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.gridGfx.lineWidth = 2;
 		game.renderX = Math.sin(App.Engine.tick * 0.0002)*50+60; // DELETE
 		game.renderY = Math.sin(App.Engine.tick * 0.0005)*30+40; // DELETE
+		game.cellSizeFactor = (Math.sin(App.Engine.tick * 0.001)*0.5+0.5)*2+2; // DELETE
+		game.cellSize = 6*Math.pow(2,game.cellSizeFactor); // DELETE
 
 		// setup grid vars
 		var cs = game.cellSize;
@@ -177,14 +202,21 @@ App.makeGame = function(){
 		for(var j=ry-cs/2;j<h+cs;j+=cs){
 			game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
 			game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
+			if(game.cellSizeFactor < 2.7)continue;
 			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
 		}game.gridGfx.stroke();
 
 	//	if(game.mode === game.modes.PLANNING &&
 	//	   game.currentPlanningLevel !== undefined)
-	//		game.currentPlanningLevel.render();
+	//		game.currentPlanningLevel.staticRender();
 	//	else if(game.currentSimulationLevel !== undefined)
 			game.currentSimulationLevel.staticRender();
+
+		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.tempGfx.font = "bold 11px arial";
+		game.tempGfx.fillStyle = "#ffffff";
+		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps),10,20);
+		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor,10,31);
 	}
 
 	game.dynamicRender = function(){
@@ -194,12 +226,13 @@ App.makeGame = function(){
 		// render level
 	//	if(game.mode === game.modes.PLANNING &&
 	//	   game.currentPlanningLevel !== undefined)
-	//		game.currentPlanningLevel.render(); // TODO: dynamic render
+	//		game.currentPlanningLevel.dynamicRender();
 	//	else if(game.currentSimulationLevel !== undefined)
 			game.currentSimulationLevel.dynamicRender();
 	}
 
 	// ========================================================== //
 
+	// TODO: SETUP GAME INPUT CALLBACKS HERE
 	return game;
 }

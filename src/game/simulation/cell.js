@@ -17,8 +17,7 @@ App.SimulationCell = function(level,x,y){
 		// report error if token collision detected
 		var total = this.tokens.length;
 		for(var i in this.automatons)
-		if(this.automatons[i].tokenHeld !== undefined)
-			++total;
+		if(this.automatons[i].tokenHeld !== undefined)++total;
 		if(total > 1)App.Game.simulationError(); // TODO: tell level reached invalid state (token collision)
 	}
 

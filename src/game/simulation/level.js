@@ -46,6 +46,7 @@ App.SimulationLevel = function(width,height){
 	this.staticRender = function(){
 		// draw level bounds | XXX: SHOULD WE EVEN RENDER THIS...
 		App.Game.translateCanvas(this.gfx);
+		App.Game.borderGfx.lineWidth = 2;
 		var cs = App.Game.cellSize;
 		var w = this.width*cs;
 		var h = this.height*cs;
@@ -65,9 +66,13 @@ App.SimulationLevel = function(width,height){
 
 	this.dynamicRender = function(){
 		App.Game.translateCanvas(App.Game.automGfx);
+		App.Game.translateCanvas(App.Game.tokenDGfx);
+		App.Game.automGfx.lineWidth = 4;
+		App.Game.tokenDGfx.textAlign = "center";
+		App.Game.tokenDGfx.font = "bold 18px arial";
 		for(var i in this.automatons)this.automatons[i].render();
-		App.Game.automGfx.restore();
-
 		// TODO: render sfx animation layers
+		App.Game.automGfx.restore();
+		App.Game.tokenDGfx.restore();
 	}
 }

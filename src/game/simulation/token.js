@@ -7,11 +7,15 @@ App.SimulationToken = function(level,x,y,number){
 	this.number = number;
 
 	this.rFunc = function(x,y,gfx){ // x y = topleft
+		var cs = App.Game.cellSize;
+
 		gfx.fillStyle = "#ffffff";
-		gfx.fillCircle(x+cellSize/2,y+cellSize/2,7*cellSize/16,-Math.PI,Math.PI);
+		gfx.beginPath();
+		gfx.arc(x+cs/2,y+cs/2,7*cs/16,-Math.PI,Math.PI);
+		gfx.fill();
+
 		gfx.fillStyle = "#000000";
-		gfx.textAlign = "center";
-		gfx.fillText(this.number,x+cellSize/2,y+cellSize/2+7);
+		gfx.fillText(this.number,x+cs/2,y+cs/2+7);
 	}
 
 	this.staticRender = function(x,y){this.rFunc(x,y,this.gfxS);}
