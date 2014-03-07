@@ -4,7 +4,7 @@ App.makeInputHandler = function(){
 	var input = {};
 
 	// stores callback events associated with a type of event and a layer
-		//for now:
+	//for now:
 	input.canvas = App.Canvases.addNewLayer('inputCanvas', 10); // TODO: z value for this should be the largest...
 	input.context = input.canvas.getContext('2d');
 	input.Gui = App.makeGuiInput();
@@ -13,11 +13,20 @@ App.makeInputHandler = function(){
 	input.keyRegistry = [];
 	input.keysDown = [];
 
+	input.mouseData = {
+		x:0,
+		y:0,
+		lmb:false,
+		rmb:false,
+		mmb:false,
+		wheel:0
+	}
+
 	//TODO registering a function to be called back under specified conditions for keyboard events
 	//if repeat is false, holding a key down will not fire multiple events.
-	input.registerKey = function(key, callback, repeat){
+	input.registerKey = function(key, callback){
 		if(!this.keyRegistry[key])
-			this.keyRegistry[key] = {c:callback, r:repeat, n:0};
+			this.keyRegistry[key] = callback;
 		else
 			console.error("Tried to assign multiple functions to a single keypress!!!: " + key + " , " + callback);
 	}
@@ -29,6 +38,7 @@ App.makeInputHandler = function(){
 		if(this.keyRegistry[key].r || this.keyRegistry[key].n === 1)
 			this.keyRegistry[key].c();
 	}
+
 
 	/////////
 	//Section evt handlers
@@ -42,27 +52,57 @@ App.makeInputHandler = function(){
 
 		var rect = e.currentTarget.getBoundingClientRect();
 
-		input.mousePos = {
-			x:e.clientX - rect.left,
-			y:e.clientY - rect.top
-		};
-	
-
-		
+		input.mouseData.x = e.clientX - rect.left;
+		input.mouseData.y = e.clientY - rect.top;
+		if(!input.Gui.mouseMove(input.mouseData))
+			input.Game.mouseMove(input.mouseData);
 	}
 
 	var handle_mouseUp 		= function(e){
 		var input = App.InputHandler;
+		switch (e.button){
+			case 0:
+				input.mouseData.lmb = false;
+				break;
+			case 1:
+				input.mouseData.mmb = false;
+				break;
+			case 2:
+				input.mouseData.rmb = false;
+				break;
+		}
+		if(!input.Gui.mouseUp(input.mouseData))
+			input.Game.mouseUp(input.mouseData);
 	}
 	
 	
 	var handle_mouseDown 	= function(e){
 		var input = App.InputHandler;
-
+		switch (e.button){
+			case 0:
+				input.mouseData.lmb = true;
+				break;
+			case 1:
+				input.mouseData.mmb = true;
+				break;
+			case 2:
+				input.mouseData.rmb = true;
+				break;
+		}
+		if(!input.Gui.mouseDown(input.mouseData))
+			input.Game.mouseDown(input.mouseData);
 	}
 	
 	var handle_mouseWheel 	= function(e){
 		var input = App.InputHandler;
+		var evt = window.event || e;
+		var delta = evt.detail? evt.detail*(-1) : evt.wheelDelta / (120);
+		input.mouseData.wheel = delta;
+
+		if(!input.Gui.mouseWheel(input.mouseData))
+			input.Game.mouseWheel(input.mouseData);
+
+		input.mouseData.wheel = 0;
 
 	}
 	
