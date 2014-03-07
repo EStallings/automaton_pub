@@ -7,8 +7,9 @@ window.onload = function(){
 	// TODO: FOR EACH MENU, MAKE A CREATE<MENUNAME>?
 	// TODO: CLEANUP & DELETE
 	// TODO: what about each gui menu gets its own canvas and is "always rendering"?
-	constructMenus();
-	App.Gui = App.Menus['mainMenu'];
+	App.Gui = App.makeGUI();
+	// constructMenus();
+	// App.Gui = App.Menus['mainMenu'];
 	//App.InputHandler.registerMouse(App.InputHandler.mouseTypes.LEFT_CLICK,App.CheckGuiClick,"GUI");
 	// ========================================================== //
 

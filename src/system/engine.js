@@ -32,10 +32,8 @@ App.makeEngine = function(){
 
 	// calls all appropriate render functions
 	engine.render = function(){
-		if(App.Game.requestStaticRenderUpdate){
-			App.Game.requestStaticRenderUpdate = false;
-			App.Game.staticRender();
-		}App.Game.dynamicRender();
+		App.Game.staticRender();
+		App.Game.dynamicRender();
 		App.Gui.render();
 	};
 

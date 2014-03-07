@@ -18,7 +18,7 @@ App.makeGame = function(){
 	game.enterPlanningMode = function(levelString){
 		if(game.mode === game.modes.PLANNING)return;
 		game.mode = game.modes.PLANNING;
-		App.changeMenu('planning'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
+		//App.changeMenu('planning'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
 
 		if(levelString)game.currentPlanningLevel = game.loadNewLevel(levelString);
 		else game.currentPlanningLevel = game.createNewLevel();
@@ -30,7 +30,7 @@ App.makeGame = function(){
 	game.enterSimulationMode = function(){
 		if(game.mode === game.modes.SIMULATION)return;
 		game.mode = game.modes.SIMULATION;
-		App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
+		//App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
 		// game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel(); // TODO: IMPLEMENT THIS
 
 		// TODO: CALL INSTRUCTION start() FUNCTIONS
@@ -123,11 +123,15 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.renderX = 0; // XXX: CONSIDER KEEPING THIS FLOORED FOR PERFORMANCE
-	game.renderY = 0; // XXX: CONSIDER KEEPING THIS FLOORED FOR PERFORMANCE
-	game.cellSizeFactor = 3;
-	game.cellSize = 6*Math.pow(2,game.cellSizeFactor);
+	game.renderX = 0;
+	game.renderY = 0;
+	game.cellSizeFactor = 4;
+	game.cellSize = 3*Math.pow(2,game.cellSizeFactor);
 	game.interpolation;
+
+	game.goalRenderX = game.renderX;
+	game.goalRenderY = game.renderY;
+	game.goalCellSize = game.cellSize;
 
 		/*+------------------------------------------+*/
 
@@ -139,27 +143,27 @@ App.makeGame = function(){
 	game.beginPan = function(x,y){
 		game.panMouseX = x;
 		game.panMouseY = y;
-		game.panRenderX = game.renderX;
-		game.panRenderY = game.renderY;
+		game.panRenderX = game.goalRenderX;
+		game.panRenderY = game.goalRenderY;
 	}
 
 	game.pan = function(x,y){
-		game.renderX = game.panRenderX+(x-game.panMouseX);
-		game.renderY = game.panRenderY+(y-game.panMouseY);
+		game.goalRenderX = game.panRenderX+(x-game.panMouseX);
+		game.goalRenderY = game.panRenderY+(y-game.panMouseY);
 		game.requestStaticRenderUpdate = true;
 	}
 
 	game.zoom = function(x,y,f){
 		game.cellSizeFactor += f;
-		if(game.cellSizeFactor<0)game.cellSizeFactor=0;
-		if(game.cellSizeFactor>6)game.cellSizeFactor=6;
+		if(game.cellSizeFactor<2)game.cellSizeFactor=2;
+		if(game.cellSizeFactor>7)game.cellSizeFactor=7;
 
-		var oldCellSize = game.cellSize;
-		game.cellSize = 6*Math.pow(2,game.cellSizeFactor);
-		var factor = game.cellSize/oldCellSize;
+		var oldCellSize = game.goalCellSize;
+		game.goalCellSize = 3*Math.pow(2,game.cellSizeFactor);
+		var factor = game.goalCellSize/oldCellSize;
 
-		game.renderX = x+(game.renderX-x)*factor;
-		game.renderY = y+(game.renderY-y)*factor;
+		game.goalRenderX = x+(game.goalRenderX-x)*factor;
+		game.goalRenderY = y+(game.goalRenderY-y)*factor;
 
 		game.requestStaticRenderUpdate = true;
 	}
@@ -178,8 +182,6 @@ App.makeGame = function(){
 		game.simulationSpeed = speed;
 	}
 
-	// App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_CLICK,game.beginPan,"GAME");
-	// App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_DRAG,game.pan,"GAME");
 	App.InputHandler.registerKey("Q",function(){game.setSimulationSpeed(game.simulationSpeed*2);});
 	App.InputHandler.registerKey("W",function(){game.setSimulationSpeed(game.simulationSpeed/2);});
 
@@ -196,8 +198,31 @@ App.makeGame = function(){
 		/*+------------------------------------------+*/
 
 	// TODO: CALL INITIAL STATIC RENDERING WHEN?
+
+	game.expInterp = function(val,goal,threshold){
+		var factor = App.Engine.elapsed*0.01;
+		if(factor>1)factor=1;
+		var retVal = (goal-val)*factor;
+		if(Math.abs(val+retVal-goal)<threshold)retVal=goal-val;
+		return retVal;
+	}
+
 	game.staticRender = function(){
+		// return if no need to re-render
+		if(!game.requestStaticRenderUpdate)return;
+		game.requestStaticRenderUpdate = false;
+
+		// update interpolated view variables
+		game.renderX  += game.expInterp(game.renderX,game.goalRenderX  ,0.5);
+		game.renderY  += game.expInterp(game.renderY,game.goalRenderY  ,0.5);
+		game.cellSize += game.expInterp(game.cellSize,game.goalCellSize,0.01);
+		if(game.renderX != game.goalRenderX)game.requestStaticRenderUpdate=true;
+		if(game.renderY != game.goalRenderY)game.requestStaticRenderUpdate=true;
+		if(game.cellSize != game.goalCellSize)game.requestStaticRenderUpdate=true;
+
+		// setup grid canvas
 		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.gridGfx.lineWidth = 2;
 
 		// setup grid vars
 		var cs = game.cellSize;
@@ -231,7 +256,7 @@ App.makeGame = function(){
 		for(var j=ry-cs/2;j<h+cs;j+=cs){
 			game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
 			game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
-			if(game.cellSizeFactor < 2.7)continue;
+			if(game.cellSize < 40)continue;
 			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
 		}game.gridGfx.stroke();
 
@@ -243,7 +268,6 @@ App.makeGame = function(){
 	}
 
 	game.dynamicRender = function(){
-		game.gridGfx.lineWidth = 2;
 	//	game.renderX = Math.sin(App.Engine.tick * 0.0002)*50+60; // DELETE
 	//	game.renderY = Math.sin(App.Engine.tick * 0.0005)*30+40; // DELETE
 	//	game.cellSizeFactor = (Math.sin(App.Engine.tick * 0.001)*0.5+0.5)*2+2; // DELETE

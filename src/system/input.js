@@ -22,6 +22,8 @@ App.makeInputHandler = function(){
 		wheel:0
 	}
 
+	input.clickOverGUI = false;
+
 	printMouseData = function(){
 		var i = input.mouseData;
 		console.log("x:" + i.x + ", y:" + i.y + ", l:" + i.lmb + ", m:" + i.mmb + ", r:" + i.rmb + ", w:" + i.wheel);
@@ -56,7 +58,7 @@ App.makeInputHandler = function(){
 
 		input.mouseData.x = e.clientX - rect.left;
 		input.mouseData.y = e.clientY - rect.top;
-		if(!input.Gui.mouseMove(input.mouseData))
+		if(!input.Gui.mouseMove(input.mouseData) && !input.clickOverGUI)
 			input.Game.mouseMove(input.mouseData);
 	}
 
@@ -73,7 +75,7 @@ App.makeInputHandler = function(){
 				input.mouseData.rmb = false;
 				break;
 		}
-		if(!input.Gui.mouseUp(input.mouseData))
+		if(!input.Gui.mouseUp(input.mouseData) && !input.clickOverGUI)
 			input.Game.mouseUp(input.mouseData);
 	}
 	
@@ -91,7 +93,9 @@ App.makeInputHandler = function(){
 				input.mouseData.rmb = true;
 				break;
 		}
-		if(!input.Gui.mouseDown(input.mouseData))
+		if(input.Gui.mouseDown(input.mouseData))
+			input.clickOverGUI = true;
+		else
 			input.Game.mouseDown(input.mouseData);
 	}
 	
@@ -103,7 +107,7 @@ App.makeInputHandler = function(){
 
 		input.mouseData.wheel = delta;
 
-		if(!input.Gui.mouseWheel(input.mouseData))
+		if(!input.Gui.mouseWheel(input.mouseData) && !input.clickOverGUI)
 			input.Game.mouseWheel(input.mouseData);
 
 		input.mouseData.wheel = 0;

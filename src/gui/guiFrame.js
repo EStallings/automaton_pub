@@ -1,19 +1,48 @@
+
+
 // TODO: WRITE THIS ========================================================= //
 
 App.makeGUI = function(){
 	var gui = {};
-	gui.gfx = App.Canvases.addNewLayer("GUI",0);
+	gui.canvas = App.Canvases.addNewLayer("GUI",0);
+	gui.gfx = gui.canvas.getContext('2d');
 
-	gui.menus = [];
-	gui.currentMenu;
+	gui.frames = [];
+	gui.currentFrame;
 
-	gui.addNewMenu = function(){}
-	gui.setCurrentMenu = function(){}
+	gui.addNewFrame = function(framekey){
+		if(this.frames[framekey]){
+			console.error("tried to bind two frames to a single key: " + framekey);
+			return;
+		}
+		this.frames[framekey] = [];
 
-	gui.addNewButton = function(menu){}
+		if(!this.currentFrame)
+			this.currentFrame = this.frames[framekey];
+	}
+	gui.setCurrentFrame = function(framekey){
+		this.currentFrame = (this.frames[key]) ? this.frames[key] : this.currentFrame;
+	}
 
-	gui.update = function(){}
-	gui.render = function(){}
+	gui.addNewComponent = function(framekey, component){
+		if(!this.frames[framekey])
+			console.error("cannot add a component to nonexistent frame: " + framekey);
+		this.frames[framekey].push(component);
+	}
+
+	gui.update = function(){
+		for(var c in this.currentFrame)if(this.currentFrame[c].update)
+			this.currentFrame[c].update();
+	}
+
+	gui.render = function(){
+		this.gfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
+
+		for(var c in this.currentFrame) if(this.currentFrame[c].render)
+			this.currentFrame[c].render(this.gfx);
+	}
+
+	return gui;
 }
 
 // ========================================================================== //
@@ -24,41 +53,8 @@ App.makeGUI = function(){
 	// =========================================================== //
 
 
-App.GuiFrame = function(){
-	this.components = [];
 
-	this.update = function(){
-		for(var c in this.components)if(this.components[c].update)
-			this.components[c].update();
-	};
 
-	this.render = function(){
-		// TODO: THE GUI SHOULD HAVE A REFERENCE TO ITS OWN CANVAS | CLEAR THE GUI INSIDE GUI'S RENDER, NOT HERE
-		var guiCanvas = App.Canvases.layers['GUI'];                                        // TODO: CLEAN THIS UP
-		guiCanvas.getContext('2d').clearRect(0,0,App.Canvases.width, App.Canvases.height); // TODO: CLEAN THIS UP
-
-		for(var c in this.components)if(this.components[c].render)
-			this.components[c].render();
-	};
-}
-
-App.CheckGuiClick = function(data,evt){
-	var gui = App.Gui;
-	var ret = false;
-	var x = data.x;
-	var y = data.y;
-
-	for(var c in gui.components){
-		var comp = gui.components[c];
-		if(x > comp.x && x < (comp.x + comp.width) &&
-		   y > comp.y && y < (comp.y + comp.height)){
-			comp.callback();
-			ret = true;
-		}
-	}
-
-	return ret;
-}
 
 App.Button = function(menuName,x,y,width,height,text,callback){
 	App.Menus[menuName].components.push(this);
@@ -84,25 +80,4 @@ App.Button = function(menuName,x,y,width,height,text,callback){
 		this.gfx.strokeStyle = "rgb(255,255,255)";
 		this.gfx.strokeRect(this.x,this.y,this.width,this.height);
 	}
-}
-
-App.changeMenu = function(menuName){
-	if(App.Menus[menuName])
-		App.Gui = App.Menus[menuName];
-}
-
-function constructMenus(){
-	App.GuiCanvas = App.Canvases.addNewLayer("GUI",0);
-
-	App.Menus = [];
-
-	App.Menus['mainMenu'] = new App.GuiFrame();
-	new App.Button('mainMenu',10,10,100,30,'PLAY',function(){App.Game.enterPlanningMode();});	
-	new App.Button('mainMenu',10,50,100,30,'LIBRARY',function(){alert("BAR");});
-	new App.Button('mainMenu',10,90,100,30,'EDITOR',function(){App.Game.enterPlanningMode();});
-
-	App.Menus['planning'] = new App.GuiFrame();
-	new App.Button('planning',10,10,100,30,'Main Menu',function(){App.changeMenu('mainMenu');});
-
-	App.Menus['simulation'] = new App.GuiFrame();
 }
