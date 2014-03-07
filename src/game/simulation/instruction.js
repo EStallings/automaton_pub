@@ -28,9 +28,42 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 	this.rFunc;
 
+	// ========================================================== //
+	// ================= I N S T R U C T I O N S ================ //
+	// ========================================================== //
+
 	switch(type){
 
-		case "u": // Up
+		case 0: // spawn up ============================
+
+			// TODO: add to special spawn list in level
+			this.execute = function(a){ // do nothing
+			};this.rFunc = function(){
+			};break;
+
+		case 1: // spawn down ==========================
+
+			// TODO: add to special spawn list in level
+			this.execute = function(a){ // do nothing
+			};this.rFunc = function(){
+			};break;
+
+		case 2: // spawn left ==========================
+
+			// TODO: add to special spawn list in level
+			this.execute = function(a){ // do nothing
+			};this.rFunc = function(){
+			};break;
+
+		case 3: // spawn right =========================
+
+			// TODO: add to special spawn list in level
+			this.execute = function(a){ // do nothing
+			};this.rFunc = function(){
+			};break;
+
+		case 4: // up ==================================
+
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.UP;
@@ -43,7 +76,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case "d": // Down
+		case 5: // down ================================
+
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.DOWN;
@@ -57,7 +91,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case "l": // Left
+		case 6: // left ================================
+
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.LEFT;
@@ -71,7 +106,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case "r": // Right
+		case 7: // right ===============================
+
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.RIGHT;
@@ -85,20 +121,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case "c": // rotate cCw
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				a.direction = (a.direction+1)%4;
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/8,Math.PI,Math.PI/2);
-				this.gfx.moveTo(cs/8,cs/4);
-				this.gfx.lineTo(cs/8,cs/8);
-				this.gfx.stroke();
-			};break;
+		case 8: // rotate cw ===========================
 
-		case "w": // rotate cW
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = (a.direction+3)%4;
@@ -111,17 +135,77 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case "g": // TODO: Grab
+		case 9: // rotate ccw ==========================
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				a.direction = (a.direction+1)%4;
+			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.arc(cs/4,cs/4,cs/8,Math.PI,Math.PI/2);
+				this.gfx.moveTo(cs/8,cs/4);
+				this.gfx.lineTo(cs/8,cs/8);
+				this.gfx.stroke();
+			};break;
+
+		case 10: // stream =============================
+
+			// TODO: add to special stream list in level
+			// TODO: special render function for stream (add stream render layer)
 			this.execute = function(a){
 			};this.rFunc = function(){
 			};break;
 
-		case "?": // TODO: drop
+		case 11: // in =================================
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				// TODO: IMPLEMENT THIS
+			//	for(var i in this.level.streams)
+			//		this.level.streams[i].IO(INPUT,this.color);
+			};this.rFunc = function(){
+				// TODO: this should NOT be an I (streams)
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(cs/4,cs/8);
+				this.gfx.lineTo(cs/4,3*cs/8);
+				this.gfx.moveTo(cs/8,cs/8);
+				this.gfx.lineTo(3*cs/8,cs/8);
+				this.gfx.moveTo(cs/8,3*cs/8);
+				this.gfx.lineTo(3*cs/8,3*cs/8);
+				this.gfx.stroke();
+			};break;
+
+		case 12: // out ================================
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				// TODO: IMPLEMENT THIS
+			//	for(var i in this.level.streams)
+			//		this.level.streams[i].IO(OUTPUT,this.color);
+			};this.rFunc = function(){
+				// TODO: this should NOT be an O (streams)
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.arc(cs/4,cs/4,cs/8,-Math.PI,Math.PI);
+				this.gfx.stroke();
+			};break;
+
+		case 13: // grab ===============================
+
 			this.execute = function(a){
 			};this.rFunc = function(){
 			};break;
 
-		case "t": // Toggle grab/drop
+		case 14: // drop ===============================
+
+			this.execute = function(a){
+			};this.rFunc = function(){
+			};break;
+
+		case 15: // grab/drop ==========================
+
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined){
@@ -149,7 +233,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case "+": // increment
+		case 16: // inc ================================
+
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)++a.tokenHeld.number;
@@ -163,7 +248,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case "-": // decrement
+		case 17: // dec ================================
+
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)--a.tokenHeld.number;
@@ -175,77 +261,50 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case "i": // In
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				// TODO: IMPLEMENT THIS
-			//	for(var i in this.level.streams)
-			//		this.level.streams[i].IO(INPUT,this.color);
-			};this.rFunc = function(){
-				// TODO: this should NOT be an I (streams)
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.moveTo(cs/8,cs/8);
-				this.gfx.lineTo(3*cs/8,cs/8);
-				this.gfx.moveTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.stroke();
-			};break;
+		case 18: // switch 0 ===========================
 
-		case "o": // Out
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				// TODO: IMPLEMENT THIS
-			//	for(var i in this.level.streams)
-			//		this.level.streams[i].IO(OUTPUT,this.color);
-			};this.rFunc = function(){
-				// TODO: this should NOT be an O (streams)
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/8,-Math.PI,Math.PI);
-				this.gfx.stroke();
-			};break;
-
-		case "a": // TODO: Autom spawn
-			// TODO: add to special spawn list in level
-			this.execute = function(a){ // do nothing
-			};this.rFunc = function(){
-			};break;
-
-		case "s": // TODO: Switch
 			this.execute = function(a){
 			};this.rFunc = function(){
 			};break;
 
-		case "y": // TODO: sYnc
+		case 19: // switch +- ==========================
+
+			this.execute = function(a){
+			};this.rFunc = function(){
+			};break;
+
+		case 20: // switch even odd ====================
+
+			this.execute = function(a){
+			};this.rFunc = function(){
+			};break;
+
+		case 21: // sync ===============================
+
 			// TODO: override this.render
 			// TODO: custom syms for each color
 			this.execute = function(a){
 			};this.rFunc = function(){
 			};break;
 
-		case "p": // TODO: Pause
-			this.execute = function(a){
-			};this.rFunc = function(){
-			};break;
+		case 22: // color toggle =======================
 
-		case "m": // TODO: streaM
-			// TODO: add to special stream list in level
-			// TODO: special render function for stream (add stream render layer)
-			this.execute = function(a){
-			};this.rFunc = function(){
-			};break;
-
-		case "?": // TODO: color toggle
 			// TODO: this doesn't have a color check
+			this.execute = function(a){
+			};this.rFunc = function(){
+			};break;
+
+		case 23: // pause ==============================
+
 			this.execute = function(a){
 			};this.rFunc = function(){
 			};break;
 	}
 
-	// TODO: DYNAMICALLY CREATE RENDER FUNCTION SO YOU DONT HAVE TO DO THIS EVERY TIME
+	// ========================================================== //
+	// ========================================================== //
+	// ========================================================== //
+
 	this.render = function(){
 		var cs = App.Game.cellSize;
 
