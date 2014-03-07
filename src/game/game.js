@@ -144,15 +144,23 @@ App.makeGame = function(){
 	}
 
 	game.pan = function(x,y){
-		game.renderX = game.panRenderX+(x-game.panMouseX); // TODO: SCALING ADJUSTMENT
-		game.renderY = game.panRenderY+(y-game.panMouseY); // TODO: SCALING ADJUSTMENT
+		game.renderX = game.panRenderX+(x-game.panMouseX);
+		game.renderY = game.panRenderY+(y-game.panMouseY);
 		game.requestStaticRenderUpdate = true;
 	}
 
 	game.zoom = function(x,y,f){
 		game.cellSizeFactor += f;
+		if(game.cellSizeFactor<0)game.cellSizeFactor=0;
+		if(game.cellSizeFactor>6)game.cellSizeFactor=6;
+
+		var oldCellSize = game.cellSize;
 		game.cellSize = 6*Math.pow(2,game.cellSizeFactor);
-		// TODO: PAN ADJUSTMENT
+		var factor = game.cellSize/oldCellSize;
+
+		game.renderX = x+(game.renderX-x)*factor;
+		game.renderY = y+(game.renderY-y)*factor;
+
 		game.requestStaticRenderUpdate = true;
 	}
 
