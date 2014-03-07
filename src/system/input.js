@@ -98,7 +98,9 @@ App.makeInputHandler = function(){
 	var handle_mouseWheel 	= function(e){
 		var input = App.InputHandler;
 		var evt = window.event || e;
-		var delta = evt.detail? evt.detail*(-1) : evt.wheelDelta / (120);
+		var delta = evt.detail? evt.detail*(-1) : evt.wheelDelta;
+		delta = (delta < 0) ? -1 : 1;
+
 		input.mouseData.wheel = delta;
 
 		if(!input.Gui.mouseWheel(input.mouseData))
