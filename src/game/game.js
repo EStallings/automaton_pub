@@ -134,16 +134,16 @@ App.makeGame = function(){
 	game.panMouseX;
 	game.panMouseY;
 
-	game.beginPan = function(x,y){
-		game.panMouseX = x;
-		game.panMouseY = y;
+	game.beginPan = function(obj,evt){
+		game.panMouseX = obj.x;
+		game.panMouseY = obj.y;
 		game.panRenderX = game.renderX;
 		game.panRenderY = game.renderX;
 	}
 
-	game.pan = function(x,y){
-		game.renderX = game.panRenderX+(x-game.panMouseX); // TODO: SCALING ADJUSTMENT
-		game.renderY = game.panRenderY+(y-game.panMouseY); // TODO: SCALING ADJUSTMENT
+	game.pan = function(obj,evt){
+		game.renderX = game.panRenderX+(obj.END.x-game.panMouseX); // TODO: SCALING ADJUSTMENT
+		game.renderY = game.panRenderY+(obj.END.y-game.panMouseY); // TODO: SCALING ADJUSTMENT
 		game.staticRender();
 	}
 
@@ -153,6 +153,9 @@ App.makeGame = function(){
 		// TODO: PAN ADJUSTMENT
 		game.staticRender();
 	}
+
+	App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_CLICK,game.beginPan,"GAME");
+	App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_DRAG,game.pan,"GAME");
 
 	game.translateCanvas = function(gfx){
 		gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
@@ -215,10 +218,10 @@ App.makeGame = function(){
 
 	game.dynamicRender = function(){
 		game.gridGfx.lineWidth = 2;
-		game.renderX = Math.sin(App.Engine.tick * 0.0002)*50+60; // DELETE
-		game.renderY = Math.sin(App.Engine.tick * 0.0005)*30+40; // DELETE
-		game.cellSizeFactor = (Math.sin(App.Engine.tick * 0.001)*0.5+0.5)*2+2; // DELETE
-		game.cellSize = 6*Math.pow(2,game.cellSizeFactor); // DELETE
+	//	game.renderX = Math.sin(App.Engine.tick * 0.0002)*50+60; // DELETE
+	//	game.renderY = Math.sin(App.Engine.tick * 0.0005)*30+40; // DELETE
+	//	game.cellSizeFactor = (Math.sin(App.Engine.tick * 0.001)*0.5+0.5)*2+2; // DELETE
+	//	game.cellSize = 6*Math.pow(2,game.cellSizeFactor); // DELETE
 
 		game.interpolation = (App.Engine.tick-game.lastCycleTick)
 		                   / (game.nextCycleTick-game.lastCycleTick);
