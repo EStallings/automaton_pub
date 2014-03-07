@@ -136,16 +136,16 @@ App.makeGame = function(){
 	game.panMouseX;
 	game.panMouseY;
 
-	game.beginPan = function(obj,evt){
-		game.panMouseX = obj.x;
-		game.panMouseY = obj.y;
+	game.beginPan = function(x,y){
+		game.panMouseX = x;
+		game.panMouseY = y;
 		game.panRenderX = game.renderX;
 		game.panRenderY = game.renderX;
 	}
 
-	game.pan = function(obj,evt){
-		game.renderX = game.panRenderX+(obj.END.x-game.panMouseX); // TODO: SCALING ADJUSTMENT
-		game.renderY = game.panRenderY+(obj.END.y-game.panMouseY); // TODO: SCALING ADJUSTMENT
+	game.pan = function(x,y){
+		game.renderX = game.panRenderX+(x-game.panMouseX); // TODO: SCALING ADJUSTMENT
+		game.renderY = game.panRenderY+(y-game.panMouseY); // TODO: SCALING ADJUSTMENT
 		game.requestStaticRenderUpdate = true;
 	}
 
