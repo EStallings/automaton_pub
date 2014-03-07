@@ -22,6 +22,11 @@ App.makeInputHandler = function(){
 		wheel:0
 	}
 
+	printMouseData = function(){
+		var i = input.mouseData;
+		console.log("x:" + i.x + ", y:" + i.y + ", l:" + i.lmb + ", m:" + i.mmb + ", r:" + i.rmb + ", w:" + i.wheel);
+	}
+
 	//TODO registering a function to be called back under specified conditions for keyboard events
 	//if repeat is false, holding a key down will not fire multiple events.
 	input.registerKey = function(key, callback){
@@ -33,10 +38,7 @@ App.makeInputHandler = function(){
 
 	input.executeKey = function(key, evt){
 		if(!this.keyRegistry[key]) return;
-		this.keyRegistry[key].n++; 
-
-		if(this.keyRegistry[key].r || this.keyRegistry[key].n === 1)
-			this.keyRegistry[key].c();
+		this.keyRegistry[key]();
 	}
 
 
@@ -96,14 +98,15 @@ App.makeInputHandler = function(){
 	var handle_mouseWheel 	= function(e){
 		var input = App.InputHandler;
 		var evt = window.event || e;
-		var delta = evt.detail? evt.detail*(-1) : evt.wheelDelta / (120);
+		var delta = evt.detail? evt.detail*(-1) : evt.wheelDelta;
+		delta = (delta < 0) ? -1 : 1;
+
 		input.mouseData.wheel = delta;
 
 		if(!input.Gui.mouseWheel(input.mouseData))
 			input.Game.mouseWheel(input.mouseData);
 
 		input.mouseData.wheel = 0;
-
 	}
 	
 
@@ -126,6 +129,12 @@ App.makeInputHandler = function(){
 			input.keyRegistry[key].n = 0;
 	}
 
+	var handle_mouseOut 	= function(e){
+		var input = App.InputHandler;
+		input.mouseData.lmb = false;
+		input.mouseData.mmb = false;
+		input.mouseData.rmb = false;
+	}
 
 	//Unused - doesn't do what you'd think :/
 	var handle_keyPress 	= function(e){
@@ -144,10 +153,7 @@ App.makeInputHandler = function(){
 	}// TODO
 	
 	//For now, unused
-	var handle_mouseOut 	= function(e){
-		//console.debug("from mouseout");
-		//var input = App.InputHandler;
-	}// TODO
+	
 
 	//TODO Touch support
 	/*

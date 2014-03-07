@@ -89,7 +89,7 @@ App.makeGame = function(){
 	game.lastCycleTick;
 	game.nextCycleTick;
 	game.cycles;
-	game.simulationSpeed = 500;
+	game.simulationSpeed = 512;
 
 		/*+------------------------------------------+*/
 
@@ -136,28 +136,44 @@ App.makeGame = function(){
 	game.panMouseX;
 	game.panMouseY;
 
-	game.beginPan = function(obj,evt){
-		game.panMouseX = obj.x;
-		game.panMouseY = obj.y;
+	game.beginPan = function(x,y){
+		game.panMouseX = x;
+		game.panMouseY = y;
 		game.panRenderX = game.renderX;
-		game.panRenderY = game.renderX;
+		game.panRenderY = game.renderY;
 	}
 
-	game.pan = function(obj,evt){
-		game.renderX = game.panRenderX+(obj.END.x-game.panMouseX); // TODO: SCALING ADJUSTMENT
-		game.renderY = game.panRenderY+(obj.END.y-game.panMouseY); // TODO: SCALING ADJUSTMENT
+	game.pan = function(x,y){
+		game.renderX = game.panRenderX+(x-game.panMouseX); // TODO: SCALING ADJUSTMENT
+		game.renderY = game.panRenderY+(y-game.panMouseY); // TODO: SCALING ADJUSTMENT
 		game.requestStaticRenderUpdate = true;
 	}
 
-	game.zoom = function(f){
+	game.zoom = function(x,y,f){
 		game.cellSizeFactor += f;
 		game.cellSize = 6*Math.pow(2,game.cellSizeFactor);
 		// TODO: PAN ADJUSTMENT
 		game.requestStaticRenderUpdate = true;
 	}
 
+	game.setSimulationSpeed = function(speed){
+		if(speed<1)return;
+
+		var tick = App.Engine.tick;
+		var last = game.lastCycleTick;
+		var next = game.nextCycleTick;
+		var interp = (tick-last)/(next-last);
+		var factor = speed/game.simulationSpeed;
+
+		game.lastCycleTick = tick-(tick-last)*factor;
+		game.nextCycleTick = tick+(next-tick)*factor;
+		game.simulationSpeed = speed;
+	}
+
 	// App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_CLICK,game.beginPan,"GAME");
 	// App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_DRAG,game.pan,"GAME");
+	App.InputHandler.registerKey("Q",function(){game.setSimulationSpeed(game.simulationSpeed*2);});
+	App.InputHandler.registerKey("W",function(){game.setSimulationSpeed(game.simulationSpeed/2);});
 
 	game.translateCanvas = function(gfx){
 		gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
@@ -238,10 +254,11 @@ App.makeGame = function(){
 		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		game.tempGfx.font = "bold 11px arial";
 		game.tempGfx.fillStyle = "#ffffff";
-		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps),11,22);
-		game.tempGfx.fillText("Cycle: "+game.cycles             ,11,33);
-		game.tempGfx.fillText("Tick: "+App.Engine.tick          ,11,44);
-		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor      ,11,55);
+		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps)        ,11,22);
+		game.tempGfx.fillText("Cycle: "+game.cycles                     ,11,33);
+		game.tempGfx.fillText("Speed: "+game.simulationSpeed+" cycles/s",11,44);
+		game.tempGfx.fillText("Tick: "+App.Engine.tick                  ,11,55);
+		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor              ,11,66);
 	}
 
 	// ========================================================== //
