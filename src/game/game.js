@@ -144,7 +144,7 @@ App.makeGame = function(){
 	game.pan = function(obj,evt){
 		game.renderX = game.panRenderX+(obj.END.x-game.panMouseX); // TODO: SCALING ADJUSTMENT
 		game.renderY = game.panRenderY+(obj.END.y-game.panMouseY); // TODO: SCALING ADJUSTMENT
-		game.staticRender();
+	//	game.staticRender();
 	}
 
 	game.zoom = function(f){
