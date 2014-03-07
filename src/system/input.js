@@ -22,6 +22,11 @@ App.makeInputHandler = function(){
 		wheel:0
 	}
 
+	printMouseData = function(){
+		var i = input.mouseData;
+		console.log("x:" + i.x + ", y:" + i.y + ", l:" + i.lmb + ", m:" + i.mmb + ", r:" + i.rmb + ", w:" + i.wheel);
+	}
+
 	//TODO registering a function to be called back under specified conditions for keyboard events
 	//if repeat is false, holding a key down will not fire multiple events.
 	input.registerKey = function(key, callback){
@@ -103,7 +108,6 @@ App.makeInputHandler = function(){
 			input.Game.mouseWheel(input.mouseData);
 
 		input.mouseData.wheel = 0;
-
 	}
 	
 
