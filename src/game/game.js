@@ -149,7 +149,7 @@ App.makeGame = function(){
 		game.requestStaticRenderUpdate = true;
 	}
 
-	game.zoom = function(f){
+	game.zoom = function(x,y,f){
 		game.cellSizeFactor += f;
 		game.cellSize = 6*Math.pow(2,game.cellSizeFactor);
 		// TODO: PAN ADJUSTMENT
