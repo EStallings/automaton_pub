@@ -146,8 +146,8 @@ App.makeGame = function(){
 	}
 
 	game.pan = function(x,y){
-		game.goalRenderX = game.panRenderX+(x-game.panMouseX);
-		game.goalRenderY = game.panRenderY+(y-game.panMouseY);
+		game.goalRenderX = Math.round(game.panRenderX+(x-game.panMouseX));
+		game.goalRenderY = Math.round(game.panRenderY+(y-game.panMouseY));
 		game.requestStaticRenderUpdate = true;
 	}
 
@@ -157,11 +157,11 @@ App.makeGame = function(){
 		if(game.cellSizeFactor>7)game.cellSizeFactor=7;
 
 		var oldCellSize = game.goalCellSize;
-		game.goalCellSize = 3*Math.pow(2,game.cellSizeFactor);
+		game.goalCellSize = Math.round(3*Math.pow(2,game.cellSizeFactor));
 		var factor = game.goalCellSize/oldCellSize;
 
-		game.goalRenderX = x+(game.goalRenderX-x)*factor;
-		game.goalRenderY = y+(game.goalRenderY-y)*factor;
+		game.goalRenderX = Math.round(x+(game.goalRenderX-x)*factor);
+		game.goalRenderY = Math.round(y+(game.goalRenderY-y)*factor);
 
 		game.requestStaticRenderUpdate = true;
 	}

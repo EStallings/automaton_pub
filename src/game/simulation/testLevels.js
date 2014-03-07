@@ -39,8 +39,17 @@ function test2(){
 	return testLevel;
 }
 
+function test3(){
+	var testLevel = new App.SimulationLevel(8,3);
+
+	for(var x=0;x<8;++x)for(var y=0;y<3;++y)for(var c=0;c<4;++c)
+		new App.SimulationInstruction(testLevel,x,y,c,8*y+x);
+
+	return testLevel;
+}
+
 function setupTestLevel(){
-	App.Game.currentSimulationLevel = test2();
+	App.Game.currentSimulationLevel = test3();
 	App.Game.enterSimulationMode();
 }
 
