@@ -15,7 +15,7 @@ App.SimulationToken = function(level,x,y,number){
 		gfx.fill();
 
 		gfx.fillStyle = "#000000";
-		gfx.fillText(this.number,x+cs/2,y+cs/2+7);
+		gfx.fillText(this.number,x+cs/2,y+cs/2+App.Game.cellSize/32);
 	}
 
 	this.staticRender = function(x,y){this.rFunc(x,y,this.gfxS);}

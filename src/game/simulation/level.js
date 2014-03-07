@@ -69,7 +69,8 @@ App.SimulationLevel = function(width,height){
 		App.Game.translateCanvas(App.Game.tokenDGfx);
 		App.Game.automGfx.lineWidth = 4;
 		App.Game.tokenDGfx.textAlign = "center";
-		App.Game.tokenDGfx.font = "bold 18px arial";
+		App.Game.tokenDGfx.textBaseline = "middle";
+		App.Game.tokenDGfx.font = "bold "+App.Game.cellSize/2+"px arial";
 		for(var i in this.automatons)this.automatons[i].render();
 		// TODO: render sfx animation layers
 		App.Game.automGfx.restore();

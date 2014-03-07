@@ -211,14 +211,6 @@ App.makeGame = function(){
 	//		game.currentPlanningLevel.staticRender();
 	//	else if(game.currentSimulationLevel !== undefined)
 			game.currentSimulationLevel.staticRender();
-
-		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-		game.tempGfx.font = "bold 11px arial";
-		game.tempGfx.fillStyle = "#ffffff";
-		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps),11,22);
-		game.tempGfx.fillText("Cycle: "+game.cycles             ,11,33);
-		game.tempGfx.fillText("Tick: "+App.Engine.tick          ,11,44);
-		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor      ,11,55);
 	}
 
 	game.dynamicRender = function(){
@@ -231,6 +223,14 @@ App.makeGame = function(){
 	//		game.currentPlanningLevel.dynamicRender();
 	//	else if(game.currentSimulationLevel !== undefined)
 			game.currentSimulationLevel.dynamicRender();
+
+		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.tempGfx.font = "bold 11px arial";
+		game.tempGfx.fillStyle = "#ffffff";
+		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps),11,22);
+		game.tempGfx.fillText("Cycle: "+game.cycles             ,11,33);
+		game.tempGfx.fillText("Tick: "+App.Engine.tick          ,11,44);
+		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor      ,11,55);
 	}
 
 	// ========================================================== //
