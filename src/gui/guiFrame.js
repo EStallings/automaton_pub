@@ -1,3 +1,15 @@
+/*
+Notes about doing the GUI:
+
+For now, just need:
+imageButton - small and large? -- doesn't need to be an ACTUAL image, just pictographic somehow
+textButton - small and large?
+dragButton - like an imageButton
+textBox -- static and user entry
+
+guiPanel -- static and prevents click fallthrough
+*/
+
 // TODO: WRITE THIS ========================================================= //
 
 App.makeGUI = function(){
