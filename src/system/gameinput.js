@@ -21,7 +21,7 @@ App.makeGameInput = function(){
 	gInput.mouseWheel = function(mouseData){
 		var game = App.Game;
 
-		game.zoom(mouseData.wheel);
+		game.zoom(mouseData.x, mouseData.y, mouseData.wheel);
 	}
 	gInput.registerKey = function(key, callback){
 		App.InputHandler.registerKey(key, callback);

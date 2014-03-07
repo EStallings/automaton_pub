@@ -38,10 +38,7 @@ App.makeInputHandler = function(){
 
 	input.executeKey = function(key, evt){
 		if(!this.keyRegistry[key]) return;
-		this.keyRegistry[key].n++; 
-
-		if(this.keyRegistry[key].r || this.keyRegistry[key].n === 1)
-			this.keyRegistry[key].c();
+		this.keyRegistry[key]();
 	}
 
 
