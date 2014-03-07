@@ -119,6 +119,8 @@ App.makeGame = function(){
 	game.borderGfx      = App.Canvases.addNewLayer("border"        ,-5).getContext("2d");
 	game.gridGfx        = App.Canvases.addNewLayer("grid"          ,-6).getContext("2d");
 
+	game.requestStaticRenderUpdate = true;
+
 		/*+------------------------------------------+*/
 
 	game.renderX = 0; // XXX: CONSIDER KEEPING THIS FLOORED FOR PERFORMANCE
@@ -144,14 +146,14 @@ App.makeGame = function(){
 	game.pan = function(obj,evt){
 		game.renderX = game.panRenderX+(obj.END.x-game.panMouseX); // TODO: SCALING ADJUSTMENT
 		game.renderY = game.panRenderY+(obj.END.y-game.panMouseY); // TODO: SCALING ADJUSTMENT
-	//	game.staticRender();
+		game.requestStaticRenderUpdate = true;
 	}
 
 	game.zoom = function(f){
 		game.cellSizeFactor += f;
 		game.cellSize = 6*Math.pow(2,game.cellSizeFactor);
 		// TODO: PAN ADJUSTMENT
-		game.staticRender();
+		game.requestStaticRenderUpdate = true;
 	}
 
 	App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_CLICK,game.beginPan,"GAME");
