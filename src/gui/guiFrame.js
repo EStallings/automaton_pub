@@ -34,7 +34,7 @@ App.GuiFrame = function(){
 
 	this.render = function(){
 		// TODO: THE GUI SHOULD HAVE A REFERENCE TO ITS OWN CANVAS | CLEAR THE GUI INSIDE GUI'S RENDER, NOT HERE
-		var guiCanvas = App.Canvases.layers['GUI'];                                                // TODO: CLEAN THIS UP
+		var guiCanvas = App.Canvases.layers['GUI'];                                        // TODO: CLEAN THIS UP
 		guiCanvas.getContext('2d').clearRect(0,0,App.Canvases.width, App.Canvases.height); // TODO: CLEAN THIS UP
 
 		for(var c in this.components)if(this.components[c].render)
