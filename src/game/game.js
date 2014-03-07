@@ -170,8 +170,8 @@ App.makeGame = function(){
 		game.simulationSpeed = speed;
 	}
 
-	App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_CLICK,game.beginPan,"GAME");
-	App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_DRAG,game.pan,"GAME");
+	// App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_CLICK,game.beginPan,"GAME");
+	// App.InputHandler.registerMouse(App.InputHandler.mouseTypes.RIGHT_DRAG,game.pan,"GAME");
 	App.InputHandler.registerKey("Q",function(){game.setSimulationSpeed(game.simulationSpeed*2);});
 	App.InputHandler.registerKey("W",function(){game.setSimulationSpeed(game.simulationSpeed/2);});
 

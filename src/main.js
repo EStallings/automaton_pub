@@ -9,7 +9,7 @@ window.onload = function(){
 	// TODO: what about each gui menu gets its own canvas and is "always rendering"?
 	constructMenus();
 	App.Gui = App.Menus['mainMenu'];
-	App.InputHandler.registerMouse(App.InputHandler.mouseTypes.LEFT_CLICK,App.CheckGuiClick,"GUI");
+	//App.InputHandler.registerMouse(App.InputHandler.mouseTypes.LEFT_CLICK,App.CheckGuiClick,"GUI");
 	// ========================================================== //
 
 	App.Game   = App.makeGame();
