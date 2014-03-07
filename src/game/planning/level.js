@@ -1,13 +1,14 @@
 App.PlanningLevel = function(){
-	this.name;
-	this.width;	this.height;
-	this.numColors = 4;
+	this.name; // name of the level
+	this.width;	this.height; // grid size
+	this.numColors = 4; // number of different colors in the game
 	this.grid = []; // grid[x][y][color] = instruction
-	this.undoStack = [];
-	this.redoStack = [];
+	this.undoStack = []; // stores operation objects that can be undone later
+	this.redoStack = []; // stores operation objects that can be redone later
 
 	var that = this;
 
+	// returns an array that can have up to four instruction for the tile at x,y
 	this.getCell = function(x,y){ 
 		//Note: I edited this to prevent a potential crash and/or undefined being passed around.
 		if(!that.grid[x] || !that.grid[x][y])
@@ -16,8 +17,7 @@ App.PlanningLevel = function(){
 		return that.grid[x][y]; 
 	};
 
-	//le sigh. I really wish this weren't how stupid JavaScript is, but, alas
-	//this is _exactly_ how stupid JavaScript is. Gotta do this :(
+	// checks whether or not an instruction in a grid cell has been defined or not
 	this.contains = function(x, y, c){
 		return (that.grid[x] && that.grid[x][y] && that.grid[x][y][c]);
 	}
@@ -33,6 +33,7 @@ App.PlanningLevel = function(){
 		}
 	};
 	
+	// applies function f() to each cell in the grid
 	this.forEachCell = function(f){
 		for(var y = 0; y < that.height; y++){
 			for(var x = 0; x < that.width; x++){
@@ -45,28 +46,33 @@ App.PlanningLevel = function(){
 		}
 	};
 	
+	// contains the information needed to undo or redo an insert operation
 	this.insertOp = function(instruction){		
 		this.instruction = instruction;
 		this.opId = 'insert';
 	};
 	
+	// contains the information needed to undo or redo a delete operation
 	this.deleteOp = function(instruction){		
 		this.instruction = instruction;
 		this.opId = 'delete';
 	};
 
+	// contains the information needed to undo or redo a move operation
 	this.moveOp = function(instruction, newX, newY){
 		this.instruction = instruction;
 		this.newX = newX; this.newY = newY;
 		this.opId = 'move';
 	}
 
+	// contains the information needed to undo or redo a copy operation
 	this.copyOp = function(instruction, newX, newY){
 		this.instruction = instruction;
 		this.newX = newX; this.newY = newY;
 		this.opId = 'copy';
 	}
 
+	// contains the information needed to undo or redo a modify operation
 	this.modifyOp = function(instruction, parameter, newValue, oldValue){
 		this.instruction = instruction;
 		this.parameter = parameter;
@@ -75,6 +81,13 @@ App.PlanningLevel = function(){
 		this.opId = 'modify';
 	}
 
+	// this function performs a modify operation on an instruction,
+	// and creates and pushes a modifyOp object onto the undo stack.
+	// if the parameter is 'color', then this will try to move the instruction
+	// to the appropriate spot in the array.
+
+	// TODO As it is now, I think it will wipe out any already existing instruction if the spot it would move to is filled.
+	// Undo will not bring the lost instruction back.
 	this.modify = function(instruction, parameter, value){
 		if(that.contains(instruction.x, instruction.y, instruction.color)){
 			var oldColor = instruction.color;
@@ -92,6 +105,10 @@ App.PlanningLevel = function(){
 		}
 	}
 
+	// this function performs a copy operation on an instruction,
+	// and creates and pushes a copyOp object onto the undo stack.
+
+	// TODO I think this may also overwrite instructions
 	this.copy = function(x, y, color, newX, newY){
 		// update undo stack
 		that.undoStack.push(new that.copyOp(that.getCell(x,y)[color], newX, newY));
@@ -120,6 +137,10 @@ App.PlanningLevel = function(){
 		}
 	}
 
+	// this function, performs a move operation on an instruction,
+	// and creates and pushes a moveOp object onto the undo stack.
+
+	// TODO fix the same wipeout bug
 	this.move = function(x, y, color, newX, newY){
 
 		// update undo stack
@@ -154,6 +175,10 @@ App.PlanningLevel = function(){
 
 	}
 
+	// this function performs an insert operation on the grid,
+	// and creates and pushes an insertOp object onto the undo stack.
+
+	//TODO wipeout bug
 	this.insert = function(instruction){
 
 		// update undo stack
@@ -177,6 +202,8 @@ App.PlanningLevel = function(){
 
 	};
 
+	// this function performs a delete operation on an instruction,
+	// it also creates and pushes a deleteOp object onto the stack
 	this.delete = function(x,y,color){
 		if(that.grid[x]){
 			if(that.grid[x][y]){
@@ -192,6 +219,7 @@ App.PlanningLevel = function(){
 		}
 	};
 
+	// each call to this function pops the undo stack, and undoes whatever operation it finds
 	this.undo = function(){
 
 		// update stacks
@@ -224,6 +252,7 @@ App.PlanningLevel = function(){
 		}
 	};
 
+	// each call to this function pops the redo stack, and undoes whatever operation it finds
 	this.redo = function(){
 
 		// update stacks
@@ -255,7 +284,7 @@ App.PlanningLevel = function(){
 		}
 	};
 
-	// TODO
+	// TODO it sounds like we may want to include the level title in the string?
 	this.generateParseString = function(){
 		var strings = [];
 		strings.push(this.name + "," + this.width + "," + this.height + ";");
