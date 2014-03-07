@@ -127,6 +127,12 @@ App.makeInputHandler = function(){
 			input.keyRegistry[key].n = 0;
 	}
 
+	var handle_mouseOut 	= function(e){
+		var input = App.InputHandler;
+		input.mouseData.lmb = false;
+		input.mouseData.mmb = false;
+		input.mouseData.rmb = false;
+	}
 
 	//Unused - doesn't do what you'd think :/
 	var handle_keyPress 	= function(e){
@@ -145,10 +151,7 @@ App.makeInputHandler = function(){
 	}// TODO
 	
 	//For now, unused
-	var handle_mouseOut 	= function(e){
-		//console.debug("from mouseout");
-		//var input = App.InputHandler;
-	}// TODO
+	
 
 	//TODO Touch support
 	/*
