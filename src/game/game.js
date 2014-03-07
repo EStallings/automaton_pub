@@ -33,8 +33,6 @@ App.makeGame = function(){
 		//App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
 		// game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel(); // TODO: IMPLEMENT THIS
 
-		// TODO: CALL INSTRUCTION start() FUNCTIONS
-		// TODO: SETUP CYCLE VARIABLES
 		game.nextCycleTick = App.Engine.tick;
 		game.cycles = 0;
 	}
@@ -99,7 +97,7 @@ App.makeGame = function(){
 			game.currentPlanningLevel.update();
 		else if(game.currentSimulationLevel !== undefined)
 		while(App.Engine.tick > game.nextCycleTick){
-			if(game.simulationSpeed <= 0)break; // TODO: change to pause
+			if(game.simulationSpeed <= 0)break;
 			game.currentSimulationLevel.update();
 			game.lastCycleTick = game.nextCycleTick;
 			game.nextCycleTick += game.simulationSpeed;
@@ -123,15 +121,15 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.renderX = 0;
-	game.renderY = 0;
+	game.renderX = 100;
+	game.renderY = 100;
 	game.cellSizeFactor = 4;
-	game.cellSize = 3*Math.pow(2,game.cellSizeFactor);
+	game.cellSize = 3*Math.pow(2,3);
 	game.interpolation;
 
-	game.goalRenderX = game.renderX;
-	game.goalRenderY = game.renderY;
-	game.goalCellSize = game.cellSize;
+	game.goalRenderX = 10;
+	game.goalRenderY = 10;
+	game.goalCellSize = 3*Math.pow(2,game.cellSizeFactor);
 
 		/*+------------------------------------------+*/
 
@@ -182,9 +180,6 @@ App.makeGame = function(){
 		game.simulationSpeed = speed;
 	}
 
-	App.InputHandler.registerKey("Q",function(){game.setSimulationSpeed(game.simulationSpeed*2);});
-	App.InputHandler.registerKey("W",function(){game.setSimulationSpeed(game.simulationSpeed/2);});
-
 	game.translateCanvas = function(gfx){
 		gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		gfx.save();
@@ -196,8 +191,6 @@ App.makeGame = function(){
 	}
 
 		/*+------------------------------------------+*/
-
-	// TODO: CALL INITIAL STATIC RENDERING WHEN?
 
 	game.expInterp = function(val,goal,threshold){
 		var factor = App.Engine.elapsed*0.01;
@@ -268,11 +261,6 @@ App.makeGame = function(){
 	}
 
 	game.dynamicRender = function(){
-	//	game.renderX = Math.sin(App.Engine.tick * 0.0002)*50+60; // DELETE
-	//	game.renderY = Math.sin(App.Engine.tick * 0.0005)*30+40; // DELETE
-	//	game.cellSizeFactor = (Math.sin(App.Engine.tick * 0.001)*0.5+0.5)*2+2; // DELETE
-	//	game.cellSize = 6*Math.pow(2,game.cellSizeFactor); // DELETE
-
 		game.interpolation = (App.Engine.tick-game.lastCycleTick)
 		                   / (game.nextCycleTick-game.lastCycleTick);
 
@@ -286,15 +274,17 @@ App.makeGame = function(){
 		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		game.tempGfx.font = "bold 11px arial";
 		game.tempGfx.fillStyle = "#ffffff";
-		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps)        ,11,22);
-		game.tempGfx.fillText("Cycle: "+game.cycles                     ,11,33);
-		game.tempGfx.fillText("Speed: "+game.simulationSpeed+" cycles/s",11,44);
-		game.tempGfx.fillText("Tick: "+App.Engine.tick                  ,11,55);
-		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor              ,11,66);
+		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps)       ,11,22);
+		game.tempGfx.fillText("Cycle: "+game.cycles                    ,11,33);
+		game.tempGfx.fillText("Speed: "+game.simulationSpeed+" ms/tick",11,44);
+		game.tempGfx.fillText("Tick: "+App.Engine.tick                 ,11,55);
+		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor             ,11,66);
 	}
 
 	// ========================================================== //
 
-	// TODO: SETUP GAME INPUT CALLBACKS HERE
+	// TODO: move these to gameInput
+	App.InputHandler.registerKey("Q",function(){game.setSimulationSpeed(game.simulationSpeed*2);});
+	App.InputHandler.registerKey("W",function(){game.setSimulationSpeed(game.simulationSpeed/2);});
 	return game;
 }
