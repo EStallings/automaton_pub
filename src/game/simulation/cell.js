@@ -19,6 +19,10 @@ App.SimulationCell = function(level,x,y){
 		for(var i in this.automatons)
 		if(this.automatons[i].tokenHeld !== undefined)++total;
 		if(total > 1)App.Game.simulationError(); // TODO: tell level reached invalid state (token collision)
+
+		// TODO: MOVE THIS TO AUTOMATON
+		for(var a in this.automatons)for(var i in this.instructions)
+			this.instructions[i].execute(this.automatons[a]);
 	}
 
 	this.render = function(){

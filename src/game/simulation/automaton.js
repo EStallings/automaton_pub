@@ -9,16 +9,11 @@ App.SimulationAutomaton = function(level,x,y,direction,red,green,blue,yellow){
 	this.y = y;
 	this.direction = direction;
 	this.colorFlags = [];                        // TODO: STREAMLINE THIS
-	this.colorFlags[App.COLORS.RED] = red;       // TODO: STREAMLINE THIS
-	this.colorFlags[App.COLORS.GREEN] = green;   // TODO: STREAMLINE THIS
-	this.colorFlags[App.COLORS.BLUE] = blue;     // TODO: STREAMLINE THIS
-	this.colorFlags[App.COLORS.YELLOW] = yellow; // TODO: STREAMLINE THIS
+	this.colorFlags[0] = red;       // TODO: STREAMLINE THIS
+	this.colorFlags[1] = green;   // TODO: STREAMLINE THIS
+	this.colorFlags[2] = blue;     // TODO: STREAMLINE THIS
+	this.colorFlags[3] = yellow; // TODO: STREAMLINE THIS
 	this.tokenHeld = undefined;
-
-	this.process = function(){
-		for(var i in App.COLORS)if(this.cell.instructions[i])
-			this.cell.instructions[i].execute(a);
-	}
 
 	this.move = function(){
 		// remove from old cell

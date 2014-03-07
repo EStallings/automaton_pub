@@ -39,7 +39,6 @@ App.SimulationLevel = function(width,height){
 		}
 
 		// ALL automatons MUST be processes before theyre moved
-		for(var i in this.automatons)this.automatons[i].process();
 		for(var i in this.automatons)this.automatons[i].move();
 	}
 
@@ -63,6 +62,8 @@ App.SimulationLevel = function(width,height){
 		App.Game.instructionGfx.lineWidth = 2;
 		for(var i in this.instructions)this.instructions[i].render();
 		App.Game.instructionGfx.restore();
+
+		// TODO: render static tokens
 	}
 
 	this.dynamicRender = function(){

@@ -33,7 +33,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case "u": // Up
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				a.direction = UP;
+				a.direction = App.DIRECTIONS.UP;
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.moveTo(cs/4,cs/8);
@@ -46,7 +46,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case "d": // Down
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				a.direction = DOWN;
+				a.direction = App.DIRECTIONS.DOWN;
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
@@ -60,7 +60,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case "l": // Left
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				a.direction = LEFT;
+				a.direction = App.DIRECTIONS.LEFT;
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
@@ -74,7 +74,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case "r": // Right
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				a.direction = RIGHT;
+				a.direction = App.DIRECTIONS.RIGHT;
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
@@ -128,12 +128,10 @@ App.SimulationInstruction = function(level,x,y,color,type){
 					if(this.cell.tokens.length !== 0){
 						a.tokenHeld = this.cell.tokens[0];
 						this.cell.tokens.splice(0,1);
-						// new Audio("test.ogg").play();
 					}
 				}else{
 					this.cell.tokens.push(a.tokenHeld);
 					a.tokenHeld = undefined;
-					// new Audio("test.ogg").play();
 				}
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -180,8 +178,9 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case "i": // In
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				for(var i in this.level.streams)
-					this.level.streams[i].IO(INPUT,this.color);
+				// TODO: IMPLEMENT THIS
+			//	for(var i in this.level.streams)
+			//		this.level.streams[i].IO(INPUT,this.color);
 			};this.rFunc = function(){
 				// TODO: this should NOT be an I (streams)
 				var cs = App.Game.cellSize;
@@ -198,8 +197,9 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case "o": // Out
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				for(var i in this.level.streams)
-					this.level.streams[i].IO(OUTPUT,this.color);
+				// TODO: IMPLEMENT THIS
+			//	for(var i in this.level.streams)
+			//		this.level.streams[i].IO(OUTPUT,this.color);
 			};this.rFunc = function(){
 				// TODO: this should NOT be an O (streams)
 				var cs = App.Game.cellSize;
