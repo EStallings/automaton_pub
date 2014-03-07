@@ -7,7 +7,7 @@ App.PlanningLevel = function(){
 	this.redoStack = []; // stores operation objects that can be redone later
 
 	// flag that lets the operation functions know how to handle conflicts.
-	this.userOverlapSetting = 1; // 0 - reject operation, 1 - overwrite
+	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
 
 	var that = this;
 
@@ -56,7 +56,7 @@ App.PlanningLevel = function(){
 			}
 		}
 	};
-	
+
 	// contains the information needed to undo or redo an insert operation
 	this.insertOp = function(instruction){		
 		this.instruction = instruction;
@@ -124,13 +124,15 @@ App.PlanningLevel = function(){
 					that.grid[instruction.x][instruction.y][value] = that.getInstruction(instruction.x, instruction.y,oldColor);
 					that.grid[instruction.x][instruction.y][oldColor] = null;
 				}
+				else{
+					that.grid[instruction.x][instruction.y][oldColor][parameter] = oldColor; // reset the color if the move part of the operation got rejected
+				}
 			}
 		}
 	}
 
 	// this function performs a copy operation on an instruction,
 	// and creates and pushes a copyOp object onto the undo stack.
-
 	this.copy = function(x, y, color, newX, newY){
 		// update undo stack
 		that.undoStack.push(new that.copyOp(that.getInstruction(x,y,color), newX, newY));
@@ -154,7 +156,7 @@ App.PlanningLevel = function(){
 
 		} else if(that.userOverlapSetting === 1){
 			// store the old instruction
-			that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(x,y,color);
+			that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(newX,newY,color);
 
 			// overwrite
 			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
@@ -163,67 +165,82 @@ App.PlanningLevel = function(){
 
 	// this function, performs a move operation on an instruction,
 	// and creates and pushes a moveOp object onto the undo stack.
-
-	// TODO fix the same wipeout bug
 	this.move = function(x, y, color, newX, newY){
+
+		// make sure there is an instruction at the specified coordinate
+		if(!that.contains(x,y,color)){ return; }
 
 		// update undo stack
 		that.undoStack.push(new that.moveOp(that.getInstruction(x,y,color), newX, newY));
 
 		// update grid
-		if(that.contains(x,y,color)){
-			if(that.contains(newX, newY, color)){
-				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
-				that.grid[x][y][color] = null;
-			}
-			else{
-				if(that.grid[newX]){
-					if(that.grid[newX][newY]){
-						that.grid[newX][newY][color] = that.getInstruction(x,y,color);
-						that.grid[x][y][color] = null;
+		if(!that.contains(newX,newY,color)){
+			if(that.contains(x,y,color)){
+				if(that.contains(newX, newY, color)){
+					that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+					that.grid[x][y][color] = null;
+				}
+				else{
+					if(that.grid[newX]){
+						if(that.grid[newX][newY]){
+							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+							that.grid[x][y][color] = null;
+						}
+						else{
+							that.grid[newX][newY] = [];
+							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+							that.grid[x][y][color] = null;
+						}
 					}
 					else{
+						that.grid[newX] = [];
 						that.grid[newX][newY] = [];
 						that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 						that.grid[x][y][color] = null;
 					}
 				}
-				else{
-					that.grid[newX] = [];
-					that.grid[newX][newY] = [];
-					that.grid[newX][newY][color] = that.getInstruction(x,y,color);
-					that.grid[x][y][color] = null;
-				}
 			}
 		}
+		else if(that.userOverlapSetting === 1){
+			// store the old instruction
+			that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(newX,newY,color);
 
+			// overwrite
+			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+			that.grid[x][y][color] = null;			
+		}
 	}
 
 	// this function performs an insert operation on the grid,
 	// and creates and pushes an insertOp object onto the undo stack.
-
-	//TODO wipeout bug
 	this.insert = function(instruction){
 
 		// update undo stack
 		that.undoStack.push(new that.insertOp(instruction));
 
 		// update grid
-		if(that.grid[instruction.x]){
-			if(that.grid[instruction.x][instruction.y]){
-				that.grid[instruction.x][instruction.y][instruction.color] = instruction;
+		if(!that.getInstruction(instruction.x,instruction.y,instruction.color)){
+			if(that.grid[instruction.x]){
+				if(that.grid[instruction.x][instruction.y]){
+					that.grid[instruction.x][instruction.y][instruction.color] = instruction;
+				}
+				else {
+					that.grid[instruction.x][instruction.y] = [];
+					that.grid[instruction.x][instruction.y][instruction.color] = instruction;
+				}
 			}
 			else {
+				that.grid[instruction.x] = [];
 				that.grid[instruction.x][instruction.y] = [];
 				that.grid[instruction.x][instruction.y][instruction.color] = instruction;
 			}
-		}
-		else {
-			that.grid[instruction.x] = [];
-			that.grid[instruction.x][instruction.y] = [];
-			that.grid[instruction.x][instruction.y][instruction.color] = instruction;
-		}
+		} else if(that.userOverlapSetting === 1){
+			// store the old instruction
+			that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(instruction.x,instruction.y,instruction.color);
 
+			// overwrite
+			that.grid[instruction.x][instruction.y][instruction.color] = instruction;			
+		}
 	};
 
 	// this function performs a delete operation on an instruction,
@@ -257,6 +274,11 @@ App.PlanningLevel = function(){
 
 			that.delete(op.instruction.x, op.instruction.y, op.instruction.color);
 			that.undoStack.pop();
+
+			if(op.overWritten !== null){
+				that.insert(op.overWritten);
+				that.undoStack.pop();
+			}
 		}
 		else if(op.opId === 'delete'){
 			that.insert(op.instruction);
@@ -265,14 +287,17 @@ App.PlanningLevel = function(){
 		else if(op.opId === 'move'){
 			that.move(op.newX, op.newY, op.instruction.color, op.instruction.x, op.instruction.y)
 			that.undoStack.pop();
+
+			if(op.overWritten !== null){
+				that.insert(op.overWritten);
+				that.undoStack.pop();
+			}
 		}
 		else if(op.opId === 'copy'){
 			that.delete(op.newX, op.newY, op.instruction.color);
 			that.undoStack.pop();
 
-			console.warn('op.overWritten: ' + op.overWritten);
 			if(op.overWritten !== null){
-				console.warn('there');
 				that.insert(op.overWritten);
 				that.undoStack.pop();
 			}
@@ -281,9 +306,7 @@ App.PlanningLevel = function(){
 			that.modify(op.instruction, op.parameter, op.oldValue);
 			that.undoStack.pop();
 
-			console.warn('op.overWritten: ' + op.overWritten);
 			if(op.overWritten !== null){
-				console.warn('there');
 				that.insert(op.overWritten);
 				that.undoStack.pop();
 			}

@@ -23,6 +23,7 @@ window.onload = function(){
 	lvl = new App.PlanningLevel();                         // TODO: CLEANUP & DELETE
 	lvl.insert(new App.PlanningInstruction(1,1,1,'left')); // TODO: CLEANUP & DELETE
 	lvl.insert(new App.PlanningInstruction(1,1,3,'up'));   // TODO: CLEANUP & DELETE
+	lvl.insert(new App.PlanningInstruction(2,2,3,'down'));   // TODO: CLEANUP & DELETE
 	setupTestLevel(); // DELETE DELETE DELETE DELETE DELETE
 	// ========================================================== //
 }
