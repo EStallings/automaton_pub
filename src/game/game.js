@@ -18,7 +18,7 @@ App.makeGame = function(){
 	game.enterPlanningMode = function(levelString){
 		if(game.mode === game.modes.PLANNING)return;
 		game.mode = game.modes.PLANNING;
-		App.changeMenu('planning'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
+		//App.changeMenu('planning'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
 
 		if(levelString)game.currentPlanningLevel = game.loadNewLevel(levelString);
 		else game.currentPlanningLevel = game.createNewLevel();
@@ -30,7 +30,7 @@ App.makeGame = function(){
 	game.enterSimulationMode = function(){
 		if(game.mode === game.modes.SIMULATION)return;
 		game.mode = game.modes.SIMULATION;
-		App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
+		//App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
 		// game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel(); // TODO: IMPLEMENT THIS
 
 		// TODO: CALL INSTRUCTION start() FUNCTIONS
