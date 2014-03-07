@@ -59,7 +59,7 @@ App.GuiCollisionRect = function(x, y, w, h){
 			   	(y > this.y) && (y < (this.y + this.h)));
 	}
 
-	this.positionRelative(component){
+	this.positionRelative = function(component){
 		if(!component)
 			return;
 		if(!component.cRect)

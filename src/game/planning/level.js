@@ -159,27 +159,6 @@ App.PlanningLevel = function(){
 			// overwrite
 			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 		}
-		/*if(that.contains(x,y,color)){
-			if(that.contains(newX, newY, color)){
-				that.grid[newX][newY][color] = that.getCell(x,y)[color];
-			}
-			else{
-				if(that.grid[newX]){
-					if(that.grid[newX][newY]){
-						that.grid[newX][newY][color] = that.getCell(x,y)[color];
-					}
-					else{
-						that.grid[newX][newY] = [];
-						that.grid[newX][newY][color] = that.getCell(x,y)[color];
-					}
-				}
-				else{
-					that.grid[newX] = [];
-					that.grid[newX][newY] = [];
-					that.grid[newX][newY][color] = that.getCell(x,y)[color];
-				}
-			}
-		}*/
 	}
 
 	// this function, performs a move operation on an instruction,
@@ -290,6 +269,13 @@ App.PlanningLevel = function(){
 		else if(op.opId === 'copy'){
 			that.delete(op.newX, op.newY, op.instruction.color);
 			that.undoStack.pop();
+
+			console.warn('op.overWritten: ' + op.overWritten);
+			if(op.overWritten !== null){
+				console.warn('there');
+				that.insert(op.overWritten);
+				that.undoStack.pop();
+			}
 		}
 		else if(op.opId === 'modify'){
 			that.modify(op.instruction, op.parameter, op.oldValue);
