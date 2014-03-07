@@ -215,8 +215,10 @@ App.makeGame = function(){
 		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		game.tempGfx.font = "bold 11px arial";
 		game.tempGfx.fillStyle = "#ffffff";
-		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps),10,20);
-		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor,10,31);
+		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps),11,22);
+		game.tempGfx.fillText("Cycle: "+game.cycles             ,11,33);
+		game.tempGfx.fillText("Tick: "+App.Engine.tick          ,11,44);
+		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor      ,11,55);
 	}
 
 	game.dynamicRender = function(){
