@@ -1,29 +1,4 @@
 /*
-App.InstructionActions = {}; // TODO populate with action methods
-
-App.InstructionSymbols = {}; // TODO populate with drawing methods
-
-App.SimulationInstruction = function(level,x,y,color,type){ // what about attributes?
-	this.level = level;
-	this.x = x;
-	this.y = y;
-	this.color = color;
-	this.type = type;
-	
-	this.action;
-	this.drawSelf;
-
-	this.execute = function(a){
-		this.action(a);
-	}
-	
-	this.render = function(){
-		this.drawSelf();
-	}
-}
-*/
-
-/*
 // TODO: visual feedback on execution
 // TODO: 0switch, +-switch, %2switch
 
@@ -43,6 +18,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 	level.instructions.push(this);
 	level.getCell(x,y).instructions[color] = this;
 
+	this.gfx = App.Game.instructionGfx;
 	this.level = level;
 	this.cell = level.getCell(x,y);
 	this.x = x;
@@ -50,26 +26,29 @@ App.SimulationInstruction = function(level,x,y,color,type){
 	this.color = color;
 	this.type = type;
 
-	this.start;   // autom/stream init
-	this.execute; // everything
-	this.special; // streams
-	this.render;  // everything
-
-/*
-	this.action;    // this gets assigned below
-	this.renderSym; // this gets assigned below
+	this.rFunc;
 
 	switch(type){
 		case "u": // Up
-			this.action = function(a){a.direction = UP;}
-			this.renderSym = function(){
-				gfx.beginPath();
-				gfx.moveTo(cs2,cs4);
-				gfx.lineTo(cs4,cs3o4);
-				gfx.lineTo(cs3o4,cs3o4);
-				gfx.lineTo(cs2,cs4);
-				gfx.stroke();
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				a.direction = UP;
+			};this.rFunc = function(){
+var cs = App.Game.cellSize;
+var cs2 = cs/4;
+var cs4 = cs/8;
+var cs8 = cs/16;
+
+var cs3o4 = 3*cs4;
+var cs3o8 = 3*cs8;
+var cs5o8 = 5*cs8;
+				this.gfx.moveTo(cs2,cs4);
+				this.gfx.lineTo(cs4,cs3o4);
+				this.gfx.lineTo(cs3o4,cs3o4);
+				this.gfx.lineTo(cs2,cs4);
+				this.gfx.stroke();
 			};break;
+}/*
 		case "d": // Down
 			this.action = function(a){a.direction = DOWN;}
 			this.renderSym = function(){
@@ -209,53 +188,49 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.renderSym = function(){}
 			break;
 	}
-
-	this.execute = function(a){
-		// TODO: begin animation
-		if(!a.colorFlags[this.color])return; // TODO: COLOR TOGGLE DOESNT WORK WITH THIS
-		this.action(a);
-	}
+*/
 
 	// TODO: DYNAMICALLY CREATE RENDER FUNCTION SO YOU DONT HAVE TO DO THIS EVERY TIME
 	this.render = function(){
-		gfx.save();
+		var cellSize = App.Game.cellSize;
+
+		this.gfx.save();
 		switch(this.color){
-			case RED:
-				gfx.translate(this.x*cellSize,this.y*cellSize);
-				gfx.fillStyle="#660000";
-				gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
-				gfx.strokeStyle="#ff0000";
+			case App.COLORS.RED:
+				this.gfx.translate(this.x*cellSize,this.y*cellSize);
+				this.gfx.fillStyle="#660000";
+				this.gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
+				this.gfx.strokeStyle="#ff0000";
 				break;
-			case GREEN:
-				gfx.translate(this.x*cellSize+cellSize/2,this.y*cellSize);
-				gfx.fillStyle="#006600";
-				gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
-				gfx.strokeStyle="#00ff00";
+			case App.COLORS.GREEN:
+				this.gfx.translate(this.x*cellSize+cellSize/2,this.y*cellSize);
+				this.gfx.fillStyle="#006600";
+				this.gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
+				this.gfx.strokeStyle="#00ff00";
 				break;
-			case BLUE:
-				gfx.translate(this.x*cellSize,this.y*cellSize+cellSize/2);
-				gfx.fillStyle="#000066";
-				gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
-				gfx.strokeStyle="#0000ff";
+			case App.COLORS.BLUE:
+				this.gfx.translate(this.x*cellSize,this.y*cellSize+cellSize/2);
+				this.gfx.fillStyle="#000066";
+				this.gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
+				this.gfx.strokeStyle="#0000ff";
 				break;
-			case YELLOW:
-				gfx.translate(this.x*cellSize+cellSize/2,this.y*cellSize+cellSize/2);
-				gfx.fillStyle="#666600";
-				gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
-				gfx.strokeStyle="#ffff00";
+			case App.COLORS.YELLOW:
+				this.gfx.translate(this.x*cellSize+cellSize/2,this.y*cellSize+cellSize/2);
+				this.gfx.fillStyle="#666600";
+				this.gfx.fillRect(2,2,cellSize/2-4,cellSize/2-4);
+				this.gfx.strokeStyle="#ffff00";
 				break;
 		}
 
-		gfx.beginPath();
-		gfx.moveTo(2,2);
-		gfx.lineTo(2,cellSize/2-2);
-		gfx.lineTo(cellSize/2-2,cellSize/2-2);
-		gfx.lineTo(cellSize/2-2,2);
-		gfx.lineTo(2,2);
-		gfx.stroke();
+		this.gfx.beginPath();
+		this.gfx.moveTo(2,2);
+		this.gfx.lineTo(2,cellSize/2-2);
+		this.gfx.lineTo(cellSize/2-2,cellSize/2-2);
+		this.gfx.lineTo(cellSize/2-2,2);
+		this.gfx.lineTo(2,2);
+		this.gfx.stroke();
 
-		this.renderSym();
-		gfx.restore();
+		this.rFunc();
+		this.gfx.restore();
 	}
-*/
 }

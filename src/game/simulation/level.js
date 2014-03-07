@@ -59,9 +59,10 @@ App.SimulationLevel = function(width,height){
 		this.gfx.stroke();
 		this.gfx.restore();
 
-		// TODO: render static tokens
-		// TODO: render static instruction layers
-		// TODO: render any other static stuff
+		App.Game.translateCanvas(App.Game.instructionGfx);
+		App.Game.instructionGfx.lineWidth = 2;
+		for(var i in this.instructions)this.instructions[i].render();
+		App.Game.instructionGfx.restore();
 	}
 
 	this.dynamicRender = function(){

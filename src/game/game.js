@@ -111,12 +111,13 @@ App.makeGame = function(){
 	// ===================== RENDER-SPECIFIC ==================== //
 	// ========================================================== //
 
-	game.gridGfx   = App.Canvases.addNewLayer("grid"          ,-5).getContext("2d");
-	game.borderGfx = App.Canvases.addNewLayer("border"        ,-4).getContext("2d");
-	game.tokenDGfx = App.Canvases.addNewLayer("token static"  ,-3).getContext("2d");
-	game.tokenSGfx = App.Canvases.addNewLayer("token dynamic" ,-2).getContext("2d");
-	game.automGfx  = App.Canvases.addNewLayer("autom"         ,-1).getContext("2d");
-	game.tempGfx   = App.Canvases.addNewLayer("gameTemp"       ,0).getContext("2d");
+	game.tempGfx        = App.Canvases.addNewLayer("gameTemp"       ,0).getContext("2d");
+	game.automGfx       = App.Canvases.addNewLayer("autom"         ,-1).getContext("2d");
+	game.tokenSGfx      = App.Canvases.addNewLayer("token dynamic" ,-2).getContext("2d");
+	game.tokenDGfx      = App.Canvases.addNewLayer("token static"  ,-3).getContext("2d");
+	game.instructionGfx = App.Canvases.addNewLayer("instruction"   ,-4).getContext("2d");
+	game.borderGfx      = App.Canvases.addNewLayer("border"        ,-5).getContext("2d");
+	game.gridGfx        = App.Canvases.addNewLayer("grid"          ,-6).getContext("2d");
 
 		/*+------------------------------------------+*/
 
@@ -159,16 +160,15 @@ App.makeGame = function(){
 		gfx.translate(App.Game.renderX,App.Game.renderY);
 	}
 
+	game.screenToGridCoords = function(x,y){
+
+	}
+
 		/*+------------------------------------------+*/
 
 	// TODO: CALL INITIAL STATIC RENDERING WHEN?
 	game.staticRender = function(){
 		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-		game.gridGfx.lineWidth = 2;
-		game.renderX = Math.sin(App.Engine.tick * 0.0002)*50+60; // DELETE
-		game.renderY = Math.sin(App.Engine.tick * 0.0005)*30+40; // DELETE
-		game.cellSizeFactor = (Math.sin(App.Engine.tick * 0.001)*0.5+0.5)*2+2; // DELETE
-		game.cellSize = 6*Math.pow(2,game.cellSizeFactor); // DELETE
 
 		// setup grid vars
 		var cs = game.cellSize;
@@ -214,6 +214,12 @@ App.makeGame = function(){
 	}
 
 	game.dynamicRender = function(){
+		game.gridGfx.lineWidth = 2;
+		game.renderX = Math.sin(App.Engine.tick * 0.0002)*50+60; // DELETE
+		game.renderY = Math.sin(App.Engine.tick * 0.0005)*30+40; // DELETE
+		game.cellSizeFactor = (Math.sin(App.Engine.tick * 0.001)*0.5+0.5)*2+2; // DELETE
+		game.cellSize = 6*Math.pow(2,game.cellSizeFactor); // DELETE
+
 		game.interpolation = (App.Engine.tick-game.lastCycleTick)
 		                   / (game.nextCycleTick-game.lastCycleTick);
 
