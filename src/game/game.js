@@ -89,6 +89,11 @@ App.makeGame = function(){
 	game.cycles;
 	game.simulationSpeed = 512;
 
+	game.paused = false;
+	game.pauseTick;
+	game.pauseLastCycleTick;
+	game.pauseNextCycleTick;
+
 		/*+------------------------------------------+*/
 
 	game.update = function(){
@@ -96,14 +101,26 @@ App.makeGame = function(){
 		   game.currentPlanningLevel !== undefined &&
 		   game.currentPlanningLevel.update)
 			game.currentPlanningLevel.update();
-		else if(game.currentSimulationLevel !== undefined)
-		while(App.Engine.tick > game.nextCycleTick){
-			if(game.simulationSpeed <= 0)break;
-			game.currentSimulationLevel.update();
-			game.lastCycleTick = game.nextCycleTick;
-			game.nextCycleTick += game.simulationSpeed;
-			++game.cycles;
+		else if(game.currentSimulationLevel !== undefined){
+			if(!game.paused)while(App.Engine.tick > game.nextCycleTick){
+				if(game.simulationSpeed <= 0)break;
+				game.currentSimulationLevel.update();
+				game.lastCycleTick = game.nextCycleTick;
+				game.nextCycleTick += game.simulationSpeed;
+				++game.cycles;
+			}else{
+				var diff = App.Engine.tick-game.pauseTick;
+				game.lastCycleTick = game.pauseLastCycleTick+diff;
+				game.nextCycleTick = game.pauseNextCycleTick+diff;
+			}
 		}
+	}
+
+	game.pause = function(){
+		game.paused = !game.paused;
+		game.pauseTick = App.Engine.tick;
+		game.pauseLastCycleTick = game.lastCycleTick;
+		game.pauseNextCycleTick = game.nextCycleTick;;
 	}
 
 	// ========================================================== //
@@ -301,5 +318,6 @@ App.makeGame = function(){
 	// TODO: move these to gameInput
 	App.InputHandler.registerKey("Q",function(){game.setSimulationSpeed(game.simulationSpeed*2);});
 	App.InputHandler.registerKey("W",function(){game.setSimulationSpeed(game.simulationSpeed/2);});
+	App.InputHandler.registerKey("Space",function(){game.pause();});
 	return game;
 }
