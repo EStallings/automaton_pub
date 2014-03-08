@@ -296,15 +296,19 @@ App.makeGame = function(){
 
 		game.tempGfx.font = "bold 11px arial";
 		game.tempGfx.fillStyle = "#ffffff";
-		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps)       ,11,22);
-		game.tempGfx.fillText("Cycle: "+game.cycles                    ,11,33);
-		game.tempGfx.fillText("Speed: "+game.simulationSpeed+" ms/tick",11,44);
-		game.tempGfx.fillText("Tick: "+App.Engine.tick                 ,11,55);
-		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor             ,11,66);
+		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps) ,11,22);
+		game.tempGfx.fillText("Cycle: "+game.cycles              ,11,33);
+		if(game.paused){
+			game.tempGfx.fillStyle = "#ff0000";
+			game.tempGfx.fillText("Speed: PAUSED",11,44);
+			game.tempGfx.fillStyle = "#ffffff";
+		}else game.tempGfx.fillText("Speed: "+game.simulationSpeed+" ms/tick",11,44);
+		game.tempGfx.fillText("Tick: "+App.Engine.tick           ,11,55);
+		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor       ,11,66);
 
-		game.tempGfx.fillText("Pan X: "+game.renderX                   ,132,22);
-		game.tempGfx.fillText("Pan Y: "+game.renderY                   ,132,33);
-		game.tempGfx.fillText("Cell Size: "+game.cellSize              ,132,44);
+		game.tempGfx.fillText("Pan X: "+game.renderX             ,132,22);
+		game.tempGfx.fillText("Pan Y: "+game.renderY             ,132,33);
+		game.tempGfx.fillText("Cell Size: "+game.cellSize        ,132,44);
 		if(game.requestStaticRenderUpdate)game.tempGfx.fillStyle = "#ff0000";
 		game.tempGfx.fillText("Static Render: "+game.requestStaticRenderUpdate,132,55);
 		game.tempGfx.fillStyle = "#ffffff";

@@ -6,7 +6,7 @@ App.SimulationToken = function(level,x,y,number){
 	this.gfxD = App.Game.tokenDGfx;
 	this.number = number;
 
-	this.rFunc = function(x,y,gfx){ // x y = topleft
+	this.rFunc = function(x,y,gfx){
 		var cs = App.Game.cellSize;
 
 		gfx.fillStyle = "#ffffff";

@@ -1,19 +1,5 @@
-/*
-// TODO: visual feedback on execution
-// TODO: 0switch, +-switch, %2switch
-
-var cs/4 = cellSize/4;
-var cs/8 = cellSize/8;
-var cs/16 = cellSize/16;
-
-var 3*cs/8 = 3*cs/8;
-var 3*cs/16 = 3*cs/16;
-var 5*cs/16 = 5*cs/16;
-*/
-
 App.SimulationInstruction = function(level,x,y,color,type){
-	// TODO: return if instruction is already present, this will get garbage collected
-	// TODO: planning level shouldn't be trying to put conflicting instructions here...
+	// this assumes valid input from the planning level
 
 	level.instructions.push(this);
 	level.getCell(x,y).instructions[color] = this;

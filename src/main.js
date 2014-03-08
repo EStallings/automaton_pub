@@ -3,20 +3,15 @@ window.onload = function(){
 	App.Canvases     = App.createCanvasArray();
 	App.InputHandler = App.makeInputHandler();
 	App.Gui          = App.makeGUI();
-
-	// ========================================================== //
-	// TODO: what about each gui menu gets its own canvas and is "always rendering"?
-	// Made some changes. Uncomment the line below this to see!
-	// App.makeDemoGui();
-	// ========================================================== //
-
 	App.Game         = App.makeGame();
 	App.Engine       = App.makeEngine();
-
 	App.Engine.run();
 
-	// TEMPORARY LEVEL STUFF | DELETE =========================== //
-	// the engine needs to be running before this happens
+	// TEMPORARY STUFF | DELETE ================================= //
+	// TODO: what about each gui menu gets its own canvas and is "always rendering"?
+	// Made some changes. Uncomment the line below this to see!
+	App.makeDemoGui();
+
 	lvl = new App.PlanningLevel();                         // TODO: CLEANUP & DELETE
 	lvl.insert(new App.PlanningInstruction(1,1,1,'left')); // TODO: CLEANUP & DELETE
 	lvl.insert(new App.PlanningInstruction(1,1,3,'up'));   // TODO: CLEANUP & DELETE
