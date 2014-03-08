@@ -2,18 +2,16 @@ window.onload = function(){
 	// console.debug("Initializing application"); // TODO: CLEANUP & DELETE
 	App.Canvases     = App.createCanvasArray();
 	App.InputHandler = App.makeInputHandler();
+	App.Gui          = App.makeGUI();
 
 	// ========================================================== //
-
 	// TODO: what about each gui menu gets its own canvas and is "always rendering"?
-	App.Gui = App.makeGUI();
-	
-	//Made some changes. Uncomment the line below this to see!
-	App.makeDemoGui();
-// ========================================================== //
+	// Made some changes. Uncomment the line below this to see!
+	// App.makeDemoGui();
+	// ========================================================== //
 
-	App.Game   = App.makeGame();
-	App.Engine = App.makeEngine();
+	App.Game         = App.makeGame();
+	App.Engine       = App.makeEngine();
 
 	App.Engine.run();
 
@@ -30,7 +28,6 @@ window.onload = function(){
 	z = []; z[0] = []; z[1] = [];
 	z[0][0] = 1; z[0][1] = 1; z[0][2] = 1;
 	z[1][0] = 1; z[1][1] = 1; z[1][2] = 3;
-
 
 	setupTestLevel(); // DELETE DELETE DELETE DELETE DELETE
 	// ========================================================== //

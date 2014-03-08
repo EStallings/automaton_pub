@@ -8,12 +8,8 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 	this.x = x;
 	this.y = y;
 	this.direction = direction;
-	this.colorFlags = [];                        // TODO: STREAMLINE THIS
-	this.colorFlags[0] = false;       // TODO: STREAMLINE THIS
-	this.colorFlags[1] = false;   // TODO: STREAMLINE THIS
-	this.colorFlags[2] = false;     // TODO: STREAMLINE THIS
-	this.colorFlags[3] = false; // TODO: STREAMLINE THIS
-	this.colorFlags[color] = true; // TODO: STREAMLINE THIS
+	this.colorFlags = [false,false,false,false];
+	this.colorFlags[color] = true;
 	this.tokenHeld = undefined;
 
 	this.move = function(){
@@ -81,7 +77,7 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 		}
 	}
 
-	this.render = function(){
+	this.dynamicRender = function(){
 		// wrap-around rendering
 		var x=this.x,y=this.y,w=this.level.width,h=this.level.height;
 		if(x == 0){

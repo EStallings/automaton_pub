@@ -23,13 +23,13 @@
 function test2(){
 	var testLevel = new App.SimulationLevel(5,5);
 
-	new App.SimulationAutomaton(testLevel,2,1,App.DIRECTIONS.RIGHT,true,true,true,true);
+	new App.SimulationAutomaton(testLevel,2,1,App.DIRECTIONS.RIGHT,App.COLORS.RED);
 	new App.SimulationInstruction(testLevel,1,1,0,4);
 	new App.SimulationInstruction(testLevel,3,3,0,5);
 	new App.SimulationInstruction(testLevel,1,3,0,6);
 	new App.SimulationInstruction(testLevel,3,1,0,7);
 
-	new App.SimulationAutomaton(testLevel,2,2,App.DIRECTIONS.RIGHT,true,true,true,true);
+	new App.SimulationAutomaton(testLevel,2,2,App.DIRECTIONS.RIGHT,App.COLORS.RED);
 	new App.SimulationInstruction(testLevel,2,2,0,8);
 
 	new App.SimulationInstruction(testLevel,1,2,0,15);
@@ -52,7 +52,7 @@ function test3(){
 }
 
 function setupTestLevel(){
-	App.Game.currentSimulationLevel = test3();
+	App.Game.currentSimulationLevel = test2();
 	App.Game.enterSimulationMode();
 }
 

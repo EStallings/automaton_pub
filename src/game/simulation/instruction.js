@@ -250,6 +250,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(a.tokenHeld === undefined && this.cell.tokens.length !== 0){
 					a.tokenHeld = this.cell.tokens[0];
 					this.cell.tokens.splice(0,1);
+					App.Game.requestStaticRenderUpdate = true;
 				}
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -271,6 +272,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(a.tokenHeld !== undefined){
 					this.cell.tokens.push(a.tokenHeld);
 					a.tokenHeld = undefined;
+					App.Game.requestStaticRenderUpdate = true;
 				}
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -293,10 +295,12 @@ App.SimulationInstruction = function(level,x,y,color,type){
 					if(this.cell.tokens.length !== 0){
 						a.tokenHeld = this.cell.tokens[0];
 						this.cell.tokens.splice(0,1);
+						App.Game.requestStaticRenderUpdate = true;
 					}
 				}else{
 					this.cell.tokens.push(a.tokenHeld);
 					a.tokenHeld = undefined;
+					App.Game.requestStaticRenderUpdate = true;
 				}
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -413,9 +417,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 	// ========================================================== //
 	// ========================================================== //
 
-	this.render = function(){
+	this.staticRender = function(){
 		var cs = App.Game.cellSize;
-
 		this.gfx.save();
 		switch(this.color){
 			case App.COLORS.RED:
