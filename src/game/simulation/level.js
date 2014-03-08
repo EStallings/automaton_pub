@@ -69,7 +69,6 @@ App.SimulationLevel = function(width,height){
 	this.dynamicRender = function(){
 		App.Game.translateCanvas(App.Game.automGfx);
 		App.Game.translateCanvas(App.Game.tokenDGfx);
-		App.Game.automGfx.lineWidth = 4;
 		App.Game.tokenDGfx.textAlign = "center";
 		App.Game.tokenDGfx.textBaseline = "middle";
 		App.Game.tokenDGfx.font = "bold "+App.Game.cellSize/2+"px arial";
