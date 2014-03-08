@@ -39,6 +39,13 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			// TODO: add to special spawn list in level
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
+				this.gfx.moveTo(3*cs/16,2*cs/16);
+				this.gfx.lineTo(4*cs/16,cs/16);
+				this.gfx.lineTo(5*cs/16,2*cs/16);
+				this.gfx.stroke();
 			};break;
 
 		case 1: // spawn down ==========================
@@ -46,6 +53,13 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			// TODO: add to special spawn list in level
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
+				this.gfx.moveTo(3*cs/16,6*cs/16);
+				this.gfx.lineTo(4*cs/16,7*cs/16);
+				this.gfx.lineTo(5*cs/16,6*cs/16);
+				this.gfx.stroke();
 			};break;
 
 		case 2: // spawn left ==========================
@@ -53,6 +67,13 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			// TODO: add to special spawn list in level
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
+				this.gfx.moveTo(2*cs/16,3*cs/16);
+				this.gfx.lineTo(cs/16,4*cs/16);
+				this.gfx.lineTo(2*cs/16,5*cs/16);
+				this.gfx.stroke();
 			};break;
 
 		case 3: // spawn right =========================
@@ -60,6 +81,13 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			// TODO: add to special spawn list in level
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
+				this.gfx.moveTo(6*cs/16,3*cs/16);
+				this.gfx.lineTo(7*cs/16,4*cs/16);
+				this.gfx.lineTo(6*cs/16,5*cs/16);
+				this.gfx.stroke();
 			};break;
 
 		case 4: // up ==================================
@@ -69,6 +97,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				a.direction = App.DIRECTIONS.UP;
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
 				this.gfx.moveTo(cs/4,cs/8);
 				this.gfx.lineTo(cs/8,3*cs/8);
 				this.gfx.lineTo(3*cs/8,3*cs/8);
@@ -152,9 +181,18 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 10: // stream =============================
 
 			// TODO: add to special stream list in level
-			// TODO: special render function for stream (add stream render layer)
 			this.execute = function(a){
 			};this.rFunc = function(){
+				// TODO: make letters for each stream
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(3*cs/8,1*cs/8);
+				this.gfx.lineTo(1*cs/8,1*cs/8);
+				this.gfx.lineTo(1*cs/8,2*cs/8);
+				this.gfx.lineTo(3*cs/8,2*cs/8);
+				this.gfx.lineTo(3*cs/8,3*cs/8);
+				this.gfx.lineTo(1*cs/8,3*cs/8);
+				this.gfx.stroke();
 			};break;
 
 		case 11: // in =================================
@@ -196,12 +234,32 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 			this.execute = function(a){
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(cs/8,3*cs/8);
+				this.gfx.lineTo(3*cs/8,3*cs/8);
+				this.gfx.moveTo(cs/4,cs/8);
+				this.gfx.lineTo(cs/4,3*cs/8);
+				this.gfx.moveTo(3*cs/16,3*cs/16);
+				this.gfx.lineTo(cs/4,cs/8);
+				this.gfx.lineTo(5*cs/16,3*cs/16);
+				this.gfx.stroke();
 			};break;
 
 		case 14: // drop ===============================
 
 			this.execute = function(a){
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(cs/8,3*cs/8);
+				this.gfx.lineTo(3*cs/8,3*cs/8);
+				this.gfx.moveTo(cs/4,cs/8);
+				this.gfx.lineTo(cs/4,3*cs/8);
+				this.gfx.moveTo(3*cs/16,5*cs/16);
+				this.gfx.lineTo(cs/4,3*cs/8);
+				this.gfx.lineTo(5*cs/16,5*cs/16);
+				this.gfx.stroke();
 			};break;
 
 		case 15: // grab/drop ==========================
@@ -265,18 +323,27 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 			this.execute = function(a){
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.stroke();
 			};break;
 
 		case 19: // switch +- ==========================
 
 			this.execute = function(a){
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.stroke();
 			};break;
 
 		case 20: // switch even odd ====================
 
 			this.execute = function(a){
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.stroke();
 			};break;
 
 		case 21: // sync ===============================
@@ -292,12 +359,27 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			// TODO: this doesn't have a color check
 			this.execute = function(a){
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(1*cs/8,1*cs/8);
+				this.gfx.lineTo(3*cs/8,1*cs/8);
+				this.gfx.moveTo(2*cs/8,1*cs/8);
+				this.gfx.lineTo(2*cs/8,3*cs/8);
+				this.gfx.stroke();
 			};break;
 
 		case 23: // pause ==============================
 
 			this.execute = function(a){
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				this.gfx.moveTo(1*cs/8,2*cs/8);
+				this.gfx.lineTo(3*cs/8,2*cs/8);
+				this.gfx.lineTo(3*cs/8,1*cs/8);
+				this.gfx.lineTo(1*cs/8,1*cs/8);
+				this.gfx.lineTo(1*cs/8,3*cs/8);
+				this.gfx.stroke();
 			};break;
 	}
 
