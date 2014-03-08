@@ -22,12 +22,26 @@ App.makeInputHandler = function(){
 		wheel:0
 	}
 
-	input.clickOverGUI = false;
+	input.hijackedInput = null;
 
 	printMouseData = function(){
 		var i = input.mouseData;
 		console.log("x:" + i.x + ", y:" + i.y + ", l:" + i.lmb + ", m:" + i.mmb + ", r:" + i.rmb + ", w:" + i.wheel);
 	}
+
+
+	//Use with trepidation. Should only call callback with keys,
+	//and only after releasing them (after a full click)
+	input.hijackInput = function(callback){
+		this.hijackedInput = callback;
+		console.debug("HIJACKED INPUT. BE CAREFUL");
+	}
+
+	input.deHijackInput = function(){
+		this.hijackedInput = null;
+		console.debug("UNHIJACKED INPUT SAFE TO GO!");
+	}
+
 
 	//TODO registering a function to be called back under specified conditions for keyboard events
 	//if repeat is false, holding a key down will not fire multiple events.
@@ -51,6 +65,9 @@ App.makeInputHandler = function(){
 
 	var handle_mouseMove 	= function(e){	
 		var input = App.InputHandler;
+		if(input.hijackedInput){
+			return;
+		}
 	
 		if(e.currentTarget === null) return;
 
@@ -58,12 +75,15 @@ App.makeInputHandler = function(){
 
 		input.mouseData.x = e.clientX - rect.left;
 		input.mouseData.y = e.clientY - rect.top;
-		if(!input.Gui.mouseMove(input.mouseData) && !input.clickOverGUI)
+		if(!input.Gui.mouseMove(input.mouseData))
 			input.Game.mouseMove(input.mouseData);
 	}
 
 	var handle_mouseUp 		= function(e){
 		var input = App.InputHandler;
+		if(input.hijackedInput){
+			return;
+		}
 		switch (e.button){
 			case 0:
 				input.mouseData.lmb = false;
@@ -75,13 +95,16 @@ App.makeInputHandler = function(){
 				input.mouseData.rmb = false;
 				break;
 		}
-		if(!input.Gui.mouseUp(input.mouseData) && !input.clickOverGUI)
+		if(!input.Gui.mouseUp(input.mouseData))
 			input.Game.mouseUp(input.mouseData);
 	}
 	
 	
 	var handle_mouseDown 	= function(e){
 		var input = App.InputHandler;
+		if(input.hijackedInput){
+			return;
+		}
 		switch (e.button){
 			case 0:
 				input.mouseData.lmb = true;
@@ -93,21 +116,22 @@ App.makeInputHandler = function(){
 				input.mouseData.rmb = true;
 				break;
 		}
-		if(input.Gui.mouseDown(input.mouseData))
-			input.clickOverGUI = true;
-		else
+		if(!input.Gui.mouseDown(input.mouseData))
 			input.Game.mouseDown(input.mouseData);
 	}
 	
 	var handle_mouseWheel 	= function(e){
 		var input = App.InputHandler;
+		if(input.hijackedInput){
+			return;
+		}
 		var evt = window.event || e;
 		var delta = evt.detail? evt.detail*(-1) : evt.wheelDelta;
 		delta = (delta < 0) ? -1 : 1;
 
 		input.mouseData.wheel = delta;
 
-		if(!input.Gui.mouseWheel(input.mouseData) && !input.clickOverGUI)
+		if(!input.Gui.mouseWheel(input.mouseData))
 			input.Game.mouseWheel(input.mouseData);
 
 		input.mouseData.wheel = 0;
@@ -116,6 +140,11 @@ App.makeInputHandler = function(){
 
 	var handle_keyDown 		= function(e){
 		var input = App.InputHandler;
+
+		if(input.hijackedInput){
+			return;
+		}
+
 		var key = input.keyCodeToChar[e.keyCode];
 		if(input.keysDown[key]) return;
 
@@ -128,6 +157,11 @@ App.makeInputHandler = function(){
 	var handle_keyUp 		= function(e){
 		var input = App.InputHandler;
 		var key = input.keyCodeToChar[e.keyCode];
+		if(input.hijackedInput){
+			input.hijackedInput(key);
+			return;
+		}
+
 		input.keysDown[key] = false;
 		if(input.keyRegistry[key])
 			input.keyRegistry[key].n = 0;

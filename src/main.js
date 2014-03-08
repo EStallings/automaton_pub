@@ -4,14 +4,13 @@ window.onload = function(){
 	App.InputHandler = App.makeInputHandler();
 
 	// ========================================================== //
-	// TODO: FOR EACH MENU, MAKE A CREATE<MENUNAME>?
-	// TODO: CLEANUP & DELETE
+
 	// TODO: what about each gui menu gets its own canvas and is "always rendering"?
 	App.Gui = App.makeGUI();
-	// constructMenus();
-	// App.Gui = App.Menus['mainMenu'];
-	//App.InputHandler.registerMouse(App.InputHandler.mouseTypes.LEFT_CLICK,App.CheckGuiClick,"GUI");
-	// ========================================================== //
+	
+	//Made some changes. Uncomment the line below this to see!
+	//App.makeDemoGui();
+// ========================================================== //
 
 	App.Game   = App.makeGame();
 	App.Engine = App.makeEngine();
@@ -26,4 +25,17 @@ window.onload = function(){
 	lvl.insert(new App.PlanningInstruction(2,2,3,'down'));   // TODO: CLEANUP & DELETE
 	setupTestLevel(); // DELETE DELETE DELETE DELETE DELETE
 	// ========================================================== //
+}
+
+
+App.makeDemoGui = function(){
+	App.Gui.addNewFrame('test');
+	var dragButton = new App.GuiDragButton(new App.GuiCollisionRect(100,200,100,50), null, null, null);
+	var textButton = new App.GuiTextButton(new App.GuiCollisionRect(100,100,100,50), "foo bar", function(){ console.log("hi");});
+	var textBox = new App.GuiTextBox(new App.GuiCollisionRect(100,300,100,50), "I am a text box!", null);
+	var editBox = new App.GuiEditableTextBox(new App.GuiCollisionRect(100,400,100,50), "Edit me", null);
+	App.Gui.addNewComponent('test', dragButton);
+	App.Gui.addNewComponent('test', textButton);
+	App.Gui.addNewComponent('test', textBox);
+	App.Gui.addNewComponent('test', editBox);
 }

@@ -9,6 +9,7 @@ App.makeGUI = function(){
 
 	gui.frames = [];
 	gui.currentFrame;
+	gui.activeComponent = null;
 
 	gui.addNewFrame = function(framekey){
 		if(this.frames[framekey]){
@@ -20,6 +21,7 @@ App.makeGUI = function(){
 		if(!this.currentFrame)
 			this.currentFrame = this.frames[framekey];
 	}
+
 	gui.setCurrentFrame = function(framekey){
 		this.currentFrame = (this.frames[key]) ? this.frames[key] : this.currentFrame;
 	}
@@ -28,6 +30,34 @@ App.makeGUI = function(){
 		if(!this.frames[framekey])
 			console.error("cannot add a component to nonexistent frame: " + framekey);
 		this.frames[framekey].push(component);
+	}
+
+	gui.clickStart = function(x, y){
+		for(var c in this.currentFrame)if(this.currentFrame[c].cRect && this.currentFrame[c].cRect.functional)
+			this.activeComponent = (this.currentFrame[c].cRect.collides(x, y))? this.currentFrame[c] : this.activeComponent;
+		if(this.activeComponent && this.activeComponent.clickStart)
+			this.activeComponent.clickStart();
+	}
+
+	gui.clickDrag = function(x, y){
+		if(!this.activeComponent || !this.activeComponent.clickDrag)
+			return;
+		this.activeComponent.clickDrag(x, y);
+	}
+
+	gui.clickEnd = function(x, y){
+		if(this.activeComponent && this.activeComponent.clickEnd)
+			this.activeComponent.clickEnd(x, y);
+		this.activeComponent = null;
+	}
+
+	gui.testCoordinates = function(x, y){
+		if(this.activeComponent)
+			return true;
+		var flag = false;
+		for(var c in this.currentFrame)if(this.currentFrame[c].cRect)
+			flag = (this.currentFrame[c].cRect.collides(x, y))? true : flag;
+		return flag;
 	}
 
 	gui.update = function(){
