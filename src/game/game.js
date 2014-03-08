@@ -272,6 +272,10 @@ App.makeGame = function(){
 			game.currentSimulationLevel.dynamicRender();
 
 		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+
+		game.tempGfx.fillStyle = "rgba(0,0,0,0.7)"
+		game.tempGfx.fillRect(5,5,300,70);
+
 		game.tempGfx.font = "bold 11px arial";
 		game.tempGfx.fillStyle = "#ffffff";
 		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps)       ,11,22);
@@ -285,6 +289,10 @@ App.makeGame = function(){
 		game.tempGfx.fillText("Cell Size: "+game.cellSize              ,132,44);
 		if(game.requestStaticRenderUpdate)game.tempGfx.fillStyle = "#ff0000";
 		game.tempGfx.fillText("Static Render: "+game.requestStaticRenderUpdate,132,55);
+		game.tempGfx.fillStyle = "#ffffff";
+		var bar = "Interpolation ";
+		for(var i=0;i<game.interpolation;i+=0.05)bar+="|";
+		game.tempGfx.fillText(bar,132,66);
 	}
 
 	// ========================================================== //
