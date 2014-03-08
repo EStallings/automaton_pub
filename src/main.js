@@ -7,7 +7,7 @@ window.onload = function(){
 	// ========================================================== //
 	// TODO: what about each gui menu gets its own canvas and is "always rendering"?
 	// Made some changes. Uncomment the line below this to see!
-	// App.makeDemoGui();
+	App.makeDemoGui();
 	// ========================================================== //
 
 	App.Game         = App.makeGame();
@@ -32,7 +32,6 @@ window.onload = function(){
 	setupTestLevel(); // DELETE DELETE DELETE DELETE DELETE
 	// ========================================================== //
 }
-
 
 App.makeDemoGui = function(){
 	App.Gui.addNewFrame('test');

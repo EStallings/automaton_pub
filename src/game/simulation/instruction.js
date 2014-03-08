@@ -215,8 +215,9 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(!this.level.streams[this.color])return;
 				for(var i in this.level.streams[this.color])
 					this.level.streams[this.color][i].input();
+				// TODO: NEED TO REQUEST STATIC RENDER
 			};this.rFunc = function(){
-				// TODO: this should NOT be an I (streams)
+				// TODO: this should NOT be an "I" (streams)
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
 				this.gfx.moveTo(cs/4,cs/8);
@@ -235,8 +236,9 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				// TODO: IMPLEMENT THIS
 			//	for(var i in this.level.streams)
 			//		this.level.streams[i].IO(OUTPUT,this.color);
+				// TODO: NEED TO REQUEST STATIC RENDER
 			};this.rFunc = function(){
-				// TODO: this should NOT be an O (streams)
+				// TODO: this should NOT be an "O" (streams)
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
 				this.gfx.arc(cs/4,cs/4,cs/8,-Math.PI,Math.PI);
@@ -250,7 +252,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(a.tokenHeld === undefined && this.cell.tokens.length !== 0){
 					a.tokenHeld = this.cell.tokens[0];
 					this.cell.tokens.splice(0,1);
-					App.Game.requestStaticRenderUpdate = true;
+					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -272,7 +274,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(a.tokenHeld !== undefined){
 					this.cell.tokens.push(a.tokenHeld);
 					a.tokenHeld = undefined;
-					App.Game.requestStaticRenderUpdate = true;
+					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -295,12 +297,12 @@ App.SimulationInstruction = function(level,x,y,color,type){
 					if(this.cell.tokens.length !== 0){
 						a.tokenHeld = this.cell.tokens[0];
 						this.cell.tokens.splice(0,1);
-						App.Game.requestStaticRenderUpdate = true;
+						App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
 					}
 				}else{
 					this.cell.tokens.push(a.tokenHeld);
 					a.tokenHeld = undefined;
-					App.Game.requestStaticRenderUpdate = true;
+					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;

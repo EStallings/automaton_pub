@@ -295,7 +295,7 @@ App.GuiPanel = function(cRect){
 		gfx.fillRect(this.cRect.x, this.cRect.y, this.cRect.w, this.cRect.h);
 	}
 }
-App.GuiPanel.rgba = 'rgba(180, 180, 180, 0.1';
+App.GuiPanel.rgba = 'rgba(180, 180, 180, 0.1)';
 
 
 //Abstracts out some logic for coordinates and collision, relative positioning
