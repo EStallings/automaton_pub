@@ -57,6 +57,12 @@ App.PlanningLevel = function(){
 		}
 	};
 
+	// contains information needed to undo or redo any of the group operations
+	this.groupOp = function(numInstructions){
+		this.numInstructions = numInstructions;
+		this.opId = 'group';
+	};
+
 	// contains the information needed to undo or redo an insert operation
 	this.insertOp = function(instruction){		
 		this.instruction = instruction;
@@ -76,7 +82,7 @@ App.PlanningLevel = function(){
 		this.newX = newX; this.newY = newY;
 		this.overWritten = null;
 		this.opId = 'move';
-	}
+	};
 
 	// contains the information needed to undo or redo a copy operation
 	this.copyOp = function(instruction, newX, newY){
@@ -84,7 +90,7 @@ App.PlanningLevel = function(){
 		this.newX = newX; this.newY = newY;
 		this.overWritten = null;
 		this.opId = 'copy';
-	}
+	};
 
 	// contains the information needed to undo or redo a modify operation
 	this.modifyOp = function(instruction, parameter, newValue, oldValue){
@@ -94,6 +100,47 @@ App.PlanningLevel = function(){
 		this.oldValue = oldValue;
 		this.overWritten = null;
 		this.opId = 'modify';
+	};
+
+	// this function takes a list of PlanningInstructions and inserts them into the grid
+	this.groupInsert = function(instructions){
+		for(var x = 0; x < instructions.length; x++){
+			that.insert(instructions[x]);
+		}
+		that.undoStack.push(new that.groupOp(instructions.length));
+	};
+
+	// this function takes a list of coordinate triplets and deletes the corresponding instructions from the grid
+	this.groupDelete = function(coords){
+		for(var x = 0; x < coords.length; x++){
+			that.delete(coords[x][0],coords[x][1],coords[x][2]);
+		}
+		that.undoStack.push(new that.groupOp(coords.length));
+	};
+
+	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
+	this.groupMove = function(coords,shiftX,shiftY){
+		for(var x = 0; x < coords.length; x++){
+			that.move(coords[x][0],coords[x][1],coords[x][2],coords[x][0]+shiftX,coords[x][1]+shiftY);
+		}
+		that.undoStack.push(new that.groupOp(coords.length));
+	}
+
+	// this function takes a list of coordinate triplets and copies the instructions they point to to a new cell shiftX and shiftY away from the first
+	this.groupCopy = function(coords,shiftX,shiftY){
+		for(var x = 0; x < coords.length; x++){
+			that.copy(coords[x][0],coords[x][1],coords[x][2],coords[x][0]+shiftX,coords[x][1]+shiftY);
+		}
+		that.undoStack.push(new that.groupOp(coords.length));
+	}
+
+	// not sure we will actually need this one
+	// this function takes a list of coordinate triplets and changes the specified parameter of all of them to value
+	this.groupModify = function(coords, parameter, value){
+		for(var x = 0; x < coords.length; x++){
+			that.modify(this.getInstruction(coords[x][0],coords[x][1],coords[x][2]),parameter,value);
+		}
+		that.undoStack.push(new that.groupOp(coords.length));
 	}
 
 	// this function performs a modify operation on an instruction,
@@ -129,7 +176,7 @@ App.PlanningLevel = function(){
 				}
 			}
 		}
-	}
+	};
 
 	// this function performs a copy operation on an instruction,
 	// and creates and pushes a copyOp object onto the undo stack.
@@ -161,7 +208,7 @@ App.PlanningLevel = function(){
 			// overwrite
 			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 		}
-	}
+	};
 
 	// this function, performs a move operation on an instruction,
 	// and creates and pushes a moveOp object onto the undo stack.
@@ -209,7 +256,7 @@ App.PlanningLevel = function(){
 			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 			that.grid[x][y][color] = null;			
 		}
-	}
+	};
 
 	// this function performs an insert operation on the grid,
 	// and creates and pushes an insertOp object onto the undo stack.
@@ -265,7 +312,7 @@ App.PlanningLevel = function(){
 
 		// update stacks
 		var op = that.undoStack.pop();
-		that.redoStack.push(op);
+		if(op.opId !== 'group'){ that.redoStack.push(op); }
 
 		console.warn('undo op: ' + op.opId);
 
@@ -311,6 +358,12 @@ App.PlanningLevel = function(){
 				that.undoStack.pop();
 			}
 		}
+		else if(op.opId === 'group'){
+			for(var x = 0; x < op.numInstructions; x++){
+				that.undo();
+			}
+			that.redoStack.push(op);
+		}
 	};
 
 	// each call to this function pops the redo stack, and undoes whatever operation it finds
@@ -318,7 +371,7 @@ App.PlanningLevel = function(){
 
 		// update stacks
 		var op = that.redoStack.pop();
-		that.undoStack.push(op);
+		if(op.opId !== 'group'){ that.undoStack.push(op); }
 
 		console.warn('redo op: ' + op.opId);
 
@@ -342,6 +395,12 @@ App.PlanningLevel = function(){
 		else if(op.opId === 'modify'){
 			that.modify(op.instruction, op.parameter, op.newValue);
 			that.undoStack.pop();
+		}
+		else if(op.opId === 'group'){ // TODO make it so that group ends up on the front of the stack
+			for(var x = 0; x < op.numInstructions; x++){
+				that.redo();
+			}
+			that.undoStack.push(op);
 		}
 	};
 
