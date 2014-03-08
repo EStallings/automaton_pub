@@ -2,11 +2,20 @@
 Notes about doing the GUI:
 
 For now, just need:
+
+DRAW NOT DONE
 imageButton - small and large? -- doesn't need to be an ACTUAL image, just pictographic somehow
+
+DONE?
 textButton - small and large?
+
+DRAW NOT DONE
 dragButton - like an imageButton
+
+DONE?
 textBox -- static and user entry
 
+DONE
 guiPanel -- static and prevents click fallthrough
 */
 
@@ -109,8 +118,10 @@ App.GuiDragButton = function(cRect, draw, instruction, panel){
 		this.currentX = this.cRect.x;
 		this.currentY = this.cRect.y;
 		console.log("dragged to " + x + "," + y);
-
-
+		//-------
+		//At this point, need drawing of planning level
+		//to drag and drop components! WOO!
+		//-------
 	}
 }
 

@@ -12,9 +12,9 @@ App.makeGuiInput = function(){
 		return hit;
 	}
 	gInput.mouseMove = function(mouseData){
-		var hit = App.Gui.testCoordinates(mouseData.x, mouseData.y);
+		//var hit = App.Gui.testCoordinates(mouseData.x, mouseData.y);
 		App.Gui.clickDrag(mouseData.x, mouseData.y); 
-		return hit;
+		return false;
 	}
 	gInput.mouseWheel = function(mouseData){
 		//var hit = App.Gui.testCoordinates(mouseData.x, mouseData.y);

@@ -22,6 +22,7 @@ App.makeInputHandler = function(){
 		wheel:0
 	}
 
+	input.guiGrabMouse = false;
 	input.hijackedInput = null;
 
 	printMouseData = function(){
@@ -75,7 +76,7 @@ App.makeInputHandler = function(){
 
 		input.mouseData.x = e.clientX - rect.left;
 		input.mouseData.y = e.clientY - rect.top;
-		if(!input.Gui.mouseMove(input.mouseData))
+		if(!input.Gui.mouseMove(input.mouseData) && !input.guiGrabMouse)
 			input.Game.mouseMove(input.mouseData);
 	}
 
@@ -95,8 +96,10 @@ App.makeInputHandler = function(){
 				input.mouseData.rmb = false;
 				break;
 		}
-		if(!input.Gui.mouseUp(input.mouseData))
+		if(!input.Gui.mouseUp(input.mouseData) && !input.guiGrabMouse)
 			input.Game.mouseUp(input.mouseData);
+
+		input.guiGrabMouse = false;
 	}
 	
 	
@@ -116,7 +119,9 @@ App.makeInputHandler = function(){
 				input.mouseData.rmb = true;
 				break;
 		}
-		if(!input.Gui.mouseDown(input.mouseData))
+		if(input.Gui.mouseDown(input.mouseData))
+			input.guiGrabMouse = true;
+		else
 			input.Game.mouseDown(input.mouseData);
 	}
 	
@@ -131,7 +136,7 @@ App.makeInputHandler = function(){
 
 		input.mouseData.wheel = delta;
 
-		if(!input.Gui.mouseWheel(input.mouseData))
+		if(!input.Gui.mouseWheel(input.mouseData) && !input.guiGrabMouse)
 			input.Game.mouseWheel(input.mouseData);
 
 		input.mouseData.wheel = 0;
