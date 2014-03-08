@@ -37,6 +37,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 0: // spawn up ============================
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.UP,color);
+
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -51,6 +52,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 1: // spawn down ==========================
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.DOWN,color);
+
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -65,6 +67,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 2: // spawn left ==========================
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.LEFT,color);
+
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -79,6 +82,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 3: // spawn right =========================
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.RIGHT,color);
+
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -181,6 +185,14 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 10: // stream =============================
 
 			// TODO: add to special stream list in level
+			if(level.streams[color] === undefined)
+				level.streams[color] = [];
+			level.streams[color].push(this);
+
+			this.input = function(){
+				new App.SimulationToken(this.level,this.x,this.y,0);
+			}
+
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
 				// TODO: make letters for each stream
@@ -200,8 +212,9 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				// TODO: IMPLEMENT THIS
-			//	for(var i in this.level.streams)
-			//		this.level.streams[i].IO(INPUT,this.color);
+				if(!this.level.streams[this.color])return;
+				for(var i in this.level.streams[this.color])
+					this.level.streams[this.color][i].input();
 			};this.rFunc = function(){
 				// TODO: this should NOT be an I (streams)
 				var cs = App.Game.cellSize;

@@ -17,6 +17,7 @@
 	22: // color toggle		23: // pause
 
 	// TODO: ALL SWITCHES NEED UP DOWN LEFT RIGHT
+	// TODO: IN AND OUT STREAMS
 */
 
 function test2(){
@@ -42,10 +43,10 @@ function test2(){
 }
 
 function test3(){
-	var testLevel = new App.SimulationLevel(8,3);
+	var testLevel = new App.SimulationLevel(10,5);
 
-	for(var x=0;x<8;++x)for(var y=0;y<3;++y)for(var c=0;c<1;++c)
-		new App.SimulationInstruction(testLevel,x,y,0,8*y+x);
+	for(var x=0;x<8;++x)for(var y=0;y<3;++y)
+		new App.SimulationInstruction(testLevel,x+1,y+1,0,8*y+x);
 
 	return testLevel;
 }
