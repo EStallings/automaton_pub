@@ -1,4 +1,4 @@
-App.SimulationAutomaton = function(level,x,y,direction,red,green,blue,yellow){
+App.SimulationAutomaton = function(level,x,y,direction,color){
 	level.automatons.push(this);
 	level.getCell(x,y).automatons.push(this);
 
@@ -9,10 +9,11 @@ App.SimulationAutomaton = function(level,x,y,direction,red,green,blue,yellow){
 	this.y = y;
 	this.direction = direction;
 	this.colorFlags = [];                        // TODO: STREAMLINE THIS
-	this.colorFlags[0] = red;       // TODO: STREAMLINE THIS
-	this.colorFlags[1] = green;   // TODO: STREAMLINE THIS
-	this.colorFlags[2] = blue;     // TODO: STREAMLINE THIS
-	this.colorFlags[3] = yellow; // TODO: STREAMLINE THIS
+	this.colorFlags[0] = false;       // TODO: STREAMLINE THIS
+	this.colorFlags[1] = false;   // TODO: STREAMLINE THIS
+	this.colorFlags[2] = false;     // TODO: STREAMLINE THIS
+	this.colorFlags[3] = false; // TODO: STREAMLINE THIS
+	this.colorFlags[color] = true; // TODO: STREAMLINE THIS
 	this.tokenHeld = undefined;
 
 	this.move = function(){
@@ -46,9 +47,15 @@ App.SimulationAutomaton = function(level,x,y,direction,red,green,blue,yellow){
 			case App.DIRECTIONS.RIGHT : x-=(1-App.Game.interpolation);break;
 		}
 
-		// TODO: CALL TOKEN DYNAMIC RENDER?
 		// render token if holding one
 		if(this.tokenHeld != undefined)this.tokenHeld.dynamicRender(x*c,y*c);
+
+		this.gfx.lineWidth = 2;
+		this.gfx.strokeStyle = "rgba(255,255,255,0.1)";
+		this.gfx.beginPath();
+		this.gfx.arc(x*c+h,y*c+h,h,-Math.PI,Math.PI);
+		this.gfx.stroke();
+		this.gfx.lineWidth = 4;
 
 		// render automaton
 		if(this.colorFlags[App.COLORS.RED]){

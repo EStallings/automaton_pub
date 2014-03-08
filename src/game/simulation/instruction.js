@@ -36,7 +36,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 		case 0: // spawn up ============================
 
-			// TODO: add to special spawn list in level
+			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.UP,color);
+
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -50,7 +51,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 		case 1: // spawn down ==========================
 
-			// TODO: add to special spawn list in level
+			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.DOWN,color);
+
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -64,7 +66,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 		case 2: // spawn left ==========================
 
-			// TODO: add to special spawn list in level
+			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.LEFT,color);
+
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -78,7 +81,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 		case 3: // spawn right =========================
 
-			// TODO: add to special spawn list in level
+			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.RIGHT,color);
+
 			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -181,7 +185,15 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 10: // stream =============================
 
 			// TODO: add to special stream list in level
-			this.execute = function(a){
+			if(level.streams[color] === undefined)
+				level.streams[color] = [];
+			level.streams[color].push(this);
+
+			this.input = function(){
+				new App.SimulationToken(this.level,this.x,this.y,0);
+			}
+
+			this.execute = function(a){ // do nothing
 			};this.rFunc = function(){
 				// TODO: make letters for each stream
 				var cs = App.Game.cellSize;
@@ -200,8 +212,9 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				// TODO: IMPLEMENT THIS
-			//	for(var i in this.level.streams)
-			//		this.level.streams[i].IO(INPUT,this.color);
+				if(!this.level.streams[this.color])return;
+				for(var i in this.level.streams[this.color])
+					this.level.streams[this.color][i].input();
 			};this.rFunc = function(){
 				// TODO: this should NOT be an I (streams)
 				var cs = App.Game.cellSize;
@@ -233,6 +246,11 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 13: // grab ===============================
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined && this.cell.tokens.length !== 0){
+					a.tokenHeld = this.cell.tokens[0];
+					this.cell.tokens.splice(0,1);
+				}
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
@@ -249,6 +267,11 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 14: // drop ===============================
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld !== undefined){
+					this.cell.tokens.push(a.tokenHeld);
+					a.tokenHeld = undefined;
+				}
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
@@ -321,6 +344,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 		case 18: // switch 0 ===========================
 
+			// TODO: UP DOWN LEFT RIGHT
 			this.execute = function(a){
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -330,6 +354,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 		case 19: // switch +- ==========================
 
+			// TODO: UP DOWN LEFT RIGHT
 			this.execute = function(a){
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -339,6 +364,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 		case 20: // switch even odd ====================
 
+			// TODO: UP DOWN LEFT RIGHT
 			this.execute = function(a){
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
