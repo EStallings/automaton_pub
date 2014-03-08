@@ -135,20 +135,45 @@ App.GuiTextBox = function(cRect, text, panel){
 App.GuiEditableTextBox = function(cRect, defaultText, panel){
 	this.cRect = cRect;
 	this.text = defaultText;
+	this.lastText = defaultText;
+	this.defaultText = defaultText;
 	this.cRect.positionRelative(panel);
 	this.color = App.GuiTextButton.bg;
 	this.clicked = false;
 	this.editmode = false;
 	this.cRect.functional = true;
+	this.cursorPosition = 0;
+	this.cursorTime = 0;
+	this.cursorTimeout = 15;
 
 	var textX = this.cRect.x + 10;// (this.cRect.w / 2); // for centering text
-	var textY = this.cRect.y + (this.cRect.h / 2); // for centering text
+	var textY = this.cRect.y + 5 + (this.cRect.h / 2); // for centering text
 
 	this.render = function(gfx){
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.cRect.x, this.cRect.y, this.cRect.w, this.cRect.h);
 		gfx.fillStyle = App.GuiTextButton.fg;
+		//if set font, set font here.
+		var metrics = gfx.measureText(this.text.substring(0, this.cursorPosition));
+		if(metrics.width + textX > this.cRect.x + this.cRect.w)
+			this.text = this.text.substring(0, this.text.length - 1);
 		gfx.fillText(this.text, textX, textY);
+
+		if(this.cursorTime > 0){
+			gfx.fillRect(textX + metrics.width, textY - 10, 1, 10);
+
+		}
+		if(this.editmode)
+			gfx.fillText("Press Enter to save, Esc to cancel.", textX, textY - 15);
+	}
+
+	this.update = function(){
+		if(!this.editmode)
+			return;
+		this.cursorTime ++;
+		if(this.cursorTime > this.cursorTimeout){
+			this.cursorTime = -1 * this.cursorTimeout;
+		}
 	}
 
 	this.clickStart = function(){
@@ -181,27 +206,68 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 	this.enterEditMode = function(){
 		App.InputHandler.hijackInput(that.listenKeyStroke);
 		this.editmode = true;
-		this.text = "";
+		this.lastText = this.text;
+		this.text = (this.text === this.defaultText)? "" : this.text;
+		this.cursorPosition = this.text.length;
+		this.color = "#121212";
 	}
 
 	this.exitEditMode = function(){
 		App.InputHandler.deHijackInput();
 		this.editmode = false;
+		this.cursorTime = 0;
+		this.cursorPosition = 0;
+		this.color = App.GuiTextButton.bg;
+	}
+
+	this.insertKey = function(key){
+		if(this.text.length === 0)
+			this.text = key;
+		else
+			this.text = this.text.substring(0, this.cursorPosition) + key + this.text.substring(this.cursorPosition, this.text.length);
 	}
 
 	//SUPER clunky but it works. Lol!
 	//TODO cursor support? I don't even know how to start with
 	//this; no idea how thick the letters are, how to highlight
 	//them, etc
-	this.listenKeyStroke = function(key){
+	this.listenKeyStroke = function(key, shift){
 		console.log(key);
-		if(key.length <= 1)
-			that.text += key;
-		if(key == 'Space')
-			that.text += ' ';
+		// if(that.cursorTime > 0)
+		// 	that.text = that.text.substring(0, that.text.length - 1);	
 
-		if(key == 'Enter')
+		if(key.length <= 1){
+			that.insertKey((shift)? key : key.toLowerCase());
+			that.cursorPosition ++;
+		}
+		if(key === 'Space'){
+			that.insertKey(' ');
+			that.cursorPosition ++;
+		}
+		if(key === 'Backspace'){
+			that.text = that.text.substring(0, that.text.length - 1);
+			that.cursorPosition --;
+		}
+		if(key === 'Left'){
+			that.cursorPosition --;
+		}
+		if(key === 'Right'){
+			that.cursorPosition ++;
+		}
+		if(that.cursorPosition > that.text.length)
+			that.cursorPosition = that.text.length;
+		else if(that.cursorPosition < 0)
+			that.cursorPosition = 0;
+
+		if(key === 'Enter')
 			that.exitEditMode();
+		if(key === 'Esc') {
+			that.text = that.lastText;
+			that.exitEditMode();
+		}
+
+		// if(that.cursorTime > 0)
+		// 	that.text += '|';
 	}
 }
 

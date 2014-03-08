@@ -9,7 +9,7 @@ window.onload = function(){
 	App.Gui = App.makeGUI();
 	
 	//Made some changes. Uncomment the line below this to see!
-	//App.makeDemoGui();
+	App.makeDemoGui();
 // ========================================================== //
 
 	App.Game   = App.makeGame();
@@ -42,7 +42,7 @@ App.makeDemoGui = function(){
 	var dragButton = new App.GuiDragButton(new App.GuiCollisionRect(100,200,100,50), null, null, null);
 	var textButton = new App.GuiTextButton(new App.GuiCollisionRect(100,100,100,50), "foo bar", function(){ console.log("hi");});
 	var textBox = new App.GuiTextBox(new App.GuiCollisionRect(100,300,100,50), "I am a text box!", null);
-	var editBox = new App.GuiEditableTextBox(new App.GuiCollisionRect(100,400,100,50), "Edit me", null);
+	var editBox = new App.GuiEditableTextBox(new App.GuiCollisionRect(100,400,200,50), "Edit me", null);
 	App.Gui.addNewComponent('test', dragButton);
 	App.Gui.addNewComponent('test', textButton);
 	App.Gui.addNewComponent('test', textBox);

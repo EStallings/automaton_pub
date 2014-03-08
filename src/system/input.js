@@ -140,12 +140,15 @@ App.makeInputHandler = function(){
 
 	var handle_keyDown 		= function(e){
 		var input = App.InputHandler;
-
+		var key = input.keyCodeToChar[e.keyCode];
 		if(input.hijackedInput){
+			if(key === 'Backspace')
+				e.preventDefault();
+			input.hijackedInput(key, e.shiftKey);
 			return;
 		}
 
-		var key = input.keyCodeToChar[e.keyCode];
+		
 		if(input.keysDown[key]) return;
 
 		input.keysDown[key] = true;
@@ -158,7 +161,7 @@ App.makeInputHandler = function(){
 		var input = App.InputHandler;
 		var key = input.keyCodeToChar[e.keyCode];
 		if(input.hijackedInput){
-			input.hijackedInput(key);
+			//input.hijackedInput(key, e.shiftKey);
 			return;
 		}
 
