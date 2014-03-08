@@ -17,8 +17,15 @@ textBox -- static and user entry
 
 DONE
 guiPanel -- static and prevents click fallthrough
+
+
+One TODO (potentially): abstract out button logic. Several of the objects
+in this file have some similar code. Less than you might think, though...
 */
 
+
+//A relatively simple button. Click and release on top of it to fire a callback.
+//with 'continuous' as true, it will keep firing every frame.
 App.GuiTextButton = function(cRect, text, callback, continuous, panel){
 	this.cRect = cRect;
 	this.text = text;
@@ -125,6 +132,8 @@ App.GuiDragButton = function(cRect, draw, instruction, panel){
 	}
 }
 
+
+//Simple text display. Has a background, some text. Nothing fancy.
 App.GuiTextBox = function(cRect, text, panel){
 	this.cRect = cRect;
 	this.text = text;
@@ -143,6 +152,9 @@ App.GuiTextBox = function(cRect, text, panel){
 
 }
 
+//NOT a simple text display. This bad boy is heavy weight
+//Feel free to extend/refactor this! It does, however, work pretty well,
+//and isn't very inefficient.
 App.GuiEditableTextBox = function(cRect, defaultText, panel){
 	this.cRect = cRect;
 	this.text = defaultText;
@@ -238,14 +250,8 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 			this.text = this.text.substring(0, this.cursorPosition) + key + this.text.substring(this.cursorPosition, this.text.length);
 	}
 
-	//SUPER clunky but it works. Lol!
-	//TODO cursor support? I don't even know how to start with
-	//this; no idea how thick the letters are, how to highlight
-	//them, etc
+	
 	this.listenKeyStroke = function(key, shift){
-		console.log(key);
-		// if(that.cursorTime > 0)
-		// 	that.text = that.text.substring(0, that.text.length - 1);	
 
 		if(key.length <= 1){
 			that.insertKey((shift)? key : key.toLowerCase());
@@ -276,12 +282,11 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 			that.text = that.lastText;
 			that.exitEditMode();
 		}
-
-		// if(that.cursorTime > 0)
-		// 	that.text += '|';
 	}
 }
 
+//A backgound panel. You can add things to these to organize your components for
+//relative positioning and rapid gui alterations.
 App.GuiPanel = function(cRect){
 	this.cRect = cRect;
 
@@ -292,6 +297,8 @@ App.GuiPanel = function(cRect){
 }
 App.GuiPanel.rgba = "#F1F1F1";
 
+
+//Abstracts out some logic for coordinates and collision, relative positioning
 App.GuiCollisionRect = function(x, y, w, h){
 	this.x = x;
 	this.y = y;

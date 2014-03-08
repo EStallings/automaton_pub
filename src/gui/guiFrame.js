@@ -1,7 +1,13 @@
 
+/*Creates a Gui object that:
+1. tracks 'frames', i.e. menus and gameplay UI interfaces, implemented as arrays of components
+2. allows adding a new frame (creates an empty array)
+3. allows adding components to frames
+4. allows switching between frames
+5. updates components in current frame that have an update method
+6. renders components in current frame that have a render method (all should)
 
-// TODO: WRITE THIS ========================================================= //
-
+*/
 App.makeGUI = function(){
 	var gui = {};
 	gui.canvas = App.Canvases.addNewLayer("GUI",0);
@@ -24,6 +30,7 @@ App.makeGUI = function(){
 
 	gui.setCurrentFrame = function(framekey){
 		this.currentFrame = (this.frames[key]) ? this.frames[key] : this.currentFrame;
+		this.activeComponent = null;
 	}
 
 	gui.addNewComponent = function(framekey, component){
@@ -32,33 +39,6 @@ App.makeGUI = function(){
 		this.frames[framekey].push(component);
 	}
 
-	gui.clickStart = function(x, y){
-		for(var c in this.currentFrame)if(this.currentFrame[c].cRect && this.currentFrame[c].cRect.functional)
-			this.activeComponent = (this.currentFrame[c].cRect.collides(x, y))? this.currentFrame[c] : this.activeComponent;
-		if(this.activeComponent && this.activeComponent.clickStart)
-			this.activeComponent.clickStart();
-	}
-
-	gui.clickDrag = function(x, y){
-		if(!this.activeComponent || !this.activeComponent.clickDrag)
-			return;
-		this.activeComponent.clickDrag(x, y);
-	}
-
-	gui.clickEnd = function(x, y){
-		if(this.activeComponent && this.activeComponent.clickEnd)
-			this.activeComponent.clickEnd(x, y);
-		this.activeComponent = null;
-	}
-
-	gui.testCoordinates = function(x, y){
-		if(this.activeComponent)
-			return true;
-		var flag = false;
-		for(var c in this.currentFrame)if(this.currentFrame[c].cRect)
-			flag = (this.currentFrame[c].cRect.collides(x, y))? true : flag;
-		return flag;
-	}
 
 	gui.update = function(){
 		for(var c in this.currentFrame)if(this.currentFrame[c].update)
@@ -75,39 +55,3 @@ App.makeGUI = function(){
 	return gui;
 }
 
-// ========================================================================== //
-
-
-	// =========================================================== //
-	// = EVERYTHING BELOW IS TEMP, THE ABOVE NEEDS TO BE WRITTEN = //
-	// =========================================================== //
-
-
-
-
-
-App.Button = function(menuName,x,y,width,height,text,callback){
-	App.Menus[menuName].components.push(this);
-
-	this.x = x;
-	this.y = y;
-	this.width = width;
-	this.height = height;
-	this.text = text;
-	this.callback = callback;
-	this.gfx = App.GuiCanvas.getContext("2d");
-
-	var textX = this.x + (this.width / 2); // for centering text
-	var textY = this.y + (this.height / 2); // for centering text
-
-	this.render = function(){
-		this.gfx.fillStyle = "rgb(0,0,0)";
-		this.gfx.fillRect(this.x,this.y,this.width,this.height);
-		this.gfx.fillStyle = "rgb(255,255,255)";
-		// this.gfx.textAlign = 'center';
-		// this.gfx.fillText(this.text, textX, textY)
-		this.gfx.fillText(this.text, this.x + 5, this.y + 20);
-		this.gfx.strokeStyle = "rgb(255,255,255)";
-		this.gfx.strokeRect(this.x,this.y,this.width,this.height);
-	}
-}
