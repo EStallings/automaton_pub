@@ -10,12 +10,19 @@
 */
 App.makeGUI = function(){
 	var gui = {};
-	gui.canvas = App.Canvases.addNewLayer("GUI",0);
-	gui.gfx = gui.canvas.getContext('2d');
+	gui.staticCanvas = App.Canvases.addNewLayer("GUI_Static",0);
+	gui.staticGfx = gui.staticCanvas.getContext('2d');
+
+	//Only used to draw the currently active component
+	//if this is bad, we can change it.
+	gui.dynamicCanvas = App.Canvases.addNewLayer("GUI_Dynamic",0);
+	gui.dynamicGfx = gui.staticCanvas.getContext('2d');
 
 	gui.frames = [];
 	gui.currentFrame;
 	gui.activeComponent = null;
+	//gets reset after one frame.
+	gui.drawStatic = false;
 
 	gui.addNewFrame = function(framekey){
 		if(this.frames[framekey]){
@@ -31,12 +38,15 @@ App.makeGUI = function(){
 	gui.setCurrentFrame = function(framekey){
 		this.currentFrame = (this.frames[key]) ? this.frames[key] : this.currentFrame;
 		this.activeComponent = null;
+		this.drawStatic = true;
 	}
 
 	gui.addNewComponent = function(framekey, component){
 		if(!this.frames[framekey])
 			console.error("cannot add a component to nonexistent frame: " + framekey);
 		this.frames[framekey].push(component);
+		if(this.frames[framekey] == this.currentFrame)
+			this.drawStatic = true;
 	}
 
 
@@ -46,10 +56,16 @@ App.makeGUI = function(){
 	}
 
 	gui.render = function(){
-		this.gfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
+		this.dynamicGfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
 
-		for(var c in this.currentFrame) if(this.currentFrame[c].render)
-			this.currentFrame[c].render(this.gfx);
+		for(var c in this.currentFrame){ 
+			if(this.currentFrame[c].render){
+				if(this.currentFrame[c] === this.activeComponent)
+					this.currentFrame[c].render(this.dynamicGfx);
+				else if(this.drawStatic)
+					this.currentFrame[c].render(this.staticGfx);
+			}
+		}
 	}
 
 	return gui;

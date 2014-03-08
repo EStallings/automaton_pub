@@ -39,11 +39,15 @@ window.onload = function(){
 
 App.makeDemoGui = function(){
 	App.Gui.addNewFrame('test');
-	var dragButton = new App.GuiDragButton(new App.GuiCollisionRect(100,200,100,50), null, null, null);
-	var textButton = new App.GuiTextButton(new App.GuiCollisionRect(100,100,100,50), "foo bar", function(){ console.log("hi");});
-	var textBox = new App.GuiTextBox(new App.GuiCollisionRect(100,300,100,50), "I am a text box!", null);
-	var editBox = new App.GuiEditableTextBox(new App.GuiCollisionRect(100,400,200,50), "Edit me", null);
-	App.Gui.addNewComponent('test', dragButton);
+	var panel = new App.GuiPanel(new App.GuiCollisionRect(0, 75, 250, 600));
+	var dragButton1 = new App.GuiDragButton(new App.GuiCollisionRect(25,125,50,50), null, null, panel);
+	var dragButton2 = new App.GuiDragButton(new App.GuiCollisionRect(100,125,50,50), null, null, panel);
+	var textButton = new App.GuiTextButton(new App.GuiCollisionRect(25,25,100,50), "foo bar", function(){ console.log("hi");}, false, panel);
+	var textBox = new App.GuiTextBox(new App.GuiCollisionRect(25,225,100,50), "I am a text box!", panel);
+	var editBox = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,325,200,50), "Edit me", panel);
+	App.Gui.addNewComponent('test', panel);
+	App.Gui.addNewComponent('test', dragButton1);
+	App.Gui.addNewComponent('test', dragButton2);
 	App.Gui.addNewComponent('test', textButton);
 	App.Gui.addNewComponent('test', textBox);
 	App.Gui.addNewComponent('test', editBox);

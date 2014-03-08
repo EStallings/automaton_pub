@@ -93,7 +93,8 @@ App.makeGame = function(){
 
 	game.update = function(){
 		if(game.mode === game.modes.PLANNING &&
-		   game.currentPlanningLevel !== undefined)
+		   game.currentPlanningLevel !== undefined &&
+		   game.currentPlanningLevel.update)
 			game.currentPlanningLevel.update();
 		else if(game.currentSimulationLevel !== undefined)
 		while(App.Engine.tick > game.nextCycleTick){

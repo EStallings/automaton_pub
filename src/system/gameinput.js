@@ -13,9 +13,21 @@ App.makeGameInput = function(){
 		if(mouseData.rmb)
 			game.beginPan(mouseData.x, mouseData.y);
 
+		if(mouseData.lmb && game.mode === game.modes.PLANNING){
+			//do dragging of instructions that have already been placed
+			//OR
+			//do selection box (to select a number of instructions)
+		}
+		else if(mouseData.lmb && game.mode === game.modes.SIMULATION){
+			//show data about a node?
+		}
+
 	}
-	
+
 	gInput.mouseUp = function(mouseData){
+		if(mouseData.lmb && game.mode === game.modes.PLANNING){
+			//do dragging of instructions that have already been placed
+		}
 
 	}
 
@@ -24,6 +36,10 @@ App.makeGameInput = function(){
 
 		if(mouseData.rmb)
 			game.pan(mouseData.x, mouseData.y);
+
+		if(mouseData.lmb && game.mode === game.modes.PLANNING){
+			//do dragging of instructions that have already been placed
+		}
 	}
 
 	gInput.mouseWheel = function(mouseData){
