@@ -437,6 +437,30 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				this.cell.sync();
 			};this.rFunc = function(){
+				var cs = App.Game.cellSize;
+				this.gfx.beginPath();
+				switch(this.color){
+					case App.COLORS.RED:
+						this.gfx.moveTo(1*cs/4,2*cs/4);
+						this.gfx.lineTo(1*cs/4,1*cs/4);
+						this.gfx.lineTo(2*cs/4,1*cs/4);
+						break;
+					case App.COLORS.GREEN:
+						this.gfx.moveTo(0*cs/4,1*cs/4);
+						this.gfx.lineTo(1*cs/4,1*cs/4);
+						this.gfx.lineTo(1*cs/4,2*cs/4);
+						break;
+					case App.COLORS.BLUE:
+						this.gfx.moveTo(1*cs/4,0*cs/4);
+						this.gfx.lineTo(1*cs/4,1*cs/4);
+						this.gfx.lineTo(2*cs/4,1*cs/4);
+						break;
+					case App.COLORS.YELLOW:
+						this.gfx.moveTo(0*cs/4,1*cs/4);
+						this.gfx.lineTo(1*cs/4,1*cs/4);
+						this.gfx.lineTo(1*cs/4,0*cs/4);
+						break;
+				}this.gfx.stroke();
 			};break;
 
 		case 23: // color toggle =======================
