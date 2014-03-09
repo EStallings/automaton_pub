@@ -34,7 +34,11 @@ App.makeDemoGui = function(){
 	var dragButton1 = new App.GuiDragButton(new App.GuiCollisionRect(25,125,50,50), null, null, panel);
 	var dragButton2 = new App.GuiDragButton(new App.GuiCollisionRect(100,125,50,50), null, null, panel);
 	var textButton = new App.GuiTextButton(new App.GuiCollisionRect(25,25,100,50), "foo bar", function(){ console.log("hi");}, false, panel);
-	var textBox = new App.GuiTextBox(new App.GuiCollisionRect(25,225,100,50), "I am a text box!", panel);
+	
+	//intentionally global for debugging
+	textBox = new App.GuiTextBox(new App.GuiCollisionRect(25,225,100,50), "I am a text box!", panel);
+	textBox.cRect.functional = true;
+
 	var editBox = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,325,200,50), "Edit me", panel);
 	App.Gui.addNewComponent('test', panel);
 	App.Gui.addNewComponent('test', dragButton1);
@@ -42,4 +46,21 @@ App.makeDemoGui = function(){
 	App.Gui.addNewComponent('test', textButton);
 	App.Gui.addNewComponent('test', textBox);
 	App.Gui.addNewComponent('test', editBox);
+
+
+	var sliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(200,100,50,25), null);
+	var sliderLine = new App.GuiSliderLine(new App.GuiCollisionRect(200,100,10, 400), 0, 100, 2, null, null);
+	sliderButton.sliderLine = sliderLine;
+	sliderLine.sliderButton = sliderButton;
+	App.Gui.addNewComponent('test', sliderLine);
+	App.Gui.addNewComponent('test', sliderButton);
+
+	var sliderButton2 = new App.GuiSliderButton(new App.GuiCollisionRect(250,525,50,25), null);
+	var sliderLine2 = new App.GuiSliderLine(new App.GuiCollisionRect(200,525, 250, 10), 0, 18, 1, null, null);
+	sliderButton2.sliderLine = sliderLine2;
+	sliderLine2.sliderButton = sliderButton2;
+	App.Gui.addNewComponent('test', sliderLine2);
+	App.Gui.addNewComponent('test', sliderButton2);
+
+
 }

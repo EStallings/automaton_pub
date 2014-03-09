@@ -133,6 +133,100 @@ App.GuiDragButton = function(cRect, draw, instruction, panel){
 }
 
 
+
+App.GuiSliderButton = function(cRect, panel){
+	this.cRect = cRect;
+	this.cRect.positionRelative(panel);
+	this.cRect.functional = true;
+	this.color = App.GuiTextButton.bg; 
+	this.sliderLine;
+	this.dragged = false;
+
+	this.render = function(gfx){
+		if(!this.sliderLine)
+			console.error("Improperly initialized gui slider");
+		gfx.fillStyle = this.color;
+		gfx.fillRect(this.cRect.x, this.cRect.y, this.cRect.w, this.cRect.h);
+
+		gfx.fillStyle = '#ffffff';
+		gfx.fillText (Math.floor(this.sliderLine.value), this.cRect.x, this.cRect.y + this.cRect.h/2);
+	}
+
+	this.clickStart = function(){
+		this.dragged = true;
+		this.color = '#3d2d1d';
+	}
+
+	this.update = function(){
+		if(!this.dragged)
+			return;
+		if(this.sliderLine.direction === 1){
+			this.cRect.x= App.InputHandler.mouseData.x - this.cRect.w/2;
+			if(this.cRect.x > this.sliderLine.cRect.x + this.sliderLine.cRect.w)
+				this.cRect.x = this.sliderLine.cRect.x + this.sliderLine.cRect.w;
+			else if (this.cRect.x < this.sliderLine.cRect.x)
+				this.cRect.x = this.sliderLine.cRect.x;
+		}
+		else{
+			this.cRect.y = App.InputHandler.mouseData.y - this.cRect.h/2;
+			if(this.cRect.y > this.sliderLine.cRect.y + this.sliderLine.cRect.h)
+				this.cRect.y = this.sliderLine.cRect.y + this.sliderLine.cRect.h;
+			else if (this.cRect.y < this.sliderLine.cRect.y)
+				this.cRect.y = this.sliderLine.cRect.y;
+		}
+		this.sliderLine.evaluate(this.cRect.x, this.cRect.y);
+	}
+
+	this.clickEnd = function(){
+		this.dragged = false;
+		this.color = App.GuiTextButton.bg;
+		
+	}
+}
+
+//callback is basically a change listener
+App.GuiSliderLine = function(cRect, min, max, direction, callback, panel){
+	this.cRect = cRect;
+	this.cRect.positionRelative(panel);
+	this.cRect.functional = true; //to allow snap-to-click
+	this.color = '#dadada';
+	this.direction = direction;
+	this.sliderButton;
+	this.min = min;
+	this.max = max;
+	this.callback = callback;
+	this.value = 0;
+
+	this.render = function(gfx){
+		if(!this.sliderButton)
+			console.error("Improperly initialized gui slider");
+		gfx.fillStyle = this.color;
+		gfx.fillRect(this.cRect.x, this.cRect.y, this.cRect.w, this.cRect.h);
+	}
+
+	this.evaluate = function(x, y){
+		var vals = (this.direction === 1)? {v:x, l:this.cRect.x, h:this.cRect.w} :
+											{v:y, l:this.cRect.y, h:this.cRect.h};
+		vals.v -= vals.l;
+		var step = (this.max-this.min)/vals.h;
+		vals.v *= step;
+
+		if(this.callback)
+			this.callback();
+		this.value = vals.v;
+	}
+
+	this.clickStart = function(){
+		this.sliderButton.clickStart();
+	}
+
+	this.clickEnd = function(){
+		this.sliderButton.clickEnd();
+	}
+
+}
+
+
 //Simple text display. Has a background, some text. Nothing fancy.
 App.GuiTextBox = function(cRect, text, panel){
 	this.cRect = cRect;

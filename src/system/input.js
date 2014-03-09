@@ -28,6 +28,9 @@ App.makeInputHandler = function(){
 	//remembers whether or not a click was initiated inside the GUI layer
 	input.guiGrabMouse = false;
 
+	//whether or not to include touch controls (could be a setting)
+	input.doTouch = true;
+
 	//freezes all input except key input. Used for text entry - probably nothing more
 	input.hijackedInput = null;
 
@@ -43,7 +46,7 @@ App.makeInputHandler = function(){
 	//Otherwise no input ever. :(
 	input.deHijackInput = function(){
 		this.hijackedInput = null;
-		console.debug("UNHIJACKED INPUT SAFE TO GO!");
+		console.debug("UNHIJACKED INPUT, SAFE TO GO!");
 	}
 
 
@@ -138,6 +141,10 @@ App.makeInputHandler = function(){
 		var delta = evt.detail? evt.detail*(-1) : evt.wheelDelta;
 		delta = (delta < 0) ? -1 : 1;
 
+		if(e.touchZoom){ //for touchscreen support
+			delta = e.touchZoom;
+		}
+
 		input.mouseData.wheel = delta;
 
 		if(!input.guiGrabMouse)
@@ -217,6 +224,52 @@ App.makeInputHandler = function(){
 
 	// disables context menu on right mouse
 	input.canvas.oncontextmenu = function(){ return false; };
+
+	if(input.doTouch){
+		input.touchData = {
+			touches:[], // should never be more than two
+			lastSeparation:null,
+			clientX:null,
+			clientY:null,
+			startDist:null
+
+		}
+
+		//No pinch/pull zooming :( I tried. Believe me, I tried.
+		var handle_touchInput = function(e){
+			var touch = e.changedTouches[0];
+
+			//console.log(touch);
+			if(touch.identifier > 0)
+				return;
+
+			input.mouseData.x = touch.pageX;
+			input.mouseData.y = touch.pageY;
+			
+
+			switch(e.type)
+		    {
+		    case "touchstart":				
+				handle_mouseDown({button:0});
+				break;
+			case "touchmove":
+				handle_mouseMove({clientX:touch.pageX, clientY:touch.pageY, currentTarget:App.Canvases.layers['inputCanvas']});
+				break;
+			case "touchend":
+				handle_mouseUp({button:0});
+				break;
+			default: 
+				handle_mouseUp({button:0});
+				return;
+		    }
+		    e.preventDefault();
+		}
+
+		input.canvas.addEventListener("touchstart", handle_touchInput, true);
+		input.canvas.addEventListener("touchmove", handle_touchInput, true);
+		input.canvas.addEventListener("touchend", handle_touchInput, true);
+		input.canvas.addEventListener("touchcancel", handle_touchInput, true);
+	}
 
 
 	//Big Ugly Reference. I put it at the bottom to save eyes and brains!
