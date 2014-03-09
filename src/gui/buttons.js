@@ -262,7 +262,7 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 			that.cursorPosition ++;
 		}
 		if(key === 'Backspace'){
-			that.text = that.text.substring(0, that.text.length - 1);
+			that.text = that.text.substring(0, that.cursorPosition-1) + that.text.substring(that.cursorPosition, that.text.length);
 			that.cursorPosition --;
 		}
 		if(key === 'Left'){
