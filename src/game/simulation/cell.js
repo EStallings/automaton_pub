@@ -37,5 +37,31 @@ App.SimulationCell = function(level,x,y){
 		// ensure this only gets executed once per cycle per cell
 		if(App.Engine.tick === this.lastSyncTick)return;
 		this.lastSyncTick = App.Engine.tick;
+
+		// identify sync colors
+		var color = [false,false,false,false];
+		for(var c in App.COLORS){
+			var i = this.instructions[App.COLORS[c]];
+			if(i !== undefined && i.type === 22)
+				color[App.COLORS[c]] = true;
+		}
+
+		// lock color-matched automaton
+		for(var a in this.automatons){
+			var autom = this.automatons[a];
+			for(var c in color)
+			if(color[c] && autom.colorFlags[c])
+				autom.wait = true;
+		}
+
+		// identify fulfilled syncs
+		for(var c in App.COLORS)for(var a in this.automatons){
+			if(this.automatons[a].colorFlags[App.COLORS[c]])
+				color[App.COLORS[c]] = false;
+		}
+
+		// if all syncs are fulfilled, release automaton
+		for(var c in color)if(color[c])return;
+		for(var a in this.automatons)this.automatons[a].wait = false;
 	}
 }
