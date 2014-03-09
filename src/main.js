@@ -1,3 +1,8 @@
+/*
+	Top-level window event handler.
+	Fires when the window loads.
+	This provides a safe  place to kick off things and start the game.
+*/
 window.onload = function(){
 	App.Canvases     = App.createCanvasArray();
 	App.InputHandler = App.makeInputHandler();
@@ -8,7 +13,7 @@ window.onload = function(){
 
 	// TEMPORARY STUFF | DELETE ================================= //
 	// TODO: what if each gui menu gets its own canvas and is "always rendering"?
-	// App.makeDemoGui();
+	App.makeDemoGui();
 
 	lvl = new App.PlanningLevel();                         // TODO: CLEANUP & DELETE
 	lvl.insert(new App.PlanningInstruction(1,1,1,'left')); // TODO: CLEANUP & DELETE
@@ -26,6 +31,10 @@ window.onload = function(){
 	// ========================================================== //
 }
 
+
+// A temporary demo gui creation function. Remove when GUI descriptions are abstracted
+// For GUI descriptions, I suggest we use JSON. A string parser would be clunky and frankly awful,
+// and using raw .js files is terrible style and, also clunky.
 App.makeDemoGui = function(){
 	App.Gui.addNewFrame('test');
 	var panel = new App.GuiPanel(new App.GuiCollisionRect(5, 80, 300, 600));
@@ -33,7 +42,7 @@ App.makeDemoGui = function(){
 	var dragButton2 = new App.GuiDragButton(new App.GuiCollisionRect(100,125,50,50), null, null, panel);
 	var textButton = new App.GuiTextButton(new App.GuiCollisionRect(25,25,100,50), "foo bar", function(){ console.log("hi");}, false, panel);
 	
-	//intentionally global for debugging
+	//intentionally global for debugging -- I use this guy to show some data about touch input.
 	textBox = new App.GuiTextBox(new App.GuiCollisionRect(25,225,100,50), "I am a text box!", panel);
 	textBox.cRect.functional = true;
 

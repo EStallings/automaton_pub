@@ -18,6 +18,9 @@ textBox -- static and user entry
 DONE
 guiPanel -- static and prevents click fallthrough
 
+NOT DONE
+guiSliderButton and guiSliderLine
+
 
 One TODO (potentially): abstract out button logic. Several of the objects
 in this file have some similar code. Less than you might think, though...
@@ -39,11 +42,13 @@ App.GuiTextButton = function(cRect, text, callback, continuous, panel){
 	var textX = this.cRect.x + (this.cRect.w / 2); // for centering text
 	var textY = this.cRect.y + (this.cRect.h / 2); // for centering text
 
+	//For continuous callbacks
 	this.update = function(){
 		if(this.clicked && this.continuous)
 			this.callback();
 	}
 
+	//Draws a box and the text! Nothing fancy. Could use some work maybe.
 	this.render = function(gfx){
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.cRect.x, this.cRect.y, this.cRect.w, this.cRect.h);
@@ -51,11 +56,13 @@ App.GuiTextButton = function(cRect, text, callback, continuous, panel){
 		gfx.fillText(this.text, textX, textY);
 	}
 
+	//Changes the color and initiates the click
 	this.clickStart = function(){
 		this.color = '#2f2f2f';
 		this.clicked = true;
 	}
 
+	//Checks for moving the mouse off of the button
 	this.clickDrag = function(x, y){
 		if(!this.cRect.collides(x,y)){
 			this.color = App.GuiTextButton.bg;
@@ -63,6 +70,7 @@ App.GuiTextButton = function(cRect, text, callback, continuous, panel){
 		}
 	}
 
+	//If the click was successful, fire the callback
 	this.clickEnd = function(x, y){
 		this.color = App.GuiTextButton.bg;
 		if(!this.cRect.collides(x,y))
@@ -99,6 +107,8 @@ App.GuiDragButton = function(cRect, draw, instruction, panel){
 	this.draw = draw;
 	this.instruction = instruction;
 
+	//Draws a simple box for now - once we have some vector draw functions,
+	//we'll be able to draw them on it!
 	this.render = function(gfx){
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.currentX, this.currentY, this.cRect.w, this.cRect.h);
@@ -107,11 +117,13 @@ App.GuiDragButton = function(cRect, draw, instruction, panel){
 			this.draw(gfx);
 	}
 
+	//Initiating the dragging
 	this.clickStart = function(){
 		this.dragged = true;
 		this.color = '#3d2d1d';
 	}
 
+	//The drag part of "drag and drop"
 	this.update = function(){
 		if(!this.dragged)
 			return;
@@ -119,6 +131,7 @@ App.GuiDragButton = function(cRect, draw, instruction, panel){
 		this.currentY = App.InputHandler.mouseData.y - this.cRect.h/2;
 	}
 
+	//The button has been "dropped"!
 	this.clickEnd = function(x, y){
 		this.dragged = false;
 		this.color = App.GuiTextButton.bg;
@@ -133,7 +146,14 @@ App.GuiDragButton = function(cRect, draw, instruction, panel){
 }
 
 
-
+/* BIG NOTE
+	This and the sliderLine below it are currently twinned - each requires the other.
+	However, I haven't made a nice function for just making a slider, button and line included, just yet.
+	This is because each has to be stored separately inside the gui frame
+	in order for collisions with the cRect to be dealt with properly. The probable solution
+	will be to just make a function that makes both, adds both to the frame,
+	and updates their references to each other.
+*/
 App.GuiSliderButton = function(cRect, panel){
 	this.cRect = cRect;
 	this.cRect.positionRelative(panel);
@@ -142,6 +162,7 @@ App.GuiSliderButton = function(cRect, panel){
 	this.sliderLine;
 	this.dragged = false;
 
+	//Renders just the button portion of the slider (the box)
 	this.render = function(gfx){
 		if(!this.sliderLine)
 			console.error("Improperly initialized gui slider");
@@ -152,12 +173,20 @@ App.GuiSliderButton = function(cRect, panel){
 		gfx.fillText (Math.floor(this.sliderLine.value), this.cRect.x, this.cRect.y + this.cRect.h/2);
 	}
 
+	//Begins the dragging of the slider
 	this.clickStart = function(){
 		this.dragged = true;
 		this.color = '#3d2d1d';
 	}
 
-	this.update = function(){
+	//Ugly code in here, needs cleanup.
+	//What this does is move relative to the mouse, while snapping to the
+	//axis of the slider line (IE only moving on X or Y)
+	//and also ensures that it doesn't move outside of the bounds of the line
+	//(IE past the max and min)
+	//It also calls the sliderLine.evaluate function, which in turn calls any
+	//change listener callback.
+	this.clickDrag = function(){
 		if(!this.dragged)
 			return;
 		if(this.sliderLine.direction === 1){
@@ -177,6 +206,7 @@ App.GuiSliderButton = function(cRect, panel){
 		this.sliderLine.evaluate(this.cRect.x, this.cRect.y);
 	}
 
+	//Releases from dragging
 	this.clickEnd = function(){
 		this.dragged = false;
 		this.color = App.GuiTextButton.bg;
@@ -184,7 +214,8 @@ App.GuiSliderButton = function(cRect, panel){
 	}
 }
 
-//callback is basically a change listener
+//callback is basically a change listener. Not required.
+//The slider line is the "rail" that the button "slides on"
 App.GuiSliderLine = function(cRect, min, max, direction, callback, panel){
 	this.cRect = cRect;
 	this.cRect.positionRelative(panel);
@@ -197,6 +228,7 @@ App.GuiSliderLine = function(cRect, min, max, direction, callback, panel){
 	this.callback = callback;
 	this.value = 0;
 
+	//Renders the slider line component; the part that the slider slides "on"
 	this.render = function(gfx){
 		if(!this.sliderButton)
 			console.error("Improperly initialized gui slider");
@@ -204,6 +236,8 @@ App.GuiSliderLine = function(cRect, min, max, direction, callback, panel){
 		gfx.fillRect(this.cRect.x, this.cRect.y, this.cRect.w, this.cRect.h);
 	}
 
+	//Evaluates a new value for the slider based on the x,y coordinates of the button
+	//Also calls the change listener callback, if there is one.
 	this.evaluate = function(x, y){
 		var vals = (this.direction === 1)? {v:x, l:this.cRect.x, h:this.cRect.w} :
 											{v:y, l:this.cRect.y, h:this.cRect.h};
@@ -216,13 +250,9 @@ App.GuiSliderLine = function(cRect, min, max, direction, callback, panel){
 		this.value = vals.v;
 	}
 
-	this.clickStart = function(){
-		this.sliderButton.clickStart();
-	}
-
-	this.clickEnd = function(){
-		this.sliderButton.clickEnd();
-	}
+	//these redirects allow the user to click on the slider and "snap" the slider button to where they clicked!
+	this.clickStart = function(){ this.sliderButton.clickStart(); }
+	this.clickEnd = function(){	this.sliderButton.clickEnd(); }
 
 }
 
@@ -237,6 +267,7 @@ App.GuiTextBox = function(cRect, text, panel){
 	var textX = this.cRect.x + 10;// (this.cRect.w / 2); // for centering text
 	var textY = this.cRect.y + (this.cRect.h / 2); // for centering text
 
+	//Draw our text
 	this.render = function(gfx){
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.cRect.x, this.cRect.y, this.cRect.w, this.cRect.h);
@@ -266,6 +297,7 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 	var textX = this.cRect.x + 10;// (this.cRect.w / 2); // for centering text
 	var textY = this.cRect.y + 5 + (this.cRect.h / 2); // for centering text
 
+	//Draw the text box, including cursor
 	this.render = function(gfx){
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.cRect.x, this.cRect.y, this.cRect.w, this.cRect.h);
@@ -278,12 +310,13 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 
 		if(this.cursorTime > 0){
 			gfx.fillRect(textX + metrics.width, textY - 10, 1, 10);
-
 		}
+
 		if(this.editmode)
 			gfx.fillText("Press Enter to save, Esc to cancel.", textX, textY - 15);
 	}
 
+	//Update cursor
 	this.update = function(){
 		if(!this.editmode)
 			return;
@@ -293,6 +326,7 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 		}
 	}
 
+	//begin a click - this is just for the button-like functionality
 	this.clickStart = function(){
 		if(this.editmode)
 			return;
@@ -300,6 +334,7 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 		this.clicked = true;
 	}
 
+	//For button-like functionality. Tests if the user moves their mouse off the button
 	this.clickDrag = function(x, y){
 		if(this.editmode)
 			return;
@@ -309,6 +344,7 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 		}
 	}
 
+	//For button-like functionality. Enters edit mode if the click is successful
 	this.clickEnd = function(x, y){
 		if(this.editmode)
 			return;
@@ -319,7 +355,11 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 			this.enterEditMode();
 		this.clicked = false;
 	}
+
+	//Ohh, javascript
 	var that = this;
+
+	//Enters the edit mode: steals input from the inputhandler
 	this.enterEditMode = function(){
 		App.InputHandler.hijackInput(that.listenKeyStroke);
 		this.editmode = true;
@@ -329,6 +369,7 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 		this.color = "#121212";
 	}
 
+	//restores input control to the inputhandler, exits edit mode.
 	this.exitEditMode = function(){
 		App.InputHandler.deHijackInput();
 		this.editmode = false;
@@ -337,6 +378,7 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 		this.color = App.GuiTextButton.bg;
 	}
 
+	//Helper function to insert a keystroke at the cursor position
 	this.insertKey = function(key){
 		if(this.text.length === 0)
 			this.text = key;
@@ -345,6 +387,7 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 	}
 
 	
+	//Could use some cleanup; callback that receives the redirected input during edit mode
 	this.listenKeyStroke = function(key, shift){
 
 		if(key.length <= 1){
@@ -370,6 +413,7 @@ App.GuiEditableTextBox = function(cRect, defaultText, panel){
 		else if(that.cursorPosition < 0)
 			that.cursorPosition = 0;
 
+		//Having a way to exit edit mode is VITAL
 		if(key === 'Enter')
 			that.exitEditMode();
 		if(key === 'Esc') {
@@ -400,11 +444,13 @@ App.GuiCollisionRect = function(x, y, w, h){
 	this.h = h;
 	this.functional = false;
 
+	//Tests if a point is inside of the rectangle
 	this.collides = function(x, y){
 		return ((x > this.x) && (x < (this.x + this.w)) &&
 			   	(y > this.y) && (y < (this.y + this.h)));
 	}
 
+	//Positions this component relative to another component, instead of absolute positioning on the screen
 	this.positionRelative = function(component){
 		if(!component)
 			return;

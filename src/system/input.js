@@ -26,10 +26,10 @@ App.makeInputHandler = function(){
 	}
 
 	//remembers whether or not a click was initiated inside the GUI layer
-	input.guiGrabMouse = false;
+	input.guiControlsMouse = false;
 
 	//whether or not to include touch controls (could be a setting)
-	input.doTouch = true;
+	input.includeTouchHandler = true;
 
 	//freezes all input except key input. Used for text entry - probably nothing more
 	input.hijackedInput = null;
@@ -77,7 +77,7 @@ App.makeInputHandler = function(){
 
 		input.mouseData.x = e.clientX - rect.left;
 		input.mouseData.y = e.clientY - rect.top;
-		if(input.guiGrabMouse)
+		if(input.guiControlsMouse)
 			input.Gui.mouseMove(input.mouseData);
 		else
 			input.Game.mouseMove(input.mouseData);
@@ -100,12 +100,12 @@ App.makeInputHandler = function(){
 				input.mouseData.rmb = false;
 				break;
 		}
-		if(input.guiGrabMouse)
+		if(input.guiControlsMouse)
 			input.Gui.mouseUp(input.mouseData);
 		else
 			input.Game.mouseUp(input.mouseData);
 
-		input.guiGrabMouse = false;
+		input.guiControlsMouse = false;
 	}
 	
 	//Deals with the mouse click being initiated
@@ -126,7 +126,7 @@ App.makeInputHandler = function(){
 				break;
 		}
 		if(input.Gui.mouseDown(input.mouseData))
-			input.guiGrabMouse = true;
+			input.guiControlsMouse = true;
 		else
 			input.Game.mouseDown(input.mouseData);
 	}
@@ -147,7 +147,7 @@ App.makeInputHandler = function(){
 
 		input.mouseData.wheel = delta;
 
-		if(!input.guiGrabMouse)
+		if(!input.guiControlsMouse)
 			input.Game.mouseWheel(input.mouseData);
 
 		input.mouseData.wheel = 0;
@@ -225,7 +225,9 @@ App.makeInputHandler = function(){
 	// disables context menu on right mouse
 	input.canvas.oncontextmenu = function(){ return false; };
 
-	if(input.doTouch){
+	// We could either add the touch as an option in settings,
+	// Or auto-enable it if a touchscreen is detected.
+	if(input.includeTouchHandler){
 		input.touchData = {
 			touches:[], // should never be more than two
 			lastSeparation:null,
@@ -236,6 +238,8 @@ App.makeInputHandler = function(){
 		}
 
 		//No pinch/pull zooming :( I tried. Believe me, I tried.
+		//thus, only handles for a "left mouse button" finger, single-touch
+		//NOTE: Pen/stylus input gets registered as mouse clicks anyway.
 		var handle_touchInput = function(e){
 			var touch = e.changedTouches[0];
 

@@ -59,6 +59,10 @@ App.makeGame = function(){
 
 	game.createNewLevel = function(){} // TODO: implement?
 
+	// returns a planning level object, given an input string.
+	// Just a little string parser, really. If changes to 
+	// Level format are made, they have to be updated here.
+	// This could be considered fragile code in need of refactoring!
 	game.loadNewLevel = function(inputString){
 		var split = inputString.split(";");
 		var lev = new App.PlanningLevel();
