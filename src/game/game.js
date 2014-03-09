@@ -104,10 +104,10 @@ App.makeGame = function(){
 		else if(game.currentSimulationLevel !== undefined){
 			if(!game.paused)while(App.Engine.tick > game.nextCycleTick){
 				if(game.simulationSpeed <= 0)break;
-				game.currentSimulationLevel.update();
 				game.lastCycleTick = game.nextCycleTick;
 				game.nextCycleTick += game.simulationSpeed;
 				++game.cycles;
+				game.currentSimulationLevel.update();
 			}else{
 				var diff = App.Engine.tick-game.pauseTick;
 				game.lastCycleTick = game.pauseLastCycleTick+diff;
@@ -120,7 +120,7 @@ App.makeGame = function(){
 		game.paused = !game.paused;
 		game.pauseTick = App.Engine.tick;
 		game.pauseLastCycleTick = game.lastCycleTick;
-		game.pauseNextCycleTick = game.nextCycleTick;;
+		game.pauseNextCycleTick = game.nextCycleTick;
 	}
 
 	// ========================================================== //

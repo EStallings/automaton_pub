@@ -51,7 +51,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		this.gfx.lineTo(2,2);
 		this.gfx.stroke();
 
-		this.rFunc();
+		if(App.Game.cellSize>30)this.rFunc();
 		this.gfx.restore();
 	}
 
@@ -211,7 +211,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 		case 10: // in stream ==========================
 
-			// TODO: add to special stream list in level
 			if(level.inStreams[color] === undefined)
 				level.inStreams[color] = [];
 			level.inStreams[color].push(this);
@@ -238,7 +237,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 		case 11: // out stream =========================
 
-			// TODO: add to special stream list in level
 			if(level.outStreams[color] === undefined)
 				level.outStreams[color] = [];
 			level.outStreams[color].push(this);
@@ -273,7 +271,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				for(var i in this.level.inStreams[this.color])
 					this.level.inStreams[this.color][i].input();
 			};this.rFunc = function(){
-				// TODO: this should NOT be an "I" (streams)
+				// TODO: this should NOT be an "I" (streams get letters as symbols)
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
 				this.gfx.moveTo(cs/4,cs/8);
@@ -292,7 +290,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				for(var i in this.level.outStreams[this.color])
 					this.level.outStreams[this.color][i].output();
 			};this.rFunc = function(){
-				// TODO: this should NOT be an "O" (streams)
+				// TODO: this should NOT be an "O" (streams get letters as symbols)
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
 				this.gfx.arc(cs/4,cs/4,cs/8,-Math.PI,Math.PI);
@@ -434,9 +432,9 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 		case 22: // sync ===============================
 
-			// TODO: override this.render
-			// TODO: custom syms for each color
+			// TODO: override this.render | custom syms for each color
 			this.execute = function(a){
+				this.cell.sync();
 			};this.rFunc = function(){
 			};break;
 
@@ -458,6 +456,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 24: // pause ==============================
 
 			this.execute = function(a){
+				App.Game.pause();
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
