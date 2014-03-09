@@ -18,7 +18,7 @@ App.makeGame = function(){
 	game.enterPlanningMode = function(levelString){
 		if(game.mode === game.modes.PLANNING)return;
 		game.mode = game.modes.PLANNING;
-		//App.changeMenu('planning'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
+		// App.changeMenu('planning'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
 
 		if(levelString)game.currentPlanningLevel = game.loadNewLevel(levelString);
 		else game.currentPlanningLevel = game.createNewLevel();
@@ -30,7 +30,7 @@ App.makeGame = function(){
 	game.enterSimulationMode = function(){
 		if(game.mode === game.modes.SIMULATION)return;
 		game.mode = game.modes.SIMULATION;
-		//App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
+		// App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
 		// game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel(); // TODO: IMPLEMENT THIS
 
 		game.nextCycleTick = App.Engine.tick;
@@ -271,7 +271,7 @@ App.makeGame = function(){
 		for(var j=ry-cs/2;j<h+cs;j+=cs){
 			game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
 			game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
-			if(game.cellSize < 40)continue;
+			if(game.cellSize < 30)continue;
 			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
 		}game.gridGfx.stroke();
 

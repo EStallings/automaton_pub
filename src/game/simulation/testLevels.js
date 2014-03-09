@@ -89,12 +89,25 @@ function test5(){
 }
 
 function test6(){
-	var testLevel = new App.SimulationLevel(5,5);
+	var testLevel = new App.SimulationLevel(7,5);
 
-	new App.SimulationInstruction(testLevel,1,1,0,3);
-	new App.SimulationInstruction(testLevel,2,1,0,22);
-	new App.SimulationInstruction(testLevel,2,1,1,22);
-	new App.SimulationInstruction(testLevel,3,1,0,24);
+	new App.SimulationInstruction(testLevel,1,2,0,3);
+	new App.SimulationInstruction(testLevel,1,2,1,3);
+	new App.SimulationInstruction(testLevel,1,2,2,3);
+	new App.SimulationInstruction(testLevel,1,2,3,3);
+
+	new App.SimulationInstruction(testLevel,2,2,1,4);
+	new App.SimulationInstruction(testLevel,2,2,2,5);
+	new App.SimulationInstruction(testLevel,2,1,1,7);
+	new App.SimulationInstruction(testLevel,2,3,2,7);
+	new App.SimulationInstruction(testLevel,4,1,1,5);
+	new App.SimulationInstruction(testLevel,4,3,2,4);
+	new App.SimulationInstruction(testLevel,4,2,1,7);
+	new App.SimulationInstruction(testLevel,4,2,2,7);
+
+	new App.SimulationInstruction(testLevel,5,2,0,22);
+	new App.SimulationInstruction(testLevel,5,2,1,22);
+	new App.SimulationInstruction(testLevel,5,2,2,22);
 
 	return testLevel;
 }

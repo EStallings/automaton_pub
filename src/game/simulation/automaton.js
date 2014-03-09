@@ -39,7 +39,7 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 		var h = App.Game.cellSize/2;
 
 		// interpolation adjustment
-		switch(this.direction){
+		if(!this.wait)switch(this.direction){
 			case App.DIRECTIONS.UP    : y+=(1-App.Game.interpolation);break;
 			case App.DIRECTIONS.DOWN  : y-=(1-App.Game.interpolation);break;
 			case App.DIRECTIONS.LEFT  : x+=(1-App.Game.interpolation);break;

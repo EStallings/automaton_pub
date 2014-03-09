@@ -433,6 +433,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 22: // sync ===============================
 
 			// TODO: override this.render | custom syms for each color
+			// TODO: 22 is hardcoded in cell.sync... fix that
 			this.execute = function(a){
 				this.cell.sync();
 			};this.rFunc = function(){
