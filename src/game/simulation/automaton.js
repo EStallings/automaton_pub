@@ -11,8 +11,11 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 	this.colorFlags = [false,false,false,false];
 	this.colorFlags[color] = true;
 	this.tokenHeld = undefined;
+	this.wait = false;
 
 	this.move = function(){
+		if(this.wait)return;
+
 		// remove from old cell
 		var oldCell = this.level.getCell(this.x,this.y);
 		oldCell.automatons.splice(oldCell.automatons.indexOf(this),1);

@@ -19,7 +19,7 @@
 	18: dec
 	-------------------------------------------- conditional control
 	19: switch 0			20: switch +-
-	21: switch even odd	
+	21: switch even odd
 	----------------------------------------------------------- misc
 	22: sync			23: color toggle
 	24: pause
@@ -88,8 +88,19 @@ function test5(){
 	return testLevel;
 }
 
+function test6(){
+	var testLevel = new App.SimulationLevel(5,5);
+
+	new App.SimulationInstruction(testLevel,1,1,0,3);
+	new App.SimulationInstruction(testLevel,2,1,0,22);
+	new App.SimulationInstruction(testLevel,2,1,1,22);
+	new App.SimulationInstruction(testLevel,3,1,0,24);
+
+	return testLevel;
+}
+
 function setupTestLevel(){
-	App.Game.currentSimulationLevel = test5();
+	App.Game.currentSimulationLevel = test6();
 	App.Game.enterSimulationMode();
 }
 

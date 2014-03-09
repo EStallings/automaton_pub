@@ -21,12 +21,21 @@ App.SimulationCell = function(level,x,y){
 		if(total > 1)App.Game.simulationError(); // TODO: tell game reached invalid state (token collision)
 
 		// execute instructions
-		for(var a in this.automatons)for(var i in this.instructions)
-			this.instructions[i].execute(this.automatons[a]);
+		for(var a in this.automatons)for(var i in App.COLORS){
+			var instruction = this.instructions[App.COLORS[i]];
+			if(instruction)instruction.execute(this.automatons[a]);
+		}
 	}
 
 	this.staticRender = function(){
 		for(var i in this.instructions)this.instructions[i].staticRender();
 		for(var t in this.tokens)this.tokens[t].staticRender(x*App.Game.cellSize,y*App.Game.cellSize);
+	}
+
+	this.lastSyncTick = -1;
+	this.sync = function(){
+		// ensure this only gets executed once per cycle per cell
+		if(App.Engine.tick === this.lastSyncTick)return;
+		this.lastSyncTick = App.Engine.tick;
 	}
 }
