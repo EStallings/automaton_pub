@@ -25,6 +25,8 @@ App.makeGameInput = function(){
 	}
 
 	gInput.mouseUp = function(mouseData){
+		var game = App.Game;
+		
 		if(mouseData.lmb && game.mode === game.modes.PLANNING){
 			//do dragging of instructions that have already been placed
 		}
