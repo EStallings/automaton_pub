@@ -34,7 +34,7 @@ App.makeGame = function(){
 		// game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel(); // TODO: IMPLEMENT THIS
 
 		game.nextCycleTick = App.Engine.tick;
-		game.cycles = 0;
+		game.cycle = 0;
 	}
 
 		/*+------------------------------------------+*/
@@ -90,9 +90,10 @@ App.makeGame = function(){
 
 	game.lastCycleTick;
 	game.nextCycleTick;
-	game.cycles;
+	game.cycle;
 	game.simulationSpeed = 512;
 
+	game.requestPause = false;
 	game.paused = false;
 	game.pauseTick;
 	game.pauseLastCycleTick;
@@ -110,8 +111,15 @@ App.makeGame = function(){
 				if(game.simulationSpeed <= 0)break;
 				game.lastCycleTick = game.nextCycleTick;
 				game.nextCycleTick += game.simulationSpeed;
-				++game.cycles;
+				++game.cycle;
 				game.currentSimulationLevel.update();
+				if(game.requestPause){
+					game.requestPause = false;
+					game.lastCycleTick = App.Engine.tick;
+					game.nextCycleTick = App.Engine.tick+game.simulationSpeed;
+					game.pause();
+					return;
+				}
 			}else{
 				var diff = App.Engine.tick-game.pauseTick;
 				game.lastCycleTick = game.pauseLastCycleTick+diff;
@@ -189,6 +197,7 @@ App.makeGame = function(){
 	}
 
 	game.setSimulationSpeed = function(speed){
+		if(game.paused)game.pause();
 		if(speed<1)return;
 
 		var tick = App.Engine.tick;
@@ -305,7 +314,7 @@ App.makeGame = function(){
 		game.tempGfx.font = "bold 11px arial";
 		game.tempGfx.fillStyle = "#ffffff";
 		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps) ,11,22);
-		game.tempGfx.fillText("Cycle: "+game.cycles              ,11,33);
+		game.tempGfx.fillText("Cycle: "+game.cycle               ,11,33);
 		if(game.paused){
 			game.tempGfx.fillStyle = "#ff0000";
 			game.tempGfx.fillText("Speed: PAUSED",11,44);

@@ -533,7 +533,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case 24: // pause ==============================
 
 			this.execute = function(a){
-				App.Game.pause();
+				if(!a.colorFlags[this.color])return;
+				App.Game.requestPause = true;
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();

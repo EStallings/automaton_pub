@@ -32,11 +32,11 @@ App.SimulationCell = function(level,x,y){
 		for(var t in this.tokens)this.tokens[t].staticRender(x*App.Game.cellSize,y*App.Game.cellSize);
 	}
 
-	this.lastSyncTick = -1;
+	this.lastSyncCycle = -1;
 	this.sync = function(){
 		// ensure this only gets executed once per cycle per cell
-		if(App.Engine.tick === this.lastSyncTick)return;
-		this.lastSyncTick = App.Engine.tick;
+		if(App.Game.cycle === this.lastSyncCycle)return;
+		this.lastSyncCycle = App.Game.cycle;
 
 		// identify sync colors
 		var color = [false,false,false,false];
