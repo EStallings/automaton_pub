@@ -50,7 +50,7 @@ App.makeInputHandler = function(){
 	}
 
 
-	//Registers a callback to be fired when a key is pressed - can only 
+	//Registers a callback to be fired when a key is pressed - can only
 	//bind ONE callback to a key at a time.
 	input.registerKey = function(key, callback){
 		if(!this.keyRegistry[key])
@@ -64,11 +64,10 @@ App.makeInputHandler = function(){
 	/////////
 
 	//Deals with the mouse being moved
-	var handle_mouseMove 	= function(e){	
+	var handle_mouseMove 	= function(e){
 		if(input.hijackedInput){
 			return;
 		}
-	
 		if(e.currentTarget === null) return;
 
 		var rect = e.currentTarget.getBoundingClientRect();
@@ -87,8 +86,8 @@ App.makeInputHandler = function(){
 			return;
 		}
 
-		var down = (e.type === 'mousedown'); 
-		
+		var down = (e.type === 'mousedown');
+
 		switch (e.button){
 			case 0:
 				input.mouseData.lmb = down;
@@ -132,7 +131,7 @@ App.makeInputHandler = function(){
 
 		input.mouseData.wheel = 0;
 	}
-	
+
 	//Deals with a key being depressed
 	var handle_keyDown 		= function(e){
 		var key = input.keyCodeToChar[e.keyCode];
@@ -143,13 +142,13 @@ App.makeInputHandler = function(){
 			return;
 		}
 
-		if(!input.keyRegistry[key] ||input.keysDown[key]) 
+		if(!input.keyRegistry[key] ||input.keysDown[key])
 			return;
 
 		input.keysDown[key] = true;
 		input.keyRegistry[key]();
 	}
-	
+
 	//Deals with a key being released
 	var handle_keyUp 		= function(e){
 		var key = input.keyCodeToChar[e.keyCode];
@@ -180,10 +179,10 @@ App.makeInputHandler = function(){
 
 		input.mouseData.x = touch.pageX;
 		input.mouseData.y = touch.pageY;
-		
+
 		switch(e.type)
 	    {
-	    case "touchstart":				
+	    case "touchstart":
 			handle_mouseButton({type:'mousedown',button:0});
 			break;
 		case "touchmove":

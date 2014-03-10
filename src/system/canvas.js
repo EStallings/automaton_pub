@@ -12,6 +12,9 @@ App.createCanvasArray = function(){
 		layer.height = canvases.height;
 		layer.style.zIndex = z;
 		layer.style.position = "absolute";
+
+		//I like this font. It's not, of course, mandatory that we use it. Just please, not a monospace font in the game... lol
+		layer.getContext('2d').font = "12px Futurastd";
 		document.body.appendChild(layer);
 
 		canvases.layers[name] = layer;
