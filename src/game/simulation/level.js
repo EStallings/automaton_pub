@@ -33,6 +33,7 @@ App.SimulationLevel = function(width,height){
 
 	this.update = function(){
 		// cell verification
+		// TODO: TOKEN MID-CELL COLLISION
 		for(var i in this.grid)for(var j in this.grid[i]){
 			var cell = this.grid[i][j];
 			if(cell === undefined)continue;

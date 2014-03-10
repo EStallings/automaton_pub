@@ -436,31 +436,83 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			// TODO: 22 is hardcoded in cell.sync... fix that
 			this.execute = function(a){
 				this.cell.sync();
-			};this.rFunc = function(){
+			};this.staticRender = function(){
 				var cs = App.Game.cellSize;
+				this.gfx.save();
 				this.gfx.beginPath();
 				switch(this.color){
 					case App.COLORS.RED:
-						this.gfx.moveTo(1*cs/4,2*cs/4);
-						this.gfx.lineTo(1*cs/4,1*cs/4);
-						this.gfx.lineTo(2*cs/4,1*cs/4);
+						this.gfx.translate(this.x*cs,this.y*cs);
+						this.gfx.fillStyle="#660000";
+						this.gfx.strokeStyle="#ff0000";
+						this.gfx.moveTo(2,cs/2-2);
+						this.gfx.lineTo(2,2);
+						this.gfx.lineTo(cs/2-2,2);
+						if(App.Game.cellSize>30){
+							this.gfx.lineTo(cs/2-2,cs/4);
+							this.gfx.lineTo(cs/4,cs/4);
+							this.gfx.lineTo(cs/4,cs/2-2);
+							this.gfx.lineTo(2,cs/2-2);
+						}else{
+							this.gfx.lineTo(cs/2-2,cs/2-2);
+							this.gfx.lineTo(2,cs/2-2);
+						}
 						break;
 					case App.COLORS.GREEN:
-						this.gfx.moveTo(0*cs/4,1*cs/4);
-						this.gfx.lineTo(1*cs/4,1*cs/4);
-						this.gfx.lineTo(1*cs/4,2*cs/4);
+						this.gfx.translate(this.x*cs+cs/2,this.y*cs);
+						this.gfx.fillStyle="#006600";
+						this.gfx.strokeStyle="#00ff00";
+						this.gfx.moveTo(2,2);
+						this.gfx.lineTo(cs/2-2,2);
+						this.gfx.lineTo(cs/2-2,cs/2-2);
+						if(App.Game.cellSize>30){
+							this.gfx.lineTo(cs/4,cs/2-2);
+							this.gfx.lineTo(cs/4,cs/4);
+							this.gfx.lineTo(2,cs/4);
+							this.gfx.lineTo(2,2);
+						}else{
+							this.gfx.lineTo(2,cs/2-2);
+							this.gfx.lineTo(2,2)
+						}
 						break;
 					case App.COLORS.BLUE:
-						this.gfx.moveTo(1*cs/4,0*cs/4);
-						this.gfx.lineTo(1*cs/4,1*cs/4);
-						this.gfx.lineTo(2*cs/4,1*cs/4);
+						this.gfx.translate(this.x*cs,this.y*cs+cs/2);
+						this.gfx.fillStyle="#000066";
+						this.gfx.strokeStyle="#0000ff";
+						this.gfx.moveTo(cs/2-2,cs/2-2);
+						this.gfx.lineTo(2,cs/2-2);
+						this.gfx.lineTo(2,2);
+						if(App.Game.cellSize>30){
+							this.gfx.lineTo(cs/4,2);
+							this.gfx.lineTo(cs/4,cs/4);
+							this.gfx.lineTo(cs/2-2,cs/4);
+							this.gfx.lineTo(cs/2-2,cs/2-2);
+						}else{
+							this.gfx.lineTo(cs/2-2,2);
+							this.gfx.lineTo(cs/2-2,cs/2-2);
+						}
 						break;
 					case App.COLORS.YELLOW:
-						this.gfx.moveTo(0*cs/4,1*cs/4);
-						this.gfx.lineTo(1*cs/4,1*cs/4);
-						this.gfx.lineTo(1*cs/4,0*cs/4);
+						this.gfx.translate(this.x*cs+cs/2,this.y*cs+cs/2);
+						this.gfx.fillStyle="#666600";
+						this.gfx.strokeStyle="#ffff00";
+						this.gfx.moveTo(cs/2-2,2);
+						this.gfx.lineTo(cs/2-2,cs/2-2);
+						this.gfx.lineTo(2,cs/2-2);
+						if(App.Game.cellSize>30){
+							this.gfx.lineTo(2,cs/4);
+							this.gfx.lineTo(cs/4,cs/4);
+							this.gfx.lineTo(cs/4,2);
+							this.gfx.lineTo(cs/2-2,2);
+						}else{
+							this.gfx.lineTo(2,2);
+							this.gfx.lineTo(cs/2-2,2);
+						}
 						break;
-				}this.gfx.stroke();
+				}this.gfx.fill();
+				this.gfx.stroke();
+
+				this.gfx.restore();
 			};break;
 
 		case 23: // color toggle =======================
