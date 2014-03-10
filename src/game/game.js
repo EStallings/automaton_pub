@@ -209,7 +209,11 @@ App.makeGame = function(){
 	}
 
 	game.screenToGridCoords = function(x,y){
-
+		var gx = (x-game.renderX)/game.cellSize;
+		var gy = (y-game.renderY)/game.cellSize;
+		var color = fmod(gx,1)<0.5?fmod(gy,1)<0.5?"red":"blue":fmod(gy,1)<0.5?"green":"yellow";
+		print("Raw: "+x+","+y+" | Grid: "+Math.floor(gx)+","+Math.floor(gy)+","+color);
+		// TODO: return x,y,c
 	}
 
 		/*+------------------------------------------+*/

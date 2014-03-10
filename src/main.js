@@ -13,7 +13,7 @@ window.onload = function(){
 
 	// TEMPORARY STUFF | DELETE ================================= //
 	// TODO: what if each gui menu gets its own canvas and is "always rendering"?
-	App.makeDemoGui();
+	// App.makeDemoGui();
 
 	lvl = new App.PlanningLevel();                         // TODO: CLEANUP & DELETE
 	lvl.insert(new App.PlanningInstruction(1,1,1,'left')); // TODO: CLEANUP & DELETE
