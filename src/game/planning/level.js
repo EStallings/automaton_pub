@@ -147,10 +147,11 @@ App.PlanningLevel = function(){
 	// and creates and pushes a modifyOp object onto the undo stack.
 	// if the parameter is 'color', then this will try to move the instruction
 	// to the appropriate spot in the array.
-	this.modify = function(instruction, parameter, value){
+	this.modify = function(instruction, parameter, value, killRedo){
 		if(that.contains(instruction.x, instruction.y, instruction.color)){
 			var oldColor = instruction.color;
 			// update undo stack
+			if(killRedo !== 1) that.redoStack = [];
 			that.undoStack.push(new that.modifyOp(instruction, parameter, value, instruction[parameter]));
 
 			// update instruction
@@ -162,6 +163,7 @@ App.PlanningLevel = function(){
 				if(!that.getInstruction(instruction.x, instruction.y,value)){
 					that.grid[instruction.x][instruction.y][value] = that.getInstruction(instruction.x, instruction.y,oldColor);
 					that.grid[instruction.x][instruction.y][oldColor] = null;
+					App.Game.requestStaticRenderUpdate = true;
 				// if the location is not empty, and the user setting is set to overwrite
 				} else if(that.userOverlapSetting === 1){
 					// store the old instruction into the modiyOp object
@@ -170,18 +172,21 @@ App.PlanningLevel = function(){
 					// perform the overwrite
 					that.grid[instruction.x][instruction.y][value] = that.getInstruction(instruction.x, instruction.y,oldColor);
 					that.grid[instruction.x][instruction.y][oldColor] = null;
+					App.Game.requestStaticRenderUpdate = true;
 				}
 				else{
 					that.grid[instruction.x][instruction.y][oldColor][parameter] = oldColor; // reset the color if the move part of the operation got rejected
 				}
 			}
 		}
+		
 	};
 
 	// this function performs a copy operation on an instruction,
 	// and creates and pushes a copyOp object onto the undo stack.
-	this.copy = function(x, y, color, newX, newY){
+	this.copy = function(x, y, color, newX, newY, killRedo){
 		// update undo stack
+		if(killRedo !== 1) that.redoStack = [];
 		that.undoStack.push(new that.copyOp(that.getInstruction(x,y,color), newX, newY));
 
 		// make sure there is an instruction at the specified coordinate
@@ -192,13 +197,16 @@ App.PlanningLevel = function(){
 			// place the copy
 			if(that.grid[newX] && that.grid[newX][newY] ){
 				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+				App.Game.requestStaticRenderUpdate = true;
 			} else if(that.grid[newX]){
 				that.grid[newX][newY] = [];
 				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+				App.Game.requestStaticRenderUpdate = true;
 			} else {
 				that.grid[newX] = [];
 				that.grid[newX][newY] = [];
 				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+				App.Game.requestStaticRenderUpdate = true;
 			}
 
 		} else if(that.userOverlapSetting === 1){
@@ -207,17 +215,20 @@ App.PlanningLevel = function(){
 
 			// overwrite
 			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+			App.Game.requestStaticRenderUpdate = true;
 		}
+		
 	};
 
 	// this function, performs a move operation on an instruction,
 	// and creates and pushes a moveOp object onto the undo stack.
-	this.move = function(x, y, color, newX, newY){
+	this.move = function(x, y, color, newX, newY, killRedo){
 
 		// make sure there is an instruction at the specified coordinate
 		if(!that.contains(x,y,color)){ return; }
 
 		// update undo stack
+		if(killRedo !== 1) that.redoStack = [];
 		that.undoStack.push(new that.moveOp(that.getInstruction(x,y,color), newX, newY));
 
 		// update grid
@@ -226,17 +237,20 @@ App.PlanningLevel = function(){
 				if(that.contains(newX, newY, color)){
 					that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 					that.grid[x][y][color] = null;
+					App.Game.requestStaticRenderUpdate = true;
 				}
 				else{
 					if(that.grid[newX]){
 						if(that.grid[newX][newY]){
 							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 							that.grid[x][y][color] = null;
+							App.Game.requestStaticRenderUpdate = true;
 						}
 						else{
 							that.grid[newX][newY] = [];
 							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 							that.grid[x][y][color] = null;
+							App.Game.requestStaticRenderUpdate = true;
 						}
 					}
 					else{
@@ -244,6 +258,7 @@ App.PlanningLevel = function(){
 						that.grid[newX][newY] = [];
 						that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 						that.grid[x][y][color] = null;
+						App.Game.requestStaticRenderUpdate = true;
 					}
 				}
 			}
@@ -256,13 +271,15 @@ App.PlanningLevel = function(){
 			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 			that.grid[x][y][color] = null;			
 		}
+		
 	};
 
 	// this function performs an insert operation on the grid,
 	// and creates and pushes an insertOp object onto the undo stack.
-	this.insert = function(instruction){
+	this.insert = function(instruction,killRedo){
 
 		// update undo stack
+		if(killRedo !== 1) that.redoStack = [];
 		that.undoStack.push(new that.insertOp(instruction));
 
 		// update grid
@@ -270,45 +287,54 @@ App.PlanningLevel = function(){
 			if(that.grid[instruction.x]){
 				if(that.grid[instruction.x][instruction.y]){
 					that.grid[instruction.x][instruction.y][instruction.color] = instruction;
+					App.Game.requestStaticRenderUpdate = true;
 				}
 				else {
 					that.grid[instruction.x][instruction.y] = [];
 					that.grid[instruction.x][instruction.y][instruction.color] = instruction;
+					App.Game.requestStaticRenderUpdate = true;
 				}
 			}
 			else {
 				that.grid[instruction.x] = [];
 				that.grid[instruction.x][instruction.y] = [];
 				that.grid[instruction.x][instruction.y][instruction.color] = instruction;
+				App.Game.requestStaticRenderUpdate = true;
 			}
 		} else if(that.userOverlapSetting === 1){
 			// store the old instruction
 			that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(instruction.x,instruction.y,instruction.color);
 
 			// overwrite
-			that.grid[instruction.x][instruction.y][instruction.color] = instruction;			
+			that.grid[instruction.x][instruction.y][instruction.color] = instruction;
+			App.Game.requestStaticRenderUpdate = true;		
 		}
+		
 	};
 
 	// this function performs a delete operation on an instruction,
 	// it also creates and pushes a deleteOp object onto the stack
-	this.delete = function(x,y,color){
+	this.delete = function(x,y,color,killRedo){
 		if(that.grid[x]){
 			if(that.grid[x][y]){
 				if(that.grid[x][y][color]){
 
 					// update undo stack
+					if(killRedo !== 1) that.redoStack = [];
 					that.undoStack.push(new that.deleteOp(that.getInstruction(x,y,color)));
 
 					// update grid
 					that.grid[x][y][color] = null;
+					App.Game.requestStaticRenderUpdate = true;
 				}
 			}
 		}
+
 	};
 
 	// each call to this function pops the undo stack, and undoes whatever operation it finds
-	this.undo = function(){
+	this.undo = function(killRedo){
+		if(that.undoStack.length === 0) return;
 
 		// update stacks
 		var op = that.undoStack.pop();
@@ -319,55 +345,57 @@ App.PlanningLevel = function(){
 		// update grid
 		if(op.opId === 'insert'){
 
-			that.delete(op.instruction.x, op.instruction.y, op.instruction.color);
+			that.delete(op.instruction.x, op.instruction.y, op.instruction.color,1);
 			that.undoStack.pop();
 
 			if(op.overWritten !== null){
-				that.insert(op.overWritten);
+				that.insert(op.overWritten,1);
 				that.undoStack.pop();
 			}
 		}
 		else if(op.opId === 'delete'){
-			that.insert(op.instruction);
+			that.insert(op.instruction,1);
 			that.undoStack.pop();
 		}
 		else if(op.opId === 'move'){
-			that.move(op.newX, op.newY, op.instruction.color, op.instruction.x, op.instruction.y)
+			that.move(op.newX, op.newY, op.instruction.color, op.instruction.x, op.instruction.y, 1)
 			that.undoStack.pop();
 
 			if(op.overWritten !== null){
-				that.insert(op.overWritten);
+				that.insert(op.overWritten,1);
 				that.undoStack.pop();
 			}
 		}
 		else if(op.opId === 'copy'){
-			that.delete(op.newX, op.newY, op.instruction.color);
+			that.delete(op.newX, op.newY, op.instruction.color, 1);
 			that.undoStack.pop();
 
 			if(op.overWritten !== null){
-				that.insert(op.overWritten);
+				that.insert(op.overWritten, 1);
 				that.undoStack.pop();
 			}
 		}
 		else if(op.opId === 'modify'){
-			that.modify(op.instruction, op.parameter, op.oldValue);
+			that.modify(op.instruction, op.parameter, op.oldValue, 1);
 			that.undoStack.pop();
 
 			if(op.overWritten !== null){
-				that.insert(op.overWritten);
+				that.insert(op.overWritten, 1);
 				that.undoStack.pop();
 			}
 		}
 		else if(op.opId === 'group'){
 			for(var x = 0; x < op.numInstructions; x++){
-				that.undo();
+				that.undo(1);
 			}
 			that.redoStack.push(op);
 		}
+		App.Game.requestStaticRenderUpdate = true;
 	};
 
 	// each call to this function pops the redo stack, and undoes whatever operation it finds
 	this.redo = function(){
+		if(that.redoStack.length === 0) return;
 
 		// update stacks
 		var op = that.redoStack.pop();
@@ -402,6 +430,7 @@ App.PlanningLevel = function(){
 			}
 			that.undoStack.push(op);
 		}
+		App.Game.requestStaticRenderUpdate = true;
 	};
 
 	// TODO it sounds like we may want to include the level title in the string?
@@ -413,7 +442,7 @@ App.PlanningLevel = function(){
 			for(var j in this.grid[i]){
 				for(var c in this.grid[i][j]){
 					var inst = this.grid[i][j][c];
-					strings.push(inst.x + "," + inst.y + "," + inst.color + "," + inst.type);
+					strings.push(inst.x + "," + inst.y + "," + inst.color + "," + inst.type); // should there be a semicolon? the next x will be appended to the the type of the preceding instruction
 				}
 			}
 		}
@@ -421,8 +450,46 @@ App.PlanningLevel = function(){
 		return strings.join();
 	};
 	
-	// TODO
+	// TODO return a simulation level with instructions from the grid
 	this.generateSimulationLevel = function(){
 		
 	};
+
+	this.staticRender = function(){
+		// TODO: FIX THIS
+		var cs = App.Game.cellSize;
+		App.Game.translateCanvas(App.Game.instructionGfx);
+		for(var c=0;c<4;++c){
+			App.Game.instructionGfx.save();
+			switch(c){
+				case 0:
+					App.Game.instructionGfx.fillStyle = "#ff0000";
+					App.Game.instructionGfx.translate(0,0);
+					break;
+				case 1:
+					App.Game.instructionGfx.fillStyle = "#00ff00";
+					App.Game.instructionGfx.translate(cs/2,0);
+					break;
+				case 2:
+					App.Game.instructionGfx.fillStyle = "#0000ff";
+					App.Game.instructionGfx.translate(0,cs/2);
+					break;
+				case 3:
+					App.Game.instructionGfx.fillStyle = "#ffff00";
+					App.Game.instructionGfx.translate(cs/2,cs/2);
+					break;
+			}
+
+			for(var i in this.grid)
+				for(var j in this.grid[i])
+					if(this.grid[i][j][c])
+						App.Game.instructionGfx.fillRect(i*cs,j*cs,cs/2,cs/2);
+			App.Game.instructionGfx.restore();
+		}App.Game.instructionGfx.restore();
+	}
+
+	this.dynamicRender = function(){
+		App.Game.tempGfx.fillStyle = "#ff0000";
+		App.Game.tempGfx.fillRect(0,0,1000,100);
+	}
 }

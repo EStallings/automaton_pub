@@ -15,13 +15,17 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.enterPlanningMode = function(levelString){
+	game.loadLevel = function(levelString){
+
+	}
+
+	game.enterPlanningMode = function(){
 		if(game.mode === game.modes.PLANNING)return;
 		game.mode = game.modes.PLANNING;
 		// App.changeMenu('planning'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
 
-		if(levelString)game.currentPlanningLevel = game.loadNewLevel(levelString);
-		else game.currentPlanningLevel = game.createNewLevel();
+		//if(levelString)game.currentPlanningLevel = game.loadNewLevel(levelString);
+		//else game.currentPlanningLevel = game.createNewLevel();
 
 		// TODO: clear old undo-redo cache
 		// TODO: setup render vars (center level, default zoom)
@@ -288,10 +292,10 @@ App.makeGame = function(){
 			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
 		}game.gridGfx.stroke();
 
-	//	if(game.mode === game.modes.PLANNING &&
-	//	   game.currentPlanningLevel !== undefined)
-	//		game.currentPlanningLevel.staticRender();
-	//	else if(game.currentSimulationLevel !== undefined)
+		if(game.mode === game.modes.PLANNING &&
+		   game.currentPlanningLevel !== undefined)
+			game.currentPlanningLevel.staticRender();
+		else if(game.currentSimulationLevel !== undefined)
 			game.currentSimulationLevel.staticRender();
 	}
 
@@ -300,10 +304,10 @@ App.makeGame = function(){
 		                   / (game.nextCycleTick-game.lastCycleTick);
 
 		// render level
-	//	if(game.mode === game.modes.PLANNING &&
-	//	   game.currentPlanningLevel !== undefined)
-	//		game.currentPlanningLevel.dynamicRender();
-	//	else if(game.currentSimulationLevel !== undefined)
+		if(game.mode === game.modes.PLANNING &&
+		   game.currentPlanningLevel !== undefined)
+			game.currentPlanningLevel.dynamicRender();
+		else if(game.currentSimulationLevel !== undefined)
 			game.currentSimulationLevel.dynamicRender();
 
 		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
