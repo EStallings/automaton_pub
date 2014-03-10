@@ -18,7 +18,7 @@ window.onload = function(){
 	lvl = new App.PlanningLevel();
 	lvl.width = 10;
 	lvl.height = 5;                       // TODO: CLEANUP & DELETE
-	lvl.insert(new App.PlanningInstruction(1,1,0,4)); // TODO: CLEANUP & DELETE
+	lvl.insert(new App.PlanningInstruction(1,1,0,0)); // TODO: CLEANUP & DELETE
 	lvl.insert(new App.PlanningInstruction(1,1,1,4));   // TODO: CLEANUP & DELETE
 	lvl.insert(new App.PlanningInstruction(1,1,2,4));   // TODO: CLEANUP & DELETE
 	lvl.insert(new App.PlanningInstruction(1,1,3,4));   // TODO: CLEANUP & DELETE
@@ -32,10 +32,7 @@ window.onload = function(){
 	z[1][0] = 1; z[1][1] = 1; z[1][2] = 3;
 
 	App.Game.currentPlanningLevel = lvl;
-	App.Game.enterPlanningMode();
 	App.Game.currentSimulationLevel = lvl.generateSimulationLevel();
-	new App.SimulationInstruction(App.Game.currentSimulationLevel,0,0,0,1);
-	App.Game.enterSimulationMode();
 	//setupTestLevel();
 	// ========================================================== //
 }

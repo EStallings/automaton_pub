@@ -16,29 +16,24 @@ App.makeGame = function(){
 		/*+------------------------------------------+*/
 
 	game.loadLevel = function(levelString){
-
-	}
-
-	game.enterPlanningMode = function(){
-		if(game.mode === game.modes.PLANNING)return;
-		game.mode = game.modes.PLANNING;
-		// App.changeMenu('planning'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
-
-		//if(levelString)game.currentPlanningLevel = game.loadNewLevel(levelString);
-		//else game.currentPlanningLevel = game.createNewLevel();
-
 		// TODO: clear old undo-redo cache
 		// TODO: setup render vars (center level, default zoom)
 	}
 
-	game.enterSimulationMode = function(){
-		if(game.mode === game.modes.SIMULATION)return;
-		game.mode = game.modes.SIMULATION;
-		// App.changeMenu('simulation'); // TODO: USE THE NEW GUI CALL ONCE ITS WRITTEN
-		// game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel(); // TODO: IMPLEMENT THIS
-
-		game.nextCycleTick = App.Engine.tick;
-		game.cycle = 0;
+	game.toggleMode = function(){
+		if(game.mode === game.modes.PLANNING){
+			game.mode = game.modes.SIMULATION;
+			game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel();
+			game.clearGfx();
+			game.requestStaticRenderUpdate = true;
+			game.nextCycleTick = App.Engine.tick;
+			game.cycle = 0;
+		}else{
+			game.mode = game.modes.PLANNING;
+			game.currentSimulationLevel = undefined;
+			game.clearGfx();
+			game.requestStaticRenderUpdate = true;
+		}
 	}
 
 		/*+------------------------------------------+*/
@@ -150,6 +145,7 @@ App.makeGame = function(){
 	game.instructionGfx = App.Canvases.addNewLayer("instruction"   ,-4).getContext("2d");
 	game.borderGfx      = App.Canvases.addNewLayer("border"        ,-5).getContext("2d");
 	game.gridGfx        = App.Canvases.addNewLayer("grid"          ,-6).getContext("2d");
+	// remember to add to clearGfx
 
 	game.requestStaticRenderUpdate = true;
 
@@ -227,6 +223,16 @@ App.makeGame = function(){
 		var color = fmod(gx,1)<0.5?fmod(gy,1)<0.5?"red":"blue":fmod(gy,1)<0.5?"green":"yellow";
 		console.log("Raw: "+x+","+y+" | Grid: "+Math.floor(gx)+","+Math.floor(gy)+","+color);
 		// TODO: return x,y,c
+	}
+
+	game.clearGfx = function(){
+		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.tokenDGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.instructionGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.borderGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 	}
 
 		/*+------------------------------------------+*/
@@ -344,5 +350,6 @@ App.makeGame = function(){
 	App.InputHandler.registerKey("Q",function(){game.setSimulationSpeed(game.simulationSpeed*2);});
 	App.InputHandler.registerKey("W",function(){game.setSimulationSpeed(game.simulationSpeed/2);});
 	App.InputHandler.registerKey("Space",function(){game.pause();});
+	App.InputHandler.registerKey("`",function(){game.toggleMode();});
 	return game;
 }
