@@ -452,7 +452,16 @@ App.PlanningLevel = function(){
 	
 	// TODO return a simulation level with instructions from the grid
 	this.generateSimulationLevel = function(){
-		
+		var newLevel = new App.SimulationLevel(that.width, that.height);
+		for(var i in that.grid){
+			for(var j in that.grid[i]){
+				for(var c in that.grid[i][j]){
+					var ins = that.getInstruction(i,j,c);
+					new App.SimulationInstruction(newLevel,ins.x,ins.y,ins.color,ins.type);
+				}	
+			}	
+		}
+		return newLevel;
 	};
 
 	this.staticRender = function(){
@@ -480,9 +489,9 @@ App.PlanningLevel = function(){
 					break;
 			}
 
-			for(var i in this.grid)
-				for(var j in this.grid[i])
-					if(this.grid[i][j][c])
+			for(var i in that.grid)
+				for(var j in that.grid[i])
+					if(that.grid[i][j][c])
 						App.Game.instructionGfx.fillRect(i*cs,j*cs,cs/2,cs/2);
 			App.Game.instructionGfx.restore();
 		}App.Game.instructionGfx.restore();

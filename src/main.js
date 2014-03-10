@@ -15,15 +15,17 @@ window.onload = function(){
 	// TODO: what if each gui menu gets its own canvas and is "always rendering"?
 	// App.makeDemoGui();
 
-	lvl = new App.PlanningLevel();                         // TODO: CLEANUP & DELETE
-	lvl.insert(new App.PlanningInstruction(1,1,0,'left')); // TODO: CLEANUP & DELETE
-	lvl.insert(new App.PlanningInstruction(1,1,1,'up'));   // TODO: CLEANUP & DELETE
-	lvl.insert(new App.PlanningInstruction(1,1,2,'up'));   // TODO: CLEANUP & DELETE
-	lvl.insert(new App.PlanningInstruction(1,1,3,'up'));   // TODO: CLEANUP & DELETE
-	lvl.insert(new App.PlanningInstruction(2,2,3,'down')); // TODO: CLEANUP & DELETE
+	lvl = new App.PlanningLevel();
+	lvl.width = 10;
+	lvl.height = 5;                       // TODO: CLEANUP & DELETE
+	lvl.insert(new App.PlanningInstruction(1,1,0,4)); // TODO: CLEANUP & DELETE
+	lvl.insert(new App.PlanningInstruction(1,1,1,4));   // TODO: CLEANUP & DELETE
+	lvl.insert(new App.PlanningInstruction(1,1,2,4));   // TODO: CLEANUP & DELETE
+	lvl.insert(new App.PlanningInstruction(1,1,3,4));   // TODO: CLEANUP & DELETE
+	lvl.insert(new App.PlanningInstruction(2,2,3,4)); // TODO: CLEANUP & DELETE
 	ins = [];
-	ins[0] = new App.PlanningInstruction(3,3,3,'right');
-	ins[1] = new App.PlanningInstruction(3,3,1,'down');
+	ins[0] = new App.PlanningInstruction(3,3,3,4);
+	ins[1] = new App.PlanningInstruction(3,3,1,4);
 
 	z = []; z[0] = []; z[1] = [];
 	z[0][0] = 1; z[0][1] = 1; z[0][2] = 1;
@@ -31,7 +33,9 @@ window.onload = function(){
 
 	App.Game.currentPlanningLevel = lvl;
 	App.Game.enterPlanningMode();
-
+	App.Game.currentSimulationLevel = lvl.generateSimulationLevel();
+	new App.SimulationInstruction(App.Game.currentSimulationLevel,0,0,0,1);
+	App.Game.enterSimulationMode();
 	//setupTestLevel();
 	// ========================================================== //
 }
