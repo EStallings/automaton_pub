@@ -60,7 +60,7 @@ App.makeGame = function(){
 	game.createNewLevel = function(){} // TODO: implement?
 
 	// returns a planning level object, given an input string.
-	// Just a little string parser, really. If changes to 
+	// Just a little string parser, really. If changes to
 	// Level format are made, they have to be updated here.
 	// This could be considered fragile code in need of refactoring!
 	game.loadNewLevel = function(inputString){
@@ -212,7 +212,7 @@ App.makeGame = function(){
 		var gx = (x-game.renderX)/game.cellSize;
 		var gy = (y-game.renderY)/game.cellSize;
 		var color = fmod(gx,1)<0.5?fmod(gy,1)<0.5?"red":"blue":fmod(gy,1)<0.5?"green":"yellow";
-		print("Raw: "+x+","+y+" | Grid: "+Math.floor(gx)+","+Math.floor(gy)+","+color);
+		console.log("Raw: "+x+","+y+" | Grid: "+Math.floor(gx)+","+Math.floor(gy)+","+color);
 		// TODO: return x,y,c
 	}
 

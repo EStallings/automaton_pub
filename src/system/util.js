@@ -11,4 +11,6 @@ function addr(i,dimension){
 	return fmod(i,dimension);
 }
 
-var print = console.log
+//NOT cross-browser compatible.
+//Throws a typeError in Chrome
+//var print = console.log
