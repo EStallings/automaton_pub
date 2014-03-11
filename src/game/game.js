@@ -34,6 +34,7 @@ App.makeGame = function(){
 			game.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			game.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			game.requestStaticRenderUpdate = true;
+			game.paused = true;
 		}
 	}
 
@@ -94,7 +95,7 @@ App.makeGame = function(){
 	game.simulationSpeed = 512;
 
 	game.requestPause = false;
-	game.paused = false;
+	game.paused = true;
 	game.pauseTick;
 	game.pauseLastCycleTick;
 	game.pauseNextCycleTick;
@@ -130,6 +131,7 @@ App.makeGame = function(){
 
 	game.pause = function(){
 		game.paused = !game.paused;
+		if(!game.paused && game.mode === game.modes.PLANNING)game.toggleMode();
 		game.pauseTick = App.Engine.tick;
 		game.pauseLastCycleTick = game.lastCycleTick;
 		game.pauseNextCycleTick = game.nextCycleTick;
@@ -141,10 +143,10 @@ App.makeGame = function(){
 
 	game.tempGfx        = App.Canvases.addNewLayer("gameTemp"       ,0).getContext("2d");
 	game.automGfx       = App.Canvases.addNewLayer("autom"         ,-1).getContext("2d");
-	game.tokenSGfx      = App.Canvases.addNewLayer("token dynamic" ,-2).getContext("2d");
-	game.tokenDGfx      = App.Canvases.addNewLayer("token static"  ,-3).getContext("2d");
+	game.tokenDGfx      = App.Canvases.addNewLayer("token dynamic" ,-2).getContext("2d");
+	game.tokenSGfx      = App.Canvases.addNewLayer("token static"  ,-3).getContext("2d");
 	game.instructionGfx = App.Canvases.addNewLayer("instruction"   ,-4).getContext("2d");
-	game.gridGfx        = App.Canvases.addNewLayer("grid"          ,-5).getContext("2d");
+	game.gridGfx        = App.Canvases.addNewLayer("grid static"   ,-5).getContext("2d");
 	// remember to add to clearGfx
 
 	game.requestStaticRenderUpdate = true;
@@ -161,12 +163,20 @@ App.makeGame = function(){
 	game.goalRenderY = 93;
 	game.goalCellSize = 3*Math.pow(2,game.cellSizeFactor);
 
-		/*+------------------------------------------+*/
-
 	game.panRenderX;
 	game.panRenderY;
 	game.panMouseX;
 	game.panMouseY;
+
+	game.mouseX;
+	game.mouseY;
+	game.mouseC;
+	game.renderMX = 0;
+	game.renderMY = 0;
+	game.goalMX = 0;
+	game.goalMY = 0;
+
+		/*+------------------------------------------+*/
 
 	game.beginPan = function(x,y){
 		game.panMouseX = x;
@@ -198,6 +208,7 @@ App.makeGame = function(){
 
 	game.setSimulationSpeed = function(speed){
 		if(game.paused)game.pause();
+		if(game.mode === game.modes.PLANNING)game.toggleMode();
 		if(speed<1)return;
 
 		var tick = App.Engine.tick;
@@ -217,22 +228,32 @@ App.makeGame = function(){
 		gfx.translate(App.Game.renderX,App.Game.renderY);
 	}
 
-	this.mx,this.my,this.mc;
 	game.screenToGridCoords = function(x,y){
 		var gx = (x-game.renderX)/game.cellSize;
 		var gy = (y-game.renderY)/game.cellSize;
-		var color = fmod(gx,1)<0.5?fmod(gy,1)<0.5?"red":"blue":fmod(gy,1)<0.5?"green":"yellow";
-		// console.log("Raw: "+x+","+y+" | Grid: "+Math.floor(gx)+","+Math.floor(gy)+","+color);
-		// TODO: return x,y,c
-		this.mx = Math.floor(gx);
-		this.my = Math.floor(gy);
-		this.mc = color;
+		var gc = fmod(gx,1)<0.5?fmod(gy,1)<0.5?App.COLORS.RED:App.COLORS.BLUE:fmod(gy,1)<0.5?App.COLORS.GREEN:App.COLORS.YELLOW;
+
+		game.mouseX = Math.floor(gx);
+		game.mouseY = Math.floor(gy);
+		game.mouseC = gc;
+
+		game.goalMX = game.mouseX*game.cellSize;
+		game.goalMY = game.mouseY*game.cellSize;
+		switch(game.mouseC){
+			case App.COLORS.RED:break;
+			case App.COLORS.GREEN:game.goalMX += game.cellSize/2;break;
+			case App.COLORS.BLUE:game.goalMY += game.cellSize/2;break;
+			case App.COLORS.YELLOW:
+				game.goalMX += game.cellSize/2;
+				game.goalMY += game.cellSize/2;
+				break;
+		}
 	}
 
 		/*+------------------------------------------+*/
 
-	game.expInterp = function(val,goal,threshold){
-		var factor = App.Engine.elapsed*0.01;
+	game.expInterp = function(val,goal,speed,threshold){
+		var factor = App.Engine.elapsed*speed;
 		if(factor>1)factor=1;
 		var retVal = (goal-val)*factor;
 		if(Math.abs(val+retVal-goal)<threshold)retVal=goal-val;
@@ -245,9 +266,9 @@ App.makeGame = function(){
 		game.requestStaticRenderUpdate = false;
 
 		// update interpolated view variables
-		game.renderX  += game.expInterp(game.renderX,game.goalRenderX  ,0.5);
-		game.renderY  += game.expInterp(game.renderY,game.goalRenderY  ,0.5);
-		game.cellSize += game.expInterp(game.cellSize,game.goalCellSize,0.01);
+		game.renderX  += game.expInterp(game.renderX,game.goalRenderX  ,0.01,0.5);
+		game.renderY  += game.expInterp(game.renderY,game.goalRenderY  ,0.01,0.5);
+		game.cellSize += game.expInterp(game.cellSize,game.goalCellSize,0.01,0.01);
 		if(game.renderX != game.goalRenderX)game.requestStaticRenderUpdate=true;
 		if(game.renderY != game.goalRenderY)game.requestStaticRenderUpdate=true;
 		if(game.cellSize != game.goalCellSize)game.requestStaticRenderUpdate=true;
@@ -292,19 +313,13 @@ App.makeGame = function(){
 			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
 		}game.gridGfx.stroke();
 
-		// draw level borders | TODO: DO THIS IN THE STYLE OF THE REST OF THE GRID (TRANSLATIONLESS)
-		w = game.currentPlanningLevel.width;
-		h = game.currentPlanningLevel.height;
-		game.gridGfx.save();
-		game.gridGfx.translate(game.renderX,game.renderY);
+		// draw level borders
 		game.gridGfx.strokeStyle = "#888888";
 		game.gridGfx.beginPath();
-		game.gridGfx.moveTo(0-4,0-4);game.gridGfx.lineTo(w*cs+4,0-4);
-		game.gridGfx.moveTo(0-4,0-4);game.gridGfx.lineTo(0-4,h*cs+4);
-		game.gridGfx.moveTo(0-4,h*cs+4);game.gridGfx.lineTo(w*cs+4,h*cs+4);
-		game.gridGfx.moveTo(w*cs+4,0-4);game.gridGfx.lineTo(w*cs+4,h*cs+4);
+		game.gridGfx.rect(game.renderX-4,game.renderY-4,
+		                  game.currentPlanningLevel.width*game.cellSize+8,
+		                  game.currentPlanningLevel.height*game.cellSize+8);
 		game.gridGfx.stroke();
-		game.gridGfx.restore();
 
 		if(game.mode === game.modes.PLANNING &&
 		   game.currentPlanningLevel !== undefined)
@@ -314,16 +329,20 @@ App.makeGame = function(){
 	}
 
 	game.dynamicRender = function(){
-		if(game.mode === game.modes.SIMULATION)
-			game.interpolation = (App.Engine.tick-game.lastCycleTick)
-				           / (game.nextCycleTick-game.lastCycleTick);
-		// render level
 		if(game.mode === game.modes.PLANNING &&
 		   game.currentPlanningLevel !== undefined)
 			game.currentPlanningLevel.dynamicRender();
-		else if(game.currentSimulationLevel !== undefined)
+		else if(game.currentSimulationLevel !== undefined){
+			game.interpolation = (App.Engine.tick-game.lastCycleTick)
+				           / (game.nextCycleTick-game.lastCycleTick);
 			game.currentSimulationLevel.dynamicRender();
+		}
 
+		game.renderDebug();
+
+	}
+
+	game.renderDebug = function(){
 		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
 		game.tempGfx.fillStyle = "rgba(0,0,0,0.7)"
@@ -351,7 +370,7 @@ App.makeGame = function(){
 		var bar = "Interpolation ";
 		for(var i=0;i<game.interpolation;i+=0.05)bar+="|";
 		game.tempGfx.fillText(bar,132,66);
-		game.tempGfx.fillText("Mouse: "+this.mx+","+this.my+","+this.mc,132,77);
+		game.tempGfx.fillText("Mouse: "+game.mouseX+","+game.mouseY+","+game.mouseC,132,77);
 	}
 
 	// ========================================================== //
