@@ -1,5 +1,4 @@
 App.SimulationLevel = function(width,height){
-	this.gfx    = App.Game.borderGfx;
 	this.width  = width;
 	this.height = height;
 	this.grid         = [];
@@ -46,20 +45,6 @@ App.SimulationLevel = function(width,height){
 
 	this.staticRender = function(){
 		// draw level bounds | XXX: SHOULD WE EVEN RENDER THIS...
-		App.Game.translateCanvas(this.gfx);
-		App.Game.borderGfx.lineWidth = 2;
-		var cs = App.Game.cellSize;
-		var w = this.width*cs;
-		var h = this.height*cs;
-		this.gfx.strokeStyle = "#888888";
-		this.gfx.beginPath();
-		this.gfx.moveTo(0-4,0-4);this.gfx.lineTo(w+4,0-4);
-		this.gfx.moveTo(0-4,0-4);this.gfx.lineTo(0-4,h+4);
-		this.gfx.moveTo(0-4,h+4);this.gfx.lineTo(w+4,h+4);
-		this.gfx.moveTo(w+4,0-4);this.gfx.lineTo(w+4,h+4);
-		this.gfx.stroke();
-		this.gfx.restore();
-
 		App.Game.translateCanvas(App.Game.instructionGfx);
 		App.Game.instructionGfx.lineWidth = 2;
 		App.Game.translateCanvas(App.Game.tokenSGfx);

@@ -7,7 +7,7 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.modes = {SIMULATION:'sim',PLANNING:'plan'}; // why are these strings?
+	game.modes = {SIMULATION:'Simulation',PLANNING:'Planning'}; // why are these strings?
 	game.mode = game.modes.PLANNING;
 
 	game.currentPlanningLevel;
@@ -24,14 +24,15 @@ App.makeGame = function(){
 		if(game.mode === game.modes.PLANNING){
 			game.mode = game.modes.SIMULATION;
 			game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel();
-			game.clearGfx();
 			game.requestStaticRenderUpdate = true;
+			game.paused = false;
 			game.nextCycleTick = App.Engine.tick;
 			game.cycle = 0;
 		}else{
 			game.mode = game.modes.PLANNING;
 			game.currentSimulationLevel = undefined;
-			game.clearGfx();
+			game.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+			game.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			game.requestStaticRenderUpdate = true;
 		}
 	}
@@ -143,8 +144,7 @@ App.makeGame = function(){
 	game.tokenSGfx      = App.Canvases.addNewLayer("token dynamic" ,-2).getContext("2d");
 	game.tokenDGfx      = App.Canvases.addNewLayer("token static"  ,-3).getContext("2d");
 	game.instructionGfx = App.Canvases.addNewLayer("instruction"   ,-4).getContext("2d");
-	game.borderGfx      = App.Canvases.addNewLayer("border"        ,-5).getContext("2d");
-	game.gridGfx        = App.Canvases.addNewLayer("grid"          ,-6).getContext("2d");
+	game.gridGfx        = App.Canvases.addNewLayer("grid"          ,-5).getContext("2d");
 	// remember to add to clearGfx
 
 	game.requestStaticRenderUpdate = true;
@@ -158,7 +158,7 @@ App.makeGame = function(){
 	game.interpolation;
 
 	game.goalRenderX = 16;
-	game.goalRenderY = 82;
+	game.goalRenderY = 93;
 	game.goalCellSize = 3*Math.pow(2,game.cellSizeFactor);
 
 		/*+------------------------------------------+*/
@@ -217,22 +217,16 @@ App.makeGame = function(){
 		gfx.translate(App.Game.renderX,App.Game.renderY);
 	}
 
+	this.mx,this.my,this.mc;
 	game.screenToGridCoords = function(x,y){
 		var gx = (x-game.renderX)/game.cellSize;
 		var gy = (y-game.renderY)/game.cellSize;
 		var color = fmod(gx,1)<0.5?fmod(gy,1)<0.5?"red":"blue":fmod(gy,1)<0.5?"green":"yellow";
-		console.log("Raw: "+x+","+y+" | Grid: "+Math.floor(gx)+","+Math.floor(gy)+","+color);
+		// console.log("Raw: "+x+","+y+" | Grid: "+Math.floor(gx)+","+Math.floor(gy)+","+color);
 		// TODO: return x,y,c
-	}
-
-	game.clearGfx = function(){
-		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-		game.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-		game.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-		game.tokenDGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-		game.instructionGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-		game.borderGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		this.mx = Math.floor(gx);
+		this.my = Math.floor(gy);
+		this.mc = color;
 	}
 
 		/*+------------------------------------------+*/
@@ -298,6 +292,20 @@ App.makeGame = function(){
 			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
 		}game.gridGfx.stroke();
 
+		// draw level borders | TODO: DO THIS IN THE STYLE OF THE REST OF THE GRID (TRANSLATIONLESS)
+		w = game.currentPlanningLevel.width;
+		h = game.currentPlanningLevel.height;
+		game.gridGfx.save();
+		game.gridGfx.translate(game.renderX,game.renderY);
+		game.gridGfx.strokeStyle = "#888888";
+		game.gridGfx.beginPath();
+		game.gridGfx.moveTo(0-4,0-4);game.gridGfx.lineTo(w*cs+4,0-4);
+		game.gridGfx.moveTo(0-4,0-4);game.gridGfx.lineTo(0-4,h*cs+4);
+		game.gridGfx.moveTo(0-4,h*cs+4);game.gridGfx.lineTo(w*cs+4,h*cs+4);
+		game.gridGfx.moveTo(w*cs+4,0-4);game.gridGfx.lineTo(w*cs+4,h*cs+4);
+		game.gridGfx.stroke();
+		game.gridGfx.restore();
+
 		if(game.mode === game.modes.PLANNING &&
 		   game.currentPlanningLevel !== undefined)
 			game.currentPlanningLevel.staticRender();
@@ -306,9 +314,9 @@ App.makeGame = function(){
 	}
 
 	game.dynamicRender = function(){
-		game.interpolation = (App.Engine.tick-game.lastCycleTick)
-		                   / (game.nextCycleTick-game.lastCycleTick);
-
+		if(game.mode === game.modes.SIMULATION)
+			game.interpolation = (App.Engine.tick-game.lastCycleTick)
+				           / (game.nextCycleTick-game.lastCycleTick);
 		// render level
 		if(game.mode === game.modes.PLANNING &&
 		   game.currentPlanningLevel !== undefined)
@@ -319,7 +327,7 @@ App.makeGame = function(){
 		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
 		game.tempGfx.fillStyle = "rgba(0,0,0,0.7)"
-		game.tempGfx.fillRect(5,5,300,70);
+		game.tempGfx.fillRect(5,5,300,81);
 
 		game.tempGfx.font = "bold 11px arial";
 		game.tempGfx.fillStyle = "#ffffff";
@@ -332,6 +340,7 @@ App.makeGame = function(){
 		}else game.tempGfx.fillText("Speed: "+game.simulationSpeed+" ms/tick",11,44);
 		game.tempGfx.fillText("Tick: "+App.Engine.tick           ,11,55);
 		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor       ,11,66);
+		game.tempGfx.fillText("Mode: "+game.mode       ,11,77);
 
 		game.tempGfx.fillText("Pan X: "+game.renderX             ,132,22);
 		game.tempGfx.fillText("Pan Y: "+game.renderY             ,132,33);
@@ -342,6 +351,7 @@ App.makeGame = function(){
 		var bar = "Interpolation ";
 		for(var i=0;i<game.interpolation;i+=0.05)bar+="|";
 		game.tempGfx.fillText(bar,132,66);
+		game.tempGfx.fillText("Mouse: "+this.mx+","+this.my+","+this.mc,132,77);
 	}
 
 	// ========================================================== //

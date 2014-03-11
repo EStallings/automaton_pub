@@ -39,6 +39,8 @@ App.makeGameInput = function(){
 	gInput.mouseMove = function(mouseData){
 		var game = App.Game;
 
+		App.Game.screenToGridCoords(mouseData.x,mouseData.y); // DELETE
+
 		if(mouseData.rmb)
 			game.pan(mouseData.x, mouseData.y);
 

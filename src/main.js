@@ -16,13 +16,30 @@ window.onload = function(){
 	// App.makeDemoGui();
 
 	lvl = new App.PlanningLevel();
-	lvl.width = 10;
-	lvl.height = 5;                       // TODO: CLEANUP & DELETE
-	lvl.insert(new App.PlanningInstruction(1,1,0,0)); // TODO: CLEANUP & DELETE
-	lvl.insert(new App.PlanningInstruction(1,1,1,4));   // TODO: CLEANUP & DELETE
-	lvl.insert(new App.PlanningInstruction(1,1,2,4));   // TODO: CLEANUP & DELETE
-	lvl.insert(new App.PlanningInstruction(1,1,3,4));   // TODO: CLEANUP & DELETE
-	lvl.insert(new App.PlanningInstruction(2,2,3,4)); // TODO: CLEANUP & DELETE
+	lvl.width  = 7;
+	lvl.height = 6;
+
+	lvl.insert(new App.PlanningInstruction(1,2,0,3));
+	lvl.insert(new App.PlanningInstruction(1,2,1,3));
+	lvl.insert(new App.PlanningInstruction(1,2,2,3));
+	lvl.insert(new App.PlanningInstruction(1,2,3,2));
+
+	lvl.insert(new App.PlanningInstruction(2,2,1,4));
+	lvl.insert(new App.PlanningInstruction(2,2,2,5));
+	lvl.insert(new App.PlanningInstruction(2,1,1,7));
+	lvl.insert(new App.PlanningInstruction(2,4,2,7));
+	lvl.insert(new App.PlanningInstruction(4,1,1,5));
+	lvl.insert(new App.PlanningInstruction(4,4,2,4));
+	lvl.insert(new App.PlanningInstruction(4,2,1,7));
+	lvl.insert(new App.PlanningInstruction(4,2,2,7));
+
+	lvl.insert(new App.PlanningInstruction(5,2,0,22));
+	lvl.insert(new App.PlanningInstruction(5,2,1,22));
+	lvl.insert(new App.PlanningInstruction(5,2,2,22));
+	lvl.insert(new App.PlanningInstruction(5,2,3,22));
+
+	lvl.insert(new App.PlanningInstruction(3,2,3,24));
+
 	ins = [];
 	ins[0] = new App.PlanningInstruction(3,3,3,4);
 	ins[1] = new App.PlanningInstruction(3,3,1,4);
@@ -33,7 +50,7 @@ window.onload = function(){
 
 	App.Game.currentPlanningLevel = lvl;
 	App.Game.currentSimulationLevel = lvl.generateSimulationLevel();
-	//setupTestLevel();
+	// setupTestLevel();
 	// ========================================================== //
 }
 
