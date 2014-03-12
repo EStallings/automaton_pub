@@ -376,8 +376,9 @@ App.makeGame = function(){
 	// ========================================================== //
 
 	// TODO: move these to gameInput
-	App.InputHandler.registerKey("Q",function(){game.setSimulationSpeed(game.simulationSpeed*2);});
-	App.InputHandler.registerKey("W",function(){game.setSimulationSpeed(game.simulationSpeed/2);});
+	// TODO: why can't i register "-" and "="?
+	App.InputHandler.registerKey("[",function(){game.setSimulationSpeed(game.simulationSpeed*2);});
+	App.InputHandler.registerKey("]",function(){game.setSimulationSpeed(game.simulationSpeed/2);});
 	App.InputHandler.registerKey("Space",function(){game.pause();});
 	App.InputHandler.registerKey("`",function(){game.toggleMode();});
 	return game;

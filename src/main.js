@@ -14,43 +14,13 @@ window.onload = function(){
 	// TEMPORARY STUFF | DELETE ================================= //
 	// TODO: what if each gui menu gets its own canvas and is "always rendering"?
 	// App.makeDemoGui();
-
-	lvl = new App.PlanningLevel();
-	lvl.width  = 7;
-	lvl.height = 6;
-
-	lvl.insert(new App.PlanningInstruction(1,2,0,3));
-	lvl.insert(new App.PlanningInstruction(1,2,1,3));
-	lvl.insert(new App.PlanningInstruction(1,2,2,3));
-	lvl.insert(new App.PlanningInstruction(1,2,3,2));
-
-	lvl.insert(new App.PlanningInstruction(2,2,1,4));
-	lvl.insert(new App.PlanningInstruction(2,2,2,5));
-	lvl.insert(new App.PlanningInstruction(2,1,1,7));
-	lvl.insert(new App.PlanningInstruction(2,4,2,7));
-	lvl.insert(new App.PlanningInstruction(4,1,1,5));
-	lvl.insert(new App.PlanningInstruction(4,4,2,4));
-	lvl.insert(new App.PlanningInstruction(4,2,1,7));
-	lvl.insert(new App.PlanningInstruction(4,2,2,7));
-
-	lvl.insert(new App.PlanningInstruction(5,2,0,22));
-	lvl.insert(new App.PlanningInstruction(5,2,1,22));
-	lvl.insert(new App.PlanningInstruction(5,2,2,22));
-	lvl.insert(new App.PlanningInstruction(5,2,3,22));
-
-	lvl.insert(new App.PlanningInstruction(3,2,3,24));
-
+	setupTestLevel();
 	ins = [];
 	ins[0] = new App.PlanningInstruction(3,3,3,4);
 	ins[1] = new App.PlanningInstruction(3,3,1,4);
-
 	z = []; z[0] = []; z[1] = [];
 	z[0][0] = 1; z[0][1] = 1; z[0][2] = 1;
 	z[1][0] = 1; z[1][1] = 1; z[1][2] = 3;
-
-	App.Game.currentPlanningLevel = lvl;
-	App.Game.currentSimulationLevel = lvl.generateSimulationLevel();
-	// setupTestLevel();
 	// ========================================================== //
 }
 
@@ -91,6 +61,4 @@ App.makeDemoGui = function(){
 	sliderLine2.sliderButton = sliderButton2;
 	App.Gui.addNewComponent('test', sliderLine2);
 	App.Gui.addNewComponent('test', sliderButton2);
-
-
 }

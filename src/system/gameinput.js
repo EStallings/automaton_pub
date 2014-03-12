@@ -27,11 +27,10 @@ App.makeGameInput = function(){
 	gInput.mouseUp = function(mouseData){
 		var game = App.Game;
 
-		// TODO: mouseData.lmb does not work here...
 		App.Game.screenToGridCoords(mouseData.x,mouseData.y);
 		
-		if(mouseData.lmb && game.mode === game.modes.PLANNING){
-			//do dragging of instructions that have already been placed
+		if(/* TODO: FIX THIS: mouseData.lmb && */game.mode === game.modes.PLANNING){
+			// TODO: do dragging of instructions that have already been placed
 		}
 
 	}

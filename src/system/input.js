@@ -142,11 +142,11 @@ App.makeInputHandler = function(){
 			return;
 		}
 
-		if(!input.keyRegistry[key] ||input.keysDown[key])
+		if(!input.keyRegistry[key] || input.keysDown[key])
 			return;
 
 		input.keysDown[key] = true;
-		input.keyRegistry[key]();
+		if(input.keyRegistry[key])input.keyRegistry[key]();
 	}
 
 	//Deals with a key being released
