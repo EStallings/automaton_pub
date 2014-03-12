@@ -78,6 +78,10 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 			this.gfx.arc(x*c+h,y*c+h,h,0,Math.PI/2);
 			this.gfx.stroke();
 		}
+
+
+		//
+
 	}
 
 	this.dynamicRender = function(){
