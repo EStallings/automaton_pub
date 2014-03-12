@@ -86,56 +86,8 @@ App.GuiTextButton.fg = '#ffffff';
 
 //A relatively simple button. Click and release on top of it to fire a callback.
 //with 'continuous' as true, it will keep firing every frame.
-App.GuiTextButton = function(cRect, text, callback, continuous, panel){
-	this.cRect = cRect;
-	this.text = text;
-	this.callback = callback;
-	this.cRect.positionRelative(panel);
-	this.cRect.functional = true;
-	this.color = App.GuiTextButton.bg;
-	this.continuous = continuous;
-	this.clicked = false;
-
-	var textX = this.cRect.x + (this.cRect.w / 2); // for centering text
-	var textY = this.cRect.y + (this.cRect.h / 2); // for centering text
-
-	//For continuous callbacks
-	this.update = function(){
-		if(this.clicked && this.continuous)
-			this.callback();
-	}
-
-	//Draws a box and the text! Nothing fancy. Could use some work maybe.
-	this.render = function(gfx){
-		gfx.fillStyle = this.color;
-		gfx.fillRect(this.cRect.x, this.cRect.y, this.cRect.w, this.cRect.h);
-		gfx.fillStyle = App.GuiTextButton.fg;
-		gfx.fillText(this.text, textX, textY);
-	}
-
-	//Changes the color and initiates the click
-	this.clickStart = function(){
-		this.color = '#2f2f2f';
-		this.clicked = true;
-	}
-
-	//Checks for moving the mouse off of the button
-	this.clickDrag = function(x, y){
-		if(!this.cRect.collides(x,y)){
-			this.color = App.GuiTextButton.bg;
-			this.clicked = false;
-		}
-	}
-
-	//If the click was successful, fire the callback
-	this.clickEnd = function(x, y){
-		this.color = App.GuiTextButton.bg;
-		if(!this.cRect.collides(x,y))
-			return;
-		if(this.callback && this.clicked)
-			this.callback();
-		this.clicked = false;
-	}
+App.GuiDropDownMenu = function(cRect, text, callback, continuous, panel){
+	// TODO
 }
 
 
