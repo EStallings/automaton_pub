@@ -84,6 +84,14 @@ App.GuiTextButton.bg = '#1f1f1f';
 App.GuiTextButton.fg = '#ffffff';
 
 
+//A relatively simple button. Click and release on top of it to fire a callback.
+//with 'continuous' as true, it will keep firing every frame.
+App.GuiDropDownMenu = function(cRect, text, callback, continuous, panel){
+	// TODO
+}
+
+
+
 //TODO: Cameron, we need designs. Basically the same as above, just a different render method.
 //SHOULD abstract some stuff out but for now...
 App.GuiVectorButton = function(cRect, draw, callback, continuous, panel){
@@ -120,7 +128,7 @@ App.GuiDragButton = function(cRect, draw, instruction, panel){
 	//Initiating the dragging
 	this.clickStart = function(){
 		this.dragged = true;
-		this.color = '#3d2d1d';
+		this.color = '#4d4d4d';
 	}
 
 	//The drag part of "drag and drop"

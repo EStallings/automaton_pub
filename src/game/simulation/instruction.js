@@ -391,7 +391,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld !== undefined)--a.tokenHeld.number;
+				if(a.tokenHeld !== undefined)--a.tokenHeld.number; 
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
@@ -407,7 +407,48 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
+				
+				this.gfx.fillStyle="#0F0F0F";
+				this.gfx.strokeStyle="#FF0000";
+
+				this.gfx.moveTo(12*cs/64,16*cs/64);
+				this.gfx.lineTo(52*cs/64,16*cs/64);
+
+				this.gfx.moveTo(52*cs/64,16*cs/64);
+				this.gfx.lineTo(52*cs/64,24*cs/64);
+
+				this.gfx.moveTo(52*cs/64,24*cs/64);
+				this.gfx.lineTo(20*cs/64,24*cs/64);
+
+				this.gfx.moveTo(20*cs/64,24*cs/64);
+				this.gfx.lineTo(20*cs/64,28*cs/64);
+
+				this.gfx.moveTo(20*cs/64,28*cs/64);
+				this.gfx.lineTo(52*cs/64,28*cs/64);
+
+				this.gfx.moveTo(52*cs/64,28*cs/64);
+				this.gfx.lineTo(52*cs/64,48*cs/64);
+
+				this.gfx.moveTo(52*cs/64,48*cs/64);
+				this.gfx.lineTo(12*cs/64,48*cs/64);
+
+				this.gfx.moveTo(12*cs/64,48*cs/64);
+				this.gfx.lineTo(12*cs/64,40*cs/64);
+
+				this.gfx.moveTo(12*cs/64,40*cs/64);
+				this.gfx.lineTo(44*cs/64,40*cs/64);
+
+				this.gfx.moveTo(44*cs/64,40*cs/64);
+				this.gfx.lineTo(44*cs/64,36*cs/64);
+
+				this.gfx.moveTo(44*cs/64,36*cs/64);
+				this.gfx.lineTo(12*cs/64,36*cs/64);
+
+				this.gfx.moveTo(12*cs/64,36*cs/64);
+				this.gfx.lineTo(12*cs/64,16*cs/64);
+
 				this.gfx.stroke();
+				this.gfx.closePath();
 			};break;
 
 		case 20: // switch +- ==========================
@@ -426,7 +467,34 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
+
+
+				switch(this.color) {
+					// XXX: why do we need a color switch here?
+					// TODO
+				}
+
+				this.gfx.fillStyle="#0F0F0F";
+				this.gfx.fillRect(0,0,cs/4,cs/4);
+				
+				this.gfx.strokeStyle="#AAAAAA";
+				this.gfx.strokeRect(0,0,cs/4,cs/4);
+
+				this.gfx.fillStyle="#F0F0F0";
+				this.gfx.fillRect(cs/4,0,cs/4,cs/4);
+				
+				this.gfx.strokeRect(cs/4,0,cs/4,cs/4);
+
+				this.gfx.fillStyle="#F0F0F0";
+				this.gfx.fillRect(0,cs/4,cs/4,cs/4);
+				
+				this.gfx.strokeRect(0,cs/4,cs/4,cs/4);
+
+				this.gfx.fillStyle="#0F0F0F";
+				this.gfx.fillRect(cs/4,cs/4,cs/4,cs/4);
+				
+				this.gfx.strokeRect(cs/4,cs/4,cs/4,cs/4);
+
 				this.gfx.stroke();
 			};break;
 

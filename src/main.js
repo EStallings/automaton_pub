@@ -30,7 +30,10 @@ window.onload = function(){
 // and using raw .js files is terrible style and, also clunky.
 App.makeDemoGui = function(){
 	App.Gui.addNewFrame('test');
-	var panel = new App.GuiPanel(new App.GuiCollisionRect(5, 80, 300, 600));
+
+	var cellWidth = 48;
+
+	var panel = new App.GuiPanel(new App.GuiCollisionRect(7*cellWidth, 80, 300, 600));
 	var dragButton1 = new App.GuiDragButton(new App.GuiCollisionRect(25,125,50,50), null, null, panel);
 	var dragButton2 = new App.GuiDragButton(new App.GuiCollisionRect(100,125,50,50), null, null, panel);
 	var textButton = new App.GuiTextButton(new App.GuiCollisionRect(25,25,100,50), "foo bar", function(){ console.log("hi");}, false, panel);
