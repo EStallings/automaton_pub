@@ -4,7 +4,7 @@ App.GuiTextBox = function(guiCollider, text, panel){
 	this.guiCollider = guiCollider;
 	this.text = text;
 	this.guiCollider.positionRelative(panel);
-	this.color = App.GuiTextButton.bg;
+	this.color = App.GuiColors.gray[6];
 
 	var textX = this.guiCollider.x + 10;// (this.guiCollider.w / 2); // for centering text
 	var textY = this.guiCollider.y + (this.guiCollider.h / 2); // for centering text
@@ -13,7 +13,7 @@ App.GuiTextBox = function(guiCollider, text, panel){
 	this.render = function(gfx){
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.guiCollider.x, this.guiCollider.y, this.guiCollider.w, this.guiCollider.h);
-		gfx.fillStyle = App.GuiTextButton.fg;
+		gfx.fillStyle = App.GuiColors.gray[0];
 		gfx.fillText(this.text, textX, textY);
 	}
 
@@ -28,7 +28,9 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 	this.lastText = defaultText;
 	this.defaultText = defaultText;
 	this.guiCollider.positionRelative(panel);
-	this.color = App.GuiTextButton.bg;
+	this.activeColor = App.GuiColors.gray[4];
+	this.inactiveColor = App.GuiColors.gray[6];
+	this.color = this.inactiveColor;
 	this.clicked = false;
 	this.editmode = false;
 	this.guiCollider.functional = true;
@@ -43,7 +45,7 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 	this.render = function(gfx){
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.guiCollider.x, this.guiCollider.y, this.guiCollider.w, this.guiCollider.h);
-		gfx.fillStyle = App.GuiTextButton.fg;
+		gfx.fillStyle = App.GuiColors.gray[0];
 		//if set font, set font here.
 		var metrics = gfx.measureText(this.text.substring(0, this.cursorPosition));
 		if(metrics.width + textX > this.guiCollider.x + this.guiCollider.w)
@@ -72,7 +74,6 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 	this.clickStart = function(){
 		if(this.editmode)
 			return;
-		this.color = '#2f2f2f';
 		this.clicked = true;
 	}
 
@@ -81,7 +82,6 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 		if(this.editmode)
 			return;
 		if(!this.guiCollider.collides(x,y)){
-			this.color = App.GuiTextButton.bg;
 			this.clicked = false;
 		}
 	}
@@ -90,7 +90,6 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 	this.clickEnd = function(x, y){
 		if(this.editmode)
 			return;
-		this.color = App.GuiTextButton.bg;
 		if(!this.guiCollider.collides(x,y))
 			return;
 		if(this.clicked)
@@ -108,7 +107,6 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 		this.lastText = this.text;
 		this.text = (this.text === this.defaultText)? "" : this.text;
 		this.cursorPosition = this.text.length;
-		this.color = "#121212";
 	}
 
 	//restores input control to the inputhandler, exits edit mode.
@@ -117,7 +115,6 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 		this.editmode = false;
 		this.cursorTime = 0;
 		this.cursorPosition = 0;
-		this.color = App.GuiTextButton.bg;
 	}
 
 	//Helper function to insert a keystroke at the cursor position

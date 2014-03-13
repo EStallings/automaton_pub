@@ -11,12 +11,17 @@ App.GuiJoystick = function(x, y, panel){
 	this.curPanX = 0;
 	this.curPanY = 0;
 	this.moveRate = 0.2;
-	this.color = App.GuiTextButton.bg;
+
+	this.activeColor = App.GuiColors.gray[4];
+	this.inactiveColor = App.GuiColors.gray[6];
+	this.color = this.inactiveColor;
+
 	this.dragged = false;
 
 	this.render = function(gfx){
 		//Draw outside/bounds
 		gfx.fillStyle = this.color;
+		gfx.strokeStyle = App.GuiColors.gray[2];
 		gfx.beginPath();
 		gfx.arc(this.guiCollider.x, this.guiCollider.y, this.guiCollider.r, 0, Math.PI*2, true);
 		gfx.closePath();
@@ -52,7 +57,6 @@ App.GuiJoystick = function(x, y, panel){
 		d = (d > this.guiCollider.r)? this.guiCollider.r : d;
 		y = (d * Math.cos(a));
 		x = (d * Math.sin(a));
-		console.debug(x + ", " + y);
 
 		this.curPanX -= x * this.moveRate;
 		this.curPanY -= y * this.moveRate;
@@ -82,7 +86,9 @@ App.GuiDragButton = function(guiCollider, draw, instruction, panel){
 
 	this.currentX = this.guiCollider.x;
 	this.currentY = this.guiCollider.y;
-	this.color = App.GuiTextButton.bg;
+	this.activeColor = App.GuiColors.gray[4];
+	this.inactiveColor = App.GuiColors.gray[6];
+	this.color = this.inactiveColor;
 	this.dragged = false;
 	this.draw = draw;
 	this.instruction = instruction;
@@ -100,7 +106,6 @@ App.GuiDragButton = function(guiCollider, draw, instruction, panel){
 	//Initiating the dragging
 	this.clickStart = function(){
 		this.dragged = true;
-		this.color = '#4d4d4d';
 	}
 
 	//The drag part of "drag and drop"
@@ -114,7 +119,6 @@ App.GuiDragButton = function(guiCollider, draw, instruction, panel){
 	//The button has been "dropped"!
 	this.clickEnd = function(x, y){
 		this.dragged = false;
-		this.color = App.GuiTextButton.bg;
 		this.currentX = this.guiCollider.x;
 		this.currentY = this.guiCollider.y;
 		console.log("dragged to " + x + "," + y);
@@ -139,7 +143,9 @@ App.GuiSliderButton = function(guiCollider, panel){
 	this.guiCollider = guiCollider;
 	this.guiCollider.positionRelative(panel);
 	this.guiCollider.functional = true;
-	this.color = App.GuiTextButton.bg;
+	this.activeColor = App.GuiColors.gray[4];
+	this.inactiveColor = App.GuiColors.gray[6];
+	this.color = this.inactiveColor;
 	this.sliderLine;
 	this.dragged = false;
 
@@ -150,14 +156,13 @@ App.GuiSliderButton = function(guiCollider, panel){
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.guiCollider.x, this.guiCollider.y, this.guiCollider.w, this.guiCollider.h);
 
-		gfx.fillStyle = '#ffffff';
+		gfx.fillStyle = App.GuiColors.gray[0];
 		gfx.fillText (Math.floor(this.sliderLine.value), this.guiCollider.x, this.guiCollider.y + this.guiCollider.h/2);
 	}
 
 	//Begins the dragging of the slider
 	this.clickStart = function(){
 		this.dragged = true;
-		this.color = '#3d2d1d';
 	}
 
 	//Ugly code in here, needs cleanup.
@@ -167,7 +172,7 @@ App.GuiSliderButton = function(guiCollider, panel){
 	//(IE past the max and min)
 	//It also calls the sliderLine.evaluate function, which in turn calls any
 	//change listener callback.
-	this.clickDrag = function(){
+	this.update = function(){
 		if(!this.dragged)
 			return;
 		if(this.sliderLine.direction === 1){
@@ -190,7 +195,6 @@ App.GuiSliderButton = function(guiCollider, panel){
 	//Releases from dragging
 	this.clickEnd = function(){
 		this.dragged = false;
-		this.color = App.GuiTextButton.bg;
 
 	}
 }
@@ -201,7 +205,7 @@ App.GuiSliderLine = function(guiCollider, min, max, direction, callback, panel){
 	this.guiCollider = guiCollider;
 	this.guiCollider.positionRelative(panel);
 	this.guiCollider.functional = true; //to allow snap-to-click
-	this.color = '#dadada';
+	this.color = App.GuiColors.gray[2];
 	this.direction = direction;
 	this.sliderButton;
 	this.min = min;
@@ -231,8 +235,10 @@ App.GuiSliderLine = function(guiCollider, min, max, direction, callback, panel){
 		this.value = vals.v;
 	}
 
-	//these redirects allow the user to click on the slider and "snap" the slider button to where they clicked!
-	this.clickStart = function(){ this.sliderButton.clickStart(); }
-	this.clickEnd = function(){	this.sliderButton.clickEnd(); }
+	//this redirect allows the user to click on the slider and "snap" the slider button to where they clicked!
+	this.clickStart = function(){
+		App.Gui.activeComponent = this.sliderButton;
+		this.sliderButton.clickStart();
+	}
 
 }

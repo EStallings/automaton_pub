@@ -13,16 +13,22 @@ App.makeGuiInput = function(){
 
 		for(var c in frame){
 			if(frame[c].guiCollider && frame[c].guiCollider.collides(mouseData.x, mouseData.y)){
-				if(frame[c].guiCollider.functional)
+				if(frame[c].guiCollider.functional){
 					App.Gui.activeComponent = frame[c];
+				}
 				hit = true;
 			}
 		}
 
 		//I don't declare a variable for activecomponent because if it's null,
 		//the App.Gui will need manual updating.
-		if(App.Gui.activeComponent && App.Gui.activeComponent.clickStart)
+		if(App.Gui.activeComponent && App.Gui.activeComponent.clickStart){
 			App.Gui.activeComponent.clickStart();
+
+			if(App.Gui.activeComponent.activeColor)
+				App.Gui.activeComponent.color = App.Gui.activeComponent.activeColor;
+
+		}
 
 		return hit;
 	}
@@ -31,8 +37,11 @@ App.makeGuiInput = function(){
 	//Calls the clickEnd function on the active component if appropriate,
 	//then clears active component.
 	gInput.mouseUp = function(mouseData){
-		if(App.Gui.activeComponent && App.Gui.activeComponent.clickEnd)
+		if(App.Gui.activeComponent && App.Gui.activeComponent.clickEnd){
 			App.Gui.activeComponent.clickEnd(mouseData.x, mouseData.y);
+			if(App.Gui.activeComponent.inactiveColor)
+				App.Gui.activeComponent.color = App.Gui.activeComponent.inactiveColor;
+		}
 		App.Gui.activeComponent = null;
 	}
 

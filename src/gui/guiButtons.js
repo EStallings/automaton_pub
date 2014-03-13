@@ -35,7 +35,11 @@ App.GuiTextButton = function(x, y, text, callback, continuous, panel){
 	this.callback = callback;
 	this.guiCollider.positionRelative(panel);
 	this.guiCollider.functional = true;
-	this.color = App.GuiTextButton.bg;
+
+	this.activeColor = App.GuiColors.gray[4];
+	this.inactiveColor = App.GuiColors.gray[6];
+	this.color = this.inactiveColor;
+
 	this.continuous = continuous;
 	this.clicked = false;
 
@@ -58,7 +62,7 @@ App.GuiTextButton = function(x, y, text, callback, continuous, panel){
 
 	//Changes the color and initiates the click
 	this.clickStart = function(){
-		this.color = '#2f2f2f';
+		// this.color = '#2f2f2f';
 		this.clicked = true;
 	}
 
@@ -72,7 +76,7 @@ App.GuiTextButton = function(x, y, text, callback, continuous, panel){
 
 	//If the click was successful, fire the callback
 	this.clickEnd = function(x, y){
-		this.color = App.GuiTextButton.bg;
+		// this.color = App.GuiTextButton.bg;
 		if(!this.guiCollider.collides(x,y))
 			return;
 		if(this.callback && this.clicked)
@@ -91,8 +95,6 @@ App.GuiDropDownMenu = function(guiCollider, text, callback, continuous, panel){
 	// TODO
 }
 
-
-
 //TODO: Cameron, we need designs. Basically the same as above, just a different render method.
 //SHOULD abstract some stuff out but for now...
 App.GuiVectorButton = function(guiCollider, draw, callback, continuous, panel){
@@ -100,7 +102,18 @@ App.GuiVectorButton = function(guiCollider, draw, callback, continuous, panel){
 	this.guiCollider.positionRelative(panel);
 }
 
-
+//A consistent grayscale to help keep colors coordinated
+App.GuiColors = {};
+App.GuiColors.gray = [
+	'#ffffff',
+	'#e0e0e0',
+	'#c0c0c0',
+	'#afafaf',
+	'#5a5a5a',
+	'#3d3d3d',
+	'#1f1f1f',
+	'#000000'
+]
 
 //A backgound panel. You can add things to these to organize your components for
 //relative positioning and rapid gui alterations.

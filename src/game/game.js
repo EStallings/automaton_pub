@@ -188,7 +188,6 @@ App.makeGame = function(){
 	game.pan = function(x,y){
 		game.goalRenderX = Math.round(game.panRenderX+(x-game.panMouseX));
 		game.goalRenderY = Math.round(game.panRenderY+(y-game.panMouseY));
-		console.log(x, y);
 		game.requestStaticRenderUpdate = true;
 	}
 
@@ -335,7 +334,7 @@ App.makeGame = function(){
 			game.currentPlanningLevel.dynamicRender();
 		else if(game.currentSimulationLevel !== undefined){
 			game.interpolation = (App.Engine.tick-game.lastCycleTick)
-				           / (game.nextCycleTick-game.lastCycleTick);
+				           // (game.nextCycleTick-game.lastCycleTick);
 			game.currentSimulationLevel.dynamicRender();
 		}
 
