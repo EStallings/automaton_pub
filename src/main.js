@@ -13,7 +13,7 @@ window.onload = function(){
 
 	// TEMPORARY STUFF | DELETE ================================= //
 	// TODO: what if each gui menu gets its own canvas and is "always rendering"?
-	// App.makeDemoGui();
+	 App.makeDemoGui();
 	setupTestLevel();
 	ins = [];
 	ins[0] = new App.PlanningInstruction(3,3,3,4);
@@ -36,11 +36,11 @@ App.makeDemoGui = function(){
 	var panel = new App.GuiPanel(new App.GuiCollisionRect(7*cellWidth, 80, 300, 600));
 	var dragButton1 = new App.GuiDragButton(new App.GuiCollisionRect(25,125,50,50), null, null, panel);
 	var dragButton2 = new App.GuiDragButton(new App.GuiCollisionRect(100,125,50,50), null, null, panel);
-	var textButton = new App.GuiTextButton(new App.GuiCollisionRect(25,25,100,50), "foo bar", function(){ console.log("hi");}, false, panel);
-	
+	var textButton = new App.GuiTextButton(25,25, "foo bar", function(){ console.log("hi");}, false, panel);
+
 	//intentionally global for debugging -- I use this guy to show some data about touch input.
 	textBox = new App.GuiTextBox(new App.GuiCollisionRect(25,225,100,50), "I am a text box!", panel);
-	textBox.cRect.functional = true;
+	textBox.guiCollider.functional = true;
 
 	var editBox = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,325,200,50), "Edit me", panel);
 	App.Gui.addNewComponent('test', panel);
@@ -64,4 +64,7 @@ App.makeDemoGui = function(){
 	sliderLine2.sliderButton = sliderButton2;
 	App.Gui.addNewComponent('test', sliderLine2);
 	App.Gui.addNewComponent('test', sliderButton2);
+
+	var joystick = new App.GuiJoystick(500, 100, null);
+	App.Gui.addNewComponent('test', joystick);
 }

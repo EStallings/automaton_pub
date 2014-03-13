@@ -188,6 +188,7 @@ App.makeGame = function(){
 	game.pan = function(x,y){
 		game.goalRenderX = Math.round(game.panRenderX+(x-game.panMouseX));
 		game.goalRenderY = Math.round(game.panRenderY+(y-game.panMouseY));
+		console.log(x, y);
 		game.requestStaticRenderUpdate = true;
 	}
 

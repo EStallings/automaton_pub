@@ -12,8 +12,8 @@ App.makeGuiInput = function(){
 		var hit = false;
 
 		for(var c in frame){
-			if(frame[c].cRect && frame[c].cRect.collides(mouseData.x, mouseData.y)){
-				if(frame[c].cRect.functional)
+			if(frame[c].guiCollider && frame[c].guiCollider.collides(mouseData.x, mouseData.y)){
+				if(frame[c].guiCollider.functional)
 					App.Gui.activeComponent = frame[c];
 				hit = true;
 			}
