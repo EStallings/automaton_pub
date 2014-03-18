@@ -121,11 +121,16 @@ App.GuiDragButton = function(guiCollider, draw, instruction, panel){
 		this.dragged = false;
 		this.currentX = this.guiCollider.x;
 		this.currentY = this.guiCollider.y;
-		console.log("dragged to " + x + "," + y);
-		//-------
-		//At this point, need drawing of planning level
-		//to drag and drop components! WOO!
-		//-------
+
+
+		var level =	App.Game.currentPlanningLevel;
+		//FIX THIS
+		var nx = App.Game.mouseX;
+		var ny = App.Game.mouseY;
+		var c = this.instruction.color;
+		var t = this.instruction.type;
+		console.log("dragged to " + nx + "," + ny);
+		level.insert(new App.PlanningInstruction(nx,ny,c,t));
 	}
 }
 

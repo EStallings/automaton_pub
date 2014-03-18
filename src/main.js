@@ -34,8 +34,8 @@ App.makeDemoGui = function(){
 	var cellWidth = 48;
 
 	var panel = new App.GuiPanel(new App.GuiCollisionRect(7*cellWidth, 80, 300, 600));
-	var dragButton1 = new App.GuiDragButton(new App.GuiCollisionRect(25,125,50,50), null, null, panel);
-	var dragButton2 = new App.GuiDragButton(new App.GuiCollisionRect(100,125,50,50), null, null, panel);
+	var dragButton1 = new App.GuiDragButton(new App.GuiCollisionRect(25,125,50,50), null, new App.PlanningInstruction(0,0,1,7), panel);
+	var dragButton2 = new App.GuiDragButton(new App.GuiCollisionRect(100,125,50,50), null, new App.PlanningInstruction(0,0,2,7), panel);
 	var textButton = new App.GuiTextButton(25,25, "foo bar", function(){ console.log("hi");}, false, panel);
 
 	//intentionally global for debugging -- I use this guy to show some data about touch input.

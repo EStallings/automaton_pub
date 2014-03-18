@@ -7,6 +7,6 @@ App.PlanningInstruction = function(x,y,color,type){
 	// this.attributes; // this should only be used for stuff like stream config...
 
 	this.generateSimulationInstruction = function(){
-		
+
 	}
 }
