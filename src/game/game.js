@@ -248,6 +248,7 @@ App.makeGame = function(){
 				game.goalMY += game.cellSize/2;
 				break;
 		}
+
 	}
 
 		/*+------------------------------------------+*/

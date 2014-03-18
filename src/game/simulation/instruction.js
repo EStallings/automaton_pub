@@ -59,7 +59,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 	// ================= I N S T R U C T I O N S ================ //
 	// ========================================================== //
 
-	switch(type){
+	switch(type){ //Cases 0-24? YUCK PLEASE CLEAN UP TODO
 
 		case 0: // spawn up ============================
 
@@ -391,7 +391,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld !== undefined)--a.tokenHeld.number; 
+				if(a.tokenHeld !== undefined)--a.tokenHeld.number;
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
@@ -407,7 +407,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			};this.rFunc = function(){
 				var cs = App.Game.cellSize;
 				this.gfx.beginPath();
-				
+
 				this.gfx.fillStyle="#0F0F0F";
 				this.gfx.strokeStyle="#FF0000";
 
@@ -476,23 +476,23 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 				this.gfx.fillStyle="#0F0F0F";
 				this.gfx.fillRect(0,0,cs/4,cs/4);
-				
+
 				this.gfx.strokeStyle="#AAAAAA";
 				this.gfx.strokeRect(0,0,cs/4,cs/4);
 
 				this.gfx.fillStyle="#F0F0F0";
 				this.gfx.fillRect(cs/4,0,cs/4,cs/4);
-				
+
 				this.gfx.strokeRect(cs/4,0,cs/4,cs/4);
 
 				this.gfx.fillStyle="#F0F0F0";
 				this.gfx.fillRect(0,cs/4,cs/4,cs/4);
-				
+
 				this.gfx.strokeRect(0,cs/4,cs/4,cs/4);
 
 				this.gfx.fillStyle="#0F0F0F";
 				this.gfx.fillRect(cs/4,cs/4,cs/4,cs/4);
-				
+
 				this.gfx.strokeRect(cs/4,cs/4,cs/4,cs/4);
 
 				this.gfx.stroke();

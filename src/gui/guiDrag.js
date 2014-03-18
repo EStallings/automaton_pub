@@ -79,16 +79,15 @@ App.GuiJoystick = function(x, y, panel){
 //TODO requires some special logic
 //note that the instruction dragging is the only drag and drop, so let's cut
 //out the middleman and just hardcode that part
-App.GuiDragButton = function(guiCollider, draw, instruction, panel){
-	this.guiCollider = guiCollider;
+App.GuiDragButton = function(x, y, draw, instruction, panel){
+	this.guiCollider = new App.GuiCollisionRect(x, y, 30, 30);
 	this.guiCollider.positionRelative(panel);
 	this.guiCollider.functional = true;
 
 	this.currentX = this.guiCollider.x;
 	this.currentY = this.guiCollider.y;
-	this.activeColor = App.GuiColors.gray[4];
-	this.inactiveColor = App.GuiColors.gray[6];
-	this.color = this.inactiveColor;
+	this.activeColor = App.GuiDragButton.active;
+	this.inactiveColor = App.GuiDragButton.inactive;
 	this.dragged = false;
 	this.draw = draw;
 	this.instruction = instruction;
@@ -96,7 +95,7 @@ App.GuiDragButton = function(guiCollider, draw, instruction, panel){
 	//Draws a simple box for now - once we have some vector draw functions,
 	//we'll be able to draw them on it!
 	this.render = function(gfx){
-		gfx.fillStyle = this.color;
+		gfx.fillStyle = (this.dragged)? this.activeColor : this.inactiveColor;
 		gfx.fillRect(this.currentX, this.currentY, this.guiCollider.w, this.guiCollider.h);
 
 		if(this.draw)
@@ -124,14 +123,30 @@ App.GuiDragButton = function(guiCollider, draw, instruction, panel){
 
 
 		var level =	App.Game.currentPlanningLevel;
-		//FIX THIS
+		App.Game.screenToGridCoords(x, y);
 		var nx = App.Game.mouseX;
 		var ny = App.Game.mouseY;
-		var c = this.instruction.color;
-		var t = this.instruction.type;
+		var c = App.GuiDragButton.globalColor;
+		var t = this.instruction;
 		console.log("dragged to " + nx + "," + ny);
 		level.insert(new App.PlanningInstruction(nx,ny,c,t));
 	}
+	App.GuiDragButton.registry.push(this);
+}
+App.GuiDragButton.registry = [];
+App.GuiDragButton.globalColor = 0;
+App.GuiDragButton.inactive = App.GuiColors.inactive[App.GuiDragButton.globalColor];
+App.GuiDragButton.active = App.GuiColors.active[App.GuiDragButton.globalColor];
+App.GuiDragButton.changeGlobalColor = function(color){
+	this.globalColor = color;
+	this.inactive = App.GuiColors.inactive[color];
+	this.active = App.GuiColors.active[color];
+	for(var i = 0; i < this.registry.length; i++){
+		this.registry[i].activeColor = this.active;
+		this.registry[i].inactiveColor = this.inactive;
+	}
+	App.Gui.drawStatic = true;
+
 }
 
 

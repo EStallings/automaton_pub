@@ -17,6 +17,7 @@ App.makeGuiInput = function(){
 					App.Gui.activeComponent = frame[c];
 				}
 				hit = true;
+				App.Gui.drawStatic = true;
 			}
 		}
 
@@ -43,6 +44,7 @@ App.makeGuiInput = function(){
 				App.Gui.activeComponent.color = App.Gui.activeComponent.inactiveColor;
 		}
 		App.Gui.activeComponent = null;
+		App.Gui.drawStatic = true;
 	}
 
 	//We can allow moving through the gui when clicking and dragging in game.

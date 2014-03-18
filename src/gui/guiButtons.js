@@ -115,6 +115,20 @@ App.GuiColors.gray = [
 	'#000000'
 ]
 
+App.GuiColors.inactive = [
+	'#b20000',
+	'#00b200',
+	'#0000b2',
+	'#999900'
+]
+
+App.GuiColors.active = [
+		'#ff1010',
+		'#10ff10',
+		'#1010ff',
+		'#ffff00'
+]
+
 //A backgound panel. You can add things to these to organize your components for
 //relative positioning and rapid gui alterations.
 App.GuiPanel = function(guiCollider){

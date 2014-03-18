@@ -16,7 +16,7 @@ App.makeGUI = function(){
 	//Only used to draw the currently active component
 	//if this is bad, we can change it.
 	gui.dynamicCanvas = App.Canvases.addNewLayer("GUI_Dynamic",0);
-	gui.dynamicGfx = gui.staticCanvas.getContext('2d');
+	gui.dynamicGfx = gui.dynamicCanvas.getContext('2d');
 
 	gui.frames = [];
 	gui.currentFrame;
@@ -57,8 +57,10 @@ App.makeGUI = function(){
 
 	gui.render = function(){
 		this.dynamicGfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
+		if(this.drawStatic)
+			this.staticGfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
 
-		for(var c in this.currentFrame){ 
+		for(var c in this.currentFrame){
 			if(this.currentFrame[c].render){
 				if(this.currentFrame[c] === this.activeComponent)
 					this.currentFrame[c].render(this.dynamicGfx);
@@ -66,6 +68,7 @@ App.makeGUI = function(){
 					this.currentFrame[c].render(this.staticGfx);
 			}
 		}
+		this.drawStatic = false;
 	}
 
 	return gui;

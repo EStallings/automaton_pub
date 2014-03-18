@@ -13,7 +13,8 @@ window.onload = function(){
 
 	// TEMPORARY STUFF | DELETE ================================= //
 	// TODO: what if each gui menu gets its own canvas and is "always rendering"?
-	 App.makeDemoGui();
+	 //App.makeDemoGui();
+	 App.makePlanningGui();
 	setupTestLevel();
 	ins = [];
 	ins[0] = new App.PlanningInstruction(3,3,3,4);
@@ -34,8 +35,8 @@ App.makeDemoGui = function(){
 	var cellWidth = 48;
 
 	var panel = new App.GuiPanel(new App.GuiCollisionRect(7*cellWidth, 80, 300, 600));
-	var dragButton1 = new App.GuiDragButton(new App.GuiCollisionRect(25,125,50,50), null, new App.PlanningInstruction(0,0,1,7), panel);
-	var dragButton2 = new App.GuiDragButton(new App.GuiCollisionRect(100,125,50,50), null, new App.PlanningInstruction(0,0,2,7), panel);
+	var dragButton1 = new App.GuiDragButton(new App.GuiCollisionRect(25,125,50,50), null, 7, panel);
+	var dragButton2 = new App.GuiDragButton(new App.GuiCollisionRect(100,125,50,50), null, 7, panel);
 	var textButton = new App.GuiTextButton(25,25, "foo bar", function(){ console.log("hi");}, false, panel);
 
 	//intentionally global for debugging -- I use this guy to show some data about touch input.
@@ -67,4 +68,33 @@ App.makeDemoGui = function(){
 
 	var joystick = new App.GuiJoystick(500, 100, null);
 	App.Gui.addNewComponent('test', joystick);
+}
+
+
+App.makePlanningGui = function(){
+	App.Gui.addNewFrame('planning');
+	var instructionPanel = new App.GuiPanel(new App.GuiCollisionRect(800,0,100,600));
+	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,100,100,500));
+
+	var redButton = new App.GuiTextButton(0,0,'Red',function(){App.GuiDragButton.changeGlobalColor(0)}, false, controlsPanel);
+	var greenButton = new App.GuiTextButton(0,30,'Green',function(){App.GuiDragButton.changeGlobalColor(1)}, false, controlsPanel);
+	var blueButton = new App.GuiTextButton(0,60,'Blue',function(){App.GuiDragButton.changeGlobalColor(2)}, false, controlsPanel);
+	var yellowButton = new App.GuiTextButton(0,90,'Yellow', function(){App.GuiDragButton.changeGlobalColor(3)}, false, controlsPanel);
+
+	App.Gui.addNewComponent('planning', instructionPanel);
+	App.Gui.addNewComponent('planning', controlsPanel);
+	App.Gui.addNewComponent('planning', redButton);
+	App.Gui.addNewComponent('planning', greenButton);
+	App.Gui.addNewComponent('planning', blueButton);
+	App.Gui.addNewComponent('planning', yellowButton);
+
+	for(var i=0; i < 8; i++){
+		App.Gui.addNewComponent('planning', new App.GuiDragButton(0, 31 * i, null, i, instructionPanel));
+		App.Gui.addNewComponent('planning', new App.GuiDragButton(31, 31 * i, null, i + 8, instructionPanel));
+		App.Gui.addNewComponent('planning', new App.GuiDragButton(62, 31 * i, null, i + 16, instructionPanel));
+
+	}
+	var joystick = new App.GuiJoystick(50, 200, controlsPanel);
+	App.Gui.addNewComponent('planning', joystick);
+
 }
