@@ -76,10 +76,10 @@ App.makePlanningGui = function(){
 	var instructionPanel = new App.GuiPanel(new App.GuiCollisionRect(800,0,100,600));
 	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,100,100,500));
 
-	var redButton = new App.GuiTextButton(0,0,'Red',function(){App.GuiDragButton.changeGlobalColor(0)}, false, controlsPanel);
-	var greenButton = new App.GuiTextButton(0,30,'Green',function(){App.GuiDragButton.changeGlobalColor(1)}, false, controlsPanel);
-	var blueButton = new App.GuiTextButton(0,60,'Blue',function(){App.GuiDragButton.changeGlobalColor(2)}, false, controlsPanel);
-	var yellowButton = new App.GuiTextButton(0,90,'Yellow', function(){App.GuiDragButton.changeGlobalColor(3)}, false, controlsPanel);
+	var redButton = new App.GuiTextButton(0,300,'Red',function(){App.GuiDragButton.changeGlobalColor(0)}, false, instructionPanel);
+	var greenButton = new App.GuiTextButton(0,330,'Green',function(){App.GuiDragButton.changeGlobalColor(1)}, false, instructionPanel);
+	var blueButton = new App.GuiTextButton(0,360,'Blue',function(){App.GuiDragButton.changeGlobalColor(2)}, false, instructionPanel);
+	var yellowButton = new App.GuiTextButton(0,390,'Yellow', function(){App.GuiDragButton.changeGlobalColor(3)}, false, instructionPanel);
 
 	App.Gui.addNewComponent('planning', instructionPanel);
 	App.Gui.addNewComponent('planning', controlsPanel);
@@ -94,7 +94,28 @@ App.makePlanningGui = function(){
 		App.Gui.addNewComponent('planning', new App.GuiDragButton(62, 31 * i, null, i + 16, instructionPanel));
 
 	}
-	var joystick = new App.GuiJoystick(50, 200, controlsPanel);
+	var joystick = new App.GuiJoystick(50, 50, controlsPanel);
 	App.Gui.addNewComponent('planning', joystick);
+
+	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,1);}, false, controlsPanel);
+	var zoomOutButton = new App.GuiTextButton(0, 300, 'Zoom Out', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,-1);}, false, controlsPanel);
+
+	App.Gui.addNewComponent('planning', zoomInButton);
+	App.Gui.addNewComponent('planning', zoomOutButton);
+
+	var simButton = new App.GuiTextButton(400, 50, 'Simulate', function(){App.Game.toggleMode();}, false, null);
+	App.Gui.addNewComponent('planning', simButton);
+
+
+	//For the simulation mode GUI
+	// var speedSliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(200,100,50,25), controlsPanel);
+	// var speedSliderLine = new App.GuiSliderLine(new App.GuiCollisionRect(200,100,10, 400), 0, 100, 2, function(n){
+	// 	App.Game.setSimulationSpeed(n);
+	// }, controlsPanel);
+	// speedSliderButton.sliderLine = speedSliderLine;
+	// speedSliderLine.sliderButton = speedSliderButton;
+	// App.Gui.addNewComponent('planning', speedSliderLine);
+	// App.Gui.addNewComponent('planning', speedSliderButton);
+
 
 }

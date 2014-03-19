@@ -251,7 +251,7 @@ App.GuiSliderLine = function(guiCollider, min, max, direction, callback, panel){
 		vals.v *= step;
 
 		if(this.callback)
-			this.callback();
+			this.callback(vals.v);
 		this.value = vals.v;
 	}
 
