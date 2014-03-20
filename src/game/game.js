@@ -275,7 +275,7 @@ App.makeGame = function(){
 		if(game.cellSize != game.goalCellSize)game.requestStaticRenderUpdate=true;
 
 		// setup grid canvas
-		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height); // TODO: OPTIMIZE THIS
 		game.gridGfx.lineWidth = 2;
 
 		// setup grid vars

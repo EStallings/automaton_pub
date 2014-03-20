@@ -12,46 +12,9 @@ App.SimulationInstruction = function(level,x,y,color,type){
 	this.color = color;
 	this.type = type;
 
-	this.rFunc;
 	this.staticRender = function(){
-		var cs = App.Game.cellSize;
 		this.gfx.save();
-		switch(this.color){
-			case App.COLORS.RED:
-				this.gfx.translate(this.x*cs,this.y*cs);
-				this.gfx.fillStyle="#660000";
-				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
-				this.gfx.strokeStyle="#ff0000";
-				break;
-			case App.COLORS.GREEN:
-				this.gfx.translate(this.x*cs+cs/2,this.y*cs);
-				this.gfx.fillStyle="#006600";
-				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
-				this.gfx.strokeStyle="#00ff00";
-				break;
-			case App.COLORS.BLUE:
-				this.gfx.translate(this.x*cs,this.y*cs+cs/2);
-				this.gfx.fillStyle="#000066";
-				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
-				this.gfx.strokeStyle="#0000ff";
-				break;
-			case App.COLORS.YELLOW:
-				this.gfx.translate(this.x*cs+cs/2,this.y*cs+cs/2);
-				this.gfx.fillStyle="#666600";
-				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
-				this.gfx.strokeStyle="#ffff00";
-				break;
-		}
-
-		this.gfx.beginPath();
-		this.gfx.moveTo(2,2);
-		this.gfx.lineTo(2,cs/2-2);
-		this.gfx.lineTo(cs/2-2,cs/2-2);
-		this.gfx.lineTo(cs/2-2,2);
-		this.gfx.lineTo(2,2);
-		this.gfx.stroke();
-
-		if(App.Game.cellSize>30)this.rFunc();
+		if(App.Game.cellSize>30); // TODO: USE INSTRUCTION RENDERER
 		this.gfx.restore();
 	}
 
@@ -59,21 +22,13 @@ App.SimulationInstruction = function(level,x,y,color,type){
 	// ================= I N S T R U C T I O N S ================ //
 	// ========================================================== //
 
-	switch(type){ //Cases 0-24? YUCK PLEASE CLEAN UP TODO
+	switch(type){ // TODO: Cases 0-24? YUCK PLEASE CLEAN UP
 
 		case 0: // spawn up ============================
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.UP,color);
 
 			this.execute = function(a){ // do nothing
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-				this.gfx.moveTo(3*cs/16,2*cs/16);
-				this.gfx.lineTo(4*cs/16,cs/16);
-				this.gfx.lineTo(5*cs/16,2*cs/16);
-				this.gfx.stroke();
 			};break;
 
 		case 1: // spawn down ==========================
@@ -81,14 +36,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.DOWN,color);
 
 			this.execute = function(a){ // do nothing
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-				this.gfx.moveTo(3*cs/16,6*cs/16);
-				this.gfx.lineTo(4*cs/16,7*cs/16);
-				this.gfx.lineTo(5*cs/16,6*cs/16);
-				this.gfx.stroke();
 			};break;
 
 		case 2: // spawn left ==========================
@@ -96,14 +43,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.LEFT,color);
 
 			this.execute = function(a){ // do nothing
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-				this.gfx.moveTo(2*cs/16,3*cs/16);
-				this.gfx.lineTo(cs/16,4*cs/16);
-				this.gfx.lineTo(2*cs/16,5*cs/16);
-				this.gfx.stroke();
 			};break;
 
 		case 3: // spawn right =========================
@@ -111,14 +50,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.RIGHT,color);
 
 			this.execute = function(a){ // do nothing
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-				this.gfx.moveTo(6*cs/16,3*cs/16);
-				this.gfx.lineTo(7*cs/16,4*cs/16);
-				this.gfx.lineTo(6*cs/16,5*cs/16);
-				this.gfx.stroke();
 			};break;
 
 		case 4: // up ==================================
@@ -126,14 +57,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.UP;
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.lineTo(cs/4,cs/8);
-				this.gfx.stroke();
 			};break;
 
 		case 5: // down ================================
@@ -141,14 +64,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.DOWN;
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/4,3*cs/8);
-				this.gfx.lineTo(cs/8,cs/8);
-				this.gfx.lineTo(3*cs/8,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.stroke();
 			};break;
 
 		case 6: // left ================================
@@ -156,14 +71,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.LEFT;
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,cs/4);
-				this.gfx.lineTo(3*cs/8,cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.lineTo(cs/8,cs/4);
-				this.gfx.stroke();
 			};break;
 
 		case 7: // right ===============================
@@ -171,14 +78,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.RIGHT;
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(3*cs/8,cs/4);
-				this.gfx.lineTo(cs/8,cs/8);
-				this.gfx.lineTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,cs/4);
-				this.gfx.stroke();
 			};break;
 
 		case 8: // rotate cw ===========================
@@ -186,13 +85,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = (a.direction+3)%4;
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/8,Math.PI/2,2*Math.PI);
-				this.gfx.moveTo(3*cs/8,cs/4);
-				this.gfx.lineTo(3*cs/8,cs/8);
-				this.gfx.stroke();
 			};break;
 
 		case 9: // rotate ccw ==========================
@@ -200,13 +92,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = (a.direction+1)%4;
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/8,Math.PI,Math.PI/2);
-				this.gfx.moveTo(cs/8,cs/4);
-				this.gfx.lineTo(cs/8,cs/8);
-				this.gfx.stroke();
 			};break;
 
 		case 10: // in stream ==========================
@@ -220,19 +105,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
 			}
 
-			// TODO: override render func
 			this.execute = function(a){ // do nothing
-			};this.rFunc = function(){
-				// TODO: make letters for each stream
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(3*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.lineTo(1*cs/8,3*cs/8);
-				this.gfx.stroke();
 			};break;
 
 		case 11: // out stream =========================
@@ -248,19 +121,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				}
 			}
 
-			// TODO: override render func
 			this.execute = function(a){ // do nothing
-			};this.rFunc = function(){
-				// TODO: make letters for each stream
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(3*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.lineTo(1*cs/8,3*cs/8);
-				this.gfx.stroke();
 			};break;
 
 		case 12: // in =================================
@@ -270,17 +131,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(!this.level.inStreams[this.color])return;
 				for(var i in this.level.inStreams[this.color])
 					this.level.inStreams[this.color][i].input();
-			};this.rFunc = function(){
-				// TODO: this should NOT be an "I" (streams get letters as symbols)
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.moveTo(cs/8,cs/8);
-				this.gfx.lineTo(3*cs/8,cs/8);
-				this.gfx.moveTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.stroke();
 			};break;
 
 		case 13: // out ================================
@@ -289,12 +139,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(!a.colorFlags[this.color])return;
 				for(var i in this.level.outStreams[this.color])
 					this.level.outStreams[this.color][i].output();
-			};this.rFunc = function(){
-				// TODO: this should NOT be an "O" (streams get letters as symbols)
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/8,-Math.PI,Math.PI);
-				this.gfx.stroke();
 			};break;
 
 		case 14: // grab ===============================
@@ -306,17 +150,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 					this.cell.tokens.splice(0,1);
 					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.moveTo(3*cs/16,3*cs/16);
-				this.gfx.lineTo(cs/4,cs/8);
-				this.gfx.lineTo(5*cs/16,3*cs/16);
-				this.gfx.stroke();
 			};break;
 
 		case 15: // drop ===============================
@@ -328,17 +161,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 					a.tokenHeld = undefined;
 					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.moveTo(3*cs/16,5*cs/16);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.lineTo(5*cs/16,5*cs/16);
-				this.gfx.stroke();
 			};break;
 
 		case 16: // grab/drop ==========================
@@ -356,20 +178,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 					a.tokenHeld = undefined;
 					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.moveTo(3*cs/16,3*cs/16);
-				this.gfx.lineTo(cs/4,cs/8);
-				this.gfx.lineTo(5*cs/16,3*cs/16);
-				this.gfx.moveTo(3*cs/16,5*cs/16);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.lineTo(5*cs/16,5*cs/16);
-				this.gfx.stroke();
 			};break;
 
 		case 17: // inc ================================
@@ -377,14 +185,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)++a.tokenHeld.number;
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,cs/4);
-				this.gfx.lineTo(3*cs/8,cs/4);
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.stroke();
 			};break;
 
 		case 18: // dec ================================
@@ -392,110 +192,24 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)--a.tokenHeld.number;
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,cs/4);
-				this.gfx.lineTo(3*cs/8,cs/4);
-				this.gfx.stroke();
 			};break;
 
 		case 19: // switch 0 ===========================
 
 			// TODO: UP DOWN LEFT RIGHT
 			this.execute = function(a){
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-
-				this.gfx.fillStyle="#0F0F0F";
-				this.gfx.strokeStyle="#FF0000";
-
-				this.gfx.moveTo(12*cs/64,16*cs/64);
-				this.gfx.lineTo(52*cs/64,16*cs/64);
-
-				this.gfx.moveTo(52*cs/64,16*cs/64);
-				this.gfx.lineTo(52*cs/64,24*cs/64);
-
-				this.gfx.moveTo(52*cs/64,24*cs/64);
-				this.gfx.lineTo(20*cs/64,24*cs/64);
-
-				this.gfx.moveTo(20*cs/64,24*cs/64);
-				this.gfx.lineTo(20*cs/64,28*cs/64);
-
-				this.gfx.moveTo(20*cs/64,28*cs/64);
-				this.gfx.lineTo(52*cs/64,28*cs/64);
-
-				this.gfx.moveTo(52*cs/64,28*cs/64);
-				this.gfx.lineTo(52*cs/64,48*cs/64);
-
-				this.gfx.moveTo(52*cs/64,48*cs/64);
-				this.gfx.lineTo(12*cs/64,48*cs/64);
-
-				this.gfx.moveTo(12*cs/64,48*cs/64);
-				this.gfx.lineTo(12*cs/64,40*cs/64);
-
-				this.gfx.moveTo(12*cs/64,40*cs/64);
-				this.gfx.lineTo(44*cs/64,40*cs/64);
-
-				this.gfx.moveTo(44*cs/64,40*cs/64);
-				this.gfx.lineTo(44*cs/64,36*cs/64);
-
-				this.gfx.moveTo(44*cs/64,36*cs/64);
-				this.gfx.lineTo(12*cs/64,36*cs/64);
-
-				this.gfx.moveTo(12*cs/64,36*cs/64);
-				this.gfx.lineTo(12*cs/64,16*cs/64);
-
-				this.gfx.stroke();
-				this.gfx.closePath();
 			};break;
 
 		case 20: // switch +- ==========================
 
 			// TODO: UP DOWN LEFT RIGHT
 			this.execute = function(a){
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.stroke();
 			};break;
 
 		case 21: // switch even odd ====================
 
 			// TODO: UP DOWN LEFT RIGHT
 			this.execute = function(a){
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-
-
-				switch(this.color) {
-					// XXX: why do we need a color switch here?
-					// TODO
-				}
-
-				this.gfx.fillStyle="#0F0F0F";
-				this.gfx.fillRect(0,0,cs/4,cs/4);
-
-				this.gfx.strokeStyle="#AAAAAA";
-				this.gfx.strokeRect(0,0,cs/4,cs/4);
-
-				this.gfx.fillStyle="#F0F0F0";
-				this.gfx.fillRect(cs/4,0,cs/4,cs/4);
-
-				this.gfx.strokeRect(cs/4,0,cs/4,cs/4);
-
-				this.gfx.fillStyle="#F0F0F0";
-				this.gfx.fillRect(0,cs/4,cs/4,cs/4);
-
-				this.gfx.strokeRect(0,cs/4,cs/4,cs/4);
-
-				this.gfx.fillStyle="#0F0F0F";
-				this.gfx.fillRect(cs/4,cs/4,cs/4,cs/4);
-
-				this.gfx.strokeRect(cs/4,cs/4,cs/4,cs/4);
-
-				this.gfx.stroke();
 			};break;
 
 		case 22: // sync ===============================
@@ -504,83 +218,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			// TODO: 22 is hardcoded in cell.sync... fix that
 			this.execute = function(a){
 				this.cell.sync();
-			};this.staticRender = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.save();
-				this.gfx.beginPath();
-				switch(this.color){
-					case App.COLORS.RED:
-						this.gfx.translate(this.x*cs,this.y*cs);
-						this.gfx.fillStyle="#660000";
-						this.gfx.strokeStyle="#ff0000";
-						this.gfx.moveTo(2,cs/2-2);
-						this.gfx.lineTo(2,2);
-						this.gfx.lineTo(cs/2-2,2);
-						if(App.Game.cellSize>30){
-							this.gfx.lineTo(cs/2-2,cs/4);
-							this.gfx.lineTo(cs/4,cs/4);
-							this.gfx.lineTo(cs/4,cs/2-2);
-							this.gfx.lineTo(2,cs/2-2);
-						}else{
-							this.gfx.lineTo(cs/2-2,cs/2-2);
-							this.gfx.lineTo(2,cs/2-2);
-						}
-						break;
-					case App.COLORS.GREEN:
-						this.gfx.translate(this.x*cs+cs/2,this.y*cs);
-						this.gfx.fillStyle="#006600";
-						this.gfx.strokeStyle="#00ff00";
-						this.gfx.moveTo(2,2);
-						this.gfx.lineTo(cs/2-2,2);
-						this.gfx.lineTo(cs/2-2,cs/2-2);
-						if(App.Game.cellSize>30){
-							this.gfx.lineTo(cs/4,cs/2-2);
-							this.gfx.lineTo(cs/4,cs/4);
-							this.gfx.lineTo(2,cs/4);
-							this.gfx.lineTo(2,2);
-						}else{
-							this.gfx.lineTo(2,cs/2-2);
-							this.gfx.lineTo(2,2)
-						}
-						break;
-					case App.COLORS.BLUE:
-						this.gfx.translate(this.x*cs,this.y*cs+cs/2);
-						this.gfx.fillStyle="#000066";
-						this.gfx.strokeStyle="#0000ff";
-						this.gfx.moveTo(cs/2-2,cs/2-2);
-						this.gfx.lineTo(2,cs/2-2);
-						this.gfx.lineTo(2,2);
-						if(App.Game.cellSize>30){
-							this.gfx.lineTo(cs/4,2);
-							this.gfx.lineTo(cs/4,cs/4);
-							this.gfx.lineTo(cs/2-2,cs/4);
-							this.gfx.lineTo(cs/2-2,cs/2-2);
-						}else{
-							this.gfx.lineTo(cs/2-2,2);
-							this.gfx.lineTo(cs/2-2,cs/2-2);
-						}
-						break;
-					case App.COLORS.YELLOW:
-						this.gfx.translate(this.x*cs+cs/2,this.y*cs+cs/2);
-						this.gfx.fillStyle="#666600";
-						this.gfx.strokeStyle="#ffff00";
-						this.gfx.moveTo(cs/2-2,2);
-						this.gfx.lineTo(cs/2-2,cs/2-2);
-						this.gfx.lineTo(2,cs/2-2);
-						if(App.Game.cellSize>30){
-							this.gfx.lineTo(2,cs/4);
-							this.gfx.lineTo(cs/4,cs/4);
-							this.gfx.lineTo(cs/4,2);
-							this.gfx.lineTo(cs/2-2,2);
-						}else{
-							this.gfx.lineTo(2,2);
-							this.gfx.lineTo(cs/2-2,2);
-						}
-						break;
-				}this.gfx.fill();
-				this.gfx.stroke();
-
-				this.gfx.restore();
 			};break;
 
 		case 23: // color toggle =======================
@@ -588,14 +225,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			// TODO: this doesn't have a color check
 			this.execute = function(a){
 				a.colorFlags[this.color] = !a.colorFlags[this.color];
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(1*cs/8,1*cs/8);
-				this.gfx.lineTo(3*cs/8,1*cs/8);
-				this.gfx.moveTo(2*cs/8,1*cs/8);
-				this.gfx.lineTo(2*cs/8,3*cs/8);
-				this.gfx.stroke();
 			};break;
 
 		case 24: // pause ==============================
@@ -603,15 +232,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				App.Game.requestPause = true;
-			};this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(1*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,3*cs/8);
-				this.gfx.stroke();
 			};break;
 	}
 }
