@@ -11,8 +11,8 @@ App.SimulationLevel = function(width,height){
 	// ========================================================== //
 
 	this.getCell = function(x,y){
-		x = addr(x,this.width);
-		y = addr(y,this.height);
+	//	x = addr(x,this.width);  // valid input is assumed, this isn't necessary
+	//	y = addr(y,this.height); // valid input is assumed, this isn't necessary
 		var i = this.grid[x];
 		if(i === undefined)i = this.grid[x] = [];
 		var j = i[y];
@@ -21,8 +21,8 @@ App.SimulationLevel = function(width,height){
 	}
 
 	this.removeCell = function(x,y){
-		x = addr(x,this.width);
-		y = addr(y,this.height);
+	//	x = addr(x,this.width);  // valid input is assumed, this isn't necessary
+	//	y = addr(y,this.height); // valid input is assumed, this isn't necessary
 		var i = this.grid[x];
 		if(i === undefined)return;
 		i[y] = undefined;

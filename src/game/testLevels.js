@@ -1,32 +1,5 @@
 // DELETE THIS FILE ONCE PROPER LEVEL LOADING IS IMPLEMENTED
 
-/*
-	Instruction type id's
-
-	------------------------------------------------ automaton spawn
-	 0: spawn up			 1: spawn down
-	 2: spawn left			 3: spawn right
-	---------------------------------------------- direction control
-	 4: up				 5: down
-	 6: left			 7: right
-	 8: rotate cw			 9: rotate ccw
-	------------------------------------------------------- token IO
-	10: in stream			11: out stream
-	12: in				13: out
-	--------------------------------------------- token manipulation
-	14: grab			15: drop
-	16: grab/drop			17: inc
-	18: dec
-	-------------------------------------------- conditional control
-	19: switch 0			20: switch +-
-	21: switch even odd
-	----------------------------------------------------------- misc
-	22: sync			23: color toggle
-	24: pause
-
-	// TODO: ALL SWITCHES NEED UP DOWN LEFT RIGHT
-*/
-
 function test1(){
 	var testLevel = new App.PlanningLevel();
 	testLevel.width  = 7;
