@@ -33,7 +33,7 @@ App.GuiTextButton = function(x, y, text, callback, continuous, panel){
 	this.guiCollider = new App.GuiCollisionRect(x, y, App.GuiTextButton.width, App.GuiTextButton.height);
 	this.text = text;
 	this.callback = callback;
-	this.guiCollider.positionRelative(panel);
+	if(panel) panel.addChild(this);
 	this.guiCollider.functional = true;
 
 	this.activeColor = App.GuiColors.gray[4];
@@ -43,8 +43,6 @@ App.GuiTextButton = function(x, y, text, callback, continuous, panel){
 	this.continuous = continuous;
 	this.clicked = false;
 
-	var textX = this.guiCollider.x + (this.guiCollider.w / 2); // for centering text
-	var textY = this.guiCollider.y + (this.guiCollider.h / 2); // for centering text
 
 	//For continuous callbacks
 	this.update = function(){
@@ -57,6 +55,8 @@ App.GuiTextButton = function(x, y, text, callback, continuous, panel){
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.guiCollider.x, this.guiCollider.y, this.guiCollider.w, this.guiCollider.h);
 		gfx.fillStyle = App.GuiTextButton.fg;
+		var textX = this.guiCollider.x + (this.guiCollider.w / 2); // for centering text
+		var textY = this.guiCollider.y + (this.guiCollider.h / 2); // for centering text
 		gfx.fillText(this.text, textX, textY);
 	}
 
@@ -99,7 +99,7 @@ App.GuiDropDownMenu = function(guiCollider, text, callback, continuous, panel){
 //SHOULD abstract some stuff out but for now...
 App.GuiVectorButton = function(guiCollider, draw, callback, continuous, panel){
 	this.guiCollider = guiCollider;
-	this.guiCollider.positionRelative(panel);
+	if(panel) panel.addChild(this);
 }
 
 //A consistent grayscale to help keep colors coordinated
@@ -123,21 +123,64 @@ App.GuiColors.inactive = [
 ]
 
 App.GuiColors.active = [
-		'#ff1010',
-		'#10ff10',
-		'#1010ff',
-		'#ffff00'
+	'#ff1010',
+	'#10ff10',
+	'#1010ff',
+	'#ffff00'
 ]
 
 //A backgound panel. You can add things to these to organize your components for
 //relative positioning and rapid gui alterations.
 App.GuiPanel = function(guiCollider){
 	this.guiCollider = guiCollider;
+	this.children = [];
+	this.xAlignment = 'left';
+	this.yAlignment = 'top';
+
+	this.addChild = function(comp){
+		this.children.push(comp);
+		comp.guiCollider.positionRelative(this);
+	}
+
+	this.updatePosition = function(){
+		var x = this.guiCollider.x;
+		var y = this.guiCollider.y;
+		var ox = (this.guiCollider.w) ? this.guiCollider.w : 0;
+		var oy = (this.guiCollider.h) ? this.guiCollider.h : 0;
+		var r = (this.guiCollider.r) ? this.guiCollider.r : 0;
+		var w = App.Canvases.width;
+		var h = App.Canvases.height;
+
+		if(this.xAlignment === 'left'){
+			this.guiCollider.x = x + r;
+		}
+		else if(this.xAlignment === 'right'){
+			this.guiCollider.x = w - ox - r;
+		}
+		else if(this.xAlignment === 'center'){
+			this.guiCollider.x = (w/2) - ox - r;
+		}
+
+		if(this.yAlignment === 'top'){
+			this.guiCollider.y = y + r;
+		}
+		else if(this.yAlignment === 'bottom'){
+			this.guiCollider.y = h - oy - r;
+		}
+		else if(this.yAlignment === 'center'){
+			this.guiCollider.y = (h/2) - oy - r;
+		}
+
+		for (var c in this.children){
+			this.children[c].guiCollider.positionRelative(this);
+		}
+	}
 
 	this.render = function(gfx){
 		gfx.fillStyle = App.GuiPanel.rgba;
 		gfx.fillRect(this.guiCollider.x, this.guiCollider.y, this.guiCollider.w, this.guiCollider.h);
 	}
+
 }
 App.GuiPanel.rgba = 'rgba(180, 180, 180, 0.1)';
 

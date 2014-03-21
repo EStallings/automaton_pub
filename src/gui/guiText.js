@@ -3,7 +3,7 @@
 App.GuiTextBox = function(guiCollider, text, panel){
 	this.guiCollider = guiCollider;
 	this.text = text;
-	this.guiCollider.positionRelative(panel);
+	if(panel) panel.addChild(this);
 	this.color = App.GuiColors.gray[6];
 
 	var textX = this.guiCollider.x + 10;// (this.guiCollider.w / 2); // for centering text
@@ -27,7 +27,7 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 	this.text = defaultText;
 	this.lastText = defaultText;
 	this.defaultText = defaultText;
-	this.guiCollider.positionRelative(panel);
+	if(panel) panel.addChild(this);
 	this.activeColor = App.GuiColors.gray[4];
 	this.inactiveColor = App.GuiColors.gray[6];
 	this.color = this.inactiveColor;

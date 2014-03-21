@@ -36,9 +36,9 @@ App.makeGUI = function(){
 	}
 
 	gui.setCurrentFrame = function(framekey){
-		this.currentFrame = (this.frames[key]) ? this.frames[key] : this.currentFrame;
+		this.currentFrame = (this.frames[framekey]) ? this.frames[framekey] : this.currentFrame;
 		this.activeComponent = null;
-		this.drawStatic = true;
+		this.ensurePositions();
 	}
 
 	gui.addNewComponent = function(framekey, component){
@@ -55,6 +55,12 @@ App.makeGUI = function(){
 			this.currentFrame[c].update();
 	}
 
+	gui.ensurePositions = function(){
+		this.drawStatic = true;
+		for(var c in this.currentFrame) if(this.currentFrame[c].updatePosition)
+			this.currentFrame[c].updatePosition();
+	}
+
 	gui.render = function(){
 		this.dynamicGfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
 		if(this.drawStatic)
@@ -68,6 +74,7 @@ App.makeGUI = function(){
 					this.currentFrame[c].render(this.staticGfx);
 			}
 		}
+
 		this.drawStatic = false;
 	}
 

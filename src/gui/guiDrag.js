@@ -3,7 +3,7 @@
 */
 App.GuiJoystick = function(x, y, panel){
 	this.guiCollider = new App.GuiCollisionCircle(x, y, 35);
-	this.guiCollider.positionRelative(panel);
+	if(panel) panel.addChild(this);
 	this.guiCollider.functional = true;
 
 	this.currentX = this.guiCollider.x;
@@ -81,7 +81,7 @@ App.GuiJoystick = function(x, y, panel){
 //out the middleman and just hardcode that part
 App.GuiDragButton = function(x, y, draw, instruction, panel){
 	this.guiCollider = new App.GuiCollisionRect(x, y, 30, 30);
-	this.guiCollider.positionRelative(panel);
+	if(panel) panel.addChild(this);
 	this.guiCollider.functional = true;
 
 	this.currentX = this.guiCollider.x;
@@ -161,7 +161,7 @@ App.GuiDragButton.changeGlobalColor = function(color){
 */
 App.GuiSliderButton = function(guiCollider, panel){
 	this.guiCollider = guiCollider;
-	this.guiCollider.positionRelative(panel);
+	if(panel) panel.addChild(this);
 	this.guiCollider.functional = true;
 	this.activeColor = App.GuiColors.gray[4];
 	this.inactiveColor = App.GuiColors.gray[6];
@@ -223,7 +223,7 @@ App.GuiSliderButton = function(guiCollider, panel){
 //The slider line is the "rail" that the button "slides on"
 App.GuiSliderLine = function(guiCollider, min, max, direction, callback, panel){
 	this.guiCollider = guiCollider;
-	this.guiCollider.positionRelative(panel);
+	if(panel) panel.addChild(this);
 	this.guiCollider.functional = true; //to allow snap-to-click
 	this.color = App.GuiColors.gray[2];
 	this.direction = direction;
@@ -251,7 +251,7 @@ App.GuiSliderLine = function(guiCollider, min, max, direction, callback, panel){
 		vals.v *= step;
 
 		if(this.callback)
-			this.callback();
+			this.callback(vals.v);
 		this.value = vals.v;
 	}
 

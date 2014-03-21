@@ -34,7 +34,7 @@ App.createCanvasArray = function(){
 
 		// TODO: everything needs to be re-rendered
 		if(App.Game)App.Game.requestStaticRenderUpdate = true;
-		if(App.Gui)App.Gui.drawStatic = true;
+		if(App.Gui)App.Gui.ensurePositions();
 	}
 
 	window.onresize(); // initializes width and height on page-load
