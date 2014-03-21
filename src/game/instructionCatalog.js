@@ -65,7 +65,9 @@ App.makeInstructionCatalog = function(){
 
 		if(App.Game.cellSize>30)this.rFunc();
 		this.gfx.restore();
-	}return ins;
+	}
+
+	return ins;
 }
 
 //============================================================================//
