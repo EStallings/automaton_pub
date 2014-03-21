@@ -26,9 +26,46 @@ App.makeInstructionCatalog = function(){
 		"PAUSE"		: 24,
 	};
 
-	ins.render = function(type,x,y,c,size){}
+	ins.render = function(type,x,y,c,size){
+		this.gfx.save();
+		switch(this.color){
+			case App.COLORS.RED:
+				this.gfx.translate(this.x*size,this.y*size);
+				this.gfx.fillStyle="#660000";
+				this.gfx.fillRect(2,2,size/2-4,size/2-4);
+				this.gfx.strokeStyle="#ff0000";
+				break;
+			case App.COLORS.GREEN:
+				this.gfx.translate(this.x*size+size/2,this.y*size);
+				this.gfx.fillStyle="#006600";
+				this.gfx.fillRect(2,2,size/2-4,size/2-4);
+				this.gfx.strokeStyle="#00ff00";
+				break;
+			case App.COLORS.BLUE:
+				this.gfx.translate(this.x*size,this.y*size+size/2);
+				this.gfx.fillStyle="#000066";
+				this.gfx.fillRect(2,2,size/2-4,size/2-4);
+				this.gfx.strokeStyle="#0000ff";
+				break;
+			case App.COLORS.YELLOW:
+				this.gfx.translate(this.x*size+size/2,this.y*size+size/2);
+				this.gfx.fillStyle="#666600";
+				this.gfx.fillRect(2,2,size/2-4,size/2-4);
+				this.gfx.strokeStyle="#ffff00";
+				break;
+		}
 
-	return ins;
+		this.gfx.beginPath();
+		this.gfx.moveTo(2,2);
+		this.gfx.lineTo(2,size/2-2);
+		this.gfx.lineTo(size/2-2,size/2-2);
+		this.gfx.lineTo(size/2-2,2);
+		this.gfx.lineTo(2,2);
+		this.gfx.stroke();
+
+		if(App.Game.cellSize>30)this.rFunc();
+		this.gfx.restore();
+	}return ins;
 }
 
 //============================================================================//
@@ -37,48 +74,6 @@ App.makeInstructionCatalog = function(){
 
 /*
 App.SimulationInstruction = function(level,x,y,color,type){
-	this.rFunc;
-	this.staticRender = function(){
-		var cs = App.Game.cellSize;
-		this.gfx.save();
-		switch(this.color){
-			case App.COLORS.RED:
-				this.gfx.translate(this.x*cs,this.y*cs);
-				this.gfx.fillStyle="#660000";
-				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
-				this.gfx.strokeStyle="#ff0000";
-				break;
-			case App.COLORS.GREEN:
-				this.gfx.translate(this.x*cs+cs/2,this.y*cs);
-				this.gfx.fillStyle="#006600";
-				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
-				this.gfx.strokeStyle="#00ff00";
-				break;
-			case App.COLORS.BLUE:
-				this.gfx.translate(this.x*cs,this.y*cs+cs/2);
-				this.gfx.fillStyle="#000066";
-				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
-				this.gfx.strokeStyle="#0000ff";
-				break;
-			case App.COLORS.YELLOW:
-				this.gfx.translate(this.x*cs+cs/2,this.y*cs+cs/2);
-				this.gfx.fillStyle="#666600";
-				this.gfx.fillRect(2,2,cs/2-4,cs/2-4);
-				this.gfx.strokeStyle="#ffff00";
-				break;
-		}
-
-		this.gfx.beginPath();
-		this.gfx.moveTo(2,2);
-		this.gfx.lineTo(2,cs/2-2);
-		this.gfx.lineTo(cs/2-2,cs/2-2);
-		this.gfx.lineTo(cs/2-2,2);
-		this.gfx.lineTo(2,2);
-		this.gfx.stroke();
-
-		if(App.Game.cellSize>30)this.rFunc();
-		this.gfx.restore();
-	}
 
 	// ========================================================== //
 	// ================= I N S T R U C T I O N S ================ //
