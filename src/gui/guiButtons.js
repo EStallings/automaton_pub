@@ -53,10 +53,10 @@ App.GuiTextButton = function(x, y, text, callback, continuous, panel){
 	//Draws a box and the text! Nothing fancy. Could use some work maybe.
 	this.render = function(gfx){
 		gfx.fillStyle = this.color;
-		gfx.fillRect(this.guiCollider.x, this.guiCollider.y, this.guiCollider.w, this.guiCollider.h);
+		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 		gfx.fillStyle = App.GuiTextButton.fg;
-		var textX = this.guiCollider.x + (this.guiCollider.w / 2); // for centering text
-		var textY = this.guiCollider.y + (this.guiCollider.h / 2); // for centering text
+		var textX = this.guiCollider.getx() + (this.guiCollider.w / 2); // for centering text
+		var textY = this.guiCollider.gety() + (this.guiCollider.h / 2); // for centering text
 		gfx.fillText(this.text, textX, textY);
 	}
 
@@ -143,8 +143,8 @@ App.GuiPanel = function(guiCollider){
 	}
 
 	this.updatePosition = function(){
-		var x = this.guiCollider.x;
-		var y = this.guiCollider.y;
+		var x = this.guiCollider.getx();
+		var y = this.guiCollider.gety();
 		var ox = (this.guiCollider.w) ? this.guiCollider.w : 0;
 		var oy = (this.guiCollider.h) ? this.guiCollider.h : 0;
 		var r = (this.guiCollider.r) ? this.guiCollider.r : 0;
@@ -178,7 +178,7 @@ App.GuiPanel = function(guiCollider){
 
 	this.render = function(gfx){
 		gfx.fillStyle = App.GuiPanel.rgba;
-		gfx.fillRect(this.guiCollider.x, this.guiCollider.y, this.guiCollider.w, this.guiCollider.h);
+		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 	}
 
 }
@@ -193,14 +193,24 @@ var positionRelative = function(component){
 		return;
 	var r = component.guiCollider;
 
-	this.x += r.x;
-	this.y += r.y;
+	this.x = r.x + this.baseX;
+	this.y = r.y + this.baseY;
 }
 
 App.GuiCollisionCircle = function(x, y, r){
 	this.x = x;
 	this.y = y;
+	this.baseX = x;
+	this.baseY = y;
 	this.r = r;
+
+	this.getx = function(){
+		return this.x;
+	}
+
+	this.gety = function(){
+		return this.y;
+	}
 	this.functional = false;
 
 	this.collides = function(x, y){
@@ -214,9 +224,28 @@ App.GuiCollisionCircle = function(x, y, r){
 App.GuiCollisionRect = function(x, y, w, h){
 	this.x = x;
 	this.y = y;
+	this.baseX = x;
+	this.baseY = y;
 	this.w = w;
 	this.h = h;
 	this.functional = false;
+
+	this.getx = function(){
+		return this.x;
+	}
+
+	this.gety = function(){
+		return this.y;
+	}
+
+	this.geth = function(){
+		return this.h;
+	}
+
+	this.getw = function(){
+		return this.w;
+	}
+
 
 	//Tests if a point is inside of the rectangle
 	this.collides = function(x, y){

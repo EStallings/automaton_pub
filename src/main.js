@@ -16,6 +16,7 @@ window.onload = function(){
 	// TODO: what if each gui menu gets its own canvas and is "always rendering"?
 	//App.makeDemoGui();
 	App.makePlanningGui();
+	App.Gui.setCurrentFrame('planning');
 	setupTestLevel();
 	ins = [];
 	ins[0] = new App.PlanningInstruction(3,3,3,4);
@@ -75,6 +76,7 @@ App.makeDemoGui = function(){
 App.makePlanningGui = function(){
 	App.Gui.addNewFrame('planning');
 	var instructionPanel = new App.GuiPanel(new App.GuiCollisionRect(800,0,100,600));
+	instructionPanel.xAlignment = 'right';
 	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,100,100,500));
 
 	var redButton = new App.GuiTextButton(0,300,'Red',function(){App.GuiDragButton.changeGlobalColor(0)}, false, instructionPanel);

@@ -6,13 +6,13 @@ App.GuiTextBox = function(guiCollider, text, panel){
 	if(panel) panel.addChild(this);
 	this.color = App.GuiColors.gray[6];
 
-	var textX = this.guiCollider.x + 10;// (this.guiCollider.w / 2); // for centering text
-	var textY = this.guiCollider.y + (this.guiCollider.h / 2); // for centering text
+	var textX = this.guiCollider.getx() + 10;// (this.guiCollider.w / 2); // for centering text
+	var textY = this.guiCollider.gety() + (this.guiCollider.h / 2); // for centering text
 
 	//Draw our text
 	this.render = function(gfx){
 		gfx.fillStyle = this.color;
-		gfx.fillRect(this.guiCollider.x, this.guiCollider.y, this.guiCollider.w, this.guiCollider.h);
+		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 		gfx.fillStyle = App.GuiColors.gray[0];
 		gfx.fillText(this.text, textX, textY);
 	}
@@ -38,17 +38,17 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 	this.cursorTime = 0;
 	this.cursorTimeout = 15;
 
-	var textX = this.guiCollider.x + 10;// (this.guiCollider.w / 2); // for centering text
-	var textY = this.guiCollider.y + 5 + (this.guiCollider.h / 2); // for centering text
+	var textX = this.guiCollider.getx() + 10;// (this.guiCollider.w / 2); // for centering text
+	var textY = this.guiCollider.gety() + 5 + (this.guiCollider.h / 2); // for centering text
 
 	//Draw the text box, including cursor
 	this.render = function(gfx){
 		gfx.fillStyle = this.color;
-		gfx.fillRect(this.guiCollider.x, this.guiCollider.y, this.guiCollider.w, this.guiCollider.h);
+		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 		gfx.fillStyle = App.GuiColors.gray[0];
 		//if set font, set font here.
 		var metrics = gfx.measureText(this.text.substring(0, this.cursorPosition));
-		if(metrics.width + textX > this.guiCollider.x + this.guiCollider.w)
+		if(metrics.width + textX > this.guiCollider.getx() + this.guiCollider.w)
 			this.text = this.text.substring(0, this.text.length - 1);
 		gfx.fillText(this.text, textX, textY);
 
