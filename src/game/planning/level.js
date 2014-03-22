@@ -468,6 +468,7 @@ App.PlanningLevel = function(){
 		// TODO: FIX THIS
 		var cs = App.Game.cellSize;
 		App.Game.translateCanvas(App.Game.instructionGfx);
+		App.Game.instructionGfx.lineWidth = 2;
 		for(var c=0;c<4;++c){
 			App.Game.instructionGfx.save();
 			switch(c){
@@ -492,7 +493,10 @@ App.PlanningLevel = function(){
 			for(var i in that.grid)
 				for(var j in that.grid[i])
 					if(that.grid[i][j][c])
-						App.Game.instructionGfx.fillRect(i*cs,j*cs,cs/2,cs/2);
+						App.InstCatalog.render(
+							App.Game.instructionGfx,
+							that.grid[i][j][c].type,
+							i*cs,j*cs,c,cs/2);
 			App.Game.instructionGfx.restore();
 		}App.Game.instructionGfx.restore();
 	}
