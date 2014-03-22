@@ -63,7 +63,7 @@ App.makeInstructionCatalog = function(){
 		gfx.lineTo(2,2);
 		gfx.stroke();
 
-		if(App.Game.cellSize>30)ins.rFunc[type](gfx);
+		if(size>15)ins.rFunc[type](gfx);
 		gfx.restore();
 	}
 
