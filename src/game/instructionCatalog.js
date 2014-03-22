@@ -83,7 +83,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 	switch(type){
 
-		case 0: // spawn up ============================
+		case App.InstCatalog.TYPES["SPAWN UP"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -95,7 +95,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 1: // spawn down ==========================
+		case App.InstCatalog.TYPES["SPAWN DOWN"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -107,7 +107,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 2: // spawn left ==========================
+		case App.InstCatalog.TYPES["SPAWN LEFT"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -119,7 +119,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 3: // spawn right =========================
+		case App.InstCatalog.TYPES["SPAWN RIGHT"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -131,7 +131,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 4: // up ==================================
+		case App.InstCatalog.TYPES["UP"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -143,7 +143,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 5: // down ================================
+		case App.InstCatalog.TYPES["DOWN"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -155,7 +155,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 6: // left ================================
+		case App.InstCatalog.TYPES["LEFT"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -167,7 +167,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 7: // right ===============================
+		case App.InstCatalog.TYPES["RIGHT"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -179,7 +179,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 8: // rotate cw ===========================
+		case App.InstCatalog.TYPES["ROTATE CW"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -190,7 +190,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 9: // rotate ccw ==========================
+		case App.InstCatalog.TYPES["ROTATE CCW"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -201,7 +201,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 10: // in stream ==========================
+		case App.InstCatalog.TYPES["IN STREAM"]:
 
 			// TODO: override render func
 			this.rFunc = function(){
@@ -217,7 +217,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 11: // out stream =========================
+		case App.InstCatalog.TYPES["OUT STREAM"]:
 
 			// TODO: override render func
 			this.rFunc = function(){
@@ -233,7 +233,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 12: // in =================================
+		case App.InstCatalog.TYPES["IN"]:
 
 			this.rFunc = function(){
 				// TODO: this should NOT be an "I" (streams get letters as symbols)
@@ -248,7 +248,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 13: // out ================================
+		case App.InstCatalog.TYPES["OUT"]:
 
 			this.rFunc = function(){
 				// TODO: this should NOT be an "O" (streams get letters as symbols)
@@ -258,7 +258,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 14: // grab ===============================
+		case App.InstCatalog.TYPES["GRAB"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -273,7 +273,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 15: // drop ===============================
+		case App.InstCatalog.TYPES["DROP"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -288,7 +288,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 16: // grab/drop ==========================
+		case App.InstCatalog.TYPES["GRAB/DROP"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -306,7 +306,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 17: // inc ================================
+		case App.InstCatalog.TYPES["INC"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -318,7 +318,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 18: // dec ================================
+		case App.InstCatalog.TYPES["DEC"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -328,7 +328,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 19: // switch 0 ===========================
+		case App.InstCatalog.TYPES["COND 0"]:
 
 			// TODO: UP DOWN LEFT RIGHT
 			this.rFunc = function(){
@@ -378,7 +378,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.closePath();
 			};break;
 
-		case 20: // switch +- ==========================
+		case App.InstCatalog.TYPES["COND +-"]:
 
 			// TODO: UP DOWN LEFT RIGHT
 			this.rFunc = function(){
@@ -387,7 +387,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 21: // switch even odd ====================
+		case App.InstCatalog.TYPES["COND EVEN ODD"]:
 
 			// TODO: UP DOWN LEFT RIGHT
 			this.rFunc = function(){
@@ -423,7 +423,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 22: // sync ===============================
+		case App.InstCatalog.TYPES["SYNC"]:
 
 			// TODO: override this.render | custom syms for each color
 			// TODO: 22 is hardcoded in cell.sync... fix that
@@ -506,7 +506,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.restore();
 			};break;
 
-		case 23: // color toggle =======================
+		case App.InstCatalog.TYPES["COLOR TOGGLE"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
@@ -518,7 +518,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				this.gfx.stroke();
 			};break;
 
-		case 24: // pause ==============================
+		case App.InstCatalog.TYPES["PAUSE"]:
 
 			this.rFunc = function(){
 				var cs = App.Game.cellSize;
