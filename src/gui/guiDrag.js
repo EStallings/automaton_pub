@@ -95,11 +95,16 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 	//Draws a simple box for now - once we have some vector draw functions,
 	//we'll be able to draw them on it!
 	this.render = function(gfx){
-		gfx.fillStyle = (this.dragged)? this.activeColor : this.inactiveColor;
-		gfx.fillRect(this.currentX, this.currentY, this.guiCollider.w, this.guiCollider.h);
+		// gfx.fillStyle = (this.dragged)? this.activeColor : this.inactiveColor;
+		// gfx.fillRect(this.currentX, this.currentY, this.guiCollider.w, this.guiCollider.h);
 
-		if(this.draw)
-			this.draw(gfx);
+		App.InstCatalog.render(
+			gfx,
+			this.instruction,
+			this.currentX, this.currentY,
+			App.GuiDragButton.globalColor,
+			this.guiCollider.w);
+
 	}
 
 	//Initiating the dragging

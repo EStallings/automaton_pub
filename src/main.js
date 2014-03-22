@@ -79,10 +79,10 @@ App.makePlanningGui = function(){
 	instructionPanel.xAlignment = 'right';
 	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,100,100,500));
 
-	var redButton = new App.GuiTextButton(0,300,'Red',function(){App.GuiDragButton.changeGlobalColor(0)}, false, instructionPanel);
-	var greenButton = new App.GuiTextButton(0,330,'Green',function(){App.GuiDragButton.changeGlobalColor(1)}, false, instructionPanel);
-	var blueButton = new App.GuiTextButton(0,360,'Blue',function(){App.GuiDragButton.changeGlobalColor(2)}, false, instructionPanel);
-	var yellowButton = new App.GuiTextButton(0,390,'Yellow', function(){App.GuiDragButton.changeGlobalColor(3)}, false, instructionPanel);
+	var redButton 		= new App.GuiTextButton(0,300,'Red',		function(){	App.GuiDragButton.changeGlobalColor(0)	}, false, instructionPanel);
+	var greenButton 	= new App.GuiTextButton(0,330,'Green',	function(){	App.GuiDragButton.changeGlobalColor(1)	}, false, instructionPanel);
+	var blueButton 		= new App.GuiTextButton(0,360,'Blue',		function(){	App.GuiDragButton.changeGlobalColor(2)	}, false, instructionPanel);
+	var yellowButton	= new App.GuiTextButton(0,390,'Yellow',	function(){	App.GuiDragButton.changeGlobalColor(3)	}, false, instructionPanel);
 
 	App.Gui.addNewComponent('planning', instructionPanel);
 	App.Gui.addNewComponent('planning', controlsPanel);
@@ -92,8 +92,8 @@ App.makePlanningGui = function(){
 	App.Gui.addNewComponent('planning', yellowButton);
 
 	for(var i=0; i < 8; i++){
-		App.Gui.addNewComponent('planning', new App.GuiDragButton(0, 31 * i, null, i, instructionPanel));
-		App.Gui.addNewComponent('planning', new App.GuiDragButton(31, 31 * i, null, i + 8, instructionPanel));
+		App.Gui.addNewComponent('planning', new App.GuiDragButton(0 , 31 * i, null, i, 			instructionPanel));
+		App.Gui.addNewComponent('planning', new App.GuiDragButton(31, 31 * i, null, i + 8, 	instructionPanel));
 		App.Gui.addNewComponent('planning', new App.GuiDragButton(62, 31 * i, null, i + 16, instructionPanel));
 
 	}
