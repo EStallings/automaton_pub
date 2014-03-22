@@ -42,7 +42,7 @@ App.SimulationCell = function(level,x,y){
 		var color = [false,false,false,false];
 		for(var c in App.COLORS){
 			var i = this.instructions[App.COLORS[c]];
-			if(i !== undefined && i.type === 22)
+			if(i !== undefined && i.type === App.InstCatalog.TYPES["SYNC"])
 				color[App.COLORS[c]] = true;
 		}
 

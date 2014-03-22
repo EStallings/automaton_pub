@@ -7,6 +7,7 @@ window.onload = function(){
 	App.Canvases     = App.createCanvasArray();
 	App.InputHandler = App.makeInputHandler();
 	App.Gui          = App.makeGUI();
+	App.InstCatalog  = App.makeInstructionCatalog();
 	App.Game         = App.makeGame();
 	App.Engine       = App.makeEngine();
 	App.Engine.run();
