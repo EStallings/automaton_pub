@@ -65,8 +65,11 @@ App.makeGUI = function(){
 
 	gui.render = function(){
 		this.dynamicGfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
-		if(this.drawStatic)
+
+		if(this.drawStatic){
 			this.staticGfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
+			// console.log('drawing static shit');
+		}
 
 		for(var c in this.currentFrame){
 			if(this.currentFrame[c].render){

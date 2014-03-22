@@ -80,7 +80,7 @@ App.GuiJoystick = function(x, y, panel){
 //note that the instruction dragging is the only drag and drop, so let's cut
 //out the middleman and just hardcode that part
 App.GuiDragButton = function(x, y, draw, instruction, panel){
-	this.guiCollider = new App.GuiCollisionRect(x, y, 30, 30);
+	this.guiCollider = new App.GuiCollisionRect(x, y, 24, 24);
 	if(panel) panel.addChild(this);
 	this.guiCollider.functional = true;
 
@@ -98,6 +98,7 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 		// gfx.fillStyle = (this.dragged)? this.activeColor : this.inactiveColor;
 		// gfx.fillRect(this.currentX, this.currentY, this.guiCollider.w, this.guiCollider.h);
 
+		gfx.lineWidth = 2;
 		App.InstCatalog.render(
 			gfx,
 			this.instruction,

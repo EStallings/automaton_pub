@@ -17,6 +17,8 @@ window.onload = function(){
 	//App.makeDemoGui();
 	App.makePlanningGui();
 	App.Gui.setCurrentFrame('planning');
+
+
 	setupTestLevel();
 	ins = [];
 	ins[0] = new App.PlanningInstruction(3,3,3,4);
@@ -90,6 +92,7 @@ App.makePlanningGui = function(){
 	App.Gui.addNewComponent('planning', greenButton);
 	App.Gui.addNewComponent('planning', blueButton);
 	App.Gui.addNewComponent('planning', yellowButton);
+
 
 	for(var i=0; i < 8; i++){
 		App.Gui.addNewComponent('planning', new App.GuiDragButton(0 , 31 * i, null, i, 			instructionPanel));
