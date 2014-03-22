@@ -63,7 +63,7 @@ App.makeInstructionCatalog = function(){
 		gfx.lineTo(2,2);
 		gfx.stroke();
 
-		if(size>15)ins.rFunc[type](gfx);
+		if(size>15)ins.rFunc[type](gfx,size);
 		gfx.restore();
 	}
 
@@ -73,237 +73,217 @@ App.makeInstructionCatalog = function(){
 
 	ins.rFunc = {
 	//	ins.TYPES["SPAWN UP"]:function(){
-		0:function(gfx){
-			var cs = App.Game.cellSize;
+		0:function(gfx,cs){
 			gfx.beginPath();
-			gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-			gfx.moveTo(3*cs/16,2*cs/16);
-			gfx.lineTo(4*cs/16,cs/16);
-			gfx.lineTo(5*cs/16,2*cs/16);
+			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
+			gfx.moveTo(3*cs/8,2*cs/8);
+			gfx.lineTo(4*cs/8,cs/8);
+			gfx.lineTo(5*cs/8,2*cs/8);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["SPAWN DOWN"]:function(){
-		1:function(gfx){
-			var cs = App.Game.cellSize;
+		1:function(gfx,cs){
 			gfx.beginPath();
-			gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-			gfx.moveTo(3*cs/16,6*cs/16);
-			gfx.lineTo(4*cs/16,7*cs/16);
-			gfx.lineTo(5*cs/16,6*cs/16);
+			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
+			gfx.moveTo(3*cs/8,6*cs/8);
+			gfx.lineTo(4*cs/8,7*cs/8);
+			gfx.lineTo(5*cs/8,6*cs/8);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["SPAWN LEFT"]:function(){
-		2:function(gfx){
-			var cs = App.Game.cellSize;
+		2:function(gfx,cs){
 			gfx.beginPath();
-			gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-			gfx.moveTo(2*cs/16,3*cs/16);
-			gfx.lineTo(cs/16,4*cs/16);
-			gfx.lineTo(2*cs/16,5*cs/16);
+			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
+			gfx.moveTo(2*cs/8,3*cs/8);
+			gfx.lineTo(cs/8,4*cs/8);
+			gfx.lineTo(2*cs/8,5*cs/8);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["SPAWN RIGHT"]:function(){
-		3:function(gfx){
-			var cs = App.Game.cellSize;
+		3:function(gfx,cs){
 			gfx.beginPath();
-			gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-			gfx.moveTo(6*cs/16,3*cs/16);
-			gfx.lineTo(7*cs/16,4*cs/16);
-			gfx.lineTo(6*cs/16,5*cs/16);
+			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
+			gfx.moveTo(6*cs/8,3*cs/8);
+			gfx.lineTo(7*cs/8,4*cs/8);
+			gfx.lineTo(6*cs/8,5*cs/8);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["UP"]:function(){
-		4:function(gfx){
-			var cs = App.Game.cellSize;
+		4:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(cs/4,cs/8);
-			gfx.lineTo(cs/8,3*cs/8);
-			gfx.lineTo(3*cs/8,3*cs/8);
-			gfx.lineTo(cs/4,cs/8);
+			gfx.moveTo(cs/2,cs/4);
+			gfx.lineTo(cs/4,3*cs/4);
+			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.lineTo(cs/2,cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["DOWN"]:function(){
-		5:function(gfx){
-			var cs = App.Game.cellSize;
+		5:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(cs/4,3*cs/8);
-			gfx.lineTo(cs/8,cs/8);
-			gfx.lineTo(3*cs/8,cs/8);
-			gfx.lineTo(cs/4,3*cs/8);
+			gfx.moveTo(cs/2,3*cs/4);
+			gfx.lineTo(cs/4,cs/4);
+			gfx.lineTo(3*cs/4,cs/4);
+			gfx.lineTo(cs/2,3*cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["LEFT"]:function(){
-		6:function(gfx){
-			var cs = App.Game.cellSize;
+		6:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(cs/8,cs/4);
-			gfx.lineTo(3*cs/8,cs/8);
-			gfx.lineTo(3*cs/8,3*cs/8);
-			gfx.lineTo(cs/8,cs/4);
+			gfx.moveTo(cs/4,cs/2);
+			gfx.lineTo(3*cs/4,cs/4);
+			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.lineTo(cs/4,cs/2);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["RIGHT"]:function(){
-		7:function(gfx){
-			var cs = App.Game.cellSize;
+		7:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(3*cs/8,cs/4);
-			gfx.lineTo(cs/8,cs/8);
-			gfx.lineTo(cs/8,3*cs/8);
-			gfx.lineTo(3*cs/8,cs/4);
+			gfx.moveTo(3*cs/4,cs/2);
+			gfx.lineTo(cs/4,cs/4);
+			gfx.lineTo(cs/4,3*cs/4);
+			gfx.lineTo(3*cs/4,cs/2);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["ROTATE CW"]:function(){
-		8:function(gfx){
-			var cs = App.Game.cellSize;
+		8:function(gfx,cs){
 			gfx.beginPath();
-			gfx.arc(cs/4,cs/4,cs/8,Math.PI/2,2*Math.PI);
-			gfx.moveTo(3*cs/8,cs/4);
-			gfx.lineTo(3*cs/8,cs/8);
+			gfx.arc(cs/2,cs/2,cs/4,Math.PI/2,2*Math.PI);
+			gfx.moveTo(3*cs/4,cs/2);
+			gfx.lineTo(3*cs/4,cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["ROTATE CCW"]:function(){
-		9:function(gfx){
-			var cs = App.Game.cellSize;
+		9:function(gfx,cs){
 			gfx.beginPath();
-			gfx.arc(cs/4,cs/4,cs/8,Math.PI,Math.PI/2);
-			gfx.moveTo(cs/8,cs/4);
-			gfx.lineTo(cs/8,cs/8);
+			gfx.arc(cs/2,cs/2,cs/4,Math.PI,Math.PI/2);
+			gfx.moveTo(cs/4,cs/2);
+			gfx.lineTo(cs/4,cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["IN STREAM"]:
-		10:function(gfx){
+		10:function(gfx,cs){
 			// TODO: override render func
 			// TODO: make letters for each stream
-			var cs = App.Game.cellSize;
 			gfx.beginPath();
-			gfx.moveTo(3*cs/8,1*cs/8);
-			gfx.lineTo(1*cs/8,1*cs/8);
-			gfx.lineTo(1*cs/8,2*cs/8);
-			gfx.lineTo(3*cs/8,2*cs/8);
-			gfx.lineTo(3*cs/8,3*cs/8);
-			gfx.lineTo(1*cs/8,3*cs/8);
+			gfx.moveTo(3*cs/4,1*cs/4);
+			gfx.lineTo(1*cs/4,1*cs/4);
+			gfx.lineTo(1*cs/4,2*cs/4);
+			gfx.lineTo(3*cs/4,2*cs/4);
+			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.lineTo(1*cs/4,3*cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["OUT STREAM"]:
-		11:function(gfx){
+		11:function(gfx,cs){
 			// TODO: override render func
 			// TODO: make letters for each stream
-			var cs = App.Game.cellSize;
 			gfx.beginPath();
-			gfx.moveTo(3*cs/8,1*cs/8);
-			gfx.lineTo(1*cs/8,1*cs/8);
-			gfx.lineTo(1*cs/8,2*cs/8);
-			gfx.lineTo(3*cs/8,2*cs/8);
-			gfx.lineTo(3*cs/8,3*cs/8);
-			gfx.lineTo(1*cs/8,3*cs/8);
+			gfx.moveTo(3*cs/4,1*cs/4);
+			gfx.lineTo(1*cs/4,1*cs/4);
+			gfx.lineTo(1*cs/4,2*cs/4);
+			gfx.lineTo(3*cs/4,2*cs/4);
+			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.lineTo(1*cs/4,3*cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["IN"]:function(){
-		12:function(gfx){
+		12:function(gfx,cs){
 			// TODO: this should NOT be an "I" (streams get letters as symbols)
-			var cs = App.Game.cellSize;
 			gfx.beginPath();
-			gfx.moveTo(cs/4,cs/8);
-			gfx.lineTo(cs/4,3*cs/8);
-			gfx.moveTo(cs/8,cs/8);
-			gfx.lineTo(3*cs/8,cs/8);
-			gfx.moveTo(cs/8,3*cs/8);
-			gfx.lineTo(3*cs/8,3*cs/8);
+			gfx.moveTo(cs/2,cs/4);
+			gfx.lineTo(cs/2,3*cs/4);
+			gfx.moveTo(cs/4,cs/4);
+			gfx.lineTo(3*cs/4,cs/4);
+			gfx.moveTo(cs/4,3*cs/4);
+			gfx.lineTo(3*cs/4,3*cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["OUT"]:function(){
-		13:function(gfx){
+		13:function(gfx,cs){
 			// TODO: this should NOT be an "O" (streams get letters as symbols)
-			var cs = App.Game.cellSize;
 			gfx.beginPath();
-			gfx.arc(cs/4,cs/4,cs/8,-Math.PI,Math.PI);
+			gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["GRAB"]:function(){
-		14:function(gfx){
-			var cs = App.Game.cellSize;
+		14:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(cs/8,3*cs/8);
-			gfx.lineTo(3*cs/8,3*cs/8);
-			gfx.moveTo(cs/4,cs/8);
-			gfx.lineTo(cs/4,3*cs/8);
-			gfx.moveTo(3*cs/16,3*cs/16);
-			gfx.lineTo(cs/4,cs/8);
-			gfx.lineTo(5*cs/16,3*cs/16);
+			gfx.moveTo(cs/4,3*cs/4);
+			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.moveTo(cs/2,cs/4);
+			gfx.lineTo(cs/2,3*cs/4);
+			gfx.moveTo(3*cs/8,3*cs/8);
+			gfx.lineTo(cs/2,cs/4);
+			gfx.lineTo(5*cs/8,3*cs/8);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["DROP"]:function(){
-		15:function(gfx){
-			var cs = App.Game.cellSize;
+		15:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(cs/8,3*cs/8);
-			gfx.lineTo(3*cs/8,3*cs/8);
-			gfx.moveTo(cs/4,cs/8);
-			gfx.lineTo(cs/4,3*cs/8);
-			gfx.moveTo(3*cs/16,5*cs/16);
-			gfx.lineTo(cs/4,3*cs/8);
-			gfx.lineTo(5*cs/16,5*cs/16);
+			gfx.moveTo(cs/4,3*cs/4);
+			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.moveTo(cs/2,cs/4);
+			gfx.lineTo(cs/2,3*cs/4);
+			gfx.moveTo(3*cs/8,5*cs/8);
+			gfx.lineTo(cs/2,3*cs/4);
+			gfx.lineTo(5*cs/8,5*cs/8);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["GRAB/DROP"]:function(){
-		16:function(gfx){
-			var cs = App.Game.cellSize;
+		16:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(cs/8,3*cs/8);
-			gfx.lineTo(3*cs/8,3*cs/8);
-			gfx.moveTo(cs/4,cs/8);
-			gfx.lineTo(cs/4,3*cs/8);
-			gfx.moveTo(3*cs/16,3*cs/16);
-			gfx.lineTo(cs/4,cs/8);
-			gfx.lineTo(5*cs/16,3*cs/16);
-			gfx.moveTo(3*cs/16,5*cs/16);
-			gfx.lineTo(cs/4,3*cs/8);
-			gfx.lineTo(5*cs/16,5*cs/16);
+			gfx.moveTo(cs/4,3*cs/4);
+			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.moveTo(cs/2,cs/4);
+			gfx.lineTo(cs/2,3*cs/4);
+			gfx.moveTo(3*cs/8,3*cs/8);
+			gfx.lineTo(cs/2,cs/4);
+			gfx.lineTo(5*cs/8,3*cs/8);
+			gfx.moveTo(3*cs/8,5*cs/8);
+			gfx.lineTo(cs/2,3*cs/4);
+			gfx.lineTo(5*cs/8,5*cs/8);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["INC"]:function(){
-		17:function(gfx){
-			var cs = App.Game.cellSize;
+		17:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(cs/8,cs/4);
-			gfx.lineTo(3*cs/8,cs/4);
-			gfx.moveTo(cs/4,cs/8);
-			gfx.lineTo(cs/4,3*cs/8);
+			gfx.moveTo(cs/4,cs/2);
+			gfx.lineTo(3*cs/4,cs/2);
+			gfx.moveTo(cs/2,cs/4);
+			gfx.lineTo(cs/2,3*cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["DEC"]:function(){
-		18:function(gfx){
-			var cs = App.Game.cellSize;
+		18:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(cs/8,cs/4);
-			gfx.lineTo(3*cs/8,cs/4);
+			gfx.moveTo(cs/4,cs/2);
+			gfx.lineTo(3*cs/4,cs/2);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["COND 0"]:
-		19:function(gfx){
+		19:function(gfx,cs){
 			// TODO: UP DOWN LEFT RIGHT
-			var cs = App.Game.cellSize;
 			gfx.beginPath();
-
+/*
 			gfx.fillStyle="#0F0F0F";
 			gfx.strokeStyle="#FF0000";
 
@@ -342,54 +322,51 @@ App.makeInstructionCatalog = function(){
 
 			gfx.moveTo(12*cs/64,36*cs/64);
 			gfx.lineTo(12*cs/64,16*cs/64);
-
+*/
 			gfx.stroke();
 			gfx.closePath();
 		},
 
 	//	ins.TYPES["COND +-"]:
-		20:function(gfx){
+		20:function(gfx,cs){
 			// TODO: UP DOWN LEFT RIGHT
-			var cs = App.Game.cellSize;
 			gfx.beginPath();
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["COND EVEN ODD"]:
-		21:function(gfx){
+		21:function(gfx,cs){
 			// TODO: UP DOWN LEFT RIGHT
-			var cs = App.Game.cellSize;
-
+/*
 			gfx.fillStyle="#0F0F0F";
-			gfx.fillRect(0,0,cs/4,cs/4);
+			gfx.fillRect(0,0,cs/2,cs/2);
 
 			gfx.strokeStyle="#AAAAAA";
-			gfx.strokeRect(0,0,cs/4,cs/4);
+			gfx.strokeRect(0,0,cs/2,cs/2);
 
 			gfx.fillStyle="#F0F0F0";
-			gfx.fillRect(cs/4,0,cs/4,cs/4);
+			gfx.fillRect(cs/2,0,cs/2,cs/2);
 
-			gfx.strokeRect(cs/4,0,cs/4,cs/4);
+			gfx.strokeRect(cs/2,0,cs/2,cs/2);
 
 			gfx.fillStyle="#F0F0F0";
-			gfx.fillRect(0,cs/4,cs/4,cs/4);
+			gfx.fillRect(0,cs/2,cs/2,cs/2);
 
-			gfx.strokeRect(0,cs/4,cs/4,cs/4);
+			gfx.strokeRect(0,cs/2,cs/2,cs/2);
 
 			gfx.fillStyle="#0F0F0F";
-			gfx.fillRect(cs/4,cs/4,cs/4,cs/4);
+			gfx.fillRect(cs/2,cs/2,cs/2,cs/2);
 
-			gfx.strokeRect(cs/4,cs/4,cs/4,cs/4);
-
+			gfx.strokeRect(cs/2,cs/2,cs/2,cs/2);
 			gfx.stroke();
+*/
 		},
 
 	//	ins.TYPES["SYNC"]:
-		22:function(gfx){
+		22:function(gfx,cs){
 			// TODO: override render | custom syms for each color
 /*
 			staticRender = function(){
-				var cs = App.Game.cellSize;
 				gfx.save();
 				gfx.beginPath();
 				switch(color){
@@ -397,68 +374,68 @@ App.makeInstructionCatalog = function(){
 						gfx.translate(x*cs,y*cs);
 						gfx.fillStyle="#660000";
 						gfx.strokeStyle="#ff0000";
-						gfx.moveTo(2,cs/2-2);
+						gfx.moveTo(2,cs-2);
 						gfx.lineTo(2,2);
-						gfx.lineTo(cs/2-2,2);
+						gfx.lineTo(cs-2,2);
 						if(App.Game.cellSize>30){
-							gfx.lineTo(cs/2-2,cs/4);
-							gfx.lineTo(cs/4,cs/4);
-							gfx.lineTo(cs/4,cs/2-2);
-							gfx.lineTo(2,cs/2-2);
+							gfx.lineTo(cs-2,cs/2);
+							gfx.lineTo(cs/2,cs/2);
+							gfx.lineTo(cs/2,cs-2);
+							gfx.lineTo(2,cs-2);
 						}else{
-							gfx.lineTo(cs/2-2,cs/2-2);
-							gfx.lineTo(2,cs/2-2);
+							gfx.lineTo(cs-2,cs-2);
+							gfx.lineTo(2,cs-2);
 						}
 						break;
 					case App.COLORS.GREEN:
-						gfx.translate(x*cs+cs/2,y*cs);
+						gfx.translate(x*cs+cs,y*cs);
 						gfx.fillStyle="#006600";
 						gfx.strokeStyle="#00ff00";
 						gfx.moveTo(2,2);
-						gfx.lineTo(cs/2-2,2);
-						gfx.lineTo(cs/2-2,cs/2-2);
+						gfx.lineTo(cs-2,2);
+						gfx.lineTo(cs-2,cs-2);
 						if(App.Game.cellSize>30){
-							gfx.lineTo(cs/4,cs/2-2);
-							gfx.lineTo(cs/4,cs/4);
-							gfx.lineTo(2,cs/4);
+							gfx.lineTo(cs/2,cs-2);
+							gfx.lineTo(cs/2,cs/2);
+							gfx.lineTo(2,cs/2);
 							gfx.lineTo(2,2);
 						}else{
-							gfx.lineTo(2,cs/2-2);
+							gfx.lineTo(2,cs-2);
 							gfx.lineTo(2,2)
 						}
 						break;
 					case App.COLORS.BLUE:
-						gfx.translate(x*cs,y*cs+cs/2);
+						gfx.translate(x*cs,y*cs+cs);
 						gfx.fillStyle="#000066";
 						gfx.strokeStyle="#0000ff";
-						gfx.moveTo(cs/2-2,cs/2-2);
-						gfx.lineTo(2,cs/2-2);
+						gfx.moveTo(cs-2,cs-2);
+						gfx.lineTo(2,cs-2);
 						gfx.lineTo(2,2);
 						if(App.Game.cellSize>30){
-							gfx.lineTo(cs/4,2);
-							gfx.lineTo(cs/4,cs/4);
-							gfx.lineTo(cs/2-2,cs/4);
-							gfx.lineTo(cs/2-2,cs/2-2);
+							gfx.lineTo(cs/2,2);
+							gfx.lineTo(cs/2,cs/2);
+							gfx.lineTo(cs-2,cs/2);
+							gfx.lineTo(cs-2,cs-2);
 						}else{
-							gfx.lineTo(cs/2-2,2);
-							gfx.lineTo(cs/2-2,cs/2-2);
+							gfx.lineTo(cs-2,2);
+							gfx.lineTo(cs-2,cs-2);
 						}
 						break;
 					case App.COLORS.YELLOW:
-						gfx.translate(x*cs+cs/2,y*cs+cs/2);
+						gfx.translate(x*cs+cs,y*cs+cs);
 						gfx.fillStyle="#666600";
 						gfx.strokeStyle="#ffff00";
-						gfx.moveTo(cs/2-2,2);
-						gfx.lineTo(cs/2-2,cs/2-2);
-						gfx.lineTo(2,cs/2-2);
+						gfx.moveTo(cs-2,2);
+						gfx.lineTo(cs-2,cs-2);
+						gfx.lineTo(2,cs-2);
 						if(App.Game.cellSize>30){
-							gfx.lineTo(2,cs/4);
-							gfx.lineTo(cs/4,cs/4);
-							gfx.lineTo(cs/4,2);
-							gfx.lineTo(cs/2-2,2);
+							gfx.lineTo(2,cs/2);
+							gfx.lineTo(cs/2,cs/2);
+							gfx.lineTo(cs/2,2);
+							gfx.lineTo(cs-2,2);
 						}else{
 							gfx.lineTo(2,2);
-							gfx.lineTo(cs/2-2,2);
+							gfx.lineTo(cs-2,2);
 						}
 						break;
 				}gfx.fill();
@@ -469,25 +446,23 @@ App.makeInstructionCatalog = function(){
 		},
 
 	//	ins.TYPES["COLOR TOGGLE"]:function(){
-		23:function(gfx){
-			var cs = App.Game.cellSize;
+		23:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(1*cs/8,1*cs/8);
-			gfx.lineTo(3*cs/8,1*cs/8);
-			gfx.moveTo(2*cs/8,1*cs/8);
-			gfx.lineTo(2*cs/8,3*cs/8);
+			gfx.moveTo(1*cs/4,1*cs/4);
+			gfx.lineTo(3*cs/4,1*cs/4);
+			gfx.moveTo(2*cs/4,1*cs/4);
+			gfx.lineTo(2*cs/4,3*cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES["PAUSE"]:function(){
-		24:function(gfx){
-			var cs = App.Game.cellSize;
+		24:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(1*cs/8,2*cs/8);
-			gfx.lineTo(3*cs/8,2*cs/8);
-			gfx.lineTo(3*cs/8,1*cs/8);
-			gfx.lineTo(1*cs/8,1*cs/8);
-			gfx.lineTo(1*cs/8,3*cs/8);
+			gfx.moveTo(1*cs/4,2*cs/4);
+			gfx.lineTo(3*cs/4,2*cs/4);
+			gfx.lineTo(3*cs/4,1*cs/4);
+			gfx.lineTo(1*cs/4,1*cs/4);
+			gfx.lineTo(1*cs/4,3*cs/4);
 			gfx.stroke();
 		}
 	};
