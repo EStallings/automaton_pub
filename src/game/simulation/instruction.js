@@ -14,7 +14,16 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 	this.staticRender = function(){
 		this.gfx.save();
-		if(App.Game.cellSize>30); // TODO: USE INSTRUCTION RENDERER
+
+		var rx,ry,size = App.Game.cellSize;
+		switch(this.color){
+			case App.COLORS.RED:    rx=x*size;        ry=y*size;        break;
+			case App.COLORS.GREEN:  rx=x*size+size/2; ry=y*size;        break;
+			case App.COLORS.BLUE:   rx=x*size;        ry=y*size+size/2; break;
+			case App.COLORS.YELLOW: rx=x*size+size/2; ry=y*size+size/2; break;
+		}
+
+		App.InstCatalog.render(this.gfx,this.type,rx,ry,this.color,size/2);
 		this.gfx.restore();
 	}
 
@@ -27,25 +36,21 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case App.InstCatalog.TYPES["SPAWN UP"]:
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.UP,color);
-
 			this.execute = function(a){};break; // do nothing
 
 		case App.InstCatalog.TYPES["SPAWN DOWN"]:
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.DOWN,color);
-
 			this.execute = function(a){};break; // do nothing
 
 		case App.InstCatalog.TYPES["SPAWN LEFT"]:
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.LEFT,color);
-
 			this.execute = function(a){};break; // do nothing
 
 		case App.InstCatalog.TYPES["SPAWN RIGHT"]:
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.RIGHT,color);
-
 			this.execute = function(a){};break; // do nothing
 
 		case App.InstCatalog.TYPES["UP"]:
@@ -208,15 +213,12 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 		case App.InstCatalog.TYPES["SYNC"]:
 
-			// TODO: override this.render | custom syms for each color
-			// TODO: 22 is hardcoded in cell.sync... fix that
 			this.execute = function(a){
 				this.cell.sync();
 			};break;
 
 		case App.InstCatalog.TYPES["COLOR TOGGLE"]:
 
-			// TODO: this doesn't have a color check
 			this.execute = function(a){
 				a.colorFlags[this.color] = !a.colorFlags[this.color];
 			};break;

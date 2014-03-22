@@ -26,510 +26,475 @@ App.makeInstructionCatalog = function(){
 		"PAUSE"		: 24,
 	};
 
-	ins.render = function(type,x,y,c,size){
-		this.gfx.save();
-		switch(this.color){
+	ins.render = function(gfx,type,x,y,c,size){
+		gfx.save();
+		gfx.translate(x,y);
+
+		// TODO: SPECIAL RENDER FUNCS (STREAM, SYNC)
+
+		switch(c){
 			case App.COLORS.RED:
-				this.gfx.translate(this.x*size,this.y*size);
-				this.gfx.fillStyle="#660000";
-				this.gfx.fillRect(2,2,size/2-4,size/2-4);
-				this.gfx.strokeStyle="#ff0000";
+				gfx.fillStyle="#660000";
+				gfx.fillRect(2,2,size-4,size-4);
+				gfx.strokeStyle="#ff0000";
 				break;
 			case App.COLORS.GREEN:
-				this.gfx.translate(this.x*size+size/2,this.y*size);
-				this.gfx.fillStyle="#006600";
-				this.gfx.fillRect(2,2,size/2-4,size/2-4);
-				this.gfx.strokeStyle="#00ff00";
+				gfx.fillStyle="#006600";
+				gfx.fillRect(2,2,size-4,size-4);
+				gfx.strokeStyle="#00ff00";
 				break;
 			case App.COLORS.BLUE:
-				this.gfx.translate(this.x*size,this.y*size+size/2);
-				this.gfx.fillStyle="#000066";
-				this.gfx.fillRect(2,2,size/2-4,size/2-4);
-				this.gfx.strokeStyle="#0000ff";
+				gfx.fillStyle="#000066";
+				gfx.fillRect(2,2,size-4,size-4);
+				gfx.strokeStyle="#0000ff";
 				break;
 			case App.COLORS.YELLOW:
-				this.gfx.translate(this.x*size+size/2,this.y*size+size/2);
-				this.gfx.fillStyle="#666600";
-				this.gfx.fillRect(2,2,size/2-4,size/2-4);
-				this.gfx.strokeStyle="#ffff00";
+				gfx.fillStyle="#666600";
+				gfx.fillRect(2,2,size-4,size-4);
+				gfx.strokeStyle="#ffff00";
 				break;
 		}
 
-		this.gfx.beginPath();
-		this.gfx.moveTo(2,2);
-		this.gfx.lineTo(2,size/2-2);
-		this.gfx.lineTo(size/2-2,size/2-2);
-		this.gfx.lineTo(size/2-2,2);
-		this.gfx.lineTo(2,2);
-		this.gfx.stroke();
+		gfx.beginPath();
+		gfx.moveTo(2,2);
+		gfx.lineTo(2,size-2);
+		gfx.lineTo(size-2,size-2);
+		gfx.lineTo(size-2,2);
+		gfx.lineTo(2,2);
+		gfx.stroke();
 
-		if(App.Game.cellSize>30)this.rFunc();
-		this.gfx.restore();
+		if(App.Game.cellSize>30)ins.rFunc[type](gfx);
+		gfx.restore();
 	}
-
-	return ins;
-}
-
-//============================================================================//
-//============================================================================//
-//============================================================================//
-
-/*
-App.SimulationInstruction = function(level,x,y,color,type){
 
 	// ========================================================== //
 	// ================= I N S T R U C T I O N S ================ //
 	// ========================================================== //
 
-	switch(type){
+	ins.rFunc = {
+	//	ins.TYPES["SPAWN UP"]:function(){
+		0:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
+			gfx.moveTo(3*cs/16,2*cs/16);
+			gfx.lineTo(4*cs/16,cs/16);
+			gfx.lineTo(5*cs/16,2*cs/16);
+			gfx.stroke();
+		},
 
-		case App.InstCatalog.TYPES["SPAWN UP"]:
+	//	ins.TYPES["SPAWN DOWN"]:function(){
+		1:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
+			gfx.moveTo(3*cs/16,6*cs/16);
+			gfx.lineTo(4*cs/16,7*cs/16);
+			gfx.lineTo(5*cs/16,6*cs/16);
+			gfx.stroke();
+		},
 
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-				this.gfx.moveTo(3*cs/16,2*cs/16);
-				this.gfx.lineTo(4*cs/16,cs/16);
-				this.gfx.lineTo(5*cs/16,2*cs/16);
-				this.gfx.stroke();
-			};break;
+	//	ins.TYPES["SPAWN LEFT"]:function(){
+		2:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
+			gfx.moveTo(2*cs/16,3*cs/16);
+			gfx.lineTo(cs/16,4*cs/16);
+			gfx.lineTo(2*cs/16,5*cs/16);
+			gfx.stroke();
+		},
 
-		case App.InstCatalog.TYPES["SPAWN DOWN"]:
+	//	ins.TYPES["SPAWN RIGHT"]:function(){
+		3:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
+			gfx.moveTo(6*cs/16,3*cs/16);
+			gfx.lineTo(7*cs/16,4*cs/16);
+			gfx.lineTo(6*cs/16,5*cs/16);
+			gfx.stroke();
+		},
 
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-				this.gfx.moveTo(3*cs/16,6*cs/16);
-				this.gfx.lineTo(4*cs/16,7*cs/16);
-				this.gfx.lineTo(5*cs/16,6*cs/16);
-				this.gfx.stroke();
-			};break;
+	//	ins.TYPES["UP"]:function(){
+		4:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(cs/4,cs/8);
+			gfx.lineTo(cs/8,3*cs/8);
+			gfx.lineTo(3*cs/8,3*cs/8);
+			gfx.lineTo(cs/4,cs/8);
+			gfx.stroke();
+		},
 
-		case App.InstCatalog.TYPES["SPAWN LEFT"]:
+	//	ins.TYPES["DOWN"]:function(){
+		5:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(cs/4,3*cs/8);
+			gfx.lineTo(cs/8,cs/8);
+			gfx.lineTo(3*cs/8,cs/8);
+			gfx.lineTo(cs/4,3*cs/8);
+			gfx.stroke();
+		},
 
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-				this.gfx.moveTo(2*cs/16,3*cs/16);
-				this.gfx.lineTo(cs/16,4*cs/16);
-				this.gfx.lineTo(2*cs/16,5*cs/16);
-				this.gfx.stroke();
-			};break;
+	//	ins.TYPES["LEFT"]:function(){
+		6:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(cs/8,cs/4);
+			gfx.lineTo(3*cs/8,cs/8);
+			gfx.lineTo(3*cs/8,3*cs/8);
+			gfx.lineTo(cs/8,cs/4);
+			gfx.stroke();
+		},
 
-		case App.InstCatalog.TYPES["SPAWN RIGHT"]:
+	//	ins.TYPES["RIGHT"]:function(){
+		7:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,cs/4);
+			gfx.lineTo(cs/8,cs/8);
+			gfx.lineTo(cs/8,3*cs/8);
+			gfx.lineTo(3*cs/8,cs/4);
+			gfx.stroke();
+		},
 
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/16,-Math.PI,Math.PI);
-				this.gfx.moveTo(6*cs/16,3*cs/16);
-				this.gfx.lineTo(7*cs/16,4*cs/16);
-				this.gfx.lineTo(6*cs/16,5*cs/16);
-				this.gfx.stroke();
-			};break;
+	//	ins.TYPES["ROTATE CW"]:function(){
+		8:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.arc(cs/4,cs/4,cs/8,Math.PI/2,2*Math.PI);
+			gfx.moveTo(3*cs/8,cs/4);
+			gfx.lineTo(3*cs/8,cs/8);
+			gfx.stroke();
+		},
 
-		case App.InstCatalog.TYPES["UP"]:
+	//	ins.TYPES["ROTATE CCW"]:function(){
+		9:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.arc(cs/4,cs/4,cs/8,Math.PI,Math.PI/2);
+			gfx.moveTo(cs/8,cs/4);
+			gfx.lineTo(cs/8,cs/8);
+			gfx.stroke();
+		},
 
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.lineTo(cs/4,cs/8);
-				this.gfx.stroke();
-			};break;
-
-		case App.InstCatalog.TYPES["DOWN"]:
-
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/4,3*cs/8);
-				this.gfx.lineTo(cs/8,cs/8);
-				this.gfx.lineTo(3*cs/8,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.stroke();
-			};break;
-
-		case App.InstCatalog.TYPES["LEFT"]:
-
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,cs/4);
-				this.gfx.lineTo(3*cs/8,cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.lineTo(cs/8,cs/4);
-				this.gfx.stroke();
-			};break;
-
-		case App.InstCatalog.TYPES["RIGHT"]:
-
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(3*cs/8,cs/4);
-				this.gfx.lineTo(cs/8,cs/8);
-				this.gfx.lineTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,cs/4);
-				this.gfx.stroke();
-			};break;
-
-		case App.InstCatalog.TYPES["ROTATE CW"]:
-
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/8,Math.PI/2,2*Math.PI);
-				this.gfx.moveTo(3*cs/8,cs/4);
-				this.gfx.lineTo(3*cs/8,cs/8);
-				this.gfx.stroke();
-			};break;
-
-		case App.InstCatalog.TYPES["ROTATE CCW"]:
-
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/8,Math.PI,Math.PI/2);
-				this.gfx.moveTo(cs/8,cs/4);
-				this.gfx.lineTo(cs/8,cs/8);
-				this.gfx.stroke();
-			};break;
-
-		case App.InstCatalog.TYPES["IN STREAM"]:
-
+	//	ins.TYPES["IN STREAM"]:
+		10:function(gfx){
 			// TODO: override render func
-			this.rFunc = function(){
-				// TODO: make letters for each stream
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(3*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.lineTo(1*cs/8,3*cs/8);
-				this.gfx.stroke();
-			};break;
+			// TODO: make letters for each stream
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,1*cs/8);
+			gfx.lineTo(1*cs/8,1*cs/8);
+			gfx.lineTo(1*cs/8,2*cs/8);
+			gfx.lineTo(3*cs/8,2*cs/8);
+			gfx.lineTo(3*cs/8,3*cs/8);
+			gfx.lineTo(1*cs/8,3*cs/8);
+			gfx.stroke();
+		},
 
-		case App.InstCatalog.TYPES["OUT STREAM"]:
-
+	//	ins.TYPES["OUT STREAM"]:
+		11:function(gfx){
 			// TODO: override render func
-			this.rFunc = function(){
-				// TODO: make letters for each stream
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(3*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.lineTo(1*cs/8,3*cs/8);
-				this.gfx.stroke();
-			};break;
+			// TODO: make letters for each stream
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,1*cs/8);
+			gfx.lineTo(1*cs/8,1*cs/8);
+			gfx.lineTo(1*cs/8,2*cs/8);
+			gfx.lineTo(3*cs/8,2*cs/8);
+			gfx.lineTo(3*cs/8,3*cs/8);
+			gfx.lineTo(1*cs/8,3*cs/8);
+			gfx.stroke();
+		},
 
-		case App.InstCatalog.TYPES["IN"]:
+	//	ins.TYPES["IN"]:function(){
+		12:function(gfx){
+			// TODO: this should NOT be an "I" (streams get letters as symbols)
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(cs/4,cs/8);
+			gfx.lineTo(cs/4,3*cs/8);
+			gfx.moveTo(cs/8,cs/8);
+			gfx.lineTo(3*cs/8,cs/8);
+			gfx.moveTo(cs/8,3*cs/8);
+			gfx.lineTo(3*cs/8,3*cs/8);
+			gfx.stroke();
+		},
 
-			this.rFunc = function(){
-				// TODO: this should NOT be an "I" (streams get letters as symbols)
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.moveTo(cs/8,cs/8);
-				this.gfx.lineTo(3*cs/8,cs/8);
-				this.gfx.moveTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.stroke();
-			};break;
+	//	ins.TYPES["OUT"]:function(){
+		13:function(gfx){
+			// TODO: this should NOT be an "O" (streams get letters as symbols)
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.arc(cs/4,cs/4,cs/8,-Math.PI,Math.PI);
+			gfx.stroke();
+		},
 
-		case App.InstCatalog.TYPES["OUT"]:
+	//	ins.TYPES["GRAB"]:function(){
+		14:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(cs/8,3*cs/8);
+			gfx.lineTo(3*cs/8,3*cs/8);
+			gfx.moveTo(cs/4,cs/8);
+			gfx.lineTo(cs/4,3*cs/8);
+			gfx.moveTo(3*cs/16,3*cs/16);
+			gfx.lineTo(cs/4,cs/8);
+			gfx.lineTo(5*cs/16,3*cs/16);
+			gfx.stroke();
+		},
 
-			this.rFunc = function(){
-				// TODO: this should NOT be an "O" (streams get letters as symbols)
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.arc(cs/4,cs/4,cs/8,-Math.PI,Math.PI);
-				this.gfx.stroke();
-			};break;
+	//	ins.TYPES["DROP"]:function(){
+		15:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(cs/8,3*cs/8);
+			gfx.lineTo(3*cs/8,3*cs/8);
+			gfx.moveTo(cs/4,cs/8);
+			gfx.lineTo(cs/4,3*cs/8);
+			gfx.moveTo(3*cs/16,5*cs/16);
+			gfx.lineTo(cs/4,3*cs/8);
+			gfx.lineTo(5*cs/16,5*cs/16);
+			gfx.stroke();
+		},
 
-		case App.InstCatalog.TYPES["GRAB"]:
+	//	ins.TYPES["GRAB/DROP"]:function(){
+		16:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(cs/8,3*cs/8);
+			gfx.lineTo(3*cs/8,3*cs/8);
+			gfx.moveTo(cs/4,cs/8);
+			gfx.lineTo(cs/4,3*cs/8);
+			gfx.moveTo(3*cs/16,3*cs/16);
+			gfx.lineTo(cs/4,cs/8);
+			gfx.lineTo(5*cs/16,3*cs/16);
+			gfx.moveTo(3*cs/16,5*cs/16);
+			gfx.lineTo(cs/4,3*cs/8);
+			gfx.lineTo(5*cs/16,5*cs/16);
+			gfx.stroke();
+		},
 
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.moveTo(3*cs/16,3*cs/16);
-				this.gfx.lineTo(cs/4,cs/8);
-				this.gfx.lineTo(5*cs/16,3*cs/16);
-				this.gfx.stroke();
-			};break;
+	//	ins.TYPES["INC"]:function(){
+		17:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(cs/8,cs/4);
+			gfx.lineTo(3*cs/8,cs/4);
+			gfx.moveTo(cs/4,cs/8);
+			gfx.lineTo(cs/4,3*cs/8);
+			gfx.stroke();
+		},
 
-		case App.InstCatalog.TYPES["DROP"]:
+	//	ins.TYPES["DEC"]:function(){
+		18:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(cs/8,cs/4);
+			gfx.lineTo(3*cs/8,cs/4);
+			gfx.stroke();
+		},
 
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.moveTo(3*cs/16,5*cs/16);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.lineTo(5*cs/16,5*cs/16);
-				this.gfx.stroke();
-			};break;
-
-		case App.InstCatalog.TYPES["GRAB/DROP"]:
-
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,3*cs/8);
-				this.gfx.lineTo(3*cs/8,3*cs/8);
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.moveTo(3*cs/16,3*cs/16);
-				this.gfx.lineTo(cs/4,cs/8);
-				this.gfx.lineTo(5*cs/16,3*cs/16);
-				this.gfx.moveTo(3*cs/16,5*cs/16);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.lineTo(5*cs/16,5*cs/16);
-				this.gfx.stroke();
-			};break;
-
-		case App.InstCatalog.TYPES["INC"]:
-
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,cs/4);
-				this.gfx.lineTo(3*cs/8,cs/4);
-				this.gfx.moveTo(cs/4,cs/8);
-				this.gfx.lineTo(cs/4,3*cs/8);
-				this.gfx.stroke();
-			};break;
-
-		case App.InstCatalog.TYPES["DEC"]:
-
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(cs/8,cs/4);
-				this.gfx.lineTo(3*cs/8,cs/4);
-				this.gfx.stroke();
-			};break;
-
-		case App.InstCatalog.TYPES["COND 0"]:
-
+	//	ins.TYPES["COND 0"]:
+		19:function(gfx){
 			// TODO: UP DOWN LEFT RIGHT
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
 
-				this.gfx.fillStyle="#0F0F0F";
-				this.gfx.strokeStyle="#FF0000";
+			gfx.fillStyle="#0F0F0F";
+			gfx.strokeStyle="#FF0000";
 
-				this.gfx.moveTo(12*cs/64,16*cs/64);
-				this.gfx.lineTo(52*cs/64,16*cs/64);
+			gfx.moveTo(12*cs/64,16*cs/64);
+			gfx.lineTo(52*cs/64,16*cs/64);
 
-				this.gfx.moveTo(52*cs/64,16*cs/64);
-				this.gfx.lineTo(52*cs/64,24*cs/64);
+			gfx.moveTo(52*cs/64,16*cs/64);
+			gfx.lineTo(52*cs/64,24*cs/64);
 
-				this.gfx.moveTo(52*cs/64,24*cs/64);
-				this.gfx.lineTo(20*cs/64,24*cs/64);
+			gfx.moveTo(52*cs/64,24*cs/64);
+			gfx.lineTo(20*cs/64,24*cs/64);
 
-				this.gfx.moveTo(20*cs/64,24*cs/64);
-				this.gfx.lineTo(20*cs/64,28*cs/64);
+			gfx.moveTo(20*cs/64,24*cs/64);
+			gfx.lineTo(20*cs/64,28*cs/64);
 
-				this.gfx.moveTo(20*cs/64,28*cs/64);
-				this.gfx.lineTo(52*cs/64,28*cs/64);
+			gfx.moveTo(20*cs/64,28*cs/64);
+			gfx.lineTo(52*cs/64,28*cs/64);
 
-				this.gfx.moveTo(52*cs/64,28*cs/64);
-				this.gfx.lineTo(52*cs/64,48*cs/64);
+			gfx.moveTo(52*cs/64,28*cs/64);
+			gfx.lineTo(52*cs/64,48*cs/64);
 
-				this.gfx.moveTo(52*cs/64,48*cs/64);
-				this.gfx.lineTo(12*cs/64,48*cs/64);
+			gfx.moveTo(52*cs/64,48*cs/64);
+			gfx.lineTo(12*cs/64,48*cs/64);
 
-				this.gfx.moveTo(12*cs/64,48*cs/64);
-				this.gfx.lineTo(12*cs/64,40*cs/64);
+			gfx.moveTo(12*cs/64,48*cs/64);
+			gfx.lineTo(12*cs/64,40*cs/64);
 
-				this.gfx.moveTo(12*cs/64,40*cs/64);
-				this.gfx.lineTo(44*cs/64,40*cs/64);
+			gfx.moveTo(12*cs/64,40*cs/64);
+			gfx.lineTo(44*cs/64,40*cs/64);
 
-				this.gfx.moveTo(44*cs/64,40*cs/64);
-				this.gfx.lineTo(44*cs/64,36*cs/64);
+			gfx.moveTo(44*cs/64,40*cs/64);
+			gfx.lineTo(44*cs/64,36*cs/64);
 
-				this.gfx.moveTo(44*cs/64,36*cs/64);
-				this.gfx.lineTo(12*cs/64,36*cs/64);
+			gfx.moveTo(44*cs/64,36*cs/64);
+			gfx.lineTo(12*cs/64,36*cs/64);
 
-				this.gfx.moveTo(12*cs/64,36*cs/64);
-				this.gfx.lineTo(12*cs/64,16*cs/64);
+			gfx.moveTo(12*cs/64,36*cs/64);
+			gfx.lineTo(12*cs/64,16*cs/64);
 
-				this.gfx.stroke();
-				this.gfx.closePath();
-			};break;
+			gfx.stroke();
+			gfx.closePath();
+		},
 
-		case App.InstCatalog.TYPES["COND +-"]:
-
+	//	ins.TYPES["COND +-"]:
+		20:function(gfx){
 			// TODO: UP DOWN LEFT RIGHT
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.stroke();
-			};break;
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.stroke();
+		},
 
-		case App.InstCatalog.TYPES["COND EVEN ODD"]:
-
+	//	ins.TYPES["COND EVEN ODD"]:
+		21:function(gfx){
 			// TODO: UP DOWN LEFT RIGHT
-			this.rFunc = function(){
+			var cs = App.Game.cellSize;
+
+			gfx.fillStyle="#0F0F0F";
+			gfx.fillRect(0,0,cs/4,cs/4);
+
+			gfx.strokeStyle="#AAAAAA";
+			gfx.strokeRect(0,0,cs/4,cs/4);
+
+			gfx.fillStyle="#F0F0F0";
+			gfx.fillRect(cs/4,0,cs/4,cs/4);
+
+			gfx.strokeRect(cs/4,0,cs/4,cs/4);
+
+			gfx.fillStyle="#F0F0F0";
+			gfx.fillRect(0,cs/4,cs/4,cs/4);
+
+			gfx.strokeRect(0,cs/4,cs/4,cs/4);
+
+			gfx.fillStyle="#0F0F0F";
+			gfx.fillRect(cs/4,cs/4,cs/4,cs/4);
+
+			gfx.strokeRect(cs/4,cs/4,cs/4,cs/4);
+
+			gfx.stroke();
+		},
+
+	//	ins.TYPES["SYNC"]:
+		22:function(gfx){
+			// TODO: override render | custom syms for each color
+/*
+			staticRender = function(){
 				var cs = App.Game.cellSize;
-
-
-				switch(this.color) {
-					// XXX: why do we need a color switch here?
-					// TODO
-				}
-
-				this.gfx.fillStyle="#0F0F0F";
-				this.gfx.fillRect(0,0,cs/4,cs/4);
-
-				this.gfx.strokeStyle="#AAAAAA";
-				this.gfx.strokeRect(0,0,cs/4,cs/4);
-
-				this.gfx.fillStyle="#F0F0F0";
-				this.gfx.fillRect(cs/4,0,cs/4,cs/4);
-
-				this.gfx.strokeRect(cs/4,0,cs/4,cs/4);
-
-				this.gfx.fillStyle="#F0F0F0";
-				this.gfx.fillRect(0,cs/4,cs/4,cs/4);
-
-				this.gfx.strokeRect(0,cs/4,cs/4,cs/4);
-
-				this.gfx.fillStyle="#0F0F0F";
-				this.gfx.fillRect(cs/4,cs/4,cs/4,cs/4);
-
-				this.gfx.strokeRect(cs/4,cs/4,cs/4,cs/4);
-
-				this.gfx.stroke();
-			};break;
-
-		case App.InstCatalog.TYPES["SYNC"]:
-
-			// TODO: override this.render | custom syms for each color
-			// TODO: 22 is hardcoded in cell.sync... fix that
-			this.staticRender = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.save();
-				this.gfx.beginPath();
-				switch(this.color){
+				gfx.save();
+				gfx.beginPath();
+				switch(color){
 					case App.COLORS.RED:
-						this.gfx.translate(this.x*cs,this.y*cs);
-						this.gfx.fillStyle="#660000";
-						this.gfx.strokeStyle="#ff0000";
-						this.gfx.moveTo(2,cs/2-2);
-						this.gfx.lineTo(2,2);
-						this.gfx.lineTo(cs/2-2,2);
+						gfx.translate(x*cs,y*cs);
+						gfx.fillStyle="#660000";
+						gfx.strokeStyle="#ff0000";
+						gfx.moveTo(2,cs/2-2);
+						gfx.lineTo(2,2);
+						gfx.lineTo(cs/2-2,2);
 						if(App.Game.cellSize>30){
-							this.gfx.lineTo(cs/2-2,cs/4);
-							this.gfx.lineTo(cs/4,cs/4);
-							this.gfx.lineTo(cs/4,cs/2-2);
-							this.gfx.lineTo(2,cs/2-2);
+							gfx.lineTo(cs/2-2,cs/4);
+							gfx.lineTo(cs/4,cs/4);
+							gfx.lineTo(cs/4,cs/2-2);
+							gfx.lineTo(2,cs/2-2);
 						}else{
-							this.gfx.lineTo(cs/2-2,cs/2-2);
-							this.gfx.lineTo(2,cs/2-2);
+							gfx.lineTo(cs/2-2,cs/2-2);
+							gfx.lineTo(2,cs/2-2);
 						}
 						break;
 					case App.COLORS.GREEN:
-						this.gfx.translate(this.x*cs+cs/2,this.y*cs);
-						this.gfx.fillStyle="#006600";
-						this.gfx.strokeStyle="#00ff00";
-						this.gfx.moveTo(2,2);
-						this.gfx.lineTo(cs/2-2,2);
-						this.gfx.lineTo(cs/2-2,cs/2-2);
+						gfx.translate(x*cs+cs/2,y*cs);
+						gfx.fillStyle="#006600";
+						gfx.strokeStyle="#00ff00";
+						gfx.moveTo(2,2);
+						gfx.lineTo(cs/2-2,2);
+						gfx.lineTo(cs/2-2,cs/2-2);
 						if(App.Game.cellSize>30){
-							this.gfx.lineTo(cs/4,cs/2-2);
-							this.gfx.lineTo(cs/4,cs/4);
-							this.gfx.lineTo(2,cs/4);
-							this.gfx.lineTo(2,2);
+							gfx.lineTo(cs/4,cs/2-2);
+							gfx.lineTo(cs/4,cs/4);
+							gfx.lineTo(2,cs/4);
+							gfx.lineTo(2,2);
 						}else{
-							this.gfx.lineTo(2,cs/2-2);
-							this.gfx.lineTo(2,2)
+							gfx.lineTo(2,cs/2-2);
+							gfx.lineTo(2,2)
 						}
 						break;
 					case App.COLORS.BLUE:
-						this.gfx.translate(this.x*cs,this.y*cs+cs/2);
-						this.gfx.fillStyle="#000066";
-						this.gfx.strokeStyle="#0000ff";
-						this.gfx.moveTo(cs/2-2,cs/2-2);
-						this.gfx.lineTo(2,cs/2-2);
-						this.gfx.lineTo(2,2);
+						gfx.translate(x*cs,y*cs+cs/2);
+						gfx.fillStyle="#000066";
+						gfx.strokeStyle="#0000ff";
+						gfx.moveTo(cs/2-2,cs/2-2);
+						gfx.lineTo(2,cs/2-2);
+						gfx.lineTo(2,2);
 						if(App.Game.cellSize>30){
-							this.gfx.lineTo(cs/4,2);
-							this.gfx.lineTo(cs/4,cs/4);
-							this.gfx.lineTo(cs/2-2,cs/4);
-							this.gfx.lineTo(cs/2-2,cs/2-2);
+							gfx.lineTo(cs/4,2);
+							gfx.lineTo(cs/4,cs/4);
+							gfx.lineTo(cs/2-2,cs/4);
+							gfx.lineTo(cs/2-2,cs/2-2);
 						}else{
-							this.gfx.lineTo(cs/2-2,2);
-							this.gfx.lineTo(cs/2-2,cs/2-2);
+							gfx.lineTo(cs/2-2,2);
+							gfx.lineTo(cs/2-2,cs/2-2);
 						}
 						break;
 					case App.COLORS.YELLOW:
-						this.gfx.translate(this.x*cs+cs/2,this.y*cs+cs/2);
-						this.gfx.fillStyle="#666600";
-						this.gfx.strokeStyle="#ffff00";
-						this.gfx.moveTo(cs/2-2,2);
-						this.gfx.lineTo(cs/2-2,cs/2-2);
-						this.gfx.lineTo(2,cs/2-2);
+						gfx.translate(x*cs+cs/2,y*cs+cs/2);
+						gfx.fillStyle="#666600";
+						gfx.strokeStyle="#ffff00";
+						gfx.moveTo(cs/2-2,2);
+						gfx.lineTo(cs/2-2,cs/2-2);
+						gfx.lineTo(2,cs/2-2);
 						if(App.Game.cellSize>30){
-							this.gfx.lineTo(2,cs/4);
-							this.gfx.lineTo(cs/4,cs/4);
-							this.gfx.lineTo(cs/4,2);
-							this.gfx.lineTo(cs/2-2,2);
+							gfx.lineTo(2,cs/4);
+							gfx.lineTo(cs/4,cs/4);
+							gfx.lineTo(cs/4,2);
+							gfx.lineTo(cs/2-2,2);
 						}else{
-							this.gfx.lineTo(2,2);
-							this.gfx.lineTo(cs/2-2,2);
+							gfx.lineTo(2,2);
+							gfx.lineTo(cs/2-2,2);
 						}
 						break;
-				}this.gfx.fill();
-				this.gfx.stroke();
+				}gfx.fill();
+				gfx.stroke();
 
-				this.gfx.restore();
-			};break;
+				gfx.restore();
+*/
+		},
 
-		case App.InstCatalog.TYPES["COLOR TOGGLE"]:
+	//	ins.TYPES["COLOR TOGGLE"]:function(){
+		23:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(1*cs/8,1*cs/8);
+			gfx.lineTo(3*cs/8,1*cs/8);
+			gfx.moveTo(2*cs/8,1*cs/8);
+			gfx.lineTo(2*cs/8,3*cs/8);
+			gfx.stroke();
+		},
 
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(1*cs/8,1*cs/8);
-				this.gfx.lineTo(3*cs/8,1*cs/8);
-				this.gfx.moveTo(2*cs/8,1*cs/8);
-				this.gfx.lineTo(2*cs/8,3*cs/8);
-				this.gfx.stroke();
-			};break;
+	//	ins.TYPES["PAUSE"]:function(){
+		24:function(gfx){
+			var cs = App.Game.cellSize;
+			gfx.beginPath();
+			gfx.moveTo(1*cs/8,2*cs/8);
+			gfx.lineTo(3*cs/8,2*cs/8);
+			gfx.lineTo(3*cs/8,1*cs/8);
+			gfx.lineTo(1*cs/8,1*cs/8);
+			gfx.lineTo(1*cs/8,3*cs/8);
+			gfx.stroke();
+		}
+	};
 
-		case App.InstCatalog.TYPES["PAUSE"]:
-
-			this.rFunc = function(){
-				var cs = App.Game.cellSize;
-				this.gfx.beginPath();
-				this.gfx.moveTo(1*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,2*cs/8);
-				this.gfx.lineTo(3*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,1*cs/8);
-				this.gfx.lineTo(1*cs/8,3*cs/8);
-				this.gfx.stroke();
-			};break;
-	}
+	return ins;
 }
+
+/*
+
 */
