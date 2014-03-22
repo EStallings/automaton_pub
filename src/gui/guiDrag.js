@@ -6,8 +6,8 @@ App.GuiJoystick = function(x, y, panel){
 	if(panel) panel.addChild(this);
 	this.guiCollider.functional = true;
 
-	this.currentX = this.guiCollider.x;
-	this.currentY = this.guiCollider.y;
+	this.currentX = this.guiCollider.getx();
+	this.currentY = this.guiCollider.gety();
 	this.curPanX = 0;
 	this.curPanY = 0;
 	this.moveRate = 0.2;
@@ -23,7 +23,7 @@ App.GuiJoystick = function(x, y, panel){
 		gfx.fillStyle = this.color;
 		gfx.strokeStyle = App.GuiColors.gray[2];
 		gfx.beginPath();
-		gfx.arc(this.guiCollider.x, this.guiCollider.y, this.guiCollider.r, 0, Math.PI*2, true);
+		gfx.arc(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.r, 0, Math.PI*2, true);
 		gfx.closePath();
 		gfx.stroke();
 
@@ -36,17 +36,17 @@ App.GuiJoystick = function(x, y, panel){
 
 	this.clickStart = function(){
 		this.dragged = true;
-		this.curPanX = this.guiCollider.x;
-		this.curPanY = this.guiCollider.y;
-		App.Game.beginPan(this.guiCollider.x, this.guiCollider.y);
+		this.curPanX = this.guiCollider.getx();
+		this.curPanY = this.guiCollider.gety();
+		App.Game.beginPan(this.guiCollider.getx(), this.guiCollider.gety());
 	}
 
 	this.update = function(){
 		if(!this.dragged)
 			return;
 
-		var mx = this.guiCollider.x;
-		var my = this.guiCollider.y;
+		var mx = this.guiCollider.getx();
+		var my = this.guiCollider.gety();
 
 		var x = App.InputHandler.mouseData.x - mx;
 		var y = App.InputHandler.mouseData.y - my;
@@ -69,8 +69,8 @@ App.GuiJoystick = function(x, y, panel){
 
 	this.clickEnd = function(x, y){
 		this.dragged = false;
-		this.currentX = this.guiCollider.x;
-		this.currentY = this.guiCollider.y;
+		this.currentX = this.guiCollider.getx();
+		this.currentY = this.guiCollider.gety();
 	}
 
 
@@ -84,8 +84,8 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 	if(panel) panel.addChild(this);
 	this.guiCollider.functional = true;
 
-	this.currentX = this.guiCollider.x;
-	this.currentY = this.guiCollider.y;
+	this.currentX = this.guiCollider.getx();
+	this.currentY = this.guiCollider.gety();
 	this.activeColor = App.GuiDragButton.active;
 	this.inactiveColor = App.GuiDragButton.inactive;
 	this.dragged = false;
@@ -107,6 +107,11 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 		this.dragged = true;
 	}
 
+	this.windowupdate = function(){
+		this.currentX = this.guiCollider.getx();
+		this.currentY = this.guiCollider.gety();
+	}
+
 	//The drag part of "drag and drop"
 	this.update = function(){
 		if(!this.dragged)
@@ -118,8 +123,8 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 	//The button has been "dropped"!
 	this.clickEnd = function(x, y){
 		this.dragged = false;
-		this.currentX = this.guiCollider.x;
-		this.currentY = this.guiCollider.y;
+		this.currentX = this.guiCollider.getx();
+		this.currentY = this.guiCollider.gety();
 
 
 		var level =	App.Game.currentPlanningLevel;
@@ -131,8 +136,10 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 		console.log("dragged to " + nx + "," + ny);
 		level.insert(new App.PlanningInstruction(nx,ny,c,t));
 	}
+
 	App.GuiDragButton.registry.push(this);
 }
+
 App.GuiDragButton.registry = [];
 App.GuiDragButton.globalColor = 0;
 App.GuiDragButton.inactive = App.GuiColors.inactive[App.GuiDragButton.globalColor];
@@ -174,10 +181,10 @@ App.GuiSliderButton = function(guiCollider, panel){
 		if(!this.sliderLine)
 			console.error("Improperly initialized gui slider");
 		gfx.fillStyle = this.color;
-		gfx.fillRect(this.guiCollider.x, this.guiCollider.y, this.guiCollider.w, this.guiCollider.h);
+		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 
 		gfx.fillStyle = App.GuiColors.gray[0];
-		gfx.fillText (Math.floor(this.sliderLine.value), this.guiCollider.x, this.guiCollider.y + this.guiCollider.h/2);
+		gfx.fillText (Math.floor(this.sliderLine.value), this.guiCollider.getx(), this.guiCollider.gety() + this.guiCollider.h/2);
 	}
 
 	//Begins the dragging of the slider
@@ -196,20 +203,20 @@ App.GuiSliderButton = function(guiCollider, panel){
 		if(!this.dragged)
 			return;
 		if(this.sliderLine.direction === 1){
-			this.guiCollider.x= App.InputHandler.mouseData.x - this.guiCollider.w/2;
-			if(this.guiCollider.x > this.sliderLine.guiCollider.x + this.sliderLine.guiCollider.w)
-				this.guiCollider.x = this.sliderLine.guiCollider.x + this.sliderLine.guiCollider.w;
-			else if (this.guiCollider.x < this.sliderLine.guiCollider.x)
-				this.guiCollider.x = this.sliderLine.guiCollider.x;
+			this.guiCollider.getx()= App.InputHandler.mouseData.x - this.guiCollider.w/2;
+			if(this.guiCollider.getx() > this.sliderLine.guiCollider.x + this.sliderLine.guiCollider.w)
+				this.guiCollider.getx() = this.sliderLine.guiCollider.x + this.sliderLine.guiCollider.w;
+			else if (this.guiCollider.getx() < this.sliderLine.guiCollider.x)
+				this.guiCollider.getx() = this.sliderLine.guiCollider.x;
 		}
 		else{
-			this.guiCollider.y = App.InputHandler.mouseData.y - this.guiCollider.h/2;
-			if(this.guiCollider.y > this.sliderLine.guiCollider.y + this.sliderLine.guiCollider.h)
-				this.guiCollider.y = this.sliderLine.guiCollider.y + this.sliderLine.guiCollider.h;
-			else if (this.guiCollider.y < this.sliderLine.guiCollider.y)
-				this.guiCollider.y = this.sliderLine.guiCollider.y;
+			this.guiCollider.gety() = App.InputHandler.mouseData.y - this.guiCollider.h/2;
+			if(this.guiCollider.gety() > this.sliderLine.guiCollider.y + this.sliderLine.guiCollider.h)
+				this.guiCollider.gety() = this.sliderLine.guiCollider.y + this.sliderLine.guiCollider.h;
+			else if (this.guiCollider.gety() < this.sliderLine.guiCollider.y)
+				this.guiCollider.gety() = this.sliderLine.guiCollider.y;
 		}
-		this.sliderLine.evaluate(this.guiCollider.x, this.guiCollider.y);
+		this.sliderLine.evaluate(this.guiCollider.getx(), this.guiCollider.gety());
 	}
 
 	//Releases from dragging
@@ -238,14 +245,14 @@ App.GuiSliderLine = function(guiCollider, min, max, direction, callback, panel){
 		if(!this.sliderButton)
 			console.error("Improperly initialized gui slider");
 		gfx.fillStyle = this.color;
-		gfx.fillRect(this.guiCollider.x, this.guiCollider.y, this.guiCollider.w, this.guiCollider.h);
+		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 	}
 
 	//Evaluates a new value for the slider based on the x,y coordinates of the button
 	//Also calls the change listener callback, if there is one.
 	this.evaluate = function(x, y){
-		var vals = (this.direction === 1)? {v:x, l:this.guiCollider.x, h:this.guiCollider.w} :
-											{v:y, l:this.guiCollider.y, h:this.guiCollider.h};
+		var vals = (this.direction === 1)? {v:x, l:this.guiCollider.getx(), h:this.guiCollider.w} :
+											{v:y, l:this.guiCollider.gety(), h:this.guiCollider.h};
 		vals.v -= vals.l;
 		var step = (this.max-this.min)/vals.h;
 		vals.v *= step;
