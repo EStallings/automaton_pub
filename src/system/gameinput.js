@@ -1,6 +1,6 @@
 //An input redirect 'class' for the game (simulation and planning modes)
 
-//TODO make work with planning AND simulation modes. 
+//TODO make work with planning AND simulation modes.
 //Need a functioning (visibly so, at least) planning mode first.
 
 App.makeGameInput = function(){
@@ -28,9 +28,13 @@ App.makeGameInput = function(){
 		var game = App.Game;
 
 		App.Game.screenToGridCoords(mouseData.x,mouseData.y);
-		
-		if(/* TODO: FIX THIS: mouseData.lmb && */game.mode === game.modes.PLANNING){
+
+		if(mouseData.lmb && game.mode === game.modes.PLANNING){
 			// TODO: do dragging of instructions that have already been placed
+		}
+
+		else if(mouseData.lmb && game.mode === game.modes.PLANNING){
+			//show data about a node?
 		}
 
 	}

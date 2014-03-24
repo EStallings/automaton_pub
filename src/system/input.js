@@ -142,9 +142,11 @@ App.makeInputHandler = function(){
 			return;
 		}
 
-		input.keysDown[key] = true;
-		if(!input.keyRegistry[key] || input.keysDown[key])
+
+		if(input.keysDown[key])
 			return;
+
+		input.keysDown[key] = true;
 
 		if(input.keyRegistry[key])input.keyRegistry[key]();
 	}
