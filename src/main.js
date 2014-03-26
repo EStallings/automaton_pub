@@ -14,8 +14,8 @@ window.onload = function(){
 
 	// TEMPORARY STUFF | DELETE ================================= //
 	// TODO: what if each gui menu gets its own canvas and is "always rendering"?
-	//App.makeDemoGui();
-	App.makePlanningGui();
+	App.makeDemoGui();
+	//App.makePlanningGui();
 	App.Gui.setCurrentFrame('planning');
 
 

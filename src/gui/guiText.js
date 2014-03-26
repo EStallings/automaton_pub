@@ -64,10 +64,12 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 	this.update = function(){
 		if(!this.editmode)
 			return;
+
 		this.cursorTime ++;
 		if(this.cursorTime > this.cursorTimeout){
 			this.cursorTime = -1 * this.cursorTimeout;
 		}
+		App.Gui.activeComponent = this;
 	}
 
 	//begin a click - this is just for the button-like functionality
