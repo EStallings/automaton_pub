@@ -382,5 +382,14 @@ App.makeGame = function(){
 	App.InputHandler.registerKey("]",function(){game.setSimulationSpeed(game.simulationSpeed/2);});
 	App.InputHandler.registerKey("Space",function(){game.pause();});
 	App.InputHandler.registerKey("`",function(){game.toggleMode();});
+	App.InputHandler.registerKey('Z', function(){
+			if(App.InputHandler.keysDown['Ctrl']) {
+				if(App.InputHandler.keysDown['Shift']){
+					game.currentPlanningLevel.redo();
+				}
+				else
+					game.currentPlanningLevel.undo();
+			}
+	});
 	return game;
 }

@@ -142,7 +142,6 @@ App.makeInputHandler = function(){
 			return;
 		}
 
-
 		if(input.keysDown[key])
 			return;
 
