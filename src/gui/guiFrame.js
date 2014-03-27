@@ -49,6 +49,14 @@ App.makeGUI = function(){
 			this.drawStatic = true;
 	}
 
+	gui.testCoordinates = function(x,y){
+		for(var c in this.currentFrame){
+			if(this.currentFrame[c].guiCollider && this.currentFrame[c].guiCollider.collides(x, y)){
+					return this.currentFrame[c];
+			}
+		}
+		return null;
+	}
 
 	gui.update = function(){
 		for(var c in this.currentFrame)if(this.currentFrame[c].update)

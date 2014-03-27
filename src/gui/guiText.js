@@ -1,22 +1,21 @@
 
 //Simple text display. Has a background, some text. Nothing fancy.
-App.GuiTextBox = function(guiCollider, text, panel){
+App.GuiTextBox = function (guiCollider, text, panel) {
 	this.guiCollider = guiCollider;
 	this.text = text;
-	if(panel) panel.addChild(this);
+	if (panel) panel.addChild(this);
 	this.color = App.GuiColors.gray[6];
 
 	var textX = this.guiCollider.getx() + 10;// (this.guiCollider.w / 2); // for centering text
 	var textY = this.guiCollider.gety() + (this.guiCollider.h / 2); // for centering text
 
 	//Draw our text
-	this.render = function(gfx){
+	this.render = function (gfx) {
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 		gfx.fillStyle = App.GuiColors.gray[0];
 		gfx.fillText(this.text, textX, textY);
 	}
-
 }
 
 //NOT a simple text display. This bad boy is heavy weight

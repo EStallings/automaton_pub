@@ -132,7 +132,11 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 		this.currentX = this.guiCollider.getx();
 		this.currentY = this.guiCollider.gety();
 
+		//prevent dropping instructions behind gui elements
+		if(App.Gui.testCoordinates(x,y) !== null)
+			return;
 
+		//place the instruction
 		var level =	App.Game.currentPlanningLevel;
 		App.Game.screenToGridCoords(x, y);
 		var nx = App.Game.mouseX;

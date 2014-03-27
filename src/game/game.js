@@ -7,7 +7,8 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.modes = {SIMULATION:'Simulation',PLANNING:'Planning'}; // why are these strings?
+	game.modes = {SIMULATION:'Simulation',PLANNING:'Planning', MENUS:'Menu'}; // why are these strings?
+		//because they can be? Change it if you want.
 	game.mode = game.modes.PLANNING;
 
 	game.currentPlanningLevel;
@@ -20,7 +21,7 @@ App.makeGame = function(){
 		// TODO: setup render vars (center level, default zoom)
 	}
 
-	game.toggleMode = function(){
+	game.toggleMode = function(mode){
 		if(game.mode === game.modes.PLANNING){
 			game.mode = game.modes.SIMULATION;
 			game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel();
