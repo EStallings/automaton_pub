@@ -10,12 +10,12 @@
 */
 App.makeGUI = function(){
 	var gui = {};
-	gui.staticCanvas = App.Canvases.addNewLayer("GUI_Static",0);
+	gui.staticCanvas = App.Canvases.addNewLayer('GUI_Static',0);
 	gui.staticGfx = gui.staticCanvas.getContext('2d');
 
 	//Only used to draw the currently active component
 	//if this is bad, we can change it.
-	gui.dynamicCanvas = App.Canvases.addNewLayer("GUI_Dynamic",0);
+	gui.dynamicCanvas = App.Canvases.addNewLayer('GUI_Dynamic',0);
 	gui.dynamicGfx = gui.dynamicCanvas.getContext('2d');
 
 	gui.frames = [];
@@ -24,9 +24,35 @@ App.makeGUI = function(){
 	//gets reset after one frame.
 	gui.drawStatic = false;
 
+	gui.dialogCanvas = App.Canvases.addNewLayer('GUI_Dialog',0);
+	gui.dialogGfx = gui.dialogCanvas.getContext('2d');
+	gui.dialogClear = false;
+	//We might want to draw multiple dialogs at a time...
+	gui.dialogs = [];
+	//dialogs block other gui inputs and the game (and other dialogs) from receiving any input
+	//for simplicity, they are rendered on their own canvas, and are themselves essentially 'frames'
+	gui.startDialog = function(dialog){
+		this.dialogs.push(dialog);
+		this.dialogClear = true;
+	}
+
+	gui.endDialog = function(){
+		this.dialogs.pop();
+	}
+
+	gui.isDialogDrawing = function(){
+		return this.dialogs.length !== 0;
+	}
+
+	gui.getActiveDialog = function(){
+		if(this.isDialogDrawing())
+			return this.dialogs[this.dialogs.length - 1];
+		return null;
+	}
+
 	gui.addNewFrame = function(framekey){
 		if(this.frames[framekey]){
-			console.error("tried to bind two frames to a single key: " + framekey);
+			console.error('tried to bind two frames to a single key: ' + framekey);
 			return;
 		}
 		this.frames[framekey] = [];
@@ -43,19 +69,42 @@ App.makeGUI = function(){
 
 	gui.addNewComponent = function(framekey, component){
 		if(!this.frames[framekey])
-			console.error("cannot add a component to nonexistent frame: " + framekey);
+			console.error('cannot add a component to nonexistent frame: ' + framekey);
 		this.frames[framekey].push(component);
 		if(this.frames[framekey] == this.currentFrame)
 			this.drawStatic = true;
 	}
 
 	gui.testCoordinates = function(x,y){
+
+		if(this.isDialogDrawing()){
+			var dRet = null;
+			for(var d in this.dialogs){
+				for(var c in this.dialogs[d]){
+					if(this.dialogs[d][c].guiCollider && this.dialogs[d][c].guiCollider.collides(x, y)){
+						if(this.dialogs[d][c].guiCollider.functional){
+							return this.dialogs[d][c];
+						}
+						else dRet = this.currentFrame[c];
+					}
+				}
+			}
+			if(dRet !== null)
+				return dRet;
+		}
+
+		var ret = null;
 		for(var c in this.currentFrame){
 			if(this.currentFrame[c].guiCollider && this.currentFrame[c].guiCollider.collides(x, y)){
-					return this.currentFrame[c];
+					if(this.currentFrame[c].guiCollider.functional){
+						ret = this.currentFrame[c];
+						return ret;
+					}
+					else ret = this.currentFrame[c];
+
 			}
 		}
-		return null;
+		return ret;
 	}
 
 	gui.update = function(){
@@ -72,11 +121,22 @@ App.makeGUI = function(){
 	}
 
 	gui.render = function(){
+		if(this.dialogClear){
+			this.dialogGfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
+			if(this.isDialogDrawing()){
+				for(var d in this.dialogs){
+					for(var c in this.dialogs[d]){
+						this.dialogs[d][c].render(this.dialogGfx);
+					}
+				}
+			}
+			else this.dialogClear = false;
+		}
+
 		this.dynamicGfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
 
 		if(this.drawStatic){
 			this.staticGfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
-			// console.log('drawing static shit');
 		}
 
 		for(var c in this.currentFrame){

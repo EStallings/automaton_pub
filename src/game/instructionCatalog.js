@@ -5,25 +5,25 @@ App.makeInstructionCatalog = function(){
 	// TODO: ALL SWITCHES NEED UP DOWN LEFT RIGHT
 	ins.TYPES = {
 	// --------------------------------------------- AUTOMATON SPAWN
-		"SPAWN UP"	: 0,		"SPAWN DOWN"	: 1,
-		"SPAWN LEFT"	: 2,		"SPAWN RIGHT"	: 3,
+		'SPAWN UP'	: 0,		'SPAWN DOWN'	: 1,
+		'SPAWN LEFT'	: 2,		'SPAWN RIGHT'	: 3,
 	// ------------------------------------------- DIRECTION CONTROL
-		"UP"		: 4,		"DOWN"		: 5,
-		"LEFT"		: 6,		"RIGHT"		: 7,
-		"ROTATE CW"	: 8,		"ROTATE CCW"	: 9,
+		'UP'		: 4,		'DOWN'		: 5,
+		'LEFT'		: 6,		'RIGHT'		: 7,
+		'ROTATE CW'	: 8,		'ROTATE CCW'	: 9,
 	// ---------------------------------------------------- TOKEN IO
-		"IN STREAM"	: 10,		"OUT STREAM"	: 11,
-		"IN"		: 12,		"OUT"		: 13,
+		'IN STREAM'	: 10,		'OUT STREAM'	: 11,
+		'IN'		: 12,		'OUT'		: 13,
 	// ------------------------------------------ TOKEN MANIPULATION
-		"GRAB"		: 14,		"DROP"		: 15,
-		"GRAB/DROP"	: 16,		"INC"		: 17,
-		"DEC"		: 18,
+		'GRAB'		: 14,		'DROP'		: 15,
+		'GRAB/DROP'	: 16,		'INC'		: 17,
+		'DEC'		: 18,
 	// ----------------------------------------- CONDITIONAL CONTROL
-		"COND 0"	: 19,		"COND +-"	: 20,
-		"COND EVEN ODD"	: 21,
+		'COND 0'	: 19,		'COND +-'	: 20,
+		'COND EVEN ODD'	: 21,
 	// -------------------------------------------------------- MISC
-		"SYNC"		: 22,		"COLOR TOGGLE"	: 23,
-		"PAUSE"		: 24,
+		'SYNC'		: 22,		'COLOR TOGGLE'	: 23,
+		'PAUSE'		: 24,
 	};
 
 	ins.render = function(gfx,type,x,y,c,size){
@@ -34,24 +34,24 @@ App.makeInstructionCatalog = function(){
 
 		switch(c){
 			case App.COLORS.RED:
-				gfx.fillStyle="#660000";
+				gfx.fillStyle='#660000';
 				gfx.fillRect(2,2,size-4,size-4);
-				gfx.strokeStyle="#ff0000";
+				gfx.strokeStyle='#ff0000';
 				break;
 			case App.COLORS.GREEN:
-				gfx.fillStyle="#006600";
+				gfx.fillStyle='#006600';
 				gfx.fillRect(2,2,size-4,size-4);
-				gfx.strokeStyle="#00ff00";
+				gfx.strokeStyle='#00ff00';
 				break;
 			case App.COLORS.BLUE:
-				gfx.fillStyle="#000066";
+				gfx.fillStyle='#000066';
 				gfx.fillRect(2,2,size-4,size-4);
-				gfx.strokeStyle="#0000ff";
+				gfx.strokeStyle='#0000ff';
 				break;
 			case App.COLORS.YELLOW:
-				gfx.fillStyle="#666600";
+				gfx.fillStyle='#666600';
 				gfx.fillRect(2,2,size-4,size-4);
-				gfx.strokeStyle="#ffff00";
+				gfx.strokeStyle='#ffff00';
 				break;
 		}
 
@@ -72,7 +72,7 @@ App.makeInstructionCatalog = function(){
 	// ========================================================== //
 
 	ins.rFunc = {
-	//	ins.TYPES["SPAWN UP"]:function(){
+	//	ins.TYPES['SPAWN UP']:function(){
 		0:function(gfx,cs){
 			gfx.beginPath();
 			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
@@ -82,7 +82,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["SPAWN DOWN"]:function(){
+	//	ins.TYPES['SPAWN DOWN']:function(){
 		1:function(gfx,cs){
 			gfx.beginPath();
 			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
@@ -92,7 +92,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["SPAWN LEFT"]:function(){
+	//	ins.TYPES['SPAWN LEFT']:function(){
 		2:function(gfx,cs){
 			gfx.beginPath();
 			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
@@ -102,7 +102,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["SPAWN RIGHT"]:function(){
+	//	ins.TYPES['SPAWN RIGHT']:function(){
 		3:function(gfx,cs){
 			gfx.beginPath();
 			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
@@ -112,7 +112,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["UP"]:function(){
+	//	ins.TYPES['UP']:function(){
 		4:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/2,cs/4);
@@ -122,7 +122,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["DOWN"]:function(){
+	//	ins.TYPES['DOWN']:function(){
 		5:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/2,3*cs/4);
@@ -132,7 +132,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["LEFT"]:function(){
+	//	ins.TYPES['LEFT']:function(){
 		6:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,cs/2);
@@ -142,7 +142,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["RIGHT"]:function(){
+	//	ins.TYPES['RIGHT']:function(){
 		7:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(3*cs/4,cs/2);
@@ -152,7 +152,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["ROTATE CW"]:function(){
+	//	ins.TYPES['ROTATE CW']:function(){
 		8:function(gfx,cs){
 			gfx.beginPath();
 			gfx.arc(cs/2,cs/2,cs/4,Math.PI/2,2*Math.PI);
@@ -161,7 +161,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["ROTATE CCW"]:function(){
+	//	ins.TYPES['ROTATE CCW']:function(){
 		9:function(gfx,cs){
 			gfx.beginPath();
 			gfx.arc(cs/2,cs/2,cs/4,Math.PI,Math.PI/2);
@@ -170,7 +170,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["IN STREAM"]:
+	//	ins.TYPES['IN STREAM']:
 		10:function(gfx,cs){
 			// TODO: override render func
 			// TODO: make letters for each stream
@@ -184,7 +184,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["OUT STREAM"]:
+	//	ins.TYPES['OUT STREAM']:
 		11:function(gfx,cs){
 			// TODO: override render func
 			// TODO: make letters for each stream
@@ -198,9 +198,9 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["IN"]:function(){
+	//	ins.TYPES['IN']:function(){
 		12:function(gfx,cs){
-			// TODO: this should NOT be an "I" (streams get letters as symbols)
+			// TODO: this should NOT be an 'I' (streams get letters as symbols)
 			gfx.beginPath();
 			gfx.moveTo(cs/2,cs/4);
 			gfx.lineTo(cs/2,3*cs/4);
@@ -211,15 +211,15 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["OUT"]:function(){
+	//	ins.TYPES['OUT']:function(){
 		13:function(gfx,cs){
-			// TODO: this should NOT be an "O" (streams get letters as symbols)
+			// TODO: this should NOT be an 'O' (streams get letters as symbols)
 			gfx.beginPath();
 			gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["GRAB"]:function(){
+	//	ins.TYPES['GRAB']:function(){
 		14:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,3*cs/4);
@@ -232,7 +232,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["DROP"]:function(){
+	//	ins.TYPES['DROP']:function(){
 		15:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,3*cs/4);
@@ -245,7 +245,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["GRAB/DROP"]:function(){
+	//	ins.TYPES['GRAB/DROP']:function(){
 		16:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,3*cs/4);
@@ -261,7 +261,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["INC"]:function(){
+	//	ins.TYPES['INC']:function(){
 		17:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,cs/2);
@@ -271,7 +271,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["DEC"]:function(){
+	//	ins.TYPES['DEC']:function(){
 		18:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,cs/2);
@@ -279,13 +279,13 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["COND 0"]:
+	//	ins.TYPES['COND 0']:
 		19:function(gfx,cs){
 			// TODO: UP DOWN LEFT RIGHT
 			gfx.beginPath();
 /*
-			gfx.fillStyle="#0F0F0F";
-			gfx.strokeStyle="#FF0000";
+			gfx.fillStyle='#0F0F0F';
+			gfx.strokeStyle='#FF0000';
 
 			gfx.moveTo(12*cs/64,16*cs/64);
 			gfx.lineTo(52*cs/64,16*cs/64);
@@ -327,34 +327,34 @@ App.makeInstructionCatalog = function(){
 			gfx.closePath();
 		},
 
-	//	ins.TYPES["COND +-"]:
+	//	ins.TYPES['COND +-']:
 		20:function(gfx,cs){
 			// TODO: UP DOWN LEFT RIGHT
 			gfx.beginPath();
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["COND EVEN ODD"]:
+	//	ins.TYPES['COND EVEN ODD']:
 		21:function(gfx,cs){
 			// TODO: UP DOWN LEFT RIGHT
 /*
-			gfx.fillStyle="#0F0F0F";
+			gfx.fillStyle='#0F0F0F';
 			gfx.fillRect(0,0,cs/2,cs/2);
 
-			gfx.strokeStyle="#AAAAAA";
+			gfx.strokeStyle='#AAAAAA';
 			gfx.strokeRect(0,0,cs/2,cs/2);
 
-			gfx.fillStyle="#F0F0F0";
+			gfx.fillStyle='#F0F0F0';
 			gfx.fillRect(cs/2,0,cs/2,cs/2);
 
 			gfx.strokeRect(cs/2,0,cs/2,cs/2);
 
-			gfx.fillStyle="#F0F0F0";
+			gfx.fillStyle='#F0F0F0';
 			gfx.fillRect(0,cs/2,cs/2,cs/2);
 
 			gfx.strokeRect(0,cs/2,cs/2,cs/2);
 
-			gfx.fillStyle="#0F0F0F";
+			gfx.fillStyle='#0F0F0F';
 			gfx.fillRect(cs/2,cs/2,cs/2,cs/2);
 
 			gfx.strokeRect(cs/2,cs/2,cs/2,cs/2);
@@ -362,7 +362,7 @@ App.makeInstructionCatalog = function(){
 */
 		},
 
-	//	ins.TYPES["SYNC"]:
+	//	ins.TYPES['SYNC']:
 		22:function(gfx,cs){
 			// TODO: override render | custom syms for each color
 /*
@@ -372,8 +372,8 @@ App.makeInstructionCatalog = function(){
 				switch(color){
 					case App.COLORS.RED:
 						gfx.translate(x*cs,y*cs);
-						gfx.fillStyle="#660000";
-						gfx.strokeStyle="#ff0000";
+						gfx.fillStyle='#660000';
+						gfx.strokeStyle='#ff0000';
 						gfx.moveTo(2,cs-2);
 						gfx.lineTo(2,2);
 						gfx.lineTo(cs-2,2);
@@ -389,8 +389,8 @@ App.makeInstructionCatalog = function(){
 						break;
 					case App.COLORS.GREEN:
 						gfx.translate(x*cs+cs,y*cs);
-						gfx.fillStyle="#006600";
-						gfx.strokeStyle="#00ff00";
+						gfx.fillStyle='#006600';
+						gfx.strokeStyle='#00ff00';
 						gfx.moveTo(2,2);
 						gfx.lineTo(cs-2,2);
 						gfx.lineTo(cs-2,cs-2);
@@ -406,8 +406,8 @@ App.makeInstructionCatalog = function(){
 						break;
 					case App.COLORS.BLUE:
 						gfx.translate(x*cs,y*cs+cs);
-						gfx.fillStyle="#000066";
-						gfx.strokeStyle="#0000ff";
+						gfx.fillStyle='#000066';
+						gfx.strokeStyle='#0000ff';
 						gfx.moveTo(cs-2,cs-2);
 						gfx.lineTo(2,cs-2);
 						gfx.lineTo(2,2);
@@ -423,8 +423,8 @@ App.makeInstructionCatalog = function(){
 						break;
 					case App.COLORS.YELLOW:
 						gfx.translate(x*cs+cs,y*cs+cs);
-						gfx.fillStyle="#666600";
-						gfx.strokeStyle="#ffff00";
+						gfx.fillStyle='#666600';
+						gfx.strokeStyle='#ffff00';
 						gfx.moveTo(cs-2,2);
 						gfx.lineTo(cs-2,cs-2);
 						gfx.lineTo(2,cs-2);
@@ -445,7 +445,7 @@ App.makeInstructionCatalog = function(){
 */
 		},
 
-	//	ins.TYPES["COLOR TOGGLE"]:function(){
+	//	ins.TYPES['COLOR TOGGLE']:function(){
 		23:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(1*cs/4,1*cs/4);
@@ -455,7 +455,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-	//	ins.TYPES["PAUSE"]:function(){
+	//	ins.TYPES['PAUSE']:function(){
 		24:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(1*cs/4,2*cs/4);

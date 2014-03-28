@@ -12,12 +12,12 @@ App.PlanningLevel = function(){
 	var that = this;
 
 	// returns an array that can have up to four instruction for the tile at x,y
-	this.getCell = function(x,y){ 
+	this.getCell = function(x,y){
 		//Note: I edited this to prevent a potential crash and/or undefined being passed around.
 		if(!that.grid[x] || !that.grid[x][y])
 			return null;
 
-		return that.grid[x][y]; 
+		return that.grid[x][y];
 	};
 
 	// returns the instruction at x,y, color
@@ -43,14 +43,14 @@ App.PlanningLevel = function(){
 			}
 		}
 	};
-	
+
 	// applies function f() to each cell in the grid
 	this.forEachCell = function(f){
 		for(var y = 0; y < that.height; y++){
 			for(var x = 0; x < that.width; x++){
 				for(var c = 0; c < that.numColors; c++){
-					if(that.contains(x, y, c)){ 
-						f(that.grid[x][y][c]); 
+					if(that.contains(x, y, c)){
+						f(that.grid[x][y][c]);
 					}
 				}
 			}
@@ -64,14 +64,14 @@ App.PlanningLevel = function(){
 	};
 
 	// contains the information needed to undo or redo an insert operation
-	this.insertOp = function(instruction){		
+	this.insertOp = function(instruction){
 		this.instruction = instruction;
 		this.overWritten = null;
 		this.opId = 'insert';
 	};
-	
+
 	// contains the information needed to undo or redo a delete operation
-	this.deleteOp = function(instruction){		
+	this.deleteOp = function(instruction){
 		this.instruction = instruction;
 		this.opId = 'delete';
 	};
@@ -179,7 +179,7 @@ App.PlanningLevel = function(){
 				}
 			}
 		}
-		
+
 	};
 
 	// this function performs a copy operation on an instruction,
@@ -217,7 +217,7 @@ App.PlanningLevel = function(){
 			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 			App.Game.requestStaticRenderUpdate = true;
 		}
-		
+
 	};
 
 	// this function, performs a move operation on an instruction,
@@ -269,9 +269,9 @@ App.PlanningLevel = function(){
 
 			// overwrite
 			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
-			that.grid[x][y][color] = null;			
+			that.grid[x][y][color] = null;
 		}
-		
+
 	};
 
 	// this function performs an insert operation on the grid,
@@ -307,9 +307,9 @@ App.PlanningLevel = function(){
 
 			// overwrite
 			that.grid[instruction.x][instruction.y][instruction.color] = instruction;
-			App.Game.requestStaticRenderUpdate = true;		
+			App.Game.requestStaticRenderUpdate = true;
 		}
-		
+
 	};
 
 	// this function performs a delete operation on an instruction,
@@ -436,20 +436,20 @@ App.PlanningLevel = function(){
 	// TODO it sounds like we may want to include the level title in the string?
 	this.generateParseString = function(){
 		var strings = [];
-		strings.push(this.name + "," + this.width + "," + this.height + ";");
+		strings.push(this.name + ',' + this.width + ',' + this.height + ';');
 
 		for(var i in this.grid){
 			for(var j in this.grid[i]){
 				for(var c in this.grid[i][j]){
 					var inst = this.grid[i][j][c];
-					strings.push(inst.x + "," + inst.y + "," + inst.color + "," + inst.type); // should there be a semicolon? the next x will be appended to the the type of the preceding instruction
+					strings.push(inst.x + ',' + inst.y + ',' + inst.color + ',' + inst.type); // should there be a semicolon? the next x will be appended to the the type of the preceding instruction
 				}
 			}
 		}
 
 		return strings.join();
 	};
-	
+
 	// TODO return a simulation level with instructions from the grid
 	this.generateSimulationLevel = function(){
 		var newLevel = new App.SimulationLevel(that.width, that.height);
@@ -458,8 +458,8 @@ App.PlanningLevel = function(){
 				for(var c in that.grid[i][j]){
 					var ins = that.getInstruction(i,j,c);
 					new App.SimulationInstruction(newLevel,ins.x,ins.y,ins.color,ins.type);
-				}	
-			}	
+				}
+			}
 		}
 		return newLevel;
 	};
@@ -473,19 +473,19 @@ App.PlanningLevel = function(){
 			App.Game.instructionGfx.save();
 			switch(c){
 				case 0:
-					App.Game.instructionGfx.fillStyle = "#ff0000";
+					App.Game.instructionGfx.fillStyle = '#ff0000';
 					App.Game.instructionGfx.translate(0,0);
 					break;
 				case 1:
-					App.Game.instructionGfx.fillStyle = "#00ff00";
+					App.Game.instructionGfx.fillStyle = '#00ff00';
 					App.Game.instructionGfx.translate(cs/2,0);
 					break;
 				case 2:
-					App.Game.instructionGfx.fillStyle = "#0000ff";
+					App.Game.instructionGfx.fillStyle = '#0000ff';
 					App.Game.instructionGfx.translate(0,cs/2);
 					break;
 				case 3:
-					App.Game.instructionGfx.fillStyle = "#ffff00";
+					App.Game.instructionGfx.fillStyle = '#ffff00';
 					App.Game.instructionGfx.translate(cs/2,cs/2);
 					break;
 			}
@@ -502,7 +502,7 @@ App.PlanningLevel = function(){
 	}
 
 	this.dynamicRender = function(){
-		App.Game.tempGfx.fillStyle = "#ff0000";
+		App.Game.tempGfx.fillStyle = '#ff0000';
 		App.Game.tempGfx.fillRect(0,0,1000,100);
 	}
 }

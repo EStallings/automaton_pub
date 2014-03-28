@@ -56,7 +56,7 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 		}
 
 		if(this.editmode)
-			gfx.fillText("Press Enter to save, Esc to cancel.", textX, textY - 15);
+			gfx.fillText('Press Enter to save, Esc to cancel.', textX, textY - 15);
 	}
 
 	//Update cursor
@@ -106,7 +106,7 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 		App.InputHandler.hijackInput(that.listenKeyStroke);
 		this.editmode = true;
 		this.lastText = this.text;
-		this.text = (this.text === this.defaultText)? "" : this.text;
+		this.text = (this.text === this.defaultText)? '' : this.text;
 		this.cursorPosition = this.text.length;
 	}
 

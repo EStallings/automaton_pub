@@ -1,5 +1,5 @@
 /*
-	Moves the "camera" around.
+	Moves the 'camera' around.
 */
 App.GuiJoystick = function(x, y, panel){
 	this.guiCollider = new App.GuiCollisionCircle(x, y, 35);
@@ -118,7 +118,7 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 		this.currentY = this.guiCollider.gety();
 	}
 
-	//The drag part of "drag and drop"
+	//The drag part of 'drag and drop'
 	this.update = function(){
 		if(!this.dragged)
 			return;
@@ -126,7 +126,7 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 		this.currentY = App.InputHandler.mouseData.y - this.guiCollider.h/2;
 	}
 
-	//The button has been "dropped"!
+	//The button has been 'dropped'!
 	this.clickEnd = function(x, y){
 		this.dragged = false;
 		this.currentX = this.guiCollider.getx();
@@ -143,7 +143,7 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 		var ny = App.Game.mouseY;
 		var c = App.GuiDragButton.globalColor;
 		var t = this.instruction;
-		console.log("dragged to " + nx + "," + ny);
+		console.log('dragged to ' + nx + ',' + ny);
 		level.insert(new App.PlanningInstruction(nx,ny,c,t));
 	}
 
@@ -189,7 +189,7 @@ App.GuiSliderButton = function(guiCollider, panel){
 	//Renders just the button portion of the slider (the box)
 	this.render = function(gfx){
 		if(!this.sliderLine)
-			console.error("Improperly initialized gui slider");
+			console.error('Improperly initialized gui slider');
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 
@@ -237,7 +237,7 @@ App.GuiSliderButton = function(guiCollider, panel){
 }
 
 //callback is basically a change listener. Not required.
-//The slider line is the "rail" that the button "slides on"
+//The slider line is the 'rail' that the button 'slides on'
 App.GuiSliderLine = function(guiCollider, min, max, direction, callback, panel){
 	this.guiCollider = guiCollider;
 	if(panel) panel.addChild(this);
@@ -250,10 +250,10 @@ App.GuiSliderLine = function(guiCollider, min, max, direction, callback, panel){
 	this.callback = callback;
 	this.value = 0;
 
-	//Renders the slider line component; the part that the slider slides "on"
+	//Renders the slider line component; the part that the slider slides 'on'
 	this.render = function(gfx){
 		if(!this.sliderButton)
-			console.error("Improperly initialized gui slider");
+			console.error('Improperly initialized gui slider');
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 	}
@@ -272,7 +272,7 @@ App.GuiSliderLine = function(guiCollider, min, max, direction, callback, panel){
 		this.value = vals.v;
 	}
 
-	//this redirect allows the user to click on the slider and "snap" the slider button to where they clicked!
+	//this redirect allows the user to click on the slider and 'snap' the slider button to where they clicked!
 	this.clickStart = function(){
 		App.Gui.activeComponent = this.sliderButton;
 		this.sliderButton.clickStart();

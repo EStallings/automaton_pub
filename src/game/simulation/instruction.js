@@ -33,69 +33,69 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 	switch(type){
 
-		case App.InstCatalog.TYPES["SPAWN UP"]:
+		case App.InstCatalog.TYPES['SPAWN UP']:
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.UP,color);
 			this.execute = function(a){};break; // do nothing
 
-		case App.InstCatalog.TYPES["SPAWN DOWN"]:
+		case App.InstCatalog.TYPES['SPAWN DOWN']:
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.DOWN,color);
 			this.execute = function(a){};break; // do nothing
 
-		case App.InstCatalog.TYPES["SPAWN LEFT"]:
+		case App.InstCatalog.TYPES['SPAWN LEFT']:
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.LEFT,color);
 			this.execute = function(a){};break; // do nothing
 
-		case App.InstCatalog.TYPES["SPAWN RIGHT"]:
+		case App.InstCatalog.TYPES['SPAWN RIGHT']:
 
 			new App.SimulationAutomaton(level,x,y,App.DIRECTIONS.RIGHT,color);
 			this.execute = function(a){};break; // do nothing
 
-		case App.InstCatalog.TYPES["UP"]:
+		case App.InstCatalog.TYPES['UP']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.UP;
 			};break;
 
-		case App.InstCatalog.TYPES["DOWN"]:
+		case App.InstCatalog.TYPES['DOWN']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.DOWN;
 			};break;
 
-		case App.InstCatalog.TYPES["LEFT"]:
+		case App.InstCatalog.TYPES['LEFT']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.LEFT;
 			};break;
 
-		case App.InstCatalog.TYPES["RIGHT"]:
+		case App.InstCatalog.TYPES['RIGHT']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 
-		case App.InstCatalog.TYPES["ROTATE CW"]:
+		case App.InstCatalog.TYPES['ROTATE CW']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = (a.direction+3)%4;
 			};break;
 
-		case App.InstCatalog.TYPES["ROTATE CCW"]:
+		case App.InstCatalog.TYPES['ROTATE CCW']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				a.direction = (a.direction+1)%4;
 			};break;
 
-		case App.InstCatalog.TYPES["IN STREAM"]:
+		case App.InstCatalog.TYPES['IN STREAM']:
 
 			if(level.inStreams[color] === undefined)
 				level.inStreams[color] = [];
@@ -108,7 +108,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 			this.execute = function(a){};break; // do nothing
 
-		case App.InstCatalog.TYPES["OUT STREAM"]:
+		case App.InstCatalog.TYPES['OUT STREAM']:
 
 			if(level.outStreams[color] === undefined)
 				level.outStreams[color] = [];
@@ -123,7 +123,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 			this.execute = function(a){};break; // do nothing
 
-		case App.InstCatalog.TYPES["IN"]:
+		case App.InstCatalog.TYPES['IN']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
@@ -132,7 +132,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 					this.level.inStreams[this.color][i].input();
 			};break;
 
-		case App.InstCatalog.TYPES["OUT"]:
+		case App.InstCatalog.TYPES['OUT']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
@@ -140,7 +140,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 					this.level.outStreams[this.color][i].output();
 			};break;
 
-		case App.InstCatalog.TYPES["GRAB"]:
+		case App.InstCatalog.TYPES['GRAB']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
@@ -151,7 +151,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				}
 			};break;
 
-		case App.InstCatalog.TYPES["DROP"]:
+		case App.InstCatalog.TYPES['DROP']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
@@ -162,7 +162,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				}
 			};break;
 
-		case App.InstCatalog.TYPES["GRAB/DROP"]:
+		case App.InstCatalog.TYPES['GRAB/DROP']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
@@ -179,51 +179,51 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				}
 			};break;
 
-		case App.InstCatalog.TYPES["INC"]:
+		case App.InstCatalog.TYPES['INC']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)++a.tokenHeld.number;
 			};break;
 
-		case App.InstCatalog.TYPES["DEC"]:
+		case App.InstCatalog.TYPES['DEC']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)--a.tokenHeld.number;
 			};break;
 
-		case App.InstCatalog.TYPES["COND 0"]:
+		case App.InstCatalog.TYPES['COND 0']:
 
 			// TODO: UP DOWN LEFT RIGHT
 			this.execute = function(a){
 			};break;
 
-		case App.InstCatalog.TYPES["COND +-"]:
+		case App.InstCatalog.TYPES['COND +-']:
 
 			// TODO: UP DOWN LEFT RIGHT
 			this.execute = function(a){
 			};break;
 
-		case App.InstCatalog.TYPES["COND EVEN ODD"]:
+		case App.InstCatalog.TYPES['COND EVEN ODD']:
 
 			// TODO: UP DOWN LEFT RIGHT
 			this.execute = function(a){
 			};break;
 
-		case App.InstCatalog.TYPES["SYNC"]:
+		case App.InstCatalog.TYPES['SYNC']:
 
 			this.execute = function(a){
 				this.cell.sync();
 			};break;
 
-		case App.InstCatalog.TYPES["COLOR TOGGLE"]:
+		case App.InstCatalog.TYPES['COLOR TOGGLE']:
 
 			this.execute = function(a){
 				a.colorFlags[this.color] = !a.colorFlags[this.color];
 			};break;
 
-		case App.InstCatalog.TYPES["PAUSE"]:
+		case App.InstCatalog.TYPES['PAUSE']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;

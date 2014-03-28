@@ -50,7 +50,7 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 		if(this.tokenHeld != undefined)this.tokenHeld.dynamicRender(x*c,y*c);
 
 		this.gfx.lineWidth = 2;
-		this.gfx.strokeStyle = "rgba(255,255,255,0.1)";
+		this.gfx.strokeStyle = 'rgba(255,255,255,0.1)';
 		this.gfx.beginPath();
 		this.gfx.arc(x*c+h,y*c+h,h,-Math.PI,Math.PI);
 		this.gfx.stroke();
@@ -58,22 +58,22 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 
 		// render automaton
 		if(this.colorFlags[App.COLORS.RED]){
-			this.gfx.strokeStyle = "#ff0000";
+			this.gfx.strokeStyle = '#ff0000';
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,-Math.PI,-Math.PI/2);
 			this.gfx.stroke();
 		}if(this.colorFlags[App.COLORS.GREEN]){
-			this.gfx.strokeStyle = "#00ff00";
+			this.gfx.strokeStyle = '#00ff00';
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,-Math.PI/2,0);
 			this.gfx.stroke();
 		}if(this.colorFlags[App.COLORS.BLUE]){
-			this.gfx.strokeStyle = "#0000ff";
+			this.gfx.strokeStyle = '#0000ff';
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,Math.PI/2,Math.PI);
 			this.gfx.stroke();
 		}if(this.colorFlags[App.COLORS.YELLOW]){
-			this.gfx.strokeStyle = "#ffff00";
+			this.gfx.strokeStyle = '#ffff00';
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,0,Math.PI/2);
 			this.gfx.stroke();

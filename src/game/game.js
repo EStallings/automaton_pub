@@ -66,7 +66,7 @@ App.makeGame = function(){
 	// Level format are made, they have to be updated here.
 	// This could be considered fragile code in need of refactoring!
 	game.loadNewLevel = function(inputString){
-		var split = inputString.split(";");
+		var split = inputString.split(';');
 		var lev = new App.PlanningLevel();
 		if(split.length > 0){
 			var levDat = split[0].split(',');
@@ -142,12 +142,12 @@ App.makeGame = function(){
 	// ===================== RENDER-SPECIFIC ==================== //
 	// ========================================================== //
 
-	game.tempGfx        = App.Canvases.addNewLayer("gameTemp"       ,0).getContext("2d");
-	game.automGfx       = App.Canvases.addNewLayer("autom"         ,-1).getContext("2d");
-	game.tokenDGfx      = App.Canvases.addNewLayer("token dynamic" ,-2).getContext("2d");
-	game.tokenSGfx      = App.Canvases.addNewLayer("token static"  ,-3).getContext("2d");
-	game.instructionGfx = App.Canvases.addNewLayer("instruction"   ,-4).getContext("2d");
-	game.gridGfx        = App.Canvases.addNewLayer("grid static"   ,-5).getContext("2d");
+	game.tempGfx        = App.Canvases.addNewLayer('gameTemp'       ,0).getContext('2d');
+	game.automGfx       = App.Canvases.addNewLayer('autom'         ,-1).getContext('2d');
+	game.tokenDGfx      = App.Canvases.addNewLayer('token dynamic' ,-2).getContext('2d');
+	game.tokenSGfx      = App.Canvases.addNewLayer('token static'  ,-3).getContext('2d');
+	game.instructionGfx = App.Canvases.addNewLayer('instruction'   ,-4).getContext('2d');
+	game.gridGfx        = App.Canvases.addNewLayer('grid static'   ,-5).getContext('2d');
 	// remember to add to clearGfx
 
 	game.requestStaticRenderUpdate = true;
@@ -287,7 +287,7 @@ App.makeGame = function(){
 		var ry = fmod(game.renderY,cs);
 
 		// draw grid lines
-		game.gridGfx.strokeStyle = "#111111";
+		game.gridGfx.strokeStyle = '#111111';
 		game.gridGfx.beginPath();
 		for(var i=rx;i<=w;i+=cs){
 			game.gridGfx.moveTo(i,0);game.gridGfx.lineTo(i,h);
@@ -296,7 +296,7 @@ App.makeGame = function(){
 		}game.gridGfx.stroke();
 
 		// draw cell corners
-		game.gridGfx.strokeStyle = "#444444";
+		game.gridGfx.strokeStyle = '#444444';
 		game.gridGfx.beginPath();
 		for(var i=rx;i<=w;i+=cs)
 		for(var j=ry;j<=h;j+=cs){
@@ -305,7 +305,7 @@ App.makeGame = function(){
 		}game.gridGfx.stroke();
 
 		// draw cell centers
-		game.gridGfx.strokeStyle = "#222222";
+		game.gridGfx.strokeStyle = '#222222';
 		game.gridGfx.beginPath();
 		for(var i=rx-cs/2;i<w+cs;i+=cs)
 		for(var j=ry-cs/2;j<h+cs;j+=cs){
@@ -316,7 +316,7 @@ App.makeGame = function(){
 		}game.gridGfx.stroke();
 
 		// draw level borders
-		game.gridGfx.strokeStyle = "#888888";
+		game.gridGfx.strokeStyle = '#888888';
 		game.gridGfx.beginPath();
 		game.gridGfx.rect(game.renderX-4,game.renderY-4,
 		                  game.currentPlanningLevel.width*game.cellSize+8,
@@ -347,42 +347,42 @@ App.makeGame = function(){
 	game.renderDebug = function(){
 		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-		game.tempGfx.fillStyle = "rgba(0,0,0,0.7)"
+		game.tempGfx.fillStyle = 'rgba(0,0,0,0.7)'
 		game.tempGfx.fillRect(5,5,300,81);
 
-		game.tempGfx.font = "bold 11px arial";
-		game.tempGfx.fillStyle = "#ffffff";
-		game.tempGfx.fillText("FPS: "+Math.round(App.Engine.fps) ,11,22);
-		game.tempGfx.fillText("Cycle: "+game.cycle               ,11,33);
+		game.tempGfx.font = 'bold 11px arial';
+		game.tempGfx.fillStyle = '#ffffff';
+		game.tempGfx.fillText('FPS: '+Math.round(App.Engine.fps) ,11,22);
+		game.tempGfx.fillText('Cycle: '+game.cycle               ,11,33);
 		if(game.paused){
-			game.tempGfx.fillStyle = "#ff0000";
-			game.tempGfx.fillText("Speed: PAUSED",11,44);
-			game.tempGfx.fillStyle = "#ffffff";
-		}else game.tempGfx.fillText("Speed: "+game.simulationSpeed+" ms/tick",11,44);
-		game.tempGfx.fillText("Tick: "+App.Engine.tick           ,11,55);
-		game.tempGfx.fillText("Zoom: "+game.cellSizeFactor       ,11,66);
-		game.tempGfx.fillText("Mode: "+game.mode       ,11,77);
+			game.tempGfx.fillStyle = '#ff0000';
+			game.tempGfx.fillText('Speed: PAUSED',11,44);
+			game.tempGfx.fillStyle = '#ffffff';
+		}else game.tempGfx.fillText('Speed: '+game.simulationSpeed+' ms/tick',11,44);
+		game.tempGfx.fillText('Tick: '+App.Engine.tick           ,11,55);
+		game.tempGfx.fillText('Zoom: '+game.cellSizeFactor       ,11,66);
+		game.tempGfx.fillText('Mode: '+game.mode       ,11,77);
 
-		game.tempGfx.fillText("Pan X: "+game.renderX             ,132,22);
-		game.tempGfx.fillText("Pan Y: "+game.renderY             ,132,33);
-		game.tempGfx.fillText("Cell Size: "+game.cellSize        ,132,44);
-		if(game.requestStaticRenderUpdate)game.tempGfx.fillStyle = "#ff0000";
-		game.tempGfx.fillText("Static Render: "+game.requestStaticRenderUpdate,132,55);
-		game.tempGfx.fillStyle = "#ffffff";
-		var bar = "Interpolation ";
-		for(var i=0;i<game.interpolation;i+=0.05)bar+="|";
+		game.tempGfx.fillText('Pan X: '+game.renderX             ,132,22);
+		game.tempGfx.fillText('Pan Y: '+game.renderY             ,132,33);
+		game.tempGfx.fillText('Cell Size: '+game.cellSize        ,132,44);
+		if(game.requestStaticRenderUpdate)game.tempGfx.fillStyle = '#ff0000';
+		game.tempGfx.fillText('Static Render: '+game.requestStaticRenderUpdate,132,55);
+		game.tempGfx.fillStyle = '#ffffff';
+		var bar = 'Interpolation ';
+		for(var i=0;i<game.interpolation;i+=0.05)bar+='|';
 		game.tempGfx.fillText(bar,132,66);
-		game.tempGfx.fillText("Mouse: "+game.mouseX+","+game.mouseY+","+game.mouseC,132,77);
+		game.tempGfx.fillText('Mouse: '+game.mouseX+','+game.mouseY+','+game.mouseC,132,77);
 	}
 
 	// ========================================================== //
 
 	// TODO: move these to gameInput
-	// TODO: why can't i register "-" and "="?
-	App.InputHandler.registerKey("[",function(){game.setSimulationSpeed(game.simulationSpeed*2);});
-	App.InputHandler.registerKey("]",function(){game.setSimulationSpeed(game.simulationSpeed/2);});
-	App.InputHandler.registerKey("Space",function(){game.pause();});
-	App.InputHandler.registerKey("`",function(){game.toggleMode();});
+	// TODO: why can't i register '-' and '='?
+	App.InputHandler.registerKey('[',function(){game.setSimulationSpeed(game.simulationSpeed*2);});
+	App.InputHandler.registerKey(']',function(){game.setSimulationSpeed(game.simulationSpeed/2);});
+	App.InputHandler.registerKey('Space',function(){game.pause();});
+	App.InputHandler.registerKey('`',function(){game.toggleMode();});
 	App.InputHandler.registerKey('Z', function(){
 			if(App.InputHandler.keysDown['Ctrl']) {
 				if(App.InputHandler.keysDown['Shift']){

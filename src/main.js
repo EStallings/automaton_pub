@@ -13,7 +13,7 @@ window.onload = function(){
 	App.Engine.run();
 
 	// TEMPORARY STUFF | DELETE ================================= //
-	// TODO: what if each gui menu gets its own canvas and is "always rendering"?
+	// TODO: what if each gui menu gets its own canvas and is 'always rendering'?
 	//App.makeDemoGui();
 	App.makePlanningGui();
 	App.Gui.setCurrentFrame('planning');
@@ -41,13 +41,13 @@ App.makeDemoGui = function(){
 	var panel = new App.GuiPanel(new App.GuiCollisionRect(7*cellWidth, 80, 300, 600));
 	// var dragButton1 = new App.GuiDragButton(new App.GuiCollisionRect(25,125,50,50), null, 7, panel);
 	// var dragButton2 = new App.GuiDragButton(new App.GuiCollisionRect(100,125,50,50), null, 7, panel);
-	var textButton = new App.GuiTextButton(25,25, "foo bar", function(){ console.log("hi");}, false, panel);
+	var textButton = new App.GuiTextButton(25,25, 'foo bar', function(){ console.log('hi');}, false, panel);
 
 	//intentionally global for debugging -- I use this guy to show some data about touch input.
-	textBox = new App.GuiTextBox(new App.GuiCollisionRect(25,225,100,50), "I am a text box!", panel);
+	textBox = new App.GuiTextBox(new App.GuiCollisionRect(25,225,100,50), 'I am a text box!', panel);
 	textBox.guiCollider.functional = true;
 
-	var editBox = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,325,200,50), "Edit me", panel);
+	var editBox = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,325,200,50), 'Edit me', panel);
 	App.Gui.addNewComponent('test', panel);
 	// App.Gui.addNewComponent('test', dragButton1);
 	// App.Gui.addNewComponent('test', dragButton2);
@@ -109,8 +109,17 @@ App.makePlanningGui = function(){
 	App.Gui.addNewComponent('planning', zoomInButton);
 	App.Gui.addNewComponent('planning', zoomOutButton);
 
-	var simButton = new App.GuiTextButton(400, 50, 'Simulate', function(){App.Game.toggleMode();}, false, null);
+	var promptDialog = [];
+	promptDialog[1] = App.MakeGuiDialogPanel();
+	promptDialog[0] = new App.GuiTextButton(100,100, 'OK', function(){setTimeout(function(){App.Gui.endDialog()}, 200);}, false, null);
+
+
+	var toggle = function(){
+		 App.Gui.startDialog(promptDialog); App.Game.toggleMode();
+	}
+	var simButton = new App.GuiTextButton(400, 50, 'Simulate',toggle, false, null);
 	App.Gui.addNewComponent('planning', simButton);
+
 
 
 	//For the simulation mode GUI

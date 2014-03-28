@@ -8,18 +8,14 @@ App.makeGuiInput = function(){
 	//is a functional object (should be passed clickStart, etc)
 	//Then calls clickStart if necessary, and returns whether or not a collision occurred
 	gInput.mouseDown = function(mouseData){
-		var frame = App.Gui.currentFrame;
-		var hit = false;
+		var comp = App.Gui.testCoordinates(mouseData.x, mouseData.y);
+		if(!comp)
+			return false;
 
-		for(var c in frame){
-			if(frame[c].guiCollider && frame[c].guiCollider.collides(mouseData.x, mouseData.y)){
-				if(frame[c].guiCollider.functional){
-					App.Gui.activeComponent = frame[c];
-				}
-				hit = true;
-				App.Gui.drawStatic = true;
-			}
-		}
+		var frame = App.Gui.currentFrame;
+		if(comp.guiCollider.functional)
+			App.Gui.activeComponent = comp;
+		App.Gui.drawStatic = true;
 
 		//I don't declare a variable for activecomponent because if it's null,
 		//the App.Gui will need manual updating.
@@ -31,7 +27,7 @@ App.makeGuiInput = function(){
 
 		}
 
-		return hit;
+		return true;
 	}
 
 

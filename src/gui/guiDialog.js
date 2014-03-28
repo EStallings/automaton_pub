@@ -9,7 +9,7 @@
 		enter username and password
 		confirm & cancel buttons
 
-		"SubmitDialog"
+		'SubmitDialog'
 
 	2) a success/fail dialog
 		okay button
@@ -19,14 +19,14 @@
 			this means it could be overlaid over the other dialog
 		to also be used after either failing a level or suceeding
 
-		"ConfirmDialog"
+		'ConfirmDialog'
 
 	3) a story dialog
-		has some "story" information
+		has some 'story' information
 		could also be used for tutorial information
 		probably using pictures in this.
 
-		"InfoDialog"
+		'InfoDialog'
 
 */
 

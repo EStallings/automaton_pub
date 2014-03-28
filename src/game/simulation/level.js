@@ -48,9 +48,9 @@ App.SimulationLevel = function(width,height){
 		App.Game.translateCanvas(App.Game.instructionGfx);
 		App.Game.instructionGfx.lineWidth = 2;
 		App.Game.translateCanvas(App.Game.tokenSGfx);
-		App.Game.tokenSGfx.textAlign = "center";
-		App.Game.tokenSGfx.textBaseline = "middle";
-		App.Game.tokenSGfx.font = "bold "+App.Game.cellSize/2+"px arial";
+		App.Game.tokenSGfx.textAlign = 'center';
+		App.Game.tokenSGfx.textBaseline = 'middle';
+		App.Game.tokenSGfx.font = 'bold '+App.Game.cellSize/2+'px arial';
 
 		for(var i in this.grid)/* TODO: if i intersects with window */
 		for(var j in this.grid[i])/* TODO: if j intersects with window */{
@@ -66,9 +66,9 @@ App.SimulationLevel = function(width,height){
 	this.dynamicRender = function(){
 		App.Game.translateCanvas(App.Game.automGfx);
 		App.Game.translateCanvas(App.Game.tokenDGfx);
-		App.Game.tokenDGfx.textAlign = "center";
-		App.Game.tokenDGfx.textBaseline = "middle";
-		App.Game.tokenDGfx.font = "bold "+App.Game.cellSize/2+"px arial";
+		App.Game.tokenDGfx.textAlign = 'center';
+		App.Game.tokenDGfx.textBaseline = 'middle';
+		App.Game.tokenDGfx.font = 'bold '+App.Game.cellSize/2+'px arial';
 		// TODO: OPTIMIZE RENDERING: ONLY RENDER STUFF INSIDE WINDOW
 		for(var i in this.automatons)this.automatons[i].dynamicRender();
 		// TODO: render sfx animation layers
