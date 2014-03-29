@@ -5,6 +5,7 @@ App.PlanningLevel = function(){
 	this.grid = []; // grid[x][y][color] = instruction
 	this.undoStack = []; // stores operation objects that can be undone later
 	this.redoStack = []; // stores operation objects that can be redone later
+	this.opObj = new App.Operation();
 
 	// flag that lets the operation functions know how to handle conflicts.
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
@@ -57,57 +58,12 @@ App.PlanningLevel = function(){
 		}
 	};
 
-	// contains information needed to undo or redo any of the group operations
-	this.groupOp = function(numInstructions){
-		this.numInstructions = numInstructions;
-		this.opId = 'group';
-	};
-
-	// contains the information needed to undo or redo an insert operation
-	this.insertOp = function(instruction){
-		this.instruction = instruction;
-		this.overWritten = null;
-		this.opId = 'insert';
-	};
-
-	// contains the information needed to undo or redo a delete operation
-	this.deleteOp = function(instruction){
-		this.instruction = instruction;
-		this.opId = 'delete';
-	};
-
-	// contains the information needed to undo or redo a move operation
-	this.moveOp = function(instruction, newX, newY){
-		this.instruction = instruction;
-		this.newX = newX; this.newY = newY;
-		this.overWritten = null;
-		this.opId = 'move';
-	};
-
-	// contains the information needed to undo or redo a copy operation
-	this.copyOp = function(instruction, newX, newY){
-		this.instruction = instruction;
-		this.newX = newX; this.newY = newY;
-		this.overWritten = null;
-		this.opId = 'copy';
-	};
-
-	// contains the information needed to undo or redo a modify operation
-	this.modifyOp = function(instruction, parameter, newValue, oldValue){
-		this.instruction = instruction;
-		this.parameter = parameter;
-		this.newValue = newValue;
-		this.oldValue = oldValue;
-		this.overWritten = null;
-		this.opId = 'modify';
-	};
-
 	// this function takes a list of PlanningInstructions and inserts them into the grid
 	this.groupInsert = function(instructions){
 		for(var x = 0; x < instructions.length; x++){
 			that.insert(instructions[x]);
 		}
-		that.undoStack.push(new that.groupOp(instructions.length));
+		that.undoStack.push(new that.opObj.groupOp(instructions.length));
 	};
 
 	// this function takes a list of coordinate triplets and deletes the corresponding instructions from the grid
@@ -115,7 +71,7 @@ App.PlanningLevel = function(){
 		for(var x = 0; x < coords.length; x++){
 			that.delete(coords[x][0],coords[x][1],coords[x][2]);
 		}
-		that.undoStack.push(new that.groupOp(coords.length));
+		that.undoStack.push(new that.opObj.groupOp(coords.length));
 	};
 
 	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
@@ -123,7 +79,7 @@ App.PlanningLevel = function(){
 		for(var x = 0; x < coords.length; x++){
 			that.move(coords[x][0],coords[x][1],coords[x][2],coords[x][0]+shiftX,coords[x][1]+shiftY);
 		}
-		that.undoStack.push(new that.groupOp(coords.length));
+		that.undoStack.push(new that.opObj.groupOp(coords.length));
 	}
 
 	// this function takes a list of coordinate triplets and copies the instructions they point to to a new cell shiftX and shiftY away from the first
@@ -131,7 +87,7 @@ App.PlanningLevel = function(){
 		for(var x = 0; x < coords.length; x++){
 			that.copy(coords[x][0],coords[x][1],coords[x][2],coords[x][0]+shiftX,coords[x][1]+shiftY);
 		}
-		that.undoStack.push(new that.groupOp(coords.length));
+		that.undoStack.push(new that.opObj.groupOp(coords.length));
 	}
 
 	// not sure we will actually need this one
@@ -140,7 +96,7 @@ App.PlanningLevel = function(){
 		for(var x = 0; x < coords.length; x++){
 			that.modify(this.getInstruction(coords[x][0],coords[x][1],coords[x][2]),parameter,value);
 		}
-		that.undoStack.push(new that.groupOp(coords.length));
+		that.undoStack.push(new that.opObj.groupOp(coords.length));
 	}
 
 	// this function performs a modify operation on an instruction,
@@ -152,7 +108,7 @@ App.PlanningLevel = function(){
 			var oldColor = instruction.color;
 			// update undo stack
 			if(killRedo !== 1) that.redoStack = [];
-			that.undoStack.push(new that.modifyOp(instruction, parameter, value, instruction[parameter]));
+			that.undoStack.push(new that.opObj.modifyOp(instruction, parameter, value, instruction[parameter]));
 
 			// update instruction
 			that.grid[instruction.x][instruction.y][instruction.color][parameter] = value;
@@ -187,7 +143,7 @@ App.PlanningLevel = function(){
 	this.copy = function(x, y, color, newX, newY, killRedo){
 		// update undo stack
 		if(killRedo !== 1) that.redoStack = [];
-		that.undoStack.push(new that.copyOp(that.getInstruction(x,y,color), newX, newY));
+		that.undoStack.push(new that.opObj.copyOp(that.getInstruction(x,y,color), newX, newY));
 
 		// make sure there is an instruction at the specified coordinate
 		if(!that.contains(x,y,color)){ return; }
@@ -229,7 +185,7 @@ App.PlanningLevel = function(){
 
 		// update undo stack
 		if(killRedo !== 1) that.redoStack = [];
-		that.undoStack.push(new that.moveOp(that.getInstruction(x,y,color), newX, newY));
+		that.undoStack.push(new that.opObj.moveOp(that.getInstruction(x,y,color), newX, newY));
 
 		// update grid
 		if(!that.contains(newX,newY,color)){
@@ -280,7 +236,7 @@ App.PlanningLevel = function(){
 
 		// update undo stack
 		if(killRedo !== 1) that.redoStack = [];
-		that.undoStack.push(new that.insertOp(instruction));
+		that.undoStack.push(new that.opObj.insertOp(instruction));
 
 		// update grid
 		if(!that.getInstruction(instruction.x,instruction.y,instruction.color)){
@@ -321,7 +277,7 @@ App.PlanningLevel = function(){
 
 					// update undo stack
 					if(killRedo !== 1) that.redoStack = [];
-					that.undoStack.push(new that.deleteOp(that.getInstruction(x,y,color)));
+					that.undoStack.push(new that.opObj.deleteOp(that.getInstruction(x,y,color)));
 
 					// update grid
 					that.grid[x][y][color] = null;
