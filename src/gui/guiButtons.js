@@ -185,7 +185,7 @@ App.GuiPanel = function(guiCollider){
 App.GuiPanel.rgba = 'rgba(180, 180, 180, 0.1)';
 
 //Subclassing in JS is awful. Breaks everything. Use factories instead usually
-App.MakeGuiDialogPanel = function(){
+App.MakeGuiOverlayPanel = function(){
 	return new App.GuiPanel(new App.GuiCollisionRect(0,0,App.Canvases.width, App.Canvases.height));
 }
 

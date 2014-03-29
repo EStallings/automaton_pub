@@ -109,13 +109,13 @@ App.makePlanningGui = function(){
 	App.Gui.addNewComponent('planning', zoomInButton);
 	App.Gui.addNewComponent('planning', zoomOutButton);
 
-	var promptDialog = [];
-	promptDialog[1] = App.MakeGuiDialogPanel();
-	promptDialog[0] = new App.GuiTextButton(100,100, 'OK', function(){setTimeout(function(){App.Gui.endDialog()}, 200);}, false, null);
+	var promptOverlay = [];
+	promptOverlay[1] = App.MakeGuiOverlayPanel();
+	promptOverlay[0] = new App.GuiTextButton(100,100, 'OK', function(){setTimeout(function(){App.Gui.endOverlay()}, 200);}, false, null);
 
 
 	var toggle = function(){
-		 App.Gui.startDialog(promptDialog); App.Game.toggleMode();
+		 App.Gui.startOverlay(promptOverlay); App.Game.toggleMode();
 	}
 	var simButton = new App.GuiTextButton(400, 50, 'Simulate',toggle, false, null);
 	App.Gui.addNewComponent('planning', simButton);

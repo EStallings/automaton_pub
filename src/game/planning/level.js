@@ -436,7 +436,7 @@ App.PlanningLevel = function(){
 	// TODO it sounds like we may want to include the level title in the string?
 	this.generateParseString = function(){
 		var strings = [];
-		strings.push(this.name + ',' + this.width + ',' + this.height + ';');
+		strings.push(this.name + ',' + this.width + ',' + this.height);
 
 		for(var i in this.grid){
 			for(var j in this.grid[i]){
@@ -447,7 +447,7 @@ App.PlanningLevel = function(){
 			}
 		}
 
-		return strings.join();
+		return strings.join(';');
 	};
 
 	// TODO return a simulation level with instructions from the grid

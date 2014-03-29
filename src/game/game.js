@@ -78,7 +78,7 @@ App.makeGame = function(){
 				var instDat = split[i].split(',');
 				var x = parseInt(instDat[0]);
 				var y = parseInt(instDat[1]);
-				var col = instDat[2];
+				var col = parseInt(instDat[2]);
 				var typ = parseInt(instDat[3]);
 				var inst = new App.PlanningInstruction(x, y, col, typ);
 				lev.insert(inst);
