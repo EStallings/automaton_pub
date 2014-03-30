@@ -10,6 +10,7 @@ App.PlanningLevel = function(){
 	this.greenLocked = false;
 	this.blueLocked = false;
 	this.yellowLocked = false;
+	this.currentSelection = [];
 
 	// flag that lets the operation functions know how to handle conflicts.
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
@@ -61,6 +62,21 @@ App.PlanningLevel = function(){
 			}
 		}
 	};
+
+	//
+	this.select = function(x1, y1, x2, y2){
+		instructions = [];
+		numSelected = 0;
+		for(y = y1; y <= y2; ++y){
+			for(x = x1; x <= x2; ++x){
+				for(c = 0; c <= 3; ++c){
+					temp = that.getInstruction(x,y,c);
+					if(temp !== null && !that.isLocked(temp.color)){ instructions[numSelected] = temp; ++numSelected; }
+				}
+			}
+		}
+		return instructions;
+	}
 
 	// toggles the state of the specified layer lock
 	this.toggleLock = function(col){
@@ -135,6 +151,7 @@ App.PlanningLevel = function(){
 	// if the parameter is 'color', then this will try to move the instruction
 	// to the appropriate spot in the array.
 	this.modify = function(instruction, parameter, value, killRedo){
+		if(that.isLocked(instruction.color)){ return; }
 		if(that.contains(instruction.x, instruction.y, instruction.color) ){
 			var oldColor = instruction.color;
 			// update undo stack
@@ -173,6 +190,7 @@ App.PlanningLevel = function(){
 	// this function performs a copy operation on an instruction,
 	// and creates and pushes a copyOp object onto the undo stack.
 	this.copy = function(x, y, color, newX, newY, killRedo){
+		if(that.isLocked(color)){ return; }
 		// update undo stack
 		that.undoStack.push(new that.opObj.copyOp(that.getInstruction(x,y,color), newX, newY));
 
@@ -213,6 +231,7 @@ App.PlanningLevel = function(){
 	// this function, performs a move operation on an instruction,
 	// and creates and pushes a moveOp object onto the undo stack.
 	this.move = function(x, y, color, newX, newY, killRedo){
+		if(that.isLocked(color)){ return; }
 
 		// make sure there is an instruction at the specified coordinate
 		if(!that.contains(x,y,color)){ return; }
@@ -311,6 +330,7 @@ App.PlanningLevel = function(){
 	// this function performs a delete operation on an instruction,
 	// it also creates and pushes a deleteOp object onto the stack
 	this.delete = function(x,y,color,killRedo){
+		if(that.isLocked(color)){ return; }
 		if(that.grid[x]){
 			if(that.grid[x][y]){
 				if(that.grid[x][y][color]){
@@ -328,6 +348,7 @@ App.PlanningLevel = function(){
 
 	};
 
+	// TODO figure out how undo / redo will work with locked layers.
 	// each call to this function pops the undo stack, and undoes whatever operation it finds
 	this.undo = function(killRedo){
 		if(that.undoStack.length === 0) return;
