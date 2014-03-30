@@ -13,6 +13,9 @@ App.makeInputHandler = function(){
 
 	//Keyboard callback data
 	input.keyRegistry = [];
+	for(var m in App.MODES){
+		input.keyRegistry[App.MODES[m]] = [];
+	}
 	input.keysDown = [];
 
 	//current mouse information -- feel free to use, but don't modify elsewhere!
@@ -52,9 +55,9 @@ App.makeInputHandler = function(){
 
 	//Registers a callback to be fired when a key is pressed - can only
 	//bind ONE callback to a key at a time.
-	input.registerKey = function(key, callback){
-		if(!this.keyRegistry[key])
-			this.keyRegistry[key] = callback;
+	input.registerKey = function(key, mode, callback){
+		if(!this.keyRegistry[mode][key])
+			this.keyRegistry[mode][key] = callback;
 		else
 			console.error("Tried to assign multiple functions to a single keypress!!!: " + key + " , " + callback);
 	}
@@ -147,7 +150,7 @@ App.makeInputHandler = function(){
 
 		input.keysDown[key] = true;
 
-		if(input.keyRegistry[key])input.keyRegistry[key]();
+		if(input.keyRegistry[App.MODE][key]) input.keyRegistry[App.MODE][key]();
 	}
 
 	//Deals with a key being released

@@ -15,8 +15,8 @@ window.onload = function(){
 	// TEMPORARY STUFF | DELETE ================================= //
 	// TODO: what if each gui menu gets its own canvas and is 'always rendering'?
 	//App.makeDemoGui();
-	App.makePlanningGui();
-	App.Gui.setCurrentFrame('planning');
+	App.setupGUI();
+	App.changeMode(App.MODES.PLANNING)
 
 
 	setupTestLevel();
@@ -28,6 +28,7 @@ window.onload = function(){
 	z[1][0] = 1; z[1][1] = 1; z[1][2] = 3;
 	// ========================================================== //
 }
+
 
 
 // A temporary demo gui creation function. Remove when GUI descriptions are abstracted
@@ -75,63 +76,3 @@ App.makeDemoGui = function(){
 }
 
 
-App.makePlanningGui = function(){
-	App.Gui.addNewFrame('planning');
-	var instructionPanel = new App.GuiPanel(new App.GuiCollisionRect(800,0,100,600));
-	instructionPanel.xAlignment = 'right';
-	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,100,100,500));
-
-	var redButton 		= new App.GuiTextButton(0,300,'Red',		function(){	App.GuiDragButton.changeGlobalColor(0)	}, false, instructionPanel);
-	var greenButton 	= new App.GuiTextButton(0,330,'Green',	function(){	App.GuiDragButton.changeGlobalColor(1)	}, false, instructionPanel);
-	var blueButton 		= new App.GuiTextButton(0,360,'Blue',		function(){	App.GuiDragButton.changeGlobalColor(2)	}, false, instructionPanel);
-	var yellowButton	= new App.GuiTextButton(0,390,'Yellow',	function(){	App.GuiDragButton.changeGlobalColor(3)	}, false, instructionPanel);
-
-	App.Gui.addNewComponent('planning', instructionPanel);
-	App.Gui.addNewComponent('planning', controlsPanel);
-	App.Gui.addNewComponent('planning', redButton);
-	App.Gui.addNewComponent('planning', greenButton);
-	App.Gui.addNewComponent('planning', blueButton);
-	App.Gui.addNewComponent('planning', yellowButton);
-
-
-	for(var i=0; i < 8; i++){
-		App.Gui.addNewComponent('planning', new App.GuiDragButton(0 , 31 * i, null, i, 			instructionPanel));
-		App.Gui.addNewComponent('planning', new App.GuiDragButton(31, 31 * i, null, i + 8, 	instructionPanel));
-		App.Gui.addNewComponent('planning', new App.GuiDragButton(62, 31 * i, null, i + 16, instructionPanel));
-
-	}
-	var joystick = new App.GuiJoystick(50, 50, controlsPanel);
-	App.Gui.addNewComponent('planning', joystick);
-
-	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,1);}, false, controlsPanel);
-	var zoomOutButton = new App.GuiTextButton(0, 300, 'Zoom Out', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,-1);}, false, controlsPanel);
-
-	App.Gui.addNewComponent('planning', zoomInButton);
-	App.Gui.addNewComponent('planning', zoomOutButton);
-
-	var promptOverlay = [];
-	promptOverlay[1] = App.MakeGuiOverlayPanel();
-	promptOverlay[0] = new App.GuiTextButton(100,100, 'OK', function(){setTimeout(function(){App.Gui.endOverlay()}, 200);}, false, null);
-
-
-	var toggle = function(){
-		 App.Gui.startOverlay(promptOverlay); App.Game.toggleMode();
-	}
-	var simButton = new App.GuiTextButton(400, 50, 'Simulate',toggle, false, null);
-	App.Gui.addNewComponent('planning', simButton);
-
-
-
-	//For the simulation mode GUI
-	// var speedSliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(200,100,50,25), controlsPanel);
-	// var speedSliderLine = new App.GuiSliderLine(new App.GuiCollisionRect(200,100,10, 400), 0, 100, 2, function(n){
-	// 	App.Game.setSimulationSpeed(n);
-	// }, controlsPanel);
-	// speedSliderButton.sliderLine = speedSliderLine;
-	// speedSliderLine.sliderButton = speedSliderButton;
-	// App.Gui.addNewComponent('planning', speedSliderLine);
-	// App.Gui.addNewComponent('planning', speedSliderButton);
-
-
-
-}

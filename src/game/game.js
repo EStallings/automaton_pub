@@ -7,7 +7,7 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.modes = {SIMULATION:'Simulation',PLANNING:'Planning', MENUS:'Menu'}; // why are these strings?
+	game.modes = {SIMULATION:App.setup.modes.SIMULATION,PLANNING:App.setup.modes.PLANNING}; // why are these strings?
 		//because they can be? Change it if you want.
 	game.mode = game.modes.PLANNING;
 
@@ -21,9 +21,14 @@ App.makeGame = function(){
 		// TODO: setup render vars (center level, default zoom)
 	}
 
-	game.toggleMode = function(mode){
-		if(game.mode === game.modes.PLANNING){
-			game.mode = game.modes.SIMULATION;
+	game.setMode = function(mode){
+		if(! (mode === this.modes.SIMULATION || mode === this.modes.PLANNING)){
+			console.error("invalid gamemode: " + mode);
+			return;
+		}
+
+		game.mode = mode;
+		if(game.mode === game.modes.SIMULATION){
 			game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel();
 			game.requestStaticRenderUpdate = true;
 			game.paused = false;
@@ -379,11 +384,12 @@ App.makeGame = function(){
 
 	// TODO: move these to gameInput
 	// TODO: why can't i register '-' and '='?
-	App.InputHandler.registerKey('[',function(){game.setSimulationSpeed(game.simulationSpeed*2);});
-	App.InputHandler.registerKey(']',function(){game.setSimulationSpeed(game.simulationSpeed/2);});
-	App.InputHandler.registerKey('Space',function(){game.pause();});
-	App.InputHandler.registerKey('`',function(){game.toggleMode();});
-	App.InputHandler.registerKey('Z', function(){
+	App.InputHandler.registerKey('[', App.MODES.SIMULATION, function(){game.setSimulationSpeed(game.simulationSpeed*2);});
+	App.InputHandler.registerKey(']', App.MODES.SIMULATION,function(){game.setSimulationSpeed(game.simulationSpeed/2);});
+	App.InputHandler.registerKey('Space', App.MODES.SIMULATION,function(){game.pause();});
+	App.InputHandler.registerKey('`', App.MODES.SIMULATION,function(){ App.changeMode(App.MODES.PLANNING);});
+	App.InputHandler.registerKey('`', App.MODES.PLANNING,function(){ App.changeMode(App.MODES.SIMULATION);});
+	App.InputHandler.registerKey('Z', App.MODES.PLANNING, function(){
 			if(App.InputHandler.keysDown['Ctrl']) {
 				if(App.InputHandler.keysDown['Shift']){
 					game.currentPlanningLevel.redo();

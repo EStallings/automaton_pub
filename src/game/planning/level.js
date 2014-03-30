@@ -498,7 +498,8 @@ App.PlanningLevel = function(){
 							that.grid[i][j][c].type,
 							i*cs,j*cs,c,cs/2);
 			App.Game.instructionGfx.restore();
-		}App.Game.instructionGfx.restore();
+		}
+		App.Game.instructionGfx.restore();
 	}
 
 	this.dynamicRender = function(){

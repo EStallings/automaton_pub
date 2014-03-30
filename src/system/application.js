@@ -31,3 +31,28 @@ App.DIRECTIONS = {
 	RIGHT : 2,
 	UP    : 3
 };
+
+
+App.setup = {};
+App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', MAIN_MENU:'Main Menu'}
+App.setup.modes = {PLANNING:App.setup.frames.PLANNING, SIMULATION:App.setup.frames.SIMULATION}
+
+App.MODES = {
+	MAIN_MENU			: {frame:App.setup.frames.MAIN_MENU,
+										mode:App.setup.modes.SIMULATION},
+
+	PLANNING			: {frame:App.setup.frames.PLANNING,
+										mode:App.setup.modes.PLANNING},
+
+	SIMULATION		: {frame:App.setup.frames.SIMULATION,
+										mode:App.setup.modes.SIMULATION}
+}
+App.MODE = App.MODES.PLANNING;
+
+App.changeMode = function(mode){
+	App.Game.setMode(mode.mode);
+	App.Gui.setCurrentFrame(mode.frame);
+	App.MODE = mode;
+	console.log('changed mode to : ' + mode);
+}
+
