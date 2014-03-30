@@ -6,6 +6,10 @@ App.PlanningLevel = function(){
 	this.undoStack = []; // stores operation objects that can be undone later
 	this.redoStack = []; // stores operation objects that can be redone later
 	this.opObj = new App.Operation();
+	this.redLocked = false;
+	this.greenLocked = false;
+	this.blueLocked = false;
+	this.greenLocked = false;
 
 	// flag that lets the operation functions know how to handle conflicts.
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
@@ -57,6 +61,15 @@ App.PlanningLevel = function(){
 			}
 		}
 	};
+
+	// toggles the state of the specified layer lock
+	// pass the color as a string
+	this.toggleLock = function(col){
+		if(col === 'red' && this.redLocked){this.redLocked = false;} else { this.redLocked = true; }
+		if(col === 'green' && this.greenLocked){this.greenLocked = false;} else { this.greenLocked = true; }
+		if(col === 'blue' && this.blueLocked){this.blueLocked = false;} else { this.blueLocked = true; }
+		if(col === 'green' && this.greenLocked){this.greenLocked = false;} else { this.greenLocked = true; }
+	}
 
 	// this function takes a list of PlanningInstructions and inserts them into the grid
 	this.groupInsert = function(instructions){
