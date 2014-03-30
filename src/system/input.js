@@ -169,6 +169,7 @@ App.makeInputHandler = function(){
 		input.mouseData.lmb = false;
 		input.mouseData.mmb = false;
 		input.mouseData.rmb = false;
+		handle_mouseButton(e);
 	}
 
 	//No pinch/pull zooming :( I tried. Believe me, I tried.

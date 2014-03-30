@@ -15,6 +15,14 @@ App.Server.testGetCallback = function(json){
 	}
 }
 
+App.Server.testBreakdown = function(json){
+	for(var o in json){
+		for(var i in json[o]){
+			console.log(i + ": " + json[o][i]);
+		}
+	}
+}
+
 
 App.Server.putLevel = function(levelstr, username, password,difficulty, title, description, callback){
 	var u = App.Server.url + "api/postLevel";

@@ -6,7 +6,7 @@ App.GuiTextBox = function (guiCollider, text, panel) {
 	if (panel) panel.addChild(this);
 	this.color = App.GuiColors.gray[6];
 
-	var textX = this.guiCollider.getx() + 10;// (this.guiCollider.w / 2); // for centering text
+	var textX = this.guiCollider.getx() + 2;// (this.guiCollider.w / 2); // for centering text
 	var textY = this.guiCollider.gety() + (this.guiCollider.h / 2); // for centering text
 
 	//Draw our text
@@ -37,7 +37,7 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 	this.cursorTime = 0;
 	this.cursorTimeout = 15;
 
-	var textX = this.guiCollider.getx() + 10;// (this.guiCollider.w / 2); // for centering text
+	var textX = this.guiCollider.getx() + 2;// (this.guiCollider.w / 2); // for centering text
 	var textY = this.guiCollider.gety() + 5 + (this.guiCollider.h / 2); // for centering text
 
 	//Draw the text box, including cursor

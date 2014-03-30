@@ -55,8 +55,8 @@ App.GuiTextButton = function(x, y, text, callback, continuous, panel){
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 		gfx.fillStyle = App.GuiTextButton.fg;
-		var textX = this.guiCollider.getx() + (this.guiCollider.w / 2); // for centering text
-		var textY = this.guiCollider.gety() + (this.guiCollider.h / 2); // for centering text
+		var textX = this.guiCollider.getx() + 2;
+		var textY = this.guiCollider.gety() + (this.guiCollider.h / 2);
 		gfx.fillText(this.text, textX, textY);
 	}
 

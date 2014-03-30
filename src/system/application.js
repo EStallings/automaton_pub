@@ -11,12 +11,7 @@ App.COLORS = {
 	RED    : 0,
 	GREEN  : 1,
 	BLUE   : 2,
-	YELLOW : 3//,
-	// what are the additional 3 colors for?
-	// automs iterate over App.COLORS to access instruction execution funcs
-//	WHITE  : 4,
-//	BLACK  : 5,
-//	GRAY   : 6
+	YELLOW : 3
 };
 
 App.DIRECTIONS = {
@@ -24,6 +19,8 @@ App.DIRECTIONS = {
 //	LEFT  : 1,
 //	DOWN  : 2,
 //	RIGHT : 3
+
+	// /\ in modulo arithmetic this is exactly the same thing /\
 
 	// this order makes rotation much more convenient
 	LEFT  : 0,

@@ -22,7 +22,7 @@ App.makeGUI = function(){
 	gui.currentFrame;
 	gui.activeComponent = null;
 	//gets reset after one frame.
-	gui.drawStatic = false;
+	gui.drawStatic = true;
 
 	gui.overlayCanvas = App.Canvases.addNewLayer('GUI_Overlay',0);
 	gui.overlayGfx = gui.overlayCanvas.getContext('2d');
@@ -65,6 +65,7 @@ App.makeGUI = function(){
 		this.currentFrame = (this.frames[framekey]) ? this.frames[framekey] : this.currentFrame;
 		this.activeComponent = null;
 		this.ensurePositions();
+		setTimeout(function(){App.Gui.drawStatic = true}, 100);
 	}
 
 	gui.addNewComponent = function(framekey, component){
