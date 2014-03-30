@@ -9,7 +9,7 @@ App.PlanningLevel = function(){
 	this.redLocked = false;
 	this.greenLocked = false;
 	this.blueLocked = false;
-	this.greenLocked = false;
+	this.yellowLocked = false;
 
 	// flag that lets the operation functions know how to handle conflicts.
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
@@ -63,12 +63,19 @@ App.PlanningLevel = function(){
 	};
 
 	// toggles the state of the specified layer lock
-	// pass the color as a string
-	this.toggleLock = function(col){
-		if(col === 'red' && this.redLocked){this.redLocked = false;} else { this.redLocked = true; }
-		if(col === 'green' && this.greenLocked){this.greenLocked = false;} else { this.greenLocked = true; }
-		if(col === 'blue' && this.blueLocked){this.blueLocked = false;} else { this.blueLocked = true; }
-		if(col === 'green' && this.greenLocked){this.greenLocked = false;} else { this.greenLocked = true; }
+	this.toggleLock = function(color){
+		if(color === App.COLORS.RED && this.redLocked){this.redLocked = false;} else { this.redLocked = true; }
+		if(color === App.COLORS.GREEN && this.greenLocked){this.greenLocked = false;} else { this.greenLocked = true; }
+		if(color === App.COLORS.BLUE && this.blueLocked){this.blueLocked = false;} else { this.blueLocked = true; }
+		if(color === App.COLORS.YELLOW && this.yellowLocked){this.yellowLocked = false;} else { this.yellowLocked = true; }
+	}
+
+	// returns the states of the specified layer lock
+	this.isLocked = function(color){
+		if(color === App.COLORS.RED){ return this.redLocked; }
+		if(color === App.COLORS.GREEN){ return this.greenLocked; }
+		if(color === App.COLORS.BLUE){ return this.blueLocked; }
+		if(color === App.COLORS.YELLOW){ return this.yellowLocked; }
 	}
 
 	// this function takes a list of PlanningInstructions and inserts them into the grid
@@ -117,7 +124,7 @@ App.PlanningLevel = function(){
 	// if the parameter is 'color', then this will try to move the instruction
 	// to the appropriate spot in the array.
 	this.modify = function(instruction, parameter, value, killRedo){
-		if(that.contains(instruction.x, instruction.y, instruction.color)){
+		if(that.contains(instruction.x, instruction.y, instruction.color) ){
 			var oldColor = instruction.color;
 			// update undo stack
 			that.undoStack.push(new that.opObj.modifyOp(instruction, parameter, value, instruction[parameter]));
