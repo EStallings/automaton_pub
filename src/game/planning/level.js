@@ -107,7 +107,7 @@ App.PlanningLevel = function(){
 		if(that.contains(instruction.x, instruction.y, instruction.color)){
 			var oldColor = instruction.color;
 			// update undo stack
-			if(killRedo !== 1) that.redoStack = [];
+			if(killRedo !== 1){ that.killRedo('mod'); }
 			that.undoStack.push(new that.opObj.modifyOp(instruction, parameter, value, instruction[parameter]));
 
 			// update instruction
@@ -142,7 +142,7 @@ App.PlanningLevel = function(){
 	// and creates and pushes a copyOp object onto the undo stack.
 	this.copy = function(x, y, color, newX, newY, killRedo){
 		// update undo stack
-		if(killRedo !== 1) that.redoStack = [];
+		if(killRedo !== 1){ that.killRedo('cpy'); }
 		that.undoStack.push(new that.opObj.copyOp(that.getInstruction(x,y,color), newX, newY));
 
 		// make sure there is an instruction at the specified coordinate
@@ -184,7 +184,7 @@ App.PlanningLevel = function(){
 		if(!that.contains(x,y,color)){ return; }
 
 		// update undo stack
-		if(killRedo !== 1) that.redoStack = [];
+		if(killRedo !== 1){ that.killRedo(mov); }
 		that.undoStack.push(new that.opObj.moveOp(that.getInstruction(x,y,color), newX, newY));
 
 		// update grid
@@ -235,7 +235,7 @@ App.PlanningLevel = function(){
 	this.insert = function(instruction,killRedo){
 
 		// update undo stack
-		if(killRedo !== 1) that.redoStack = [];
+		if(killRedo !== 1){ that.killRedo('ins'); }
 		that.undoStack.push(new that.opObj.insertOp(instruction));
 
 		// update grid
@@ -276,7 +276,7 @@ App.PlanningLevel = function(){
 				if(that.grid[x][y][color]){
 
 					// update undo stack
-					if(killRedo !== 1) that.redoStack = [];
+					if(killRedo !== 1){ that.killRedo('del'); }
 					that.undoStack.push(new that.opObj.deleteOp(that.getInstruction(x,y,color)));
 
 					// update grid
@@ -349,8 +349,11 @@ App.PlanningLevel = function(){
 		App.Game.requestStaticRenderUpdate = true;
 	};
 
+	this.killRedo = function(str){ that.redoStack = []; console.warn(str); };
+
 	// each call to this function pops the redo stack, and undoes whatever operation it finds
 	this.redo = function(){
+
 		if(that.redoStack.length === 0) return;
 
 		// update stacks
@@ -361,23 +364,23 @@ App.PlanningLevel = function(){
 
 		// update grid
 		if(op.opId === 'insert'){
-			that.insert(op.instruction);
+			that.insert(op.instruction,1);
 			that.undoStack.pop();
 		}
 		else if(op.opId === 'delete'){
-			that.delete(op.instruction.x, op.instruction.y, op.instruction.color);
+			that.delete(op.instruction.x, op.instruction.y, op.instruction.color,1);
 			that.undoStack.pop();
 		}
 		else if(op.opId === 'move'){
-			that.move(op.instruction.x, op.instruction.y, op.instruction.color, op.newX, op.newY);
+			that.move(op.instruction.x, op.instruction.y, op.instruction.color, op.newX, op.newY,1);
 			that.undoStack.pop();
 		}
 		else if(op.opId === 'copy'){
-			that.insert(new App.PlanningInstruction(op.newX, op.newY, op.instruction.color, op.instruction.type));
+			that.insert(new App.PlanningInstruction(op.newX, op.newY, op.instruction.color, op.instruction.type),1);
 			that.undoStack.pop();
 		}
 		else if(op.opId === 'modify'){
-			that.modify(op.instruction, op.parameter, op.newValue);
+			that.modify(op.instruction, op.parameter, op.newValue,1);
 			that.undoStack.pop();
 		}
 		else if(op.opId === 'group'){ // TODO make it so that group ends up on the front of the stack
