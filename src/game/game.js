@@ -153,12 +153,12 @@ App.makeGame = function(){
 	// ===================== RENDER-SPECIFIC ==================== //
 	// ========================================================== //
 
-	game.tempGfx        = App.Canvases.addNewLayer('gameTemp'       ,0).getContext('2d');
-	game.automGfx       = App.Canvases.addNewLayer('autom'         ,-1).getContext('2d');
-	game.tokenDGfx      = App.Canvases.addNewLayer('token dynamic' ,-2).getContext('2d');
-	game.tokenSGfx      = App.Canvases.addNewLayer('token static'  ,-3).getContext('2d');
-	game.instructionGfx = App.Canvases.addNewLayer('instruction'   ,-4).getContext('2d');
-	game.gridGfx        = App.Canvases.addNewLayer('grid static'   ,-5).getContext('2d');
+	game.tempGfx        = App.Canvases.addNewLayer('gameTemp'       ,0);
+	game.automGfx       = App.Canvases.addNewLayer('autom'         ,-1);
+	game.tokenDGfx      = App.Canvases.addNewLayer('token dynamic' ,-2);
+	game.tokenSGfx      = App.Canvases.addNewLayer('token static'  ,-3);
+	game.instructionGfx = App.Canvases.addNewLayer('instruction'   ,-4);
+	game.gridGfx        = App.Canvases.addNewLayer('grid static'   ,-5);
 	// remember to add to clearGfx
 
 	game.requestStaticRenderUpdate = true;
@@ -212,8 +212,8 @@ App.makeGame = function(){
 	}
 
 	game.constrain = function(){
-		var w2 = App.Canvases.width/2;
-		var h2 = App.Canvases.height/2;
+		var w2 = App.Canvases.halfWidth;
+		var h2 = App.Canvases.halfHeight;
 		var wg = game.currentPlanningLevel.width * game.cellSize;
 		var hg = game.currentPlanningLevel.height * game.cellSize;
 

@@ -40,7 +40,7 @@ App.getDemoLevel = function(){
 }
 
 App.setup = {};
-App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', MAIN_MENU:'Main Menu'}
+App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', MAIN_MENU:'Main Menu', TEST:'test'}
 App.setup.modes = {PLANNING:App.setup.frames.PLANNING, SIMULATION:App.setup.frames.SIMULATION}
 
 App.MODES = {
@@ -57,7 +57,13 @@ App.MODES = {
 	SIMULATION		: {frame:App.setup.frames.SIMULATION,
 										mode:App.setup.modes.SIMULATION,
 										level:null,
-										toString:function(){return 'SIMULATION'}}
+										toString:function(){return 'SIMULATION'}},
+
+	GUI_TEST			: {frame:App.setup.frames.TEST,
+										mode:App.setup.modes.SIMULATION,
+										level:App.getDemoLevel,
+										toString:function(){return 'TEST'}}
+
 }
 App.MODE = App.MODES.PLANNING;
 
@@ -67,8 +73,8 @@ App.changeMode = function(mode){
 		App.Game.currentPlanningLevel = App.Game.loadNewLevel(mode.level());
 	}
 	App.Game.renderX = 20000;
-	App.Game.renderY = App.Canvases.height/2 - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
-	App.Game.goalRenderX = App.Canvases.width/2 - (App.Game.currentPlanningLevel.width * App.Game.cellSize )/2;
+	App.Game.renderY = App.Canvases.halfHeight - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
+	App.Game.goalRenderX = App.Canvases.halfWidth - (App.Game.currentPlanningLevel.width * App.Game.cellSize )/2;
 	App.Game.goalRenderY = App.Game.renderY;
 	App.Game.setMode(mode.mode);
 	App.Gui.setCurrentFrame(mode.frame);

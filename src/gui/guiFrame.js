@@ -10,13 +10,10 @@
 */
 App.makeGUI = function(){
 	var gui = {};
-	gui.staticCanvas = App.Canvases.addNewLayer('GUI_Static',0);
-	gui.staticGfx = gui.staticCanvas.getContext('2d');
-
+	gui.staticGfx = App.Canvases.addNewLayer('GUI_Static',0);
 	//Only used to draw the currently active component
 	//if this is bad, we can change it.
-	gui.dynamicCanvas = App.Canvases.addNewLayer('GUI_Dynamic',0);
-	gui.dynamicGfx = gui.dynamicCanvas.getContext('2d');
+	gui.dynamicGfx = App.Canvases.addNewLayer('GUI_Dynamic',0);
 
 	gui.frames = [];
 	gui.currentFrame;
@@ -24,8 +21,7 @@ App.makeGUI = function(){
 	//gets reset after one frame.
 	gui.drawStatic = true;
 
-	gui.overlayCanvas = App.Canvases.addNewLayer('GUI_Overlay',0);
-	gui.overlayGfx = gui.overlayCanvas.getContext('2d');
+	gui.overlayGfx = App.Canvases.addNewLayer('GUI_Overlay',0);
 	gui.overlayClear = false;
 	//We might want to draw multiple overlays at a time...
 	gui.overlays = [];

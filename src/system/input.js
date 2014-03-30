@@ -4,8 +4,8 @@
 App.makeInputHandler = function(){
 	var input = {};
 
-	input.canvas = App.Canvases.addNewLayer('inputCanvas', 10); // TODO: z value for this should be the largest...
-	input.context = input.canvas.getContext('2d');
+	input.context = App.Canvases.addNewLayer('inputCanvas', 10); // TODO: z value for this should be the largest...
+	input.canvas = App.Canvases.layers['inputCanvas'];
 
 	//Redirect objects
 	input.Gui = App.makeGuiInput();
@@ -166,9 +166,7 @@ App.makeInputHandler = function(){
 
 	//Deals with the mouse being moved outside the canvas.
 	var handle_mouseOut 	= function(e){
-		input.mouseData.lmb = false;
-		input.mouseData.mmb = false;
-		input.mouseData.rmb = false;
+		input.mouseData.lmb = input.mouseData.mmb = input.mouseData.rmb = false;
 		handle_mouseButton(e);
 	}
 

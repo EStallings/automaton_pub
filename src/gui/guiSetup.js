@@ -2,7 +2,16 @@ App.setupGUI = function(){
 	setupPlanningFrame();
 	setupSimulationFrame();
 	setupMainMenuFrame();
+	setupTestFrame();
 
+}
+
+var setupTestFrame = function(){
+	var key = App.setup.frames.TEST;
+	App.Gui.addNewFrame(key);
+
+	var table = new App.GuiTable(100,100);
+	App.Gui.addNewComponent(key, table);
 }
 
 var setupMainMenuFrame = function(){
@@ -33,8 +42,8 @@ var setupSimulationFrame = function(){
 	controlsPanel.yAlignment = 'bottom';
 
 	var joystick = new App.GuiJoystick(50, 50, controlsPanel);
-	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,1);}, false, controlsPanel);
-	var zoomOutButton = new App.GuiTextButton(0, 250, 'Zoom Out', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,-1);}, false, controlsPanel);
+	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,1);}, false, controlsPanel);
+	var zoomOutButton = new App.GuiTextButton(0, 250, 'Zoom Out', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,-1);}, false, controlsPanel);
 	var simButton = new App.GuiTextButton(400, 50, 'Return',function(){ App.changeMode(App.MODES.PLANNING);	}, false, null);
 	var pauseButton = new App.GuiTextButton(0, 325, 'Pause',function(){ App.Game.pause();}, false, controlsPanel);
 	var speedSliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(150,10,50,25), controlsPanel);
@@ -97,8 +106,8 @@ var setupPlanningFrame = function(){
 	var joystick = new App.GuiJoystick(50, 50, controlsPanel);
 	App.Gui.addNewComponent(key, joystick);
 
-	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,1);}, false, controlsPanel);
-	var zoomOutButton = new App.GuiTextButton(0, 250, 'Zoom Out', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,-1);}, false, controlsPanel);
+	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,1);}, false, controlsPanel);
+	var zoomOutButton = new App.GuiTextButton(0, 250, 'Zoom Out', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,-1);}, false, controlsPanel);
 
 	App.Gui.addNewComponent(key, zoomInButton);
 	App.Gui.addNewComponent(key, zoomOutButton);
