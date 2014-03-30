@@ -107,7 +107,6 @@ App.PlanningLevel = function(){
 		if(that.contains(instruction.x, instruction.y, instruction.color)){
 			var oldColor = instruction.color;
 			// update undo stack
-			if(killRedo !== 1){ that.killRedo('mod'); }
 			that.undoStack.push(new that.opObj.modifyOp(instruction, parameter, value, instruction[parameter]));
 
 			// update instruction
@@ -120,6 +119,7 @@ App.PlanningLevel = function(){
 					that.grid[instruction.x][instruction.y][value] = that.getInstruction(instruction.x, instruction.y,oldColor);
 					that.grid[instruction.x][instruction.y][oldColor] = null;
 					App.Game.requestStaticRenderUpdate = true;
+					if(killRedo !== 1){ that.killRedo('mod'); }
 				// if the location is not empty, and the user setting is set to overwrite
 				} else if(that.userOverlapSetting === 1){
 					// store the old instruction into the modiyOp object
@@ -129,6 +129,7 @@ App.PlanningLevel = function(){
 					that.grid[instruction.x][instruction.y][value] = that.getInstruction(instruction.x, instruction.y,oldColor);
 					that.grid[instruction.x][instruction.y][oldColor] = null;
 					App.Game.requestStaticRenderUpdate = true;
+					if(killRedo !== 1){ that.killRedo('mod'); }
 				}
 				else{
 					that.grid[instruction.x][instruction.y][oldColor][parameter] = oldColor; // reset the color if the move part of the operation got rejected
@@ -142,7 +143,6 @@ App.PlanningLevel = function(){
 	// and creates and pushes a copyOp object onto the undo stack.
 	this.copy = function(x, y, color, newX, newY, killRedo){
 		// update undo stack
-		if(killRedo !== 1){ that.killRedo('cpy'); }
 		that.undoStack.push(new that.opObj.copyOp(that.getInstruction(x,y,color), newX, newY));
 
 		// make sure there is an instruction at the specified coordinate
@@ -154,15 +154,18 @@ App.PlanningLevel = function(){
 			if(that.grid[newX] && that.grid[newX][newY] ){
 				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 				App.Game.requestStaticRenderUpdate = true;
+				if(killRedo !== 1){ that.killRedo('cpy'); }
 			} else if(that.grid[newX]){
 				that.grid[newX][newY] = [];
 				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 				App.Game.requestStaticRenderUpdate = true;
+				if(killRedo !== 1){ that.killRedo('cpy'); }
 			} else {
 				that.grid[newX] = [];
 				that.grid[newX][newY] = [];
 				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 				App.Game.requestStaticRenderUpdate = true;
+				if(killRedo !== 1){ that.killRedo('cpy'); }
 			}
 
 		} else if(that.userOverlapSetting === 1){
@@ -184,7 +187,6 @@ App.PlanningLevel = function(){
 		if(!that.contains(x,y,color)){ return; }
 
 		// update undo stack
-		if(killRedo !== 1){ that.killRedo(mov); }
 		that.undoStack.push(new that.opObj.moveOp(that.getInstruction(x,y,color), newX, newY));
 
 		// update grid
@@ -194,6 +196,7 @@ App.PlanningLevel = function(){
 					that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 					that.grid[x][y][color] = null;
 					App.Game.requestStaticRenderUpdate = true;
+					if(killRedo !== 1){ that.killRedo(mov); }
 				}
 				else{
 					if(that.grid[newX]){
@@ -201,12 +204,14 @@ App.PlanningLevel = function(){
 							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 							that.grid[x][y][color] = null;
 							App.Game.requestStaticRenderUpdate = true;
+							if(killRedo !== 1){ that.killRedo(mov); }
 						}
 						else{
 							that.grid[newX][newY] = [];
 							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 							that.grid[x][y][color] = null;
 							App.Game.requestStaticRenderUpdate = true;
+							if(killRedo !== 1){ that.killRedo(mov); }
 						}
 					}
 					else{
@@ -215,6 +220,7 @@ App.PlanningLevel = function(){
 						that.grid[newX][newY][color] = that.getInstruction(x,y,color);
 						that.grid[x][y][color] = null;
 						App.Game.requestStaticRenderUpdate = true;
+						if(killRedo !== 1){ that.killRedo(mov); }
 					}
 				}
 			}
@@ -235,7 +241,6 @@ App.PlanningLevel = function(){
 	this.insert = function(instruction,killRedo){
 
 		// update undo stack
-		if(killRedo !== 1){ that.killRedo('ins'); }
 		that.undoStack.push(new that.opObj.insertOp(instruction));
 
 		// update grid
@@ -244,11 +249,13 @@ App.PlanningLevel = function(){
 				if(that.grid[instruction.x][instruction.y]){
 					that.grid[instruction.x][instruction.y][instruction.color] = instruction;
 					App.Game.requestStaticRenderUpdate = true;
+					if(killRedo !== 1){ that.killRedo('ins'); }
 				}
 				else {
 					that.grid[instruction.x][instruction.y] = [];
 					that.grid[instruction.x][instruction.y][instruction.color] = instruction;
 					App.Game.requestStaticRenderUpdate = true;
+					if(killRedo !== 1){ that.killRedo('ins'); }
 				}
 			}
 			else {
@@ -256,6 +263,7 @@ App.PlanningLevel = function(){
 				that.grid[instruction.x][instruction.y] = [];
 				that.grid[instruction.x][instruction.y][instruction.color] = instruction;
 				App.Game.requestStaticRenderUpdate = true;
+				if(killRedo !== 1){ that.killRedo('ins'); }
 			}
 		} else if(that.userOverlapSetting === 1){
 			// store the old instruction
