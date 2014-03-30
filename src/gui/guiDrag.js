@@ -213,18 +213,18 @@ App.GuiSliderButton = function(guiCollider, panel){
 		if(!this.dragged)
 			return;
 		if(this.sliderLine.direction === 1){
-			this.guiCollider.getx()= App.InputHandler.mouseData.x - this.guiCollider.w/2;
-			if(this.guiCollider.getx() > this.sliderLine.guiCollider.x + this.sliderLine.guiCollider.w)
-				this.guiCollider.getx() = this.sliderLine.guiCollider.x + this.sliderLine.guiCollider.w;
+			this.guiCollider.x = App.InputHandler.mouseData.getx() - this.guiCollider.w/2;
+			if(this.guiCollider.getx() > this.sliderLine.guiCollider.getx() + this.sliderLine.guiCollider.w)
+				this.guiCollider.x = this.sliderLine.guiCollider.getx() + this.sliderLine.guiCollider.w;
 			else if (this.guiCollider.getx() < this.sliderLine.guiCollider.x)
-				this.guiCollider.getx() = this.sliderLine.guiCollider.x;
+				this.guiCollider.x = this.sliderLine.guiCollider.getx();
 		}
 		else{
-			this.guiCollider.gety() = App.InputHandler.mouseData.y - this.guiCollider.h/2;
-			if(this.guiCollider.gety() > this.sliderLine.guiCollider.y + this.sliderLine.guiCollider.h)
-				this.guiCollider.gety() = this.sliderLine.guiCollider.y + this.sliderLine.guiCollider.h;
-			else if (this.guiCollider.gety() < this.sliderLine.guiCollider.y)
-				this.guiCollider.gety() = this.sliderLine.guiCollider.y;
+			this.guiCollider.y = App.InputHandler.mouseData.y - this.guiCollider.h/2;
+			if(this.guiCollider.gety() > this.sliderLine.guiCollider.gety() + this.sliderLine.guiCollider.h)
+				this.guiCollider.y = this.sliderLine.guiCollider.gety() + this.sliderLine.guiCollider.h;
+			else if (this.guiCollider.gety() < this.sliderLine.guiCollider.gety())
+				this.guiCollider.y = this.sliderLine.guiCollider.gety();
 		}
 		this.sliderLine.evaluate(this.guiCollider.getx(), this.guiCollider.gety());
 	}

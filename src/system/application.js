@@ -33,26 +33,50 @@ App.DIRECTIONS = {
 };
 
 
+App.demoLevels = [
+	"Demo1,7,6;1,2,0,3;1,2,1,3;1,2,2,3;1,2,3,2;2,1,1,7;2,2,1,4;2,2,2,5;2,4,2,7;4,1,1,5;4,2,1,7;4,2,2,7;4,4,2,4;5,2,0,22;5,2,1,22;5,2,2,22;5,2,3,22",
+	"Demo2,8,3;1,1,0,3;1,1,3,3;2,1,0,12;2,1,3,23;3,1,0,10;3,1,3,14;4,1,0,17;4,1,3,17;5,1,0,11;5,1,3,15;6,1,0,13"
+
+]
+App.getDemoLevel = function(){
+	return App.demoLevels[Math.floor(Math.random() * App.demoLevels.length)];
+}
+
 App.setup = {};
 App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', MAIN_MENU:'Main Menu'}
 App.setup.modes = {PLANNING:App.setup.frames.PLANNING, SIMULATION:App.setup.frames.SIMULATION}
 
 App.MODES = {
 	MAIN_MENU			: {frame:App.setup.frames.MAIN_MENU,
-										mode:App.setup.modes.SIMULATION},
+										mode:App.setup.modes.SIMULATION,
+										level:App.getDemoLevel,
+										toString:function(){return 'MAIN_MENU'}},
 
 	PLANNING			: {frame:App.setup.frames.PLANNING,
-										mode:App.setup.modes.PLANNING},
+										mode:App.setup.modes.PLANNING,
+										level:null,
+										toString:function(){return 'PLANNING'}},
 
 	SIMULATION		: {frame:App.setup.frames.SIMULATION,
-										mode:App.setup.modes.SIMULATION}
+										mode:App.setup.modes.SIMULATION,
+										level:null,
+										toString:function(){return 'SIMULATION'}}
 }
 App.MODE = App.MODES.PLANNING;
 
 App.changeMode = function(mode){
+	App.MODE = mode;
+	if(mode.level){
+		App.Game.currentPlanningLevel = App.Game.loadNewLevel(mode.level());
+	}
+	App.Game.renderX = 2000;
+	App.Game.renderY = 100;
+	App.Game.goalRenderX = App.Game.goalRenderY = 100;
 	App.Game.setMode(mode.mode);
 	App.Gui.setCurrentFrame(mode.frame);
-	App.MODE = mode;
+
 	console.log('changed mode to : ' + mode);
 }
+
+
 

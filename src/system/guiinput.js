@@ -36,7 +36,7 @@ App.makeGuiInput = function(){
 	gInput.mouseUp = function(mouseData){
 		if(App.Gui.activeComponent && App.Gui.activeComponent.clickEnd){
 			App.Gui.activeComponent.clickEnd(mouseData.x, mouseData.y);
-			if(App.Gui.activeComponent.inactiveColor)
+			if(App.Gui.activeComponent && App.Gui.activeComponent.inactiveColor)
 				App.Gui.activeComponent.color = App.Gui.activeComponent.inactiveColor;
 		}
 		App.Gui.activeComponent = null;

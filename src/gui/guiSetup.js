@@ -9,11 +9,61 @@ var setupMainMenuFrame = function(){
 	var key = App.setup.frames.MAIN_MENU;
 	App.Gui.addNewFrame(key);
 
+	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,0,500,500));
+	panel.yAlignment = 'center';
+	panel.xAlignment = 'center';
+
+	var playBut = new App.GuiTextButton(100, 200, 'Play', function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
+	var blockPanel = App.makeBlockingPanel();
+	blockPanel.color = 'rgba(180, 180, 180, 0)';
+
+	App.Gui.addNewComponent(key, panel);
+	App.Gui.addNewComponent(key, playBut);
+	App.Gui.addNewComponent(key, blockPanel);
+
 }
 
 var setupSimulationFrame = function(){
+
+
 	var key = App.setup.frames.SIMULATION;
 	App.Gui.addNewFrame(key);
+
+	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,0,200,500));
+	controlsPanel.yAlignment = 'bottom';
+
+	var joystick = new App.GuiJoystick(50, 50, controlsPanel);
+	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,1);}, false, controlsPanel);
+	var zoomOutButton = new App.GuiTextButton(0, 250, 'Zoom Out', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,-1);}, false, controlsPanel);
+	var simButton = new App.GuiTextButton(400, 50, 'Return',function(){ App.changeMode(App.MODES.PLANNING);	}, false, null);
+	var pauseButton = new App.GuiTextButton(0, 325, 'Pause',function(){ App.Game.pause();}, false, controlsPanel);
+	var speedSliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(150,10,50,25), controlsPanel);
+
+	var min = 0;
+	var max = 10;
+	var speedSliderLine = new App.GuiSliderLine(new App.GuiCollisionRect(150,10,10, 400), min, max, 2, function(n){
+
+		App.Game.setSimulationSpeed(64/(Math.sqrt(n)+1));
+	}, controlsPanel);
+	speedSliderButton.sliderLine = speedSliderLine;
+	speedSliderLine.sliderButton = speedSliderButton;
+
+
+
+	App.Gui.addNewComponent(key, controlsPanel);
+	App.Gui.addNewComponent(key, simButton);
+	App.Gui.addNewComponent(key, pauseButton);
+	App.Gui.addNewComponent(key, joystick);
+	App.Gui.addNewComponent(key, zoomInButton);
+	App.Gui.addNewComponent(key, zoomOutButton);
+	App.Gui.addNewComponent(key, speedSliderLine);
+	App.Gui.addNewComponent(key, speedSliderButton);
+
+	//Setup key bindings
+	App.InputHandler.registerKey('[', App.MODES.SIMULATION, function(){App.Game.setSimulationSpeed(App.Game.simulationSpeed*2);});
+	App.InputHandler.registerKey(']', App.MODES.SIMULATION,function(){App.Game.setSimulationSpeed(App.Game.simulationSpeed/2);});
+	App.InputHandler.registerKey('Space', App.MODES.SIMULATION,function(){App.Game.pause();});
+	App.InputHandler.registerKey('`', App.MODES.SIMULATION,function(){ App.changeMode(App.MODES.PLANNING);});
 
 }
 
@@ -48,33 +98,32 @@ var setupPlanningFrame = function(){
 	App.Gui.addNewComponent(key, joystick);
 
 	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,1);}, false, controlsPanel);
-	var zoomOutButton = new App.GuiTextButton(0, 300, 'Zoom Out', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,-1);}, false, controlsPanel);
+	var zoomOutButton = new App.GuiTextButton(0, 250, 'Zoom Out', function(){App.Game.zoom(App.Canvases.width/2, App.Canvases.height/2,-1);}, false, controlsPanel);
 
 	App.Gui.addNewComponent(key, zoomInButton);
 	App.Gui.addNewComponent(key, zoomOutButton);
 
-	var promptOverlay = [];
-	promptOverlay[1] = App.MakeGuiOverlayPanel();
-	promptOverlay[0] = new App.GuiTextButton(100,100, 'OK', function(){setTimeout(function(){App.Gui.endOverlay()}, 200);}, false, null);
 
-
-	var toggle = function(){
-		 App.Gui.startOverlay(promptOverlay); App.Game.setMode(App.Game.modes.SIMULATION);
-	}
-	var simButton = new App.GuiTextButton(400, 50, 'Simulate',toggle, false, null);
+	var simButton = new App.GuiTextButton(400, 50, 'Simulate',function(){App.changeMode(App.MODES.SIMULATION);	}, false, null);
 	App.Gui.addNewComponent(key, simButton);
 
+	var menuButton = new App.GuiTextButton(525, 50, 'Menu',function(){App.changeMode(App.MODES.MAIN_MENU);	}, false, null);
+	App.Gui.addNewComponent(key, menuButton);
+
+	//Setup Key Bindings
+	App.InputHandler.registerKey('`', App.MODES.PLANNING,function(){ App.changeMode(App.MODES.SIMULATION);});
+	App.InputHandler.registerKey('Z', App.MODES.PLANNING, function(){
+			if(App.InputHandler.keysDown['Ctrl']) {
+				if(App.InputHandler.keysDown['Shift']){
+					game.currentPlanningLevel.redo();
+				}
+				else
+					game.currentPlanningLevel.undo();
+			}
+	});
 
 
-	//For the simulation mode GUI
-	// var speedSliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(200,100,50,25), controlsPanel);
-	// var speedSliderLine = new App.GuiSliderLine(new App.GuiCollisionRect(200,100,10, 400), 0, 100, 2, function(n){
-	// 	App.Game.setSimulationSpeed(n);
-	// }, controlsPanel);
-	// speedSliderButton.sliderLine = speedSliderLine;
-	// speedSliderLine.sliderButton = speedSliderButton;
-	// App.Gui.addNewComponent(key, speedSliderLine);
-	// App.Gui.addNewComponent('planning', speedSliderButton);
+
 
 
 

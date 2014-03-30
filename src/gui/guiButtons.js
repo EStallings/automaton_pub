@@ -76,7 +76,7 @@ App.GuiTextButton = function(x, y, text, callback, continuous, panel){
 
 	//If the click was successful, fire the callback
 	this.clickEnd = function(x, y){
-		// this.color = App.GuiTextButton.bg;
+		this.color = this.inactiveColor;
 		if(!this.guiCollider.collides(x,y))
 			return;
 		if(this.callback && this.clicked)
@@ -136,6 +136,7 @@ App.GuiPanel = function(guiCollider){
 	this.children = [];
 	this.xAlignment = 'left';
 	this.yAlignment = 'top';
+	this.color = App.GuiPanel.rgba;
 
 	this.addChild = function(comp){
 		this.children.push(comp);
@@ -158,7 +159,7 @@ App.GuiPanel = function(guiCollider){
 			this.guiCollider.x = w - ox - r;
 		}
 		else if(this.xAlignment === 'center'){
-			this.guiCollider.x = (w/2) - ox - r;
+			this.guiCollider.x = (w/2) - (ox/2) - r;
 		}
 
 		if(this.yAlignment === 'top'){
@@ -168,7 +169,7 @@ App.GuiPanel = function(guiCollider){
 			this.guiCollider.y = h - oy - r;
 		}
 		else if(this.yAlignment === 'center'){
-			this.guiCollider.y = (h/2) - oy - r;
+			this.guiCollider.y = (h/2) - (oy/2) - r;
 		}
 
 		for (var c in this.children){
@@ -177,7 +178,7 @@ App.GuiPanel = function(guiCollider){
 	}
 
 	this.render = function(gfx){
-		gfx.fillStyle = App.GuiPanel.rgba;
+		gfx.fillStyle = this.color;
 		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 	}
 
@@ -185,7 +186,7 @@ App.GuiPanel = function(guiCollider){
 App.GuiPanel.rgba = 'rgba(180, 180, 180, 0.1)';
 
 //Subclassing in JS is awful. Breaks everything. Use factories instead usually
-App.MakeGuiOverlayPanel = function(){
+App.makeBlockingPanel = function(){
 	return new App.GuiPanel(new App.GuiCollisionRect(0,0,App.Canvases.width, App.Canvases.height));
 }
 

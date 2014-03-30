@@ -384,19 +384,6 @@ App.makeGame = function(){
 
 	// TODO: move these to gameInput
 	// TODO: why can't i register '-' and '='?
-	App.InputHandler.registerKey('[', App.MODES.SIMULATION, function(){game.setSimulationSpeed(game.simulationSpeed*2);});
-	App.InputHandler.registerKey(']', App.MODES.SIMULATION,function(){game.setSimulationSpeed(game.simulationSpeed/2);});
-	App.InputHandler.registerKey('Space', App.MODES.SIMULATION,function(){game.pause();});
-	App.InputHandler.registerKey('`', App.MODES.SIMULATION,function(){ App.changeMode(App.MODES.PLANNING);});
-	App.InputHandler.registerKey('`', App.MODES.PLANNING,function(){ App.changeMode(App.MODES.SIMULATION);});
-	App.InputHandler.registerKey('Z', App.MODES.PLANNING, function(){
-			if(App.InputHandler.keysDown['Ctrl']) {
-				if(App.InputHandler.keysDown['Shift']){
-					game.currentPlanningLevel.redo();
-				}
-				else
-					game.currentPlanningLevel.undo();
-			}
-	});
+
 	return game;
 }
