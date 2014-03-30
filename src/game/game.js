@@ -133,6 +133,12 @@ App.makeGame = function(){
 				game.nextCycleTick = game.pauseNextCycleTick+diff;
 			}
 		}
+
+		if(game.followTarget){
+			game.goalRenderX = game.followTarget.drawX + game.currentSimulationLevel.width*game.cellSize/2;
+			game.goalRenderY = game.followTarget.drawY + game.currentSimulationLevel.height*game.cellSize/2;
+			game.requestStaticRenderUpdate = true;
+		}
 	}
 
 	game.pause = function(){
@@ -182,9 +188,12 @@ App.makeGame = function(){
 	game.goalMX = 0;
 	game.goalMY = 0;
 
+	game.followTarget = null;
+
 		/*+------------------------------------------+*/
 
 	game.beginPan = function(x,y){
+		game.followTarget = null;
 		game.panMouseX = x;
 		game.panMouseY = y;
 		game.panRenderX = game.goalRenderX;
@@ -192,11 +201,14 @@ App.makeGame = function(){
 	}
 
 	game.pan = function(x,y){
-
 		game.goalRenderX = Math.round(game.panRenderX+(x-game.panMouseX));
 		game.goalRenderY = Math.round(game.panRenderY+(y-game.panMouseY));
 		game.constrain();
 		game.requestStaticRenderUpdate = true;
+	}
+
+	game.followAutomaton = function(automaton){
+		this.followTarget = automaton;
 	}
 
 	game.constrain = function(){

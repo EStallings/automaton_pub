@@ -7,6 +7,8 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 	this.gfx = App.Game.automGfx;
 	this.x = x;
 	this.y = y;
+	this.drawX = 0;
+	this.drawY = 0;
 	this.direction = direction;
 	this.colorFlags = [false,false,false,false];
 	this.colorFlags[color] = true;
@@ -45,6 +47,11 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 			case App.DIRECTIONS.LEFT  : x+=(1-App.Game.interpolation);break;
 			case App.DIRECTIONS.RIGHT : x-=(1-App.Game.interpolation);break;
 		}
+
+		//Added these so the camera can follow an automaton.
+		//Only sort of works.
+		this.drawX = x*c;
+		this.drawY = y*c;
 
 		// render token if holding one
 		if(this.tokenHeld != undefined)this.tokenHeld.dynamicRender(x*c,y*c);
@@ -89,19 +96,19 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 		var x=this.x,y=this.y,w=this.level.width,h=this.level.height;
 		if(x == 0){
 			if(y == 0){
-				this.rFunc(x,y+h);
 				this.rFunc(x+w,y+h);
+				this.rFunc(x,y+h);
 			}else if(y == h-1){
-				this.rFunc(x,y-h);
 				this.rFunc(x+w,y-h);
+				this.rFunc(x,y-h);
 			}this.rFunc(x+w,y);
 		}else if(x == w-1){
 			if(y == 0){
-				this.rFunc(x,y+h);
 				this.rFunc(x-w,y+h);
+				this.rFunc(x,y+h);
 			}else if(y == h-1){
-				this.rFunc(x,y-h);
 				this.rFunc(x-w,y-h);
+				this.rFunc(x,y-h);
 			}this.rFunc(x-w,y);
 		}else{
 			if(y == 0){
