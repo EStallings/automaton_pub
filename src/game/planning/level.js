@@ -75,7 +75,7 @@ App.PlanningLevel = function(){
 				}
 			}
 		}
-		return instructions;
+		that.currentSelection = numSelected;
 	}
 
 	// toggles the state of the specified layer lock
@@ -114,6 +114,7 @@ App.PlanningLevel = function(){
 	};
 
 	// this function takes a list of coordinate triplets and deletes the corresponding instructions from the grid
+	// TODO change to take list of instructions
 	this.groupDelete = function(coords){
 		for(var x = 0; x < coords.length; x++){
 			that.delete(coords[x][0],coords[x][1],coords[x][2]);
@@ -122,6 +123,7 @@ App.PlanningLevel = function(){
 	};
 
 	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
+	// TODO change to take list of instructions
 	this.groupMove = function(coords,shiftX,shiftY){
 		for(var x = 0; x < coords.length; x++){
 			that.move(coords[x][0],coords[x][1],coords[x][2],coords[x][0]+shiftX,coords[x][1]+shiftY);
@@ -130,6 +132,7 @@ App.PlanningLevel = function(){
 	}
 
 	// this function takes a list of coordinate triplets and copies the instructions they point to to a new cell shiftX and shiftY away from the first
+	// TODO change to take list of instructions
 	this.groupCopy = function(coords,shiftX,shiftY){
 		for(var x = 0; x < coords.length; x++){
 			that.copy(coords[x][0],coords[x][1],coords[x][2],coords[x][0]+shiftX,coords[x][1]+shiftY);
@@ -139,6 +142,7 @@ App.PlanningLevel = function(){
 
 	// not sure we will actually need this one
 	// this function takes a list of coordinate triplets and changes the specified parameter of all of them to value
+	// TODO change to take list of instructions
 	this.groupModify = function(coords, parameter, value){
 		for(var x = 0; x < coords.length; x++){
 			that.modify(this.getInstruction(coords[x][0],coords[x][1],coords[x][2]),parameter,value);
@@ -288,6 +292,7 @@ App.PlanningLevel = function(){
 
 	// this function performs an insert operation on the grid,
 	// and creates and pushes an insertOp object onto the undo stack.
+	// TODO refactor the way things are actually written to the grid
 	this.insert = function(instruction,killRedo){
 		if(that.isLocked(instruction.color)){ return; }
 
