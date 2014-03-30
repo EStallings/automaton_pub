@@ -115,10 +115,10 @@ var setupPlanningFrame = function(){
 	App.InputHandler.registerKey('Z', App.MODES.PLANNING, function(){
 			if(App.InputHandler.keysDown['Ctrl']) {
 				if(App.InputHandler.keysDown['Shift']){
-					game.currentPlanningLevel.redo();
+					App.Game.currentPlanningLevel.redo();
 				}
 				else
-					game.currentPlanningLevel.undo();
+					App.Game.currentPlanningLevel.undo();
 			}
 	});
 
