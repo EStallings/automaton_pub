@@ -1,8 +1,23 @@
-loadcontent = function() {
-   var url = "http://serene-peak-9931.herokuapp.com/api/levels/user/khabbabs";
+App.Server = {};
+App.Server.url = "http://serene-peak-9931.herokuapp.com/";
+App.Server.getLevels = function(type, subtype, callback){
+	var u = this.url + "api/levels/" + type + "/" + subtype;
+	$.getJSON(u, callback);
+}
 
-    $.getJSON(url,function(data) {
-        alert(data);
-    });
+App.Server.testGetCallback = function(json){
+	for(var x in json){
+		console.log(json[x]);
+	}
+}
 
+
+App.Server.putLevel = function(levelstr, username, password,difficulty, title, description, callback){
+	var u = App.Server.url + "api/postLevel";
+	var data = {"username":username,"password":password,"title":title,"description":description,"difficulty":difficulty,"level_str":levelstr }
+	$.post( u, data, callback);
+}
+
+App.Server.testPostCallback = function(dat){
+	console.log(dat);
 }
