@@ -10,23 +10,23 @@ window.onload = function(){
 	App.InstCatalog  = App.makeInstructionCatalog();
 	App.Game         = App.makeGame();
 	App.Engine       = App.makeEngine();
+
+	App.setupGUI();
+
+
 	App.Engine.run();
+
 
 	// TEMPORARY STUFF | DELETE ================================= //
 	// TODO: what if each gui menu gets its own canvas and is 'always rendering'?
-	//App.makeDemoGui();
-	App.setupGUI();
-	App.changeMode(App.MODES.PLANNING)
 
-
+	//I (Ezra) feel that this is actually good - rename it to setupDefaultLevel,
+	//it's what gives the game a level just in case
 	setupTestLevel();
-	ins = [];
-	ins[0] = new App.PlanningInstruction(3,3,3,4);
-	ins[1] = new App.PlanningInstruction(3,3,1,4);
-	z = []; z[0] = []; z[1] = [];
-	z[0][0] = 1; z[0][1] = 1; z[0][2] = 1;
-	z[1][0] = 1; z[1][1] = 1; z[1][2] = 3;
 	// ========================================================== //
+
+
+	App.changeMode(App.MODES.PLANNING);
 }
 
 

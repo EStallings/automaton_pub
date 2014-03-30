@@ -69,9 +69,10 @@ App.changeMode = function(mode){
 	if(mode.level){
 		App.Game.currentPlanningLevel = App.Game.loadNewLevel(mode.level());
 	}
-	App.Game.renderX = 2000;
-	App.Game.renderY = 100;
-	App.Game.goalRenderX = App.Game.goalRenderY = 100;
+	App.Game.renderX = 20000;
+	App.Game.renderY = App.Canvases.height/2 - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
+	App.Game.goalRenderX = App.Canvases.width/2 - (App.Game.currentPlanningLevel.width * App.Game.cellSize )/2;
+	App.Game.goalRenderY = App.Game.renderY;
 	App.Game.setMode(mode.mode);
 	App.Gui.setCurrentFrame(mode.frame);
 

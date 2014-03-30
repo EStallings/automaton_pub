@@ -195,29 +195,25 @@ App.makeGame = function(){
 
 		game.goalRenderX = Math.round(game.panRenderX+(x-game.panMouseX));
 		game.goalRenderY = Math.round(game.panRenderY+(y-game.panMouseY));
+		game.constrain();
 		game.requestStaticRenderUpdate = true;
+	}
 
+	game.constrain = function(){
 		var w2 = App.Canvases.width/2;
 		var h2 = App.Canvases.height/2;
 		var wg = game.currentPlanningLevel.width * game.cellSize;
 		var hg = game.currentPlanningLevel.height * game.cellSize;
 
-		if(game.goalRenderX > w2){
+		if(game.goalRenderX > w2)
 			game.goalRenderX = w2;
-		}
-
-		else if(game.goalRenderX < w2 - wg){
+		else if(game.goalRenderX < w2 - wg)
 			game.goalRenderX = w2 - wg;
-		}
 
-		if(game.goalRenderY > h2){
+		if(game.goalRenderY > h2)
 			game.goalRenderY = h2;
-		}
-
-		else if(game.goalRenderY < h2 - hg){
+		else if(game.goalRenderY < h2 - hg)
 			game.goalRenderY = h2 - hg;
-		}
-
 	}
 
 	game.zoom = function(x,y,f){
@@ -231,7 +227,7 @@ App.makeGame = function(){
 
 		game.goalRenderX = Math.round(x+(game.goalRenderX-x)*factor);
 		game.goalRenderY = Math.round(y+(game.goalRenderY-y)*factor);
-
+		game.constrain();
 		game.requestStaticRenderUpdate = true;
 	}
 
