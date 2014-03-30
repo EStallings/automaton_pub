@@ -63,19 +63,30 @@ App.PlanningLevel = function(){
 	};
 
 	// toggles the state of the specified layer lock
-	this.toggleLock = function(color){
-		if(color === App.COLORS.RED && this.redLocked){this.redLocked = false;} else { this.redLocked = true; }
-		if(color === App.COLORS.GREEN && this.greenLocked){this.greenLocked = false;} else { this.greenLocked = true; }
-		if(color === App.COLORS.BLUE && this.blueLocked){this.blueLocked = false;} else { this.blueLocked = true; }
-		if(color === App.COLORS.YELLOW && this.yellowLocked){this.yellowLocked = false;} else { this.yellowLocked = true; }
+	this.toggleLock = function(col){
+		if(col === App.COLORS.RED){
+			if(that.redLocked){ that.redLocked = false; } else { that.redLocked = true; }
+		}
+
+		if(col === App.COLORS.GREEN){
+			if(that.greenLocked){ that.greenLocked = false; } else { that.greenLocked = true; }
+		}
+
+		if(col === App.COLORS.BLUE){
+			if(that.blueLocked){ that.blueLocked = false; } else { that.blueLocked = true; }
+		}
+
+		if(col === App.COLORS.YELLOW){
+			if(that.yellowLocked){ that.yellowLocked = false; } else { that.yellowLocked = true; }
+		}
 	}
 
 	// returns the states of the specified layer lock
 	this.isLocked = function(color){
-		if(color === App.COLORS.RED){ return this.redLocked; }
-		if(color === App.COLORS.GREEN){ return this.greenLocked; }
-		if(color === App.COLORS.BLUE){ return this.blueLocked; }
-		if(color === App.COLORS.YELLOW){ return this.yellowLocked; }
+		if(color === App.COLORS.RED){ return that.redLocked; }
+		if(color === App.COLORS.GREEN){ return that.greenLocked; }
+		if(color === App.COLORS.BLUE){ return that.blueLocked; }
+		if(color === App.COLORS.YELLOW){ return that.yellowLocked; }
 	}
 
 	// this function takes a list of PlanningInstructions and inserts them into the grid
@@ -259,6 +270,7 @@ App.PlanningLevel = function(){
 	// this function performs an insert operation on the grid,
 	// and creates and pushes an insertOp object onto the undo stack.
 	this.insert = function(instruction,killRedo){
+		if(that.isLocked(instruction.color)){ return; }
 
 		// update undo stack
 		that.undoStack.push(new that.opObj.insertOp(instruction));
