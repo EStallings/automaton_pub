@@ -12,7 +12,15 @@ var setupTestFrame = function(){
 
 	var table = new App.GuiTable(100,100);
 	App.Gui.addNewComponent(key, table);
+
+	var callback = function(data){
+		table.setData(data);
+	}
+
+	App.Server.getLevels('user', 'khabbabs', callback);
+
 }
+
 
 var setupMainMenuFrame = function(){
 	var key = App.setup.frames.MAIN_MENU;
