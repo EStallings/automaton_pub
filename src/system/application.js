@@ -70,7 +70,7 @@ App.MODE = App.MODES.PLANNING;
 App.changeMode = function(mode){
 	App.MODE = mode;
 	if(mode.level){
-		App.Game.currentPlanningLevel = App.Game.loadNewLevel(mode.level());
+		App.Game.loadNewLevel(mode.level());
 	}
 	App.Game.renderX = 20000;
 	App.Game.renderY = App.Canvases.halfHeight - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;

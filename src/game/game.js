@@ -73,22 +73,60 @@ App.makeGame = function(){
 	game.loadNewLevel = function(inputString){
 		var split = inputString.split(';');
 		var lev = new App.PlanningLevel();
-		if(split.length > 0){
-			var levDat = split[0].split(',');
-			lev.name = levDat[0];
-			lev.width = parseInt(levDat[1]);
-			lev.height = parseInt(levDat[2]);
+		var errors = [];
 
-			for(var i = 1; i < split.length; i++){
-				var instDat = split[i].split(',');
-				var x = parseInt(instDat[0]);
-				var y = parseInt(instDat[1]);
-				var col = parseInt(instDat[2]);
-				var typ = parseInt(instDat[3]);
+		if(split.length <= 0)
+			errors.push('  No Level!');
+
+		var levDat = split[0].split(',');
+		if(levDat.length !== 3)
+			errors.push('  Missing header information!');
+
+		lev.name = levDat[0];
+		lev.width = parseInt(levDat[1]);
+		lev.height = parseInt(levDat[2]);
+		if(isNaN(lev.width) || isNaN(lev.height))
+			errors.push('  Non-numeric width or height!');
+
+		for(var i = 1; i < split.length; i++){
+			var instDat = split[i].split(',');
+			if(instDat.length !== 4)
+				errors.push('  Missing instruction information for instruction #' + i + '!');
+
+			var x = parseInt(instDat[0]);
+			var y = parseInt(instDat[1]);
+			var col = parseInt(instDat[2]);
+			var typ = parseInt(instDat[3]);
+
+			if(isNaN(x) || isNaN(y) || isNaN(col) || isNaN(typ))
+				errors.push('  Non-numeric instruction information for instruction #' +  i +  '!');
+
+			if((x < 0 || x > lev.width) && lev.width !== 0)
+				errors.push('  Instruction x out of range for instruction #' + i + ': ' + x);
+
+			if((y < 0 || y > lev.height) && lev.height !== 0)
+				errors.push('  Instruction y out of range for instruction #' + i + ': ' + y);
+
+			if(typ >= 25)
+				errors.push('  Instruction type out of range for instruction #' + i + ': ' + typ);
+
+			if(col >= 4)
+				errors.push('  Instruction color out of range for instruction #' + i + ': ' + col);
+
+			if(errors.length === 0){
 				var inst = new App.PlanningInstruction(x, y, col, typ);
 				lev.insert(inst);
 			}
-		}return lev;
+		}
+		if(errors.length !== 0){
+			console.error('Could not load level: ' + inputString);
+			for(var e in errors){
+				console.error(errors[e]);
+			}
+			return;
+		}
+
+		this.currentPlanningLevel = lev;
 	}
 
 	// ========================================================== //
