@@ -17,6 +17,8 @@ App.makeGameInput = function(){
 			//do dragging of instructions that have already been placed
 			//OR
 			//do selection box (to select a number of instructions)
+			App.Game.currentPlanningLevel.setDown(App.Game.mouseX,
+				App.Game.mouseY, App.Game.mouseC);
 		}
 		else if(mouseData.lmb && game.mode === game.modes.SIMULATION){
 			//show data about a node?
@@ -30,11 +32,9 @@ App.makeGameInput = function(){
 		App.Game.screenToGridCoords(mouseData.x,mouseData.y);
 
 		if(mouseData.lmb && game.mode === game.modes.PLANNING){
+			App.Game.currentPlanningLevel.setUp(App.Game.mouseX,
+				App.Game.mouseY, App.Game.mouseC);
 			// TODO: do dragging of instructions that have already been placed
-		}
-
-		else if(mouseData.lmb && game.mode === game.modes.PLANNING){
-			//show data about a node?
 		}
 
 	}

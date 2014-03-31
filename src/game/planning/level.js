@@ -11,11 +11,15 @@ App.PlanningLevel = function(){
 	this.blueLocked = false;
 	this.yellowLocked = false;
 	this.currentSelection = [];
+	this.input = new App.PlanningControls();
 
 	// flag that lets the operation functions know how to handle conflicts.
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
 
 	var that = this;
+
+	this.setUp = function(mX, mY, mC){ that.input.setUp(mX, mY, mC) }
+	this.setDown = function(mX, mY, mC){ that.input.setDown(mX, mY, mC); }
 
 	// returns an array that can have up to four instruction for the tile at x,y
 	this.getCell = function(x,y){
