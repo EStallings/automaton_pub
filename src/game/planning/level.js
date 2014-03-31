@@ -63,7 +63,7 @@ App.PlanningLevel = function(){
 		}
 	};
 
-	//
+	// returns list of all unlocked instructions in cells between the specified coordinates
 	this.select = function(x1, y1, x2, y2){
 		instructions = [];
 		numSelected = 0;
