@@ -90,23 +90,15 @@ App.makeInputHandler = function(){
 		}
 
 		var down = (e.type === 'mousedown');
-		if(down){}
-			switch (e.button){
-				case 0:
-					input.mouseData.lmb = down;
-					break;
-				case 1:
-					input.mouseData.mmb = down;
-					break;
-				case 2:
-					input.mouseData.rmb = down;
-					break;
-			}
+		if(down){
+			setbutton(e.button, down);
 			if(input.Gui.mouseDown(input.mouseData))
 				input.guiControlsMouse = true;
 			else
+				input.Game.mouseDown(input.mouseData);
+
 		}
-		else {
+		else{
 			if(input.guiControlsMouse)
 				input.Gui.mouseUp(input.mouseData);
 			else
@@ -114,19 +106,23 @@ App.makeInputHandler = function(){
 
 			input.guiControlsMouse = false;
 
-			switch (e.button){
-				case 0:
-					input.mouseData.lmb = down;
-					break;
-				case 1:
-					input.mouseData.mmb = down;
-					break;
-				case 2:
-					input.mouseData.rmb = down;
-					break;
-			}
+			setbutton(e.button, down);
 		}
 
+	}
+
+	var setbutton = function(b, d){
+		switch (b){
+				case 0:
+					input.mouseData.lmb = d;
+					break;
+				case 1:
+					input.mouseData.mmb = d;
+					break;
+				case 2:
+					input.mouseData.rmb = d;
+					break;
+			}
 	}
 
 	//Deals with the wheel being scrolled
