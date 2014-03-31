@@ -90,31 +90,41 @@ App.makeInputHandler = function(){
 		}
 
 		var down = (e.type === 'mousedown');
-
-		switch (e.button){
-			case 0:
-				input.mouseData.lmb = down;
-				break;
-			case 1:
-				input.mouseData.mmb = down;
-				break;
-			case 2:
-				input.mouseData.rmb = down;
-				break;
+		if(down){}
+			switch (e.button){
+				case 0:
+					input.mouseData.lmb = down;
+					break;
+				case 1:
+					input.mouseData.mmb = down;
+					break;
+				case 2:
+					input.mouseData.rmb = down;
+					break;
+			}
+			if(input.Gui.mouseDown(input.mouseData))
+				input.guiControlsMouse = true;
+			else
 		}
-		if(!down){
+		else {
 			if(input.guiControlsMouse)
 				input.Gui.mouseUp(input.mouseData);
 			else
 				input.Game.mouseUp(input.mouseData);
 
 			input.guiControlsMouse = false;
-		}
-		else{
-			if(input.Gui.mouseDown(input.mouseData))
-				input.guiControlsMouse = true;
-			else
-				input.Game.mouseDown(input.mouseData);
+
+			switch (e.button){
+				case 0:
+					input.mouseData.lmb = down;
+					break;
+				case 1:
+					input.mouseData.mmb = down;
+					break;
+				case 2:
+					input.mouseData.rmb = down;
+					break;
+			}
 		}
 
 	}
