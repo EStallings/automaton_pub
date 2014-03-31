@@ -6,6 +6,11 @@ App.PlanningLevel = function(){
 	this.undoStack = []; // stores operation objects that can be undone later
 	this.redoStack = []; // stores operation objects that can be redone later
 	this.opObj = new App.Operation();
+	this.redLocked = false;
+	this.greenLocked = false;
+	this.blueLocked = false;
+	this.yellowLocked = false;
+	this.currentSelection = [];
 
 	// flag that lets the operation functions know how to handle conflicts.
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
@@ -58,6 +63,48 @@ App.PlanningLevel = function(){
 		}
 	};
 
+	//
+	this.select = function(x1, y1, x2, y2){
+		instructions = [];
+		numSelected = 0;
+		for(y = y1; y <= y2; ++y){
+			for(x = x1; x <= x2; ++x){
+				for(c = 0; c <= 3; ++c){
+					temp = that.getInstruction(x,y,c);
+					if(temp !== null && !that.isLocked(temp.color)){ instructions[numSelected] = temp; ++numSelected; }
+				}
+			}
+		}
+		that.currentSelection = numSelected;
+	}
+
+	// toggles the state of the specified layer lock
+	this.toggleLock = function(col){
+		if(col === App.COLORS.RED){
+			if(that.redLocked){ that.redLocked = false; } else { that.redLocked = true; }
+		}
+
+		if(col === App.COLORS.GREEN){
+			if(that.greenLocked){ that.greenLocked = false; } else { that.greenLocked = true; }
+		}
+
+		if(col === App.COLORS.BLUE){
+			if(that.blueLocked){ that.blueLocked = false; } else { that.blueLocked = true; }
+		}
+
+		if(col === App.COLORS.YELLOW){
+			if(that.yellowLocked){ that.yellowLocked = false; } else { that.yellowLocked = true; }
+		}
+	}
+
+	// returns the states of the specified layer lock
+	this.isLocked = function(color){
+		if(color === App.COLORS.RED){ return that.redLocked; }
+		if(color === App.COLORS.GREEN){ return that.greenLocked; }
+		if(color === App.COLORS.BLUE){ return that.blueLocked; }
+		if(color === App.COLORS.YELLOW){ return that.yellowLocked; }
+	}
+
 	// this function takes a list of PlanningInstructions and inserts them into the grid
 	this.groupInsert = function(instructions){
 		for(var x = 0; x < instructions.length; x++){
@@ -67,6 +114,7 @@ App.PlanningLevel = function(){
 	};
 
 	// this function takes a list of coordinate triplets and deletes the corresponding instructions from the grid
+	// TODO change to take list of instructions
 	this.groupDelete = function(coords){
 		for(var x = 0; x < coords.length; x++){
 			that.delete(coords[x][0],coords[x][1],coords[x][2]);
@@ -75,6 +123,7 @@ App.PlanningLevel = function(){
 	};
 
 	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
+	// TODO change to take list of instructions
 	this.groupMove = function(coords,shiftX,shiftY){
 		for(var x = 0; x < coords.length; x++){
 			that.move(coords[x][0],coords[x][1],coords[x][2],coords[x][0]+shiftX,coords[x][1]+shiftY);
@@ -83,6 +132,7 @@ App.PlanningLevel = function(){
 	}
 
 	// this function takes a list of coordinate triplets and copies the instructions they point to to a new cell shiftX and shiftY away from the first
+	// TODO change to take list of instructions
 	this.groupCopy = function(coords,shiftX,shiftY){
 		for(var x = 0; x < coords.length; x++){
 			that.copy(coords[x][0],coords[x][1],coords[x][2],coords[x][0]+shiftX,coords[x][1]+shiftY);
@@ -92,6 +142,7 @@ App.PlanningLevel = function(){
 
 	// not sure we will actually need this one
 	// this function takes a list of coordinate triplets and changes the specified parameter of all of them to value
+	// TODO change to take list of instructions
 	this.groupModify = function(coords, parameter, value){
 		for(var x = 0; x < coords.length; x++){
 			that.modify(this.getInstruction(coords[x][0],coords[x][1],coords[x][2]),parameter,value);
@@ -104,7 +155,8 @@ App.PlanningLevel = function(){
 	// if the parameter is 'color', then this will try to move the instruction
 	// to the appropriate spot in the array.
 	this.modify = function(instruction, parameter, value, killRedo){
-		if(that.contains(instruction.x, instruction.y, instruction.color)){
+		if(that.isLocked(instruction.color)){ return; }
+		if(that.contains(instruction.x, instruction.y, instruction.color) ){
 			var oldColor = instruction.color;
 			// update undo stack
 			that.undoStack.push(new that.opObj.modifyOp(instruction, parameter, value, instruction[parameter]));
@@ -142,6 +194,7 @@ App.PlanningLevel = function(){
 	// this function performs a copy operation on an instruction,
 	// and creates and pushes a copyOp object onto the undo stack.
 	this.copy = function(x, y, color, newX, newY, killRedo){
+		if(that.isLocked(color)){ return; }
 		// update undo stack
 		that.undoStack.push(new that.opObj.copyOp(that.getInstruction(x,y,color), newX, newY));
 
@@ -182,6 +235,7 @@ App.PlanningLevel = function(){
 	// this function, performs a move operation on an instruction,
 	// and creates and pushes a moveOp object onto the undo stack.
 	this.move = function(x, y, color, newX, newY, killRedo){
+		if(that.isLocked(color)){ return; }
 
 		// make sure there is an instruction at the specified coordinate
 		if(!that.contains(x,y,color)){ return; }
@@ -238,7 +292,9 @@ App.PlanningLevel = function(){
 
 	// this function performs an insert operation on the grid,
 	// and creates and pushes an insertOp object onto the undo stack.
+	// TODO refactor the way things are actually written to the grid
 	this.insert = function(instruction,killRedo){
+		if(that.isLocked(instruction.color)){ return; }
 
 		// update undo stack
 		that.undoStack.push(new that.opObj.insertOp(instruction));
@@ -279,6 +335,7 @@ App.PlanningLevel = function(){
 	// this function performs a delete operation on an instruction,
 	// it also creates and pushes a deleteOp object onto the stack
 	this.delete = function(x,y,color,killRedo){
+		if(that.isLocked(color)){ return; }
 		if(that.grid[x]){
 			if(that.grid[x][y]){
 				if(that.grid[x][y][color]){
@@ -296,6 +353,7 @@ App.PlanningLevel = function(){
 
 	};
 
+	// TODO figure out how undo / redo will work with locked layers.
 	// each call to this function pops the undo stack, and undoes whatever operation it finds
 	this.undo = function(killRedo){
 		if(that.undoStack.length === 0) return;
