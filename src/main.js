@@ -26,8 +26,8 @@ window.onload = function(){
 	// ========================================================== //
 
 
-	//App.changeMode(App.MODES.PLANNING);
-	App.changeMode(App.MODES.GUI_TEST);
+	App.changeMode(App.MODES.PLANNING);
+	//App.changeMode(App.MODES.GUI_TEST);
 }
 
 
