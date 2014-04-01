@@ -156,20 +156,20 @@ App.GuiPanel = function(guiCollider){
 			this.guiCollider.x = x + r;
 		}
 		else if(this.xAlignment === 'right'){
-			this.guiCollider.x = w - ox - r;
+			this.guiCollider.x = x + w - ox - r;
 		}
 		else if(this.xAlignment === 'center'){
-			this.guiCollider.x = (w/2) - (ox/2) - r;
+			this.guiCollider.x = x + (w/2) - (ox/2) - r;
 		}
 
 		if(this.yAlignment === 'top'){
 			this.guiCollider.y = y + r;
 		}
 		else if(this.yAlignment === 'bottom'){
-			this.guiCollider.y = h - oy - r;
+			this.guiCollider.y = y + h - oy - r;
 		}
 		else if(this.yAlignment === 'center'){
-			this.guiCollider.y = (h/2) - (oy/2) - r;
+			this.guiCollider.y = y + (h/2) - (oy/2) - r;
 		}
 
 		for (var c in this.children){

@@ -13,6 +13,7 @@ App.makeGame = function(){
 
 	game.currentPlanningLevel;
 	game.currentSimulationLevel;
+	game.debug = true;
 
 		/*+------------------------------------------+*/
 
@@ -426,7 +427,9 @@ App.makeGame = function(){
 			game.currentSimulationLevel.dynamicRender();
 		}
 
-		game.renderDebug();
+		// This is a highly useful tool but not something we want while we show Nikan/Dave
+		if(game.debug)
+			game.renderDebug();
 
 	}
 

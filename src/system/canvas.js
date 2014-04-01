@@ -6,6 +6,7 @@ App.createCanvasArray = function(){
 	canvases.halfHeight;
 	canvases.layers = [];
 	canvases.gfxs = [];
+	canvases.font = '12px Futurastd';
 
 	// adds and returns a new canvas to the canvas array
 	canvases.addNewLayer = function(name,z){
@@ -17,7 +18,7 @@ App.createCanvasArray = function(){
 		layer.style.position = 'absolute';
 
 		//I like this font. It's not, of course, mandatory that we use it. Just please, not a monospace font in the game... lol
-		layer.getContext('2d').font = '12px Futurastd';
+		layer.getContext('2d').font = canvases.font;
 		document.body.appendChild(layer);
 
 		this.layers[name] = layer;

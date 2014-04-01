@@ -36,6 +36,7 @@ App.demoLevels = [
 
 ]
 App.getDemoLevel = function(){
+	App.Game.simulationSpeed = 512; //reset on entering menus
 	return App.demoLevels[Math.floor(Math.random() * App.demoLevels.length)];
 }
 

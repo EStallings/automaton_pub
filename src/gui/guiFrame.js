@@ -138,10 +138,14 @@ App.makeGUI = function(){
 
 		for(var c in this.currentFrame){
 			if(this.currentFrame[c].render){
-				if(this.currentFrame[c] === this.activeComponent)
+				if(this.currentFrame[c] === this.activeComponent){
+					this.dynamicGfx.font = App.Canvases.font;
 					this.currentFrame[c].render(this.dynamicGfx);
-				else if(this.drawStatic)
+				}
+				else if(this.drawStatic){
+					this.staticGfx.font = App.Canvases.font;
 					this.currentFrame[c].render(this.staticGfx);
+				}
 			}
 		}
 

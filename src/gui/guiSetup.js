@@ -60,19 +60,37 @@ var setupMainMenuFrame = function(){
 	var key = App.setup.frames.MAIN_MENU;
 	App.Gui.addNewFrame(key);
 
-	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,0,500,500));
-	panel.yAlignment = 'center';
-	panel.xAlignment = 'center';
-
-	var playBut = new App.GuiTextButton(100, 200, 'Play', function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
-	var userBut = new App.GuiTextButton(100, 250, 'Play User Level', function(){App.changeMode(App.MODES.USER_LEVEL_SELECT);}, false, panel);
 	var blockPanel = App.makeBlockingPanel();
+	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,0,200,2100));
+	var p2 = new App.GuiPanel(new App.GuiCollisionRect(0,0,200,100));
+	p2.color = 'rgba(0,0,0,0)';
+	panel.yAlignment = 'center';
+	panel.xAlignment = 'left';
+	p2.yAlignment = 'bottom';
+
+	var playBut = new App.GuiTextButton(100, 1000, 'Play', function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
+	var levelBut = new App.GuiTextButton(100, 1040, 'Level Select', function(){console.log("not yet!")}, false, panel);
+	var userBut = new App.GuiTextButton(100, 1080, 'User Levels', function(){App.changeMode(App.MODES.USER_LEVEL_SELECT);}, false, panel);
+	var editBut = new App.GuiTextButton(100, 1120, 'Sandbox Mode', function(){console.log("not yet!")}, false, panel);
+	var settingsBut = new App.GuiTextButton(100, 1160, 'Settings', function(){console.log("not yet!")}, false, panel);
+
+	var text = new App.GuiTextWidget(['Automaton'], 0,'32px Futurastd', 5, 800, panel);
+	var creds = new App.GuiTextWidget(['Luke Balaoro','Khabbab Saleem','Kevin Dilts','Cameron Smith','Ezra Stallings'], 20, '10px Futurastd', 5, 0, p2);
+
+
 	blockPanel.color = 'rgba(180, 180, 180, 0)';
 
+	App.Gui.addNewComponent(key, blockPanel);
 	App.Gui.addNewComponent(key, panel);
 	App.Gui.addNewComponent(key, playBut);
+	App.Gui.addNewComponent(key, levelBut);
 	App.Gui.addNewComponent(key, userBut);
-	App.Gui.addNewComponent(key, blockPanel);
+	App.Gui.addNewComponent(key, editBut);
+	App.Gui.addNewComponent(key, settingsBut);
+	App.Gui.addNewComponent(key, text);
+	App.Gui.addNewComponent(key, creds);
+	App.Gui.addNewComponent(key, p2);
+
 
 }
 
