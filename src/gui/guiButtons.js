@@ -144,8 +144,8 @@ App.GuiPanel = function(guiCollider){
 	}
 
 	this.updatePosition = function(){
-		var x = this.guiCollider.getx();
-		var y = this.guiCollider.gety();
+		var x = this.guiCollider.baseX;
+		var y = this.guiCollider.baseY;
 		var ox = (this.guiCollider.w) ? this.guiCollider.w : 0;
 		var oy = (this.guiCollider.h) ? this.guiCollider.h : 0;
 		var r = (this.guiCollider.r) ? this.guiCollider.r : 0;
