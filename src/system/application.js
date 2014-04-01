@@ -68,17 +68,23 @@ App.MODES = {
 App.MODE = App.MODES.PLANNING;
 
 App.changeMode = function(mode){
-	App.MODE = mode;
+
 	if(mode.level){
 		App.Game.loadNewLevel(mode.level());
 	}
-	App.Game.renderX = 20000;
+
+
 	App.Game.renderY = App.Canvases.halfHeight - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
+
 	App.Game.goalRenderX = App.Canvases.halfWidth - (App.Game.currentPlanningLevel.width * App.Game.cellSize )/2;
 	App.Game.goalRenderY = App.Game.renderY;
+
+	App.Game.renderX = ((App.MODE === App.MODES.PLANNING && mode === App.MODES.SIMULATION) || (App.MODE === App.MODES.SIMULATION && mode === App.MODES.PLANNING)) ? App.Game.goalRenderX : 20000;
+
 	App.Game.setMode(mode.mode);
 	App.Gui.setCurrentFrame(mode.frame);
 
+	App.MODE = mode;
 	console.log('changed mode to : ' + mode);
 }
 
