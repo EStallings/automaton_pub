@@ -17,5 +17,5 @@ window.onload = function(){
 	setupTestLevel(); //temporary
 
 	App.changeMode(App.MODES.PLANNING);
-	//App.changeMode(App.MODES.GUI_TEST);
+	//App.changeMode(App.MODES.USER_LEVEL_SELECT);
 }

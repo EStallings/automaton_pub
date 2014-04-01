@@ -40,29 +40,29 @@ App.getDemoLevel = function(){
 }
 
 App.setup = {};
-App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', MAIN_MENU:'Main Menu', TEST:'test'}
+App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', MAIN_MENU:'Main Menu', USER_LEVEL_SELECT:'User Level Selection'}
 App.setup.modes = {PLANNING:App.setup.frames.PLANNING, SIMULATION:App.setup.frames.SIMULATION}
 
 App.MODES = {
-	MAIN_MENU			: {frame:App.setup.frames.MAIN_MENU,
-										mode:App.setup.modes.SIMULATION,
-										level:App.getDemoLevel,
-										toString:function(){return 'MAIN_MENU'}},
+	MAIN_MENU							: {frame:App.setup.frames.MAIN_MENU,
+														mode:App.setup.modes.SIMULATION,
+														level:App.getDemoLevel,
+														toString:function(){return 'MAIN_MENU'}},
 
-	PLANNING			: {frame:App.setup.frames.PLANNING,
-										mode:App.setup.modes.PLANNING,
-										level:null,
-										toString:function(){return 'PLANNING'}},
+	PLANNING							: {frame:App.setup.frames.PLANNING,
+														mode:App.setup.modes.PLANNING,
+														level:null,
+														toString:function(){return 'PLANNING'}},
 
-	SIMULATION		: {frame:App.setup.frames.SIMULATION,
-										mode:App.setup.modes.SIMULATION,
-										level:null,
-										toString:function(){return 'SIMULATION'}},
+	SIMULATION						: {frame:App.setup.frames.SIMULATION,
+														mode:App.setup.modes.SIMULATION,
+														level:null,
+														toString:function(){return 'SIMULATION'}},
 
-	GUI_TEST			: {frame:App.setup.frames.TEST,
-										mode:App.setup.modes.SIMULATION,
-										level:App.getDemoLevel,
-										toString:function(){return 'TEST'}}
+	USER_LEVEL_SELECT			: {frame:App.setup.frames.USER_LEVEL_SELECT,
+														mode:App.setup.modes.SIMULATION,
+														level:App.getDemoLevel,
+														toString:function(){return 'TEST'}}
 
 }
 App.MODE = App.MODES.PLANNING;

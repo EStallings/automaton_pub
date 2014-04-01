@@ -2,12 +2,12 @@ App.setupGUI = function(){
 	setupPlanningFrame();
 	setupSimulationFrame();
 	setupMainMenuFrame();
-	setupTestFrame();
+	setupUserLevelSelectFrame();
 
 }
 
-var setupTestFrame = function(){
-	var key = App.setup.frames.TEST;
+var setupUserLevelSelectFrame = function(){
+	var key = App.setup.frames.USER_LEVEL_SELECT;
 	App.Gui.addNewFrame(key);
 
 	var table = new App.GuiTable(100,100);
