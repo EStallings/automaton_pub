@@ -98,6 +98,8 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 		this.clicked = false;
 	}
 
+
+
 	//Ohh, javascript
 	var that = this;
 

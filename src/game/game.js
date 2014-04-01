@@ -71,51 +71,56 @@ App.makeGame = function(){
 	// Level format are made, they have to be updated here.
 	// This could be considered fragile code in need of refactoring!
 	game.loadNewLevel = function(inputString){
-		var split = inputString.split(';');
-		var lev = new App.PlanningLevel();
 		var errors = [];
+		if(!inputString || !inputString.split)
+			errors.push('   No Level!');
+		else{
+			var split = inputString.split(';');
+			var lev = new App.PlanningLevel();
 
-		if(split.length <= 0)
-			errors.push('  No Level!');
 
-		var levDat = split[0].split(',');
-		if(levDat.length !== 3)
-			errors.push('  Missing header information!');
+			if(split.length <= 0)
+				errors.push('  No Level!');
 
-		lev.name = levDat[0];
-		lev.width = parseInt(levDat[1]);
-		lev.height = parseInt(levDat[2]);
-		if(isNaN(lev.width) || isNaN(lev.height))
-			errors.push('  Non-numeric width or height!');
+			var levDat = split[0].split(',');
+			if(levDat.length !== 3)
+				errors.push('  Missing header information!');
 
-		for(var i = 1; i < split.length; i++){
-			var instDat = split[i].split(',');
-			if(instDat.length !== 4)
-				errors.push('  Missing instruction information for instruction #' + i + '!');
+			lev.name = levDat[0];
+			lev.width = parseInt(levDat[1]);
+			lev.height = parseInt(levDat[2]);
+			if(isNaN(lev.width) || isNaN(lev.height))
+				errors.push('  Non-numeric width or height!');
 
-			var x = parseInt(instDat[0]);
-			var y = parseInt(instDat[1]);
-			var col = parseInt(instDat[2]);
-			var typ = parseInt(instDat[3]);
+			for(var i = 1; i < split.length; i++){
+				var instDat = split[i].split(',');
+				if(instDat.length !== 4)
+					errors.push('  Missing instruction information for instruction #' + i + '!');
 
-			if(isNaN(x) || isNaN(y) || isNaN(col) || isNaN(typ))
-				errors.push('  Non-numeric instruction information for instruction #' +  i +  '!');
+				var x = parseInt(instDat[0]);
+				var y = parseInt(instDat[1]);
+				var col = parseInt(instDat[2]);
+				var typ = parseInt(instDat[3]);
 
-			if((x < 0 || x > lev.width) && lev.width !== 0)
-				errors.push('  Instruction x out of range for instruction #' + i + ': ' + x);
+				if(isNaN(x) || isNaN(y) || isNaN(col) || isNaN(typ))
+					errors.push('  Non-numeric instruction information for instruction #' +  i +  '!');
 
-			if((y < 0 || y > lev.height) && lev.height !== 0)
-				errors.push('  Instruction y out of range for instruction #' + i + ': ' + y);
+				if((x < 0 || x > lev.width) && lev.width !== 0)
+					errors.push('  Instruction x out of range for instruction #' + i + ': ' + x);
 
-			if(typ >= 25)
-				errors.push('  Instruction type out of range for instruction #' + i + ': ' + typ);
+				if((y < 0 || y > lev.height) && lev.height !== 0)
+					errors.push('  Instruction y out of range for instruction #' + i + ': ' + y);
 
-			if(col >= 4)
-				errors.push('  Instruction color out of range for instruction #' + i + ': ' + col);
+				if(typ >= 25)
+					errors.push('  Instruction type out of range for instruction #' + i + ': ' + typ);
 
-			if(errors.length === 0){
-				var inst = new App.PlanningInstruction(x, y, col, typ);
-				lev.insert(inst);
+				if(col >= 4)
+					errors.push('  Instruction color out of range for instruction #' + i + ': ' + col);
+
+				if(errors.length === 0){
+					var inst = new App.PlanningInstruction(x, y, col, typ);
+					lev.insert(inst);
+				}
 			}
 		}
 		if(errors.length !== 0){

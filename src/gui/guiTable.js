@@ -15,8 +15,6 @@ App.GuiTable = function(x, y){
 	this.colWidth  = 100;
 	this.x = x;
 	this.y = y;
-	this.widthInCells = 0;
-	this.heightInCells = 0;
 
 	this.lastSortedCol = null;
 	this.lastSortedSign = 1;
@@ -135,7 +133,9 @@ App.GuiTable = function(x, y){
 	this.setData = function(json){
 		if(!json)
 			return;
+		this.table = [];
 		this.json = json;
+		this.cbuttons = [];
 		if(json.length <= 0)
 			return;
 

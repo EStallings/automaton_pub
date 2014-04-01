@@ -11,11 +11,34 @@ var setupTestFrame = function(){
 	App.Gui.addNewFrame(key);
 
 	var table = new App.GuiTable(100,100);
-	App.Gui.addNewComponent(key, table);
+	var confirmButton = new App.GuiTextButton(600, 100, 'Load Level', function(){
+		if(table.table[table.activeRow]){
+			console.log(table.table[table.activeRow]);
+			App.Game.loadNewLevel(table.table[table.activeRow].json['level_str']);
+		}
+
+		else
+			console.log('select a level first!');
+	}, false, null);
 
 	var callback = function(data){
 		table.setData(data);
 	}
+
+	var typeEntry = new App.GuiEditableTextBox(new App.GuiCollisionRect(400, 50, 100, 30), 'user');
+	var subtypeEntry = new App.GuiEditableTextBox(new App.GuiCollisionRect(500, 50, 100, 30), 'khabbabs');
+	var submitButton = new App.GuiTextButton(600, 50, 'Get Levels', function(){
+		App.Server.getLevels(typeEntry.text, subtypeEntry.text, callback);
+	})
+
+
+
+	App.Gui.addNewComponent(key, confirmButton);
+	App.Gui.addNewComponent(key, table);
+	App.Gui.addNewComponent(key, typeEntry);
+	App.Gui.addNewComponent(key, subtypeEntry);
+	App.Gui.addNewComponent(key, submitButton);
+
 
 	App.Server.getLevels('user', 'khabbabs', callback);
 
