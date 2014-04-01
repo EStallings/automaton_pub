@@ -36,9 +36,14 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 	this.cursorPosition = 0;
 	this.cursorTime = 0;
 	this.cursorTimeout = 15;
+	this.next = null;
+	this.password = false;
 
-	var textX = this.guiCollider.getx() + 2;// (this.guiCollider.w / 2); // for centering text
-	var textY = this.guiCollider.gety() + 5 + (this.guiCollider.h / 2); // for centering text
+	this.resetText = function(){
+		this.text = this.defaultText;
+	}
+
+
 
 	//Draw the text box, including cursor
 	this.render = function(gfx){
@@ -46,10 +51,21 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 		gfx.fillStyle = App.GuiColors.gray[0];
 		//if set font, set font here.
+		var textX = this.guiCollider.getx() + 2;// (this.guiCollider.w / 2); // for centering text
+		var textY = this.guiCollider.gety() + 5 + (this.guiCollider.h / 2); // for centering text
 		var metrics = gfx.measureText(this.text.substring(0, this.cursorPosition));
 		if(metrics.width + textX > this.guiCollider.getx() + this.guiCollider.w)
 			this.text = this.text.substring(0, this.text.length - 1);
-		gfx.fillText(this.text, textX, textY);
+		if(!this.password || this.text === this.defaultText)
+			gfx.fillText(this.text, textX, textY);
+		else
+		{
+			var str = "";
+			for(var k in this.text){
+				str += '*';
+			}
+			gfx.fillText(str, textX, textY);
+		}
 
 		if(this.cursorTime > 0){
 			gfx.fillRect(textX + metrics.width, textY - 10, 1, 10);
@@ -113,11 +129,13 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 	}
 
 	//restores input control to the inputhandler, exits edit mode.
-	this.exitEditMode = function(){
+	this.exitEditMode = function(proceed){
 		App.InputHandler.deHijackInput();
 		this.editmode = false;
 		this.cursorTime = 0;
 		this.cursorPosition = 0;
+		if(this.next && proceed)
+			this.next.enterEditMode();
 	}
 
 	//Helper function to insert a keystroke at the cursor position
@@ -157,10 +175,10 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 
 		//Having a way to exit edit mode is VITAL
 		if(key === 'Enter')
-			that.exitEditMode();
+			that.exitEditMode(true);
 		if(key === 'Esc') {
 			that.text = that.lastText;
-			that.exitEditMode();
+			that.exitEditMode(false);
 		}
 	}
 }

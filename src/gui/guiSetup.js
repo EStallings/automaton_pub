@@ -10,8 +10,12 @@ var setupUserLevelSelectFrame = function(){
 	var key = App.setup.frames.USER_LEVEL_SELECT;
 	App.Gui.addNewFrame(key);
 
-	var table = new App.GuiTable(100,100);
-	var confirmButton = new App.GuiTextButton(600, 100, 'Load Level', function(){
+	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,0,800,500));
+	panel.xAlignment = 'center';
+	panel.yAlignment = 'center';
+
+	var table = new App.GuiTable(25,25, panel);
+	var confirmButton = new App.GuiTextButton(525, 25, 'Load Level', function(){
 		if(table.table[table.activeRow]){
 
 			if(App.Game.loadNewLevel(table.table[table.activeRow].json['level_str'])){
@@ -24,21 +28,22 @@ var setupUserLevelSelectFrame = function(){
 
 		else
 			console.log('select a level first!');
-	}, false, null);
+	}, false, panel);
 
 	var callback = function(data){
 		table.setData(data);
 	}
 
-	var typeEntry = new App.GuiEditableTextBox(new App.GuiCollisionRect(750, 100, 100, 30), 'user');
-	var subtypeEntry = new App.GuiEditableTextBox(new App.GuiCollisionRect(750, 150, 100, 30), 'khabbabs');
-	var submitButton = new App.GuiTextButton(750, 200, 'Get Levels', function(){
+	var typeEntry = new App.GuiEditableTextBox(new App.GuiCollisionRect(675, 25, 100, 30), 'user', panel);
+	var subtypeEntry = new App.GuiEditableTextBox(new App.GuiCollisionRect(675, 75, 100, 30), 'khabbabs', panel);
+	var submitButton = new App.GuiTextButton(675, 125, 'Get Levels', function(){
 		App.Server.getLevels(typeEntry.text, subtypeEntry.text, callback);
-	})
+	}, false, panel)
 
 	var menuButton = new App.GuiTextButton(400, 50, 'Main Menu',function(){App.changeMode(App.MODES.MAIN_MENU);	}, false, null);
-	App.Gui.addNewComponent(key, menuButton);
 
+	App.Gui.addNewComponent(key, panel);
+	App.Gui.addNewComponent(key, menuButton);
 	App.Gui.addNewComponent(key, confirmButton);
 	App.Gui.addNewComponent(key, table);
 	App.Gui.addNewComponent(key, typeEntry);
@@ -88,10 +93,11 @@ var setupSimulationFrame = function(){
 	var speedSliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(150,10,50,25), controlsPanel);
 
 	var min = 0;
-	var max = 10;
+	var max = 7;
+	var diff = 3;
 	var speedSliderLine = new App.GuiSliderLine(new App.GuiCollisionRect(150,10,10, 400), min, max, 2, function(n){
-
-		App.Game.setSimulationSpeed(64/(Math.sqrt(n)+1));
+		var k = 0 - n + max;
+		App.Game.setSimulationSpeed(Math.pow(2,k+diff));
 	}, controlsPanel);
 	speedSliderButton.sliderLine = speedSliderLine;
 	speedSliderLine.sliderButton = speedSliderButton;
@@ -167,14 +173,27 @@ var setupPlanningFrame = function(){
 	submitDialog[1].xAlignment = 'center';
 	submitDialog[1].yAlignment = 'center';
 	submitDialog[1].updatePosition();
-	submitDialog[2] = new App.GuiTextButton(25,450,'Cancel', function(){setTimeout(function(){App.Gui.endOverlay();});}, false, submitDialog[1]);
+	submitDialog[2] = new App.GuiTextButton(25,430,'Cancel', function(){
+		setTimeout(function(){App.Gui.endOverlay();});
+		submitDialog[3].resetText();
+		submitDialog[4].resetText();
+		submitDialog[5].resetText();
+		submitDialog[6].resetText();
+		submitDialog[7].resetText();
+	}, false, submitDialog[1]);
 
-	submitDialog[3] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,250,100,30), 'Username', submitDialog[1]);
+	submitDialog[3] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,270,100,30), 'Username', submitDialog[1]);
 	submitDialog[4] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,300,100,30), 'Password', submitDialog[1]);
 
 	submitDialog[5] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,100,100,30), 'Level Name', submitDialog[1]);
-	submitDialog[6] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,150,100,30), 'Level Description', submitDialog[1]);
-	submitDialog[7] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,200,100,30), 'Difficulty', submitDialog[1]);
+	submitDialog[6] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,200,100,30), 'Level Description', submitDialog[1]);
+	submitDialog[7] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,150,100,30), 'Difficulty', submitDialog[1]);
+
+	submitDialog[5].next = submitDialog[7];
+	submitDialog[7].next = submitDialog[6];
+	submitDialog[6].next = submitDialog[3];
+	submitDialog[3].next = submitDialog[4];
+	submitDialog[4].password = true;
 
 	submitDialog[8] = new App.GuiTextButton(25,400,'Submit', function(){
 		App.Server.putLevel(App.Game.currentPlanningLevel.generateParseString(),
@@ -184,6 +203,13 @@ var setupPlanningFrame = function(){
 											submitDialog[5].text,
 											submitDialog[6].text,
 											App.Server.testPostCallback);
+
+		submitDialog[3].resetText();
+		submitDialog[4].resetText();
+		submitDialog[5].resetText();
+		submitDialog[6].resetText();
+		submitDialog[7].resetText();
+
 		App.Gui.endOverlay();
 	}, false, submitDialog[1]);
 
@@ -203,6 +229,7 @@ var setupPlanningFrame = function(){
 					App.Game.currentPlanningLevel.undo();
 			}
 	});
+	App.InputHandler.registerKey('Esc', App.MODES.PLANNING, function(){App.Gui.endOverlay();});
 
 
 

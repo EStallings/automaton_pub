@@ -2,7 +2,7 @@
 For displaying leaderboards and level select.
 */
 
-App.GuiTable = function(x, y){
+App.GuiTable = function(x, y, panel){
 	this.json = null;
 	this.table = []; //to be filled with GuiTableRow objects
 	this.cbuttons = []; //to be filled with column button objects
@@ -10,6 +10,8 @@ App.GuiTable = function(x, y){
 	this.panel = new App.GuiPanel(new App.GuiCollisionRect(x, y, 100, 50)); //will be resized
 	this.guiCollider = this.panel.guiCollider;
 	this.guiCollider.functional = true;
+	if(panel) panel.addChild(this);
+	this.parentPanel = panel;
 
 	this.rowHeight = 20;
 	this.colWidth  = 100;
@@ -167,9 +169,10 @@ App.GuiTable = function(x, y){
 }
 
 App.GuiTable.TableButton = function(x, string, table){
-	this.guiCollider = new App.GuiCollisionRect(x * table.colWidth, 0, table.colWidth, 30);
+	this.guiCollider = new App.GuiCollisionRect(x * table.colWidth + table.guiCollider.getx(), table.guiCollider.gety(), table.colWidth, 30);
 	this.text = string;
-	table.panel.addChild(this);
+	if(table.parentPanel)
+		table.parentPanel.addChild(this);
 
 	this.activeColor = App.GuiColors.gray[4];
 	this.inactiveColor = App.GuiColors.gray[6];
