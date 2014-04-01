@@ -532,7 +532,7 @@ App.PlanningLevel = function(){
 	}
 
 	this.dynamicRender = function(){
-		App.Game.tempGfx.fillStyle = '#ff0000';
-		App.Game.tempGfx.fillRect(0,0,1000,100);
+//		App.Game.tempGfx.fillStyle = '#ff0000';
+//		App.Game.tempGfx.fillRect(0,0,1000,100);
 	}
 }

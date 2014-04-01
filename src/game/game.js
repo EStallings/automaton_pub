@@ -7,8 +7,7 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.modes = {SIMULATION:App.setup.modes.SIMULATION,PLANNING:App.setup.modes.PLANNING}; // why are these strings?
-		//because they can be? Change it if you want.
+	game.modes = {SIMULATION:App.setup.modes.SIMULATION,PLANNING:App.setup.modes.PLANNING};
 	game.mode = game.modes.PLANNING;
 
 	game.currentPlanningLevel;
@@ -180,6 +179,7 @@ App.makeGame = function(){
 		}
 
 		if(game.followTarget){
+			// behavior considerations when automaton wraps around level???
 			game.goalRenderX = game.followTarget.drawX + game.currentSimulationLevel.width*game.cellSize/2;
 			game.goalRenderY = game.followTarget.drawY + game.currentSimulationLevel.height*game.cellSize/2;
 			game.requestStaticRenderUpdate = true;
@@ -199,6 +199,7 @@ App.makeGame = function(){
 	// ========================================================== //
 
 	game.tempGfx        = App.Canvases.addNewLayer('gameTemp'       ,0);
+	game.debugGfx       = App.Canvases.addNewLayer('debug info'     ,0);
 	game.automGfx       = App.Canvases.addNewLayer('autom'         ,-1);
 	game.tokenDGfx      = App.Canvases.addNewLayer('token dynamic' ,-2);
 	game.tokenSGfx      = App.Canvases.addNewLayer('token static'  ,-3);
@@ -237,6 +238,32 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
+	game.followAutomaton = function(automaton){
+		this.followTarget = automaton;
+	}
+
+	game.constrain = function(){
+		// TODO: dont constrain to center of window, rather, constrain to border of window + some pixel offset
+		var w2 = App.Canvases.halfWidth;
+		var h2 = App.Canvases.halfHeight;
+		var wg = game.currentPlanningLevel.width * game.cellSize;
+		var hg = game.currentPlanningLevel.height * game.cellSize;
+
+		if(wg !== 0){
+			if(game.goalRenderX > w2)
+				game.goalRenderX = w2;
+			else if(game.goalRenderX < w2 - wg)
+				game.goalRenderX = w2 - wg;
+		}
+
+		if(hg !== 0){
+			if(game.goalRenderY > h2)
+				game.goalRenderY = h2;
+			else if(game.goalRenderY < h2 - hg)
+				game.goalRenderY = h2 - hg;
+		}
+	}
+
 	game.beginPan = function(x,y){
 		game.followTarget = null;
 		game.panMouseX = x;
@@ -250,27 +277,6 @@ App.makeGame = function(){
 		game.goalRenderY = Math.round(game.panRenderY+(y-game.panMouseY));
 		game.constrain();
 		game.requestStaticRenderUpdate = true;
-	}
-
-	game.followAutomaton = function(automaton){
-		this.followTarget = automaton;
-	}
-
-	game.constrain = function(){
-		var w2 = App.Canvases.halfWidth;
-		var h2 = App.Canvases.halfHeight;
-		var wg = game.currentPlanningLevel.width * game.cellSize;
-		var hg = game.currentPlanningLevel.height * game.cellSize;
-
-		if(game.goalRenderX > w2)
-			game.goalRenderX = w2;
-		else if(game.goalRenderX < w2 - wg)
-			game.goalRenderX = w2 - wg;
-
-		if(game.goalRenderY > h2)
-			game.goalRenderY = h2;
-		else if(game.goalRenderY < h2 - hg)
-			game.goalRenderY = h2 - hg;
 	}
 
 	game.zoom = function(x,y,f){
@@ -357,34 +363,44 @@ App.makeGame = function(){
 		if(game.cellSize != game.goalCellSize)game.requestStaticRenderUpdate=true;
 
 		// setup grid canvas
-		//game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height); // TODO: OPTIMIZE THIS
+		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height); // TODO: OPTIMIZE THIS
 		game.gridGfx.lineWidth = 2;
-		game.gridGfx.fillRect(0,0,App.Canvases.width, App.Canvases.height);
+
+		// game.gridGfx.fillRect(0,0,App.Canvases.width, App.Canvases.height);
+		// ^^^ this isnt anymore optimal than clearRect and breaks anything
+		// rendered behind the grid because canvas is no longer transparent
+
 		// setup grid vars
+		var gw = game.currentPlanningLevel.width;
+		var gh = game.currentPlanningLevel.height;
 		var cs = game.cellSize;
-		// var w = App.Canvases.width;
-		// var h = App.Canvases.height;
-		// var rx = fmod(game.renderX,cs);
-		// var ry = fmod(game.renderY,cs);
-		var rx = game.renderX;
-		var ry = game.renderY;
-		var w = game.currentPlanningLevel.width * game.cellSize + rx + cs/2;
-		var h = game.currentPlanningLevel.height * game.cellSize + ry + cs/2;
+		var l = fmod(game.renderX,cs)-cs;
+		var r = App.Canvases.width+cs;
+		var t = fmod(game.renderY,cs)-cs;
+		var b = App.Canvases.height+cs;
+
+		if(gw !== 0){
+			l = Math.max(l,game.renderX);
+			r = Math.min(r,game.renderX+cs*gw);
+		}if(gh !== 0){
+			t = Math.max(t,game.renderY);
+			b = Math.min(b,game.renderY+cs*gh);
+		}
 
 		// draw grid lines
 		game.gridGfx.strokeStyle = '#111111';
 		game.gridGfx.beginPath();
-		for(var i=rx;i<=w;i+=cs){
-			game.gridGfx.moveTo(i,ry);game.gridGfx.lineTo(i,h);
-		}for(var j=ry;j<=h;j+=cs){
-			game.gridGfx.moveTo(rx,j);game.gridGfx.lineTo(w,j);
+		for(var i=l;i<=r;i+=cs){
+			game.gridGfx.moveTo(i,t);game.gridGfx.lineTo(i,b);
+		}for(var j=t;j<=b;j+=cs){
+			game.gridGfx.moveTo(l,j);game.gridGfx.lineTo(r,j);
 		}game.gridGfx.stroke();
 
 		// draw cell corners
 		game.gridGfx.strokeStyle = '#444444';
 		game.gridGfx.beginPath();
-		for(var i=rx;i<=w;i+=cs)
-		for(var j=ry;j<=h;j+=cs){
+		for(var i=l;i<=r;i+=cs)
+		for(var j=t;j<=b;j+=cs){
 			game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
 			game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
 		}game.gridGfx.stroke();
@@ -392,22 +408,18 @@ App.makeGame = function(){
 		// draw cell centers
 		game.gridGfx.strokeStyle = '#222222';
 		game.gridGfx.beginPath();
-		for(var i=rx;i<w;i+=cs){
-			for(var j=ry;j<h;j+=cs){
-				game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
-				game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
-				if(game.cellSize < 30)continue;
-				game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
-			}
-		}
-		game.gridGfx.stroke();
+		for(var i=l+cs/2;i<r;i+=cs)
+		for(var j=t+cs/2;j<b;j+=cs){
+			game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
+			game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
+			if(game.cellSize < 30)continue;
+			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
+		}game.gridGfx.stroke();
 
 		// draw level borders
 		game.gridGfx.strokeStyle = '#888888';
 		game.gridGfx.beginPath();
-		game.gridGfx.rect(game.renderX-4,game.renderY-4,
-		                  game.currentPlanningLevel.width*game.cellSize+8,
-		                  game.currentPlanningLevel.height*game.cellSize+8);
+		game.gridGfx.rect(l-4,t-4,r-l+8,b-t+8);
 		game.gridGfx.stroke();
 
 		if(game.mode === game.modes.PLANNING &&
@@ -427,41 +439,40 @@ App.makeGame = function(){
 			game.currentSimulationLevel.dynamicRender();
 		}
 
-		// This is a highly useful tool but not something we want while we show Nikan/Dave
-		if(game.debug)
-			game.renderDebug();
-
+		game.renderDebug();
 	}
 
+	// This is a highly useful tool but not something we want while we show Nikan/Dave
 	game.renderDebug = function(){
-		game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		if(!game.debug)return;
+		game.debugGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-		game.tempGfx.fillStyle = 'rgba(0,0,0,0.7)'
-		game.tempGfx.fillRect(5,5,300,81);
+		game.debugGfx.fillStyle = 'rgba(0,0,0,0.7)'
+		game.debugGfx.fillRect(5,5,300,81);
 
-		game.tempGfx.font = 'bold 11px arial';
-		game.tempGfx.fillStyle = '#ffffff';
-		game.tempGfx.fillText('FPS: '+Math.round(App.Engine.fps) ,11,22);
-		game.tempGfx.fillText('Cycle: '+game.cycle               ,11,33);
+		game.debugGfx.font = 'bold 11px arial';
+		game.debugGfx.fillStyle = '#ffffff';
+		game.debugGfx.fillText('FPS: '+Math.round(App.Engine.fps) ,11,22);
+		game.debugGfx.fillText('Cycle: '+game.cycle               ,11,33);
 		if(game.paused){
-			game.tempGfx.fillStyle = '#ff0000';
-			game.tempGfx.fillText('Speed: PAUSED',11,44);
-			game.tempGfx.fillStyle = '#ffffff';
-		}else game.tempGfx.fillText('Speed: '+game.simulationSpeed+' ms/tick',11,44);
-		game.tempGfx.fillText('Tick: '+App.Engine.tick           ,11,55);
-		game.tempGfx.fillText('Zoom: '+game.cellSizeFactor       ,11,66);
-		game.tempGfx.fillText('Mode: '+game.mode       ,11,77);
+			game.debugGfx.fillStyle = '#ff0000';
+			game.debugGfx.fillText('Speed: PAUSED',11,44);
+			game.debugGfx.fillStyle = '#ffffff';
+		}else game.debugGfx.fillText('Speed: '+game.simulationSpeed+' ms/tick',11,44);
+		game.debugGfx.fillText('Tick: '+App.Engine.tick           ,11,55);
+		game.debugGfx.fillText('Zoom: '+game.cellSizeFactor       ,11,66);
+		game.debugGfx.fillText('Mode: '+game.mode       ,11,77);
 
-		game.tempGfx.fillText('Pan X: '+game.renderX             ,132,22);
-		game.tempGfx.fillText('Pan Y: '+game.renderY             ,132,33);
-		game.tempGfx.fillText('Cell Size: '+game.cellSize        ,132,44);
-		if(game.requestStaticRenderUpdate)game.tempGfx.fillStyle = '#ff0000';
-		game.tempGfx.fillText('Static Render: '+game.requestStaticRenderUpdate,132,55);
-		game.tempGfx.fillStyle = '#ffffff';
+		game.debugGfx.fillText('Pan X: '+game.renderX             ,132,22);
+		game.debugGfx.fillText('Pan Y: '+game.renderY             ,132,33);
+		game.debugGfx.fillText('Cell Size: '+game.cellSize        ,132,44);
+		if(game.requestStaticRenderUpdate)game.debugGfx.fillStyle = '#ff0000';
+		game.debugGfx.fillText('Static Render: '+game.requestStaticRenderUpdate,132,55);
+		game.debugGfx.fillStyle = '#ffffff';
 		var bar = 'Interpolation ';
 		for(var i=0;i<game.interpolation;i+=0.05)bar+='|';
-		game.tempGfx.fillText(bar,132,66);
-		game.tempGfx.fillText('Mouse: '+game.mouseX+','+game.mouseY+','+game.mouseC,132,77);
+		game.debugGfx.fillText(bar,132,66);
+		game.debugGfx.fillText('Mouse: '+game.mouseX+','+game.mouseY+','+game.mouseC,132,77);
 	}
 
 	// ========================================================== //

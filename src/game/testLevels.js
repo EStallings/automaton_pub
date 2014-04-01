@@ -61,7 +61,7 @@ function test3(){
 function test4(){
 	var testLevel = new App.PlanningLevel();
 	testLevel.width  = 0;
-	testLevel.height = 0;
+	testLevel.height = 3;
 	testLevel.insert(new App.PlanningInstruction(0,0,0,0));
 	testLevel.insert(new App.PlanningInstruction(0,0,1,1));
 	testLevel.insert(new App.PlanningInstruction(0,0,2,2));
@@ -70,7 +70,7 @@ function test4(){
 }
 
 function setupTestLevel(){
-	App.Game.currentPlanningLevel = test3();
+	App.Game.currentPlanningLevel = test4();
 }
 
 // DELETE THIS FILE ONCE PROPER LEVEL LOADING IS IMPLEMENTED
