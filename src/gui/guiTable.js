@@ -124,9 +124,9 @@ App.GuiTable = function(x, y){
 			this.cbuttons[b].clickDrag(x, y);
 		}
 
-		y = Math.floor((y - this.guiCollider.gety() - this.rowHeight)/this.rowHeight);
+		y = Math.floor((y - this.guiCollider.gety() - 30)/this.rowHeight);
 
-		if(this.table[y] !== this.testActiveRow)
+		if(y !== this.testActiveRow)
 			this.testActiveRow = -1;
 	}
 

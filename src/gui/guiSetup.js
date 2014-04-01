@@ -25,13 +25,14 @@ var setupUserLevelSelectFrame = function(){
 		table.setData(data);
 	}
 
-	var typeEntry = new App.GuiEditableTextBox(new App.GuiCollisionRect(400, 50, 100, 30), 'user');
-	var subtypeEntry = new App.GuiEditableTextBox(new App.GuiCollisionRect(500, 50, 100, 30), 'khabbabs');
-	var submitButton = new App.GuiTextButton(600, 50, 'Get Levels', function(){
+	var typeEntry = new App.GuiEditableTextBox(new App.GuiCollisionRect(750, 100, 100, 30), 'user');
+	var subtypeEntry = new App.GuiEditableTextBox(new App.GuiCollisionRect(750, 150, 100, 30), 'khabbabs');
+	var submitButton = new App.GuiTextButton(750, 200, 'Get Levels', function(){
 		App.Server.getLevels(typeEntry.text, subtypeEntry.text, callback);
 	})
 
-
+	var menuButton = new App.GuiTextButton(400, 50, 'Main Menu',function(){App.changeMode(App.MODES.MAIN_MENU);	}, false, null);
+	App.Gui.addNewComponent(key, menuButton);
 
 	App.Gui.addNewComponent(key, confirmButton);
 	App.Gui.addNewComponent(key, table);
@@ -54,11 +55,13 @@ var setupMainMenuFrame = function(){
 	panel.xAlignment = 'center';
 
 	var playBut = new App.GuiTextButton(100, 200, 'Play', function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
+	var userBut = new App.GuiTextButton(100, 250, 'Play User Level', function(){App.changeMode(App.MODES.USER_LEVEL_SELECT);}, false, panel);
 	var blockPanel = App.makeBlockingPanel();
 	blockPanel.color = 'rgba(180, 180, 180, 0)';
 
 	App.Gui.addNewComponent(key, panel);
 	App.Gui.addNewComponent(key, playBut);
+	App.Gui.addNewComponent(key, userBut);
 	App.Gui.addNewComponent(key, blockPanel);
 
 }
