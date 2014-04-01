@@ -13,8 +13,13 @@ var setupUserLevelSelectFrame = function(){
 	var table = new App.GuiTable(100,100);
 	var confirmButton = new App.GuiTextButton(600, 100, 'Load Level', function(){
 		if(table.table[table.activeRow]){
-			console.log(table.table[table.activeRow]);
-			App.Game.loadNewLevel(table.table[table.activeRow].json['level_str']);
+
+			if(App.Game.loadNewLevel(table.table[table.activeRow].json['level_str'])){
+				App.changeMode(App.MODES.PLANNING);
+			}
+			else{
+				//TODO error dialog box
+			}
 		}
 
 		else
@@ -147,11 +152,45 @@ var setupPlanningFrame = function(){
 	App.Gui.addNewComponent(key, zoomOutButton);
 
 
+
+
+
 	var simButton = new App.GuiTextButton(400, 50, 'Simulate',function(){App.changeMode(App.MODES.SIMULATION);	}, false, null);
 	App.Gui.addNewComponent(key, simButton);
 
 	var menuButton = new App.GuiTextButton(525, 50, 'Menu',function(){App.changeMode(App.MODES.MAIN_MENU);	}, false, null);
 	App.Gui.addNewComponent(key, menuButton);
+
+	var submitDialog = [];
+	submitDialog[0] = App.makeBlockingPanel();
+	submitDialog[1] = new App.GuiPanel(new App.GuiCollisionRect(0,0,150,500));
+	submitDialog[1].xAlignment = 'center';
+	submitDialog[1].yAlignment = 'center';
+	submitDialog[1].updatePosition();
+	submitDialog[2] = new App.GuiTextButton(25,450,'Cancel', function(){setTimeout(function(){App.Gui.endOverlay();});}, false, submitDialog[1]);
+
+	submitDialog[3] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,250,100,30), 'Username', submitDialog[1]);
+	submitDialog[4] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,300,100,30), 'Password', submitDialog[1]);
+
+	submitDialog[5] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,100,100,30), 'Level Name', submitDialog[1]);
+	submitDialog[6] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,150,100,30), 'Level Description', submitDialog[1]);
+	submitDialog[7] = new App.GuiEditableTextBox(new App.GuiCollisionRect(25,200,100,30), 'Difficulty', submitDialog[1]);
+
+	submitDialog[8] = new App.GuiTextButton(25,400,'Submit', function(){
+		App.Server.putLevel(App.Game.currentPlanningLevel.generateParseString(),
+											submitDialog[3].text,
+											submitDialog[4].text,
+											submitDialog[7].text,
+											submitDialog[5].text,
+											submitDialog[6].text,
+											App.Server.testPostCallback);
+		App.Gui.endOverlay();
+	}, false, submitDialog[1]);
+
+	var submitButton = new App.GuiTextButton(650, 50, 'Submit Level', function(){
+		App.Gui.startOverlay(submitDialog);
+	}, false, null);
+	App.Gui.addNewComponent(key, submitButton);
 
 	//Setup Key Bindings
 	App.InputHandler.registerKey('`', App.MODES.PLANNING,function(){ App.changeMode(App.MODES.SIMULATION);});

@@ -128,10 +128,11 @@ App.makeGame = function(){
 			for(var e in errors){
 				console.error(errors[e]);
 			}
-			return;
+			return false;//a success/failure flag
 		}
 
 		this.currentPlanningLevel = lev;
+		return true;
 	}
 
 	// ========================================================== //
@@ -455,9 +456,6 @@ App.makeGame = function(){
 	}
 
 	// ========================================================== //
-
-	// TODO: move these to gameInput
-	// TODO: why can't i register '-' and '='?
 
 	return game;
 }
