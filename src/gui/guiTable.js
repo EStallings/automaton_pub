@@ -8,6 +8,7 @@ App.GuiTable = function(x, y, panel){
 	this.cbuttons = []; //to be filled with column button objects
 
 	this.panel = new App.GuiPanel(new App.GuiCollisionRect(x, y, 100, 50)); //will be resized
+	this.panel.color = App.GuiColors.gray[8];
 	this.guiCollider = this.panel.guiCollider;
 	this.guiCollider.functional = true;
 	if(panel) panel.addChild(this);
@@ -78,10 +79,14 @@ App.GuiTable = function(x, y, panel){
 				var textY = y + this.rowHeight/2;
 				gfx.fillText(e, textX, textY);
 
-				gfx.fillStyle = '#ffffff';
-				gfx.fillRect(x,this.guiCollider.gety() + 30, 2, this.guiCollider.h - 30);
+				gfx.fillStyle = App.GuiColors.gray[1];
+				gfx.fillRect(x-1,this.guiCollider.gety(), 1, this.guiCollider.h);
 			}
 		}
+		gfx.fillStyle = App.GuiColors.gray[1];
+		gfx.fillRect(this.guiCollider.w + this.guiCollider.getx(),this.guiCollider.gety(), 1, this.guiCollider.h);
+		gfx.fillRect(this.guiCollider.getx()-1,this.guiCollider.gety()-1, this.guiCollider.w + 1,1);
+		gfx.fillRect(this.guiCollider.getx()-1,this.guiCollider.gety() + this.guiCollider.h, this.guiCollider.w + 1,1);
 	}
 
 	this.clickStart = function(){
