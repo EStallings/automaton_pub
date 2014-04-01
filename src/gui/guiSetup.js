@@ -118,7 +118,7 @@ var setupSimulationFrame = function(){
 	App.InputHandler.registerKey(']', App.MODES.SIMULATION,function(){App.Game.setSimulationSpeed(App.Game.simulationSpeed/2);});
 	App.InputHandler.registerKey('Space', App.MODES.SIMULATION,function(){App.Game.pause();});
 	App.InputHandler.registerKey('`', App.MODES.SIMULATION,function(){ App.changeMode(App.MODES.PLANNING);});
-
+	App.InputHandler.registerKey('Esc', App.MODES.SIMULATION, function(){App.changeMode(App.MODES.PLANNING);});
 }
 
 var setupPlanningFrame = function(){
