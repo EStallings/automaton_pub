@@ -18,11 +18,18 @@ App.GuiTable = function(x, y){
 	this.widthInCells = 0;
 	this.heightInCells = 0;
 
-	this.activeRow = -1; //-1 for none
+	this.lastSortedCol = null;
+	this.lastSortedSign = 1;
 
-	this.oddColor = App.GuiColors.gray[4];
-	this.evenColor = App.GuiColors.gray[5];
-	this.activeColor = App.GuiColors.gray[5];
+	this.activeRow = -1; //-1 for none
+	this.testActiveRow = -1;
+
+	this.oddColor = App.GuiColors.gray[5];
+	this.evenColor = App.GuiColors.gray[4];
+
+
+	this.activeColor = App.GuiColors.gray[3];
+	this.testActiveColor = App.GuiColors.gray[2];
 
 	this.update = function(){
 		for(var b in this.cbuttons){
@@ -30,9 +37,19 @@ App.GuiTable = function(x, y){
 		}
 	}
 
+
+	//takes a column and whether or not to sort alphabetically
 	this.sortBy = function(col){
+		var sign = (this.lastSortedCol === col)? this.lastSortedSign * -1 : 1;
+		this.lastSortedCol = col;
+		this.lastSortedSign = sign;
+
 		this.table.sort(function(a, b){
-			return (a.entries[col].text < b.entries[col].text) ? -1 : 1;
+			var res = 0;
+			if(a.entries[col] === b.entries[col])
+				return 0;
+			return (a.entries[col] < b.entries[col]) ? (-1 * sign) : (1 * sign);
+
 		});
 		App.Gui.drawStatic = true;
 	}
@@ -47,6 +64,11 @@ App.GuiTable = function(x, y){
 				var e = this.table[o].entries[k];
 
 				gfx.fillStyle = (o%2 == 0) ? this.evenColor : this.oddColor;
+
+				//intentional use of == vs ===
+				if(o == this.testActiveRow) gfx.fillStyle = this.testActiveColor;
+				if(o == this.activeRow) gfx.fillStyle = this.activeColor;
+
 				var x = k * this.colWidth + this.guiCollider.getx();
 				var y = o * this.rowHeight + this.guiCollider.gety() + 30;
 				gfx.fillRect(x, y,this.colWidth,this.rowHeight);
@@ -54,35 +76,60 @@ App.GuiTable = function(x, y){
 				gfx.fillStyle = App.GuiTextButton.fg;
 				var textX = x + 2;
 				var textY = y + this.rowHeight/2;
-				gfx.fillText(e.text, textX, textY);
-			}
+				gfx.fillText(e, textX, textY);
 
+				gfx.fillStyle = '#ffffff';
+				gfx.fillRect(x,this.guiCollider.gety() + 30, 2, this.guiCollider.h - 30);
+			}
 		}
 	}
 
 	this.clickStart = function(){
+		if(!this.json)
+			return;
+
 		var x = App.InputHandler.mouseData.x;
 		var y = App.InputHandler.mouseData.y;
+
 		for(var b in this.cbuttons){
 			this.cbuttons[b].clickStart(x, y);
 		}
+
+		y = Math.floor((y - this.guiCollider.gety()-30)/this.rowHeight);
+
+		this.testActiveRow = -1;
+		this.activeRow = -1;
+
+		if(this.table[y])
+			this.testActiveRow = y;
 	}
 
 	this.clickEnd = function(x, y){
+		if(!this.json)
+			return;
+
 		for(var b in this.cbuttons){
 			this.cbuttons[b].clickEnd(x, y);
 		}
+
+		y = Math.floor((y - this.guiCollider.gety() - 30)/this.rowHeight);
+
+		this.activeRow = -1;
+
+		if(this.table[y] && y === this.testActiveRow)
+			this.activeRow = y;
+		this.testActiveRow = -1
 	}
 
-	this.clickDrag = function(){
+	this.clickDrag = function(x, y){
 		for(var b in this.cbuttons){
 			this.cbuttons[b].clickDrag(x, y);
 		}
-	}
 
-	this.selectEntry = function(x, y){
-		if(!this.json)
-			return;
+		y = Math.floor((y - this.guiCollider.gety() - this.rowHeight)/this.rowHeight);
+
+		if(this.table[y] !== this.testActiveRow)
+			this.testActiveRow = -1;
 	}
 
 	this.setData = function(json){
@@ -94,20 +141,22 @@ App.GuiTable = function(x, y){
 
 		var i = 0, that = this;
 		for(var o in json){
-			this.table.push(new App.GuiTable.TableRow(json[o], this, i));
+			this.table.push(new App.GuiTable.TableRow(json[o]));
 			i++;
 		}
 
 		i=0;
 		for(var c in json[0]){
 			//var b = new App.GuiTextButton((this.colWidth * i), 0, c, function(){that.cbutClicked(i)}, false, this.panel);
-			var b  = new App.GuiTable.TableButton(i, c, this);
-			this.cbuttons.push(b);
-			i++;
+			if(!tFilter[c]){
+				var b  = new App.GuiTable.TableButton(i, c, this);
+				this.cbuttons.push(b);
+				i++;
+			}
 		}
 
 		this.width = i * this.colWidth;
-		this.height = json.length * this.rowHeight;
+		this.height = json.length * this.rowHeight + 30;
 		this.guiCollider.w = this.width;
 		this.guiCollider.h = this.height;
 
@@ -178,18 +227,32 @@ App.GuiTable.TableButton = function(x, string, table){
 
 }
 
-App.GuiTable.TableRow = function(json, table, row){
-	this.entries = [];
-	var i = 0;
-	for(var k in json){
-		this.entries.push(new App.GuiTable.TableEntry(json[k], row, i));
-		i++;
+//just filters out things to see. Everything DOES get stored, not all is visible!
+var tFilter = {'__v':true, '_id':true, 'level_str':true};
+
+//I don't like this, but until we get this functionality
+//built into the JSON or the server, it helps
+var scrubData = function(s, t){
+	if(tFilter[t])
+		return null;
+
+	if(t === 'created'){
+		s = s.split('T')[0];
 	}
-	this.row = row;
+
+	return s;
 }
 
-App.GuiTable.TableEntry = function(string, row, col){
-	this.text = string;
-	this.row = row;
-	this.col = col;
+App.GuiTable.TableRow = function(json){
+	this.entries = [];
+	this.json = json;
+	var i = 0;
+	var s = null;
+	for(var k in json){
+		s = scrubData(json[k], k);
+		if(s !== null){
+			this.entries.push(s);
+			i++;
+		}
+	}
 }
