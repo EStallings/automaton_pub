@@ -361,18 +361,22 @@ App.makeGame = function(){
 		game.gridGfx.fillRect(0,0,App.Canvases.width, App.Canvases.height);
 		// setup grid vars
 		var cs = game.cellSize;
-		var w = App.Canvases.width;
-		var h = App.Canvases.height;
-		var rx = fmod(game.renderX,cs);
-		var ry = fmod(game.renderY,cs);
+		// var w = App.Canvases.width;
+		// var h = App.Canvases.height;
+		// var rx = fmod(game.renderX,cs);
+		// var ry = fmod(game.renderY,cs);
+		var rx = game.renderX;
+		var ry = game.renderY;
+		var w = game.currentPlanningLevel.width * game.cellSize + rx + cs/2;
+		var h = game.currentPlanningLevel.height * game.cellSize + ry + cs/2;
 
 		// draw grid lines
 		game.gridGfx.strokeStyle = '#111111';
 		game.gridGfx.beginPath();
 		for(var i=rx;i<=w;i+=cs){
-			game.gridGfx.moveTo(i,0);game.gridGfx.lineTo(i,h);
+			game.gridGfx.moveTo(i,ry);game.gridGfx.lineTo(i,h);
 		}for(var j=ry;j<=h;j+=cs){
-			game.gridGfx.moveTo(0,j);game.gridGfx.lineTo(w,j);
+			game.gridGfx.moveTo(rx,j);game.gridGfx.lineTo(w,j);
 		}game.gridGfx.stroke();
 
 		// draw cell corners
@@ -387,13 +391,15 @@ App.makeGame = function(){
 		// draw cell centers
 		game.gridGfx.strokeStyle = '#222222';
 		game.gridGfx.beginPath();
-		for(var i=rx-cs/2;i<w+cs;i+=cs)
-		for(var j=ry-cs/2;j<h+cs;j+=cs){
-			game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
-			game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
-			if(game.cellSize < 30)continue;
-			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
-		}game.gridGfx.stroke();
+		for(var i=rx;i<w;i+=cs){
+			for(var j=ry;j<h;j+=cs){
+				game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
+				game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
+				if(game.cellSize < 30)continue;
+				game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
+			}
+		}
+		game.gridGfx.stroke();
 
 		// draw level borders
 		game.gridGfx.strokeStyle = '#888888';
