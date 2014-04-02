@@ -10,6 +10,8 @@ var setupUserLevelSelectFrame = function(){
 	var key = App.setup.frames.USER_LEVEL_SELECT;
 	App.Gui.addNewFrame(key);
 
+	var blockPanel = App.makeBlockingPanel();
+	App.Gui.addNewComponent(key, blockPanel);
 	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,0,800,500));
 	panel.xAlignment = 'center';
 	panel.yAlignment = 'center';

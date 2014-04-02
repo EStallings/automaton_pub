@@ -74,14 +74,21 @@ App.changeMode = function(mode){
 		App.Game.loadNewLevel(mode.level());
 	}
 
+
+
 	// this becomes especially annoying when switching between planning and simulation mode
 	// a different transition will be written for level swapping once we get the functionality of that going
-//	App.Game.renderY = App.Canvases.halfHeight - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
 
-//	App.Game.goalRenderX = App.Canvases.halfWidth - (App.Game.currentPlanningLevel.width * App.Game.cellSize )/2;
-//	App.Game.goalRenderY = App.Game.renderY;
 
-//	App.Game.renderX = ((App.MODE === App.MODES.PLANNING && mode === App.MODES.SIMULATION) || (App.MODE === App.MODES.SIMULATION && mode === App.MODES.PLANNING)) ? App.Game.goalRenderX : 20000;
+	// |||Leave it for now: it's good for demo purposes and it doesn't do the transition when going between
+	// planning and simulation mode! It only does it when changing menus! And it's nice
+	// to have it start out centered, otherwise it tries to draw in a place it can't legally
+	App.Game.renderY = App.Canvases.halfHeight - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
+
+	App.Game.goalRenderX = App.Canvases.halfWidth - (App.Game.currentPlanningLevel.width * App.Game.cellSize )/2;
+	App.Game.goalRenderY = App.Game.renderY;
+
+	App.Game.renderX = ((App.MODE === App.MODES.PLANNING && mode === App.MODES.SIMULATION) || (App.MODE === App.MODES.SIMULATION && mode === App.MODES.PLANNING)) ? App.Game.goalRenderX : 20000;
 
 	App.Game.setMode(mode.mode);
 	App.Gui.setCurrentFrame(mode.frame);
