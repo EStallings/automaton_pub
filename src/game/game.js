@@ -12,7 +12,7 @@ App.makeGame = function(){
 
 	game.currentPlanningLevel;
 	game.currentSimulationLevel;
-	game.debug = true;
+	game.debug = false;
 
 		/*+------------------------------------------+*/
 
