@@ -45,25 +45,25 @@ App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', MAIN_MENU:'Mai
 App.setup.modes = {PLANNING:App.setup.frames.PLANNING, SIMULATION:App.setup.frames.SIMULATION}
 
 App.MODES = {
-	MAIN_MENU							: {frame:App.setup.frames.MAIN_MENU,
-														mode:App.setup.modes.SIMULATION,
-														level:App.getDemoLevel,
-														toString:function(){return 'MAIN_MENU'}},
+	MAIN_MENU         : {frame:App.setup.frames.MAIN_MENU,
+	                     mode:App.setup.modes.SIMULATION,
+	                     level:App.getDemoLevel,
+	                     toString:function(){return 'MAIN_MENU'}},
 
-	PLANNING							: {frame:App.setup.frames.PLANNING,
-														mode:App.setup.modes.PLANNING,
-														level:null,
-														toString:function(){return 'PLANNING'}},
+	PLANNING          : {frame:App.setup.frames.PLANNING,
+	                     mode:App.setup.modes.PLANNING,
+	                     level:null,
+	                     toString:function(){return 'PLANNING'}},
 
-	SIMULATION						: {frame:App.setup.frames.SIMULATION,
-														mode:App.setup.modes.SIMULATION,
-														level:null,
-														toString:function(){return 'SIMULATION'}},
+	SIMULATION        : {frame:App.setup.frames.SIMULATION,
+	                     mode:App.setup.modes.SIMULATION,
+	                     level:null,
+	                     toString:function(){return 'SIMULATION'}},
 
-	USER_LEVEL_SELECT			: {frame:App.setup.frames.USER_LEVEL_SELECT,
-														mode:App.setup.modes.SIMULATION,
-														level:App.getDemoLevel,
-														toString:function(){return 'TEST'}}
+	USER_LEVEL_SELECT : {frame:App.setup.frames.USER_LEVEL_SELECT,
+	                     mode:App.setup.modes.SIMULATION,
+	                     evel:App.getDemoLevel,
+	                     toString:function(){return 'TEST'}}
 
 }
 App.MODE = App.MODES.PLANNING;
@@ -74,13 +74,14 @@ App.changeMode = function(mode){
 		App.Game.loadNewLevel(mode.level());
 	}
 
+	// this becomes especially annoying when switching between planning and simulation mode
+	// a different transition will be written for level swapping once we get the functionality of that going
+//	App.Game.renderY = App.Canvases.halfHeight - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
 
-	App.Game.renderY = App.Canvases.halfHeight - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
+//	App.Game.goalRenderX = App.Canvases.halfWidth - (App.Game.currentPlanningLevel.width * App.Game.cellSize )/2;
+//	App.Game.goalRenderY = App.Game.renderY;
 
-	App.Game.goalRenderX = App.Canvases.halfWidth - (App.Game.currentPlanningLevel.width * App.Game.cellSize )/2;
-	App.Game.goalRenderY = App.Game.renderY;
-
-	App.Game.renderX = ((App.MODE === App.MODES.PLANNING && mode === App.MODES.SIMULATION) || (App.MODE === App.MODES.SIMULATION && mode === App.MODES.PLANNING)) ? App.Game.goalRenderX : 20000;
+//	App.Game.renderX = ((App.MODE === App.MODES.PLANNING && mode === App.MODES.SIMULATION) || (App.MODE === App.MODES.SIMULATION && mode === App.MODES.PLANNING)) ? App.Game.goalRenderX : 20000;
 
 	App.Game.setMode(mode.mode);
 	App.Gui.setCurrentFrame(mode.frame);
