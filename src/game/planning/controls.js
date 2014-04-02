@@ -18,5 +18,16 @@ App.PlanningControls = function(){
 			this.dragged = true;
 		} else { this.dragged = false; }
 		console.log(mX + ' ' + mY + ' ' + mC + ' ' + that.dragged);
+		that.select(that.dragged);
+	}
+
+	this.select = function(isDrag){
+		if(isDrag){
+			// group select
+			App.Game.currentPlanningLevel.selectCells(that.downX,that.downY,that.upX,that.upY);
+		}else{
+			// single instruction select
+			App.Game.currentPlanningLevel.selectInstruction(that.upX, that.upY, that.upC);
+		}
 	}
 }
