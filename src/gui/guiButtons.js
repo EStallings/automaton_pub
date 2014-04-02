@@ -215,7 +215,9 @@ App.GuiPanel.rgba = 'rgba(180, 180, 180, 0.1)';
 
 //Subclassing in JS is awful. Breaks everything. Use factories instead usually
 App.makeBlockingPanel = function(){
-	return new App.GuiPanel(new App.GuiCollisionRect(0,0,App.Canvases.width, App.Canvases.height));
+	var p = new App.GuiPanel(new App.GuiCollisionRect(0,0,App.Canvases.width, App.Canvases.height));
+	p.color = 'rgba(50,50,50,0.8';
+	return p;
 }
 
 //Positions this component relative to another component, instead of absolute positioning on the screen

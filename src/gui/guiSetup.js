@@ -68,14 +68,31 @@ var setupMainMenuFrame = function(){
 	panel.xAlignment = 'left';
 	p2.yAlignment = 'bottom';
 
+	var notyet = [];
+	notyet[0] = App.makeBlockingPanel();
+	notyet[1] = new App.GuiPanel(new App.GuiCollisionRect(0,0,150,150));
+	notyet[1].xAlignment = 'center';
+	notyet[1].yAlignment = 'center';
+	notyet[1].updatePosition();
+	notyet[2] = new App.GuiTextButton(25,100,'OK', function(){
+		setTimeout(function(){App.Gui.endOverlay();});
+	}, false, notyet[1]);
+	notyet[3] = new App.GuiTextWidget(['Coming Soon!'], 0,'16px Futurastd', 5, 25, notyet[1]);
+
+	var fun = function(){
+	 console.log('not yet!');
+	 App.Gui.startOverlay(notyet);
+	}
+
 	var playBut = new App.GuiTextButton(100, 1000, 'Play', function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
-	var levelBut = new App.GuiTextButton(100, 1040, 'Level Select', function(){console.log("not yet!")}, false, panel);
+	var levelBut = new App.GuiTextButton(100, 1040, 'Level Select',fun, false, panel);
 	var userBut = new App.GuiTextButton(100, 1080, 'User Levels', function(){App.changeMode(App.MODES.USER_LEVEL_SELECT);}, false, panel);
-	var editBut = new App.GuiTextButton(100, 1120, 'Sandbox Mode', function(){console.log("not yet!")}, false, panel);
-	var settingsBut = new App.GuiTextButton(100, 1160, 'Settings', function(){console.log("not yet!")}, false, panel);
+	var editBut = new App.GuiTextButton(100, 1120, 'Sandbox Mode',fun, false, panel);
+	var settingsBut = new App.GuiTextButton(100, 1160, 'Settings',fun, false, panel);
 
 	var text = new App.GuiTextWidget(['Automaton'], 0,'32px Futurastd', 5, 800, panel);
 	var creds = new App.GuiTextWidget(['Luke Balaoro','Khabbab Saleem','Kevin Dilts','Cameron Smith','Ezra Stallings'], 20, '10px Futurastd', 5, 0, p2);
+
 
 
 	blockPanel.color = 'rgba(180, 180, 180, 0)';

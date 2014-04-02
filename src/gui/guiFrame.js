@@ -111,10 +111,20 @@ App.makeGUI = function(){
 
 	gui.ensurePositions = function(){
 		this.drawStatic = true;
-		for(var c in this.currentFrame) if(this.currentFrame[c].updatePosition)
-			this.currentFrame[c].updatePosition();
-		for(var c in this.currentFrame) if(this.currentFrame[c].windowupdate)
-			this.currentFrame[c].windowupdate();
+		for(var o in this.overlays){
+			for(var c in this.overlays[o]){
+				if(this.overlays[o][c].updatePosition)
+					this.overlays[o][c].updatePosition();
+			}
+		}
+
+		for(var c in this.currentFrame) {
+
+			if(this.currentFrame[c].updatePosition)
+				this.currentFrame[c].updatePosition();
+			if(this.currentFrame[c].windowupdate)
+				this.currentFrame[c].windowupdate();
+		}
 	}
 
 	gui.render = function(){
