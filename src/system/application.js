@@ -41,7 +41,7 @@ App.getDemoLevel = function(){
 }
 
 App.setup = {};
-App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', MAIN_MENU:'Main Menu', USER_LEVEL_SELECT:'User Level Selection'}
+App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', MAIN_MENU:'Main Menu', LEVEL_SELECT:'Level Select', USER_LEVEL_SELECT:'User Level Selection', SETTINGS:'Settings'}
 App.setup.modes = {PLANNING:App.setup.frames.PLANNING, SIMULATION:App.setup.frames.SIMULATION}
 
 App.MODES = {
@@ -63,7 +63,17 @@ App.MODES = {
 	USER_LEVEL_SELECT : {frame:App.setup.frames.USER_LEVEL_SELECT,
 	                     mode:App.setup.modes.SIMULATION,
 	                     evel:App.getDemoLevel,
-	                     toString:function(){return 'TEST'}}
+	                     toString:function(){return 'USER_LEVEL_SELECT'}},
+
+	SETTINGS : {frame:App.setup.frames.SETTINGS,
+	                     mode:App.setup.modes.SIMULATION,
+	                     evel:App.getDemoLevel,
+	                     toString:function(){return 'SETTINGS'}},
+
+	LEVEL_SELECT : {frame:App.setup.frames.LEVEL_SELECT,
+	                     mode:App.setup.modes.SIMULATION,
+	                     evel:App.getDemoLevel,
+	                     toString:function(){return 'LEVEL_SELECT'}}
 
 }
 App.MODE = App.MODES.PLANNING;
