@@ -143,7 +143,7 @@ var setupPlanningFrame = function(){
 	var key = App.setup.frames.PLANNING;
 
 	App.Gui.addNewFrame(key);
-	var instructionPanel = new App.GuiPanel(new App.GuiCollisionRect(800,0,100,600));
+	var instructionPanel = new App.GuiPanel(new App.GuiCollisionRect(0,0,100,600));
 	instructionPanel.xAlignment = 'right';
 	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,100,100,500));
 
