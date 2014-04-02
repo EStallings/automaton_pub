@@ -142,6 +142,9 @@ App.GuiTable = function(x, y, ppanel){
 			return;
 		this.table = [];
 		this.json = json;
+		for(var b in this.cbuttons){
+			this.parentPanel.removeChild(this.cbuttons[b]);
+		}
 		this.cbuttons = [];
 		if(json.length <= 0)
 			return;
@@ -173,7 +176,7 @@ App.GuiTable = function(x, y, ppanel){
 }
 
 App.GuiTable.TableButton = function(x, string, table){
-	this.guiCollider = new App.GuiCollisionRect(x * table.colWidth + table.guiCollider.getx(), table.guiCollider.gety(), table.colWidth, 30);
+	this.guiCollider = new App.GuiCollisionRect(x * table.colWidth + table.guiCollider.baseX, table.guiCollider.baseY, table.colWidth, 30);
 	this.text = string;
 	if(table.parentPanel)
 		table.parentPanel.addChild(this);

@@ -171,6 +171,13 @@ App.GuiPanel = function(guiCollider){
 		comp.guiCollider.positionRelative(this);
 	}
 
+	this.removeChild = function(comp){
+		var index =this.children.indexOf(comp);
+		if (index > -1) {
+		  this.children.splice(index, 1);
+		}
+	}
+
 	this.updatePosition = function(){
 		var x = this.guiCollider.baseX;
 		var y = this.guiCollider.baseY;
