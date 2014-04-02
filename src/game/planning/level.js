@@ -529,10 +529,19 @@ App.PlanningLevel = function(){
 			for(var i in that.grid)
 				for(var j in that.grid[i])
 					if(that.grid[i][j][c])
+
+						///////////
+						/*var oldVal = App.Game.instructionGfx.fillStyle;
+						if(that.currentSelection.indexOf(that.getInstruction(i,j,c)) != -1){
+							App.Game.instructionGfx.fillStyle = '#ffffff';
+						}*/
+						///////////
+
 						App.InstCatalog.render(
 							App.Game.instructionGfx,
 							that.grid[i][j][c].type,
 							i*cs,j*cs,c,cs/2);
+			//App.Game.instructionGfx.fillStyle = oldVal;
 			App.Game.instructionGfx.restore();
 		}
 		App.Game.instructionGfx.restore();
