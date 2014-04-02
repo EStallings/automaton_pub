@@ -67,9 +67,10 @@ App.PlanningLevel = function(){
 		}
 	};
 
-	// returns list of all unlocked instructions in cells between the specified coordinates
-	this.select = function(x1, y1, x2, y2){
+	// fills currentSelection list of all unlocked instructions in cells between the specified coordinates
+	this.selectCells = function(x1, y1, x2, y2){
 		instructions = [];
+		that.currentSelection = [];
 		numSelected = 0;
 		for(y = y1; y <= y2; ++y){
 			for(x = x1; x <= x2; ++x){
@@ -79,7 +80,13 @@ App.PlanningLevel = function(){
 				}
 			}
 		}
-		that.currentSelection = numSelected;
+		that.currentSelection = instructions;
+	}
+
+	// selects a single instruction
+	this.selectInstruction = function(x,y,c){
+		that.currentSelection = [];
+		that.currentSelection[0] = that.getInstruction(x,y,c);
 	}
 
 	// toggles the state of the specified layer lock
