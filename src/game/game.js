@@ -244,25 +244,15 @@ App.makeGame = function(){
 	}
 
 	game.constrain = function(){
-		// TODO: dont constrain to center of window, rather, constrain to border of window + some pixel offset
-		var w2 = App.Canvases.halfWidth;
-		var h2 = App.Canvases.halfHeight;
-		var wg = game.currentPlanningLevel.width * game.cellSize;
-		var hg = game.currentPlanningLevel.height * game.cellSize;
-
-		if(wg !== 0){
-			if(game.goalRenderX > w2)
-				game.goalRenderX = w2;
-			else if(game.goalRenderX < w2 - wg)
-				game.goalRenderX = w2 - wg;
-		}
-
-		if(hg !== 0){
-			if(game.goalRenderY > h2)
-				game.goalRenderY = h2;
-			else if(game.goalRenderY < h2 - hg)
-				game.goalRenderY = h2 - hg;
-		}
+		var offset = 64;
+		if(game.goalRenderX > App.Canvases.width-offset)
+			game.goalRenderX = App.Canvases.width-offset;
+		if(game.goalRenderX < offset-game.currentPlanningLevel.width*game.cellSize)
+			game.goalRenderX = offset-game.currentPlanningLevel.width*game.cellSize;
+		if(game.goalRenderY > App.Canvases.height-offset)
+			game.goalRenderY = App.Canvases.height-offset;
+		if(game.goalRenderY < offset-game.currentPlanningLevel.height*game.cellSize)
+			game.goalRenderY = offset-game.currentPlanningLevel.height*game.cellSize;
 	}
 
 	game.beginPan = function(x,y){
