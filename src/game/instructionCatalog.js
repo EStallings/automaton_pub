@@ -26,11 +26,13 @@ App.makeInstructionCatalog = function(){
 		'PAUSE'		: 24,
 	};
 
-	ins.render = function(gfx,type,x,y,c,size){
+	ins.render = function(gfx,type,x,y,c,size,selected){
 		gfx.save();
 		gfx.translate(x,y);
 
 		// TODO: SPECIAL RENDER FUNCS (STREAM, SYNC)
+
+
 
 		switch(c){
 			case App.COLORS.RED:
@@ -53,6 +55,11 @@ App.makeInstructionCatalog = function(){
 				gfx.fillRect(2,2,size-4,size-4);
 				gfx.strokeStyle='#ffff00';
 				break;
+		}
+
+		if(selected){
+			gfx.fillStyle = '#ffffff';
+			gfx.fillRect(2,2,size-2,size-2);
 		}
 
 		gfx.beginPath();

@@ -502,6 +502,7 @@ App.PlanningLevel = function(){
 
 	this.staticRender = function(){
 		// TODO: FIX THIS
+		var selected;		
 		var cs = App.Game.cellSize;
 		App.Game.translateCanvas(App.Game.instructionGfx);
 		App.Game.instructionGfx.lineWidth = 2;
@@ -528,20 +529,18 @@ App.PlanningLevel = function(){
 
 			for(var i in that.grid)
 				for(var j in that.grid[i])
-					if(that.grid[i][j][c])
-
-						///////////
-						/*var oldVal = App.Game.instructionGfx.fillStyle;
+					if(that.grid[i][j][c]){
+						selected = false;
 						if(that.currentSelection.indexOf(that.getInstruction(i,j,c)) != -1){
-							App.Game.instructionGfx.fillStyle = '#ffffff';
-						}*/
-						///////////
+							selected = true;
+						}
 
 						App.InstCatalog.render(
 							App.Game.instructionGfx,
 							that.grid[i][j][c].type,
-							i*cs,j*cs,c,cs/2);
-			//App.Game.instructionGfx.fillStyle = oldVal;
+							i*cs,j*cs,c,cs/2,selected);
+					}
+
 			App.Game.instructionGfx.restore();
 		}
 		App.Game.instructionGfx.restore();
