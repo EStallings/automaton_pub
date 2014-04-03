@@ -3,14 +3,51 @@ App.setupGUI = function(){
 	setupSimulationFrame();
 	setupMainMenuFrame();
 	setupUserLevelSelectFrame();
+	setupSettingsFrame();
+	setupLevelSelectFrame();
+}
 
+var setupLevelSelectFrame = function(){
+	var key = App.setup.frames.LEVEL_SELECT;
+	App.Gui.addNewFrame(key);
+
+	var blockPanel = App.makeBlockingPanel();
+	App.Gui.addNewComponent(key, blockPanel);
+
+	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,50,800,450));
+	panel.xAlignment = 'center';
+	panel.yAlignment = 'center';
+
+	var menuButton = new App.GuiTextButton(400, 50, 'Main Menu',function(){App.changeMode(App.MODES.MAIN_MENU);	}, false, null);
+
+	App.Gui.addNewComponent(key, panel);
+	App.Gui.addNewComponent(key, menuButton);
+}
+
+var setupSettingsFrame = function(){
+	var key = App.setup.frames.SETTINGS;
+	App.Gui.addNewFrame(key);
+
+	var blockPanel = App.makeBlockingPanel();
+	App.Gui.addNewComponent(key, blockPanel);
+
+	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,50,800,450));
+	panel.xAlignment = 'center';
+	panel.yAlignment = 'center';
+
+	var menuButton = new App.GuiTextButton(400, 50, 'Main Menu',function(){App.changeMode(App.MODES.MAIN_MENU);	}, false, null);
+
+	App.Gui.addNewComponent(key, panel);
+	App.Gui.addNewComponent(key, menuButton);
 }
 
 var setupUserLevelSelectFrame = function(){
 	var key = App.setup.frames.USER_LEVEL_SELECT;
 	App.Gui.addNewFrame(key);
 
-	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,0,800,500));
+	var blockPanel = App.makeBlockingPanel();
+	App.Gui.addNewComponent(key, blockPanel);
+	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,50,800,450));
 	panel.xAlignment = 'center';
 	panel.yAlignment = 'center';
 
@@ -85,10 +122,10 @@ var setupMainMenuFrame = function(){
 	}
 
 	var playBut = new App.GuiTextButton(100, 1000, 'Play', function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
-	var levelBut = new App.GuiTextButton(100, 1040, 'Level Select',fun, false, panel);
+	var levelBut = new App.GuiTextButton(100, 1040, 'Level Select',function(){App.changeMode(App.MODES.SETTINGS);}, false, panel);
 	var userBut = new App.GuiTextButton(100, 1080, 'User Levels', function(){App.changeMode(App.MODES.USER_LEVEL_SELECT);}, false, panel);
 	var editBut = new App.GuiTextButton(100, 1120, 'Sandbox Mode',fun, false, panel);
-	var settingsBut = new App.GuiTextButton(100, 1160, 'Settings',fun, false, panel);
+	var settingsBut = new App.GuiTextButton(100, 1160, 'Settings',function(){App.changeMode(App.MODES.SETTINGS);}, false, panel);
 
 	var text = new App.GuiTextWidget(['Automaton'], 0,'32px Futurastd', 5, 800, panel);
 	var creds = new App.GuiTextWidget(['Luke Balaoro','Khabbab Saleem','Kevin Dilts','Cameron Smith','Ezra Stallings'], 20, '10px Futurastd', 5, 0, p2);
