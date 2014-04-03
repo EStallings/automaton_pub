@@ -200,12 +200,12 @@ App.makeGame = function(){
 
 	game.tempGfx        = App.Canvases.addNewLayer('gameTemp'       ,0);
 	game.debugGfx       = App.Canvases.addNewLayer('debug info'     ,0);
-	game.automGfx       = App.Canvases.addNewLayer('autom'         ,-1);
-	game.tokenDGfx      = App.Canvases.addNewLayer('token dynamic' ,-2);
-	game.tokenSGfx      = App.Canvases.addNewLayer('token static'  ,-3);
-	game.instructionGfx = App.Canvases.addNewLayer('instruction'   ,-4);
-	game.gridGfx        = App.Canvases.addNewLayer('grid static'   ,-5);
-	game.bkgndGfx       = App.Canvases.addNewLayer('background'    ,-6);
+	game.bkgndGfx       = App.Canvases.addNewLayer('background'    ,-1);
+	game.automGfx       = App.Canvases.addNewLayer('autom'         ,-2);
+	game.tokenDGfx      = App.Canvases.addNewLayer('token dynamic' ,-3);
+	game.tokenSGfx      = App.Canvases.addNewLayer('token static'  ,-4);
+	game.instructionGfx = App.Canvases.addNewLayer('instruction'   ,-5);
+	game.gridGfx        = App.Canvases.addNewLayer('grid static'   ,-6);
 	// remember to add to clearRects
 
 	game.requestStaticRenderUpdate = true;
@@ -419,18 +419,20 @@ App.makeGame = function(){
 		game.gridGfx.rect(l-4,t-4,r-l+8,b-t+8);
 		game.gridGfx.stroke();
 
-		// TODO: this should be ultrastatic, should only redrawn on windowresize
 		// TODO: OPTIMIZE THIS
+		game.bkgndGfx.fillStyle = '#000000';
+		game.bkgndGfx.rect(0,0,App.Canvases.width,App.Canvases.height);
+		game.bkgndGfx.fill();
 		game.bkgndGfx.strokeStyle = '#090909';
 		game.bkgndGfx.beginPath();
 		for(var i=1;i<App.Canvases.width+App.Canvases.height;i+=6){
 			game.bkgndGfx.moveTo(i,0);
 			game.bkgndGfx.lineTo(0,i);
 		}game.bkgndGfx.stroke();
-		// XXX: grid overlay, consider changing this
-		game.bkgndGfx.fillStyle = '#000000';
+		game.bkgndGfx.globalCompositeOperation = 'destination-out';
 		game.bkgndGfx.rect(l-6,t-6,r-l+12,b-t+12);
 		game.bkgndGfx.fill();
+		game.bkgndGfx.globalCompositeOperation = 'source-over';
 
 		if(game.mode === game.modes.PLANNING &&
 		   game.currentPlanningLevel !== undefined)
