@@ -245,14 +245,20 @@ App.makeGame = function(){
 
 	game.constrain = function(){
 		var offset = 64;
-		if(game.goalRenderX > App.Canvases.width-offset)
-			game.goalRenderX = App.Canvases.width-offset;
-		if(game.goalRenderX < offset-game.currentPlanningLevel.width*game.cellSize)
-			game.goalRenderX = offset-game.currentPlanningLevel.width*game.cellSize;
-		if(game.goalRenderY > App.Canvases.height-offset)
-			game.goalRenderY = App.Canvases.height-offset;
-		if(game.goalRenderY < offset-game.currentPlanningLevel.height*game.cellSize)
-			game.goalRenderY = offset-game.currentPlanningLevel.height*game.cellSize;
+
+		if(game.currentPlanningLevel.width !== 0){
+			if(game.goalRenderX > App.Canvases.width-offset)
+				game.goalRenderX = App.Canvases.width-offset;
+			if(game.goalRenderX < offset-game.currentPlanningLevel.width*game.cellSize)
+				game.goalRenderX = offset-game.currentPlanningLevel.width*game.cellSize;
+		}
+
+		if(game.currentPlanningLevel.height !== 0){
+			if(game.goalRenderY > App.Canvases.height-offset)
+				game.goalRenderY = App.Canvases.height-offset;
+			if(game.goalRenderY < offset-game.currentPlanningLevel.height*game.cellSize)
+				game.goalRenderY = offset-game.currentPlanningLevel.height*game.cellSize;
+		}
 	}
 
 	game.beginPan = function(x,y){
