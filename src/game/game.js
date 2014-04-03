@@ -387,17 +387,17 @@ App.makeGame = function(){
 		// draw grid lines
 		game.gridGfx.strokeStyle = '#111111';
 		game.gridGfx.beginPath();
-		for(var i=l;i<=r;i+=cs){
+		for(var i=l;i<=r+1;i+=cs){
 			game.gridGfx.moveTo(i,t);game.gridGfx.lineTo(i,b);
-		}for(var j=t;j<=b;j+=cs){
+		}for(var j=t;j<=b+1;j+=cs){
 			game.gridGfx.moveTo(l,j);game.gridGfx.lineTo(r,j);
 		}game.gridGfx.stroke();
 
 		// draw cell corners
 		game.gridGfx.strokeStyle = '#444444';
 		game.gridGfx.beginPath();
-		for(var i=l;i<=r;i+=cs)
-		for(var j=t;j<=b;j+=cs){
+		for(var i=l;i<=r+1;i+=cs)
+		for(var j=t;j<=b+1;j+=cs){
 			game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
 			game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
 		}game.gridGfx.stroke();
@@ -419,6 +419,7 @@ App.makeGame = function(){
 		game.gridGfx.rect(l-4,t-4,r-l+8,b-t+8);
 		game.gridGfx.stroke();
 
+		// draw background and occlude level at borders
 		// TODO: OPTIMIZE THIS
 		game.bkgndGfx.fillStyle = '#000000';
 		game.bkgndGfx.rect(0,0,App.Canvases.width,App.Canvases.height);
