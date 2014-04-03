@@ -21,6 +21,18 @@ App.PlanningLevel = function(){
 	this.setUp = function(mX, mY, mC){ that.input.setUp(mX, mY, mC) }
 	this.setDown = function(mX, mY, mC){ that.input.setDown(mX, mY, mC); }
 
+	this.dkey = function(){
+		if(that.currentSelection.length !== 0 && that.currentSelection[0] !== null){
+			if(that.currentSelection.length === 1){ // delete 1 instruction
+				var tempInst = that.currentSelection[0];
+				that.delete(tempInst.x,tempInst.y,tempInst.color,1);
+				console.log('b');
+			}else{ // group delete
+
+			}
+		}
+	}
+
 	// returns an array that can have up to four instruction for the tile at x,y
 	this.getCell = function(x,y){
 		//Note: I edited this to prevent a potential crash and/or undefined being passed around.
@@ -346,6 +358,7 @@ App.PlanningLevel = function(){
 	// this function performs a delete operation on an instruction,
 	// it also creates and pushes a deleteOp object onto the stack
 	this.delete = function(x,y,color,killRedo){
+
 		if(that.isLocked(color)){ return; }
 		if(that.grid[x]){
 			if(that.grid[x][y]){
@@ -356,6 +369,7 @@ App.PlanningLevel = function(){
 					that.undoStack.push(new that.opObj.deleteOp(that.getInstruction(x,y,color)));
 
 					// update grid
+					console.log('d');
 					that.grid[x][y][color] = null;
 					App.Game.requestStaticRenderUpdate = true;
 				}

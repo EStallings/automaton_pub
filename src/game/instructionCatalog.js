@@ -32,8 +32,6 @@ App.makeInstructionCatalog = function(){
 
 		// TODO: SPECIAL RENDER FUNCS (STREAM, SYNC)
 
-
-
 		switch(c){
 			case App.COLORS.RED:
 				gfx.fillStyle='#660000';
@@ -57,6 +55,7 @@ App.makeInstructionCatalog = function(){
 				break;
 		}
 
+		// turn tile background white if selected
 		if(selected){
 			gfx.fillStyle = '#ffffff';
 			gfx.fillRect(2,2,size-2,size-2);
