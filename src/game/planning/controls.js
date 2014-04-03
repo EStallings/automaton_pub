@@ -29,5 +29,6 @@ App.PlanningControls = function(){
 			// single instruction select
 			App.Game.currentPlanningLevel.selectInstruction(that.upX, that.upY, that.upC);
 		}
+		App.Game.requestStaticRenderUpdate = true;
 	}
 }
