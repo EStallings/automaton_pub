@@ -555,7 +555,7 @@ App.PlanningLevel = function(){
 			for(var j in this.grid[i]){
 				for(var c in this.grid[i][j]){
 					var inst = this.grid[i][j][c];
-					if(inst){
+					if(inst !== null){
 						strings.push(inst.x + ',' + inst.y + ',' + inst.color + ',' + inst.type); // should there be a semicolon? the next x will be appended to the the type of the preceding instruction
 					}
 				}
