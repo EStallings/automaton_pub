@@ -254,18 +254,18 @@ App.PlanningLevel = function(){
 		if(!that.getInstruction(newX,newY,color)){
 			// place the copy
 			if(that.grid[newX] && that.grid[newX][newY] ){
-				that.grid[newX][newY][color] = new App.Game.PlanningInstruction(newX,newY,color,that.getInstruction(x,y,color).type);
+				that.grid[newX][newY][color] = new App.PlanningInstruction(newX,newY,color,that.grid[x][y][color].type);
 				App.Game.requestStaticRenderUpdate = true;
 				if(killRedo !== 1){ that.killRedo('cpy'); }
 			} else if(that.grid[newX]){
 				that.grid[newX][newY] = [];
-				that.grid[newX][newY][color] = new App.Game.PlanningInstruction(newX,newY,color,that.getInstruction(x,y,color).type);
+				that.grid[newX][newY][color] = new App.PlanningInstruction(newX,newY,color,that.grid[x][y][color].type);
 				App.Game.requestStaticRenderUpdate = true;
 				if(killRedo !== 1){ that.killRedo('cpy'); }
 			} else {
 				that.grid[newX] = [];
 				that.grid[newX][newY] = [];
-				that.grid[newX][newY][color] = new App.Game.PlanningInstruction(newX,newY,color,that.getInstruction(x,y,color).type);
+				that.grid[newX][newY][color] = new App.PlanningInstruction(newX,newY,color,that.grid[x][y][color].type);
 				App.Game.requestStaticRenderUpdate = true;
 				if(killRedo !== 1){ that.killRedo('cpy'); }
 			}
