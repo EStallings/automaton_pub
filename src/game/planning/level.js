@@ -30,10 +30,17 @@ App.PlanningLevel = function(){
 	}
 
 	this.doCopy = function(newX, newY){
-		if(that.currentSelection.length !== 0 && that.currentSelection[0] !== null){ // copy 1 instruction
+		if(that.currentSelection.length === 1){ // copy 1 instruction
 			that.copy(that.currentSelection[0].x,that.currentSelection[0].y,that.currentSelection[0].color,newX,newY,1);
 		}else{ // group copy
-
+			var tempList = [];
+			for(var i = 0; i < that.currentSelection.length; ++i){
+				tempList[i] = [];
+				tempList[i][0] = that.currentSelection[i].x;
+				tempList[i][1] = that.currentSelection[i].y;
+				tempList[i][2] = that.currentSelection[i].color;
+			}
+			that.groupCopy(tempList,newX-that.currentSelection[0].x,newY-that.currentSelection[0].y);
 		}
 	}
 
@@ -542,7 +549,6 @@ App.PlanningLevel = function(){
 	};
 
 	this.staticRender = function(){
-		// TODO: FIX THIS
 		var selected;
 		var cs = App.Game.cellSize;
 		App.Game.translateCanvas(App.Game.instructionGfx);
