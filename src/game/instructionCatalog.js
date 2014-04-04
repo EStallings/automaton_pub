@@ -26,7 +26,7 @@ App.makeInstructionCatalog = function(){
 		'PAUSE'		: 24,
 	};
 
-	ins.render = function(gfx,type,x,y,c,size,selected){
+	ins.render = function(gfx,type,x,y,c,size,selected,copied){
 		gfx.save();
 		gfx.translate(x,y);
 
@@ -59,6 +59,12 @@ App.makeInstructionCatalog = function(){
 		if(selected){
 			gfx.fillStyle = '#ffffff';
 			gfx.fillRect(2,2,size-2,size-2);
+
+			// turn tile background cyan if it is in the proccess of being copied
+			if(copied){
+				gfx.fillStyle = '#00ffcc';
+				gfx.fillRect(2,2,size-2,size-2);
+			}
 		}
 
 		gfx.beginPath();
