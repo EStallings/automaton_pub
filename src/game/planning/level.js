@@ -12,6 +12,8 @@ App.PlanningLevel = function(){
 	this.yellowLocked = false;
 	this.currentSelection = [];
 	this.input = new App.PlanningControls();
+	this.copied = false;
+	this.moving = false;
 
 	// flag that lets the operation functions know how to handle conflicts.
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
@@ -20,6 +22,68 @@ App.PlanningLevel = function(){
 
 	this.setUp = function(mX, mY, mC){ that.input.setUp(mX, mY, mC) }
 	this.setDown = function(mX, mY, mC){ that.input.setDown(mX, mY, mC); }
+
+	this.mkey = function(){
+		if(that.currentSelection.length !== 0 && that.currentSelection[0] !== null){
+			if(that.moving){ that.moving = false; }else{ that.moving = true; }
+			App.Game.requestStaticRenderUpdate = true;
+		}
+	}
+
+	this.ckey = function(){
+		if(that.currentSelection.length !== 0 && that.currentSelection[0] !== null){
+			if(that.copied){ that.copied = false; }else{ that.copied = true; }
+			App.Game.requestStaticRenderUpdate = true;
+		}
+	}
+
+	this.doMove = function(newX, newY){
+		if(that.currentSelection.length === 1){ // move 1 instruction
+			that.move(that.currentSelection[0].x,that.currentSelection[0].y,that.currentSelection[0].color,newX,newY,1);
+		}else{ // group move
+			var tempList = [];
+			for(var i = 0; i < that.currentSelection.length; ++i){
+				tempList[i] = [];
+				tempList[i][0] = that.currentSelection[i].x;
+				tempList[i][1] = that.currentSelection[i].y;
+				tempList[i][2] = that.currentSelection[i].color;
+			}
+			that.groupMove(tempList,newX-that.currentSelection[0].x,newY-that.currentSelection[0].y);
+		}
+	}
+
+	this.doCopy = function(newX, newY){
+		if(that.currentSelection.length === 1){ // copy 1 instruction
+			that.copy(that.currentSelection[0].x,that.currentSelection[0].y,that.currentSelection[0].color,newX,newY,1);
+		}else{ // group copy
+			var tempList = [];
+			for(var i = 0; i < that.currentSelection.length; ++i){
+				tempList[i] = [];
+				tempList[i][0] = that.currentSelection[i].x;
+				tempList[i][1] = that.currentSelection[i].y;
+				tempList[i][2] = that.currentSelection[i].color;
+			}
+			that.groupCopy(tempList,newX-that.currentSelection[0].x,newY-that.currentSelection[0].y);
+		}
+	}
+
+	this.dkey = function(){
+		if(that.currentSelection.length !== 0 && that.currentSelection[0] !== null){
+			if(that.currentSelection.length === 1){ // delete 1 instruction
+				var tempInst = that.currentSelection[0];
+				that.delete(tempInst.x,tempInst.y,tempInst.color,1);
+			}else{ // group delete
+				var tempList = [];
+				for(var i = 0; i < that.currentSelection.length; ++i){
+					tempList[i] = [];
+					tempList[i][0] = that.currentSelection[i].x;
+					tempList[i][1] = that.currentSelection[i].y;
+					tempList[i][2] = that.currentSelection[i].color;
+				}
+				that.groupDelete(tempList);
+			}
+		}
+	}
 
 	// returns an array that can have up to four instruction for the tile at x,y
 	this.getCell = function(x,y){
@@ -72,6 +136,10 @@ App.PlanningLevel = function(){
 		instructions = [];
 		that.currentSelection = [];
 		numSelected = 0;
+
+		if(x1 > x2){ var temp = x1; x1 = x2; x2 = temp; }
+		if(y1 > y2){ var temp = y1; y1 = y2; y2 = temp; }
+
 		for(y = y1; y <= y2; ++y){
 			for(x = x1; x <= x2; ++x){
 				for(c = 0; c <= 3; ++c){
@@ -128,7 +196,7 @@ App.PlanningLevel = function(){
 	// TODO change to take list of instructions
 	this.groupDelete = function(coords){
 		for(var x = 0; x < coords.length; x++){
-			that.delete(coords[x][0],coords[x][1],coords[x][2]);
+			that.delete(coords[x][0],coords[x][1],coords[x][2],1);
 		}
 		that.undoStack.push(new that.opObj.groupOp(coords.length));
 	};
@@ -216,18 +284,18 @@ App.PlanningLevel = function(){
 		if(!that.getInstruction(newX,newY,color)){
 			// place the copy
 			if(that.grid[newX] && that.grid[newX][newY] ){
-				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+				that.grid[newX][newY][color] = new App.PlanningInstruction(newX,newY,color,that.grid[x][y][color].type);
 				App.Game.requestStaticRenderUpdate = true;
 				if(killRedo !== 1){ that.killRedo('cpy'); }
 			} else if(that.grid[newX]){
 				that.grid[newX][newY] = [];
-				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+				that.grid[newX][newY][color] = new App.PlanningInstruction(newX,newY,color,that.grid[x][y][color].type);
 				App.Game.requestStaticRenderUpdate = true;
 				if(killRedo !== 1){ that.killRedo('cpy'); }
 			} else {
 				that.grid[newX] = [];
 				that.grid[newX][newY] = [];
-				that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+				that.grid[newX][newY][color] = new App.PlanningInstruction(newX,newY,color,that.grid[x][y][color].type);
 				App.Game.requestStaticRenderUpdate = true;
 				if(killRedo !== 1){ that.killRedo('cpy'); }
 			}
@@ -259,33 +327,41 @@ App.PlanningLevel = function(){
 			if(that.contains(x,y,color)){
 				if(that.contains(newX, newY, color)){
 					that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+					that.getInstruction(x,y,color).x = newX;
+					that.getInstruction(x,y,color).y = newY;
 					that.grid[x][y][color] = null;
 					App.Game.requestStaticRenderUpdate = true;
-					if(killRedo !== 1){ that.killRedo(mov); }
+					if(killRedo !== 1){ that.killRedo('mov'); }
 				}
 				else{
 					if(that.grid[newX]){
 						if(that.grid[newX][newY]){
 							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+							that.getInstruction(x,y,color).x = newX;
+							that.getInstruction(x,y,color).y = newY;
 							that.grid[x][y][color] = null;
 							App.Game.requestStaticRenderUpdate = true;
-							if(killRedo !== 1){ that.killRedo(mov); }
+							if(killRedo !== 1){ that.killRedo('mov'); }
 						}
 						else{
 							that.grid[newX][newY] = [];
 							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+							that.getInstruction(x,y,color).x = newX;
+							that.getInstruction(x,y,color).y = newY;
 							that.grid[x][y][color] = null;
 							App.Game.requestStaticRenderUpdate = true;
-							if(killRedo !== 1){ that.killRedo(mov); }
+							if(killRedo !== 1){ that.killRedo('mov'); }
 						}
 					}
 					else{
 						that.grid[newX] = [];
 						that.grid[newX][newY] = [];
 						that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+						that.getInstruction(x,y,color).x = newX;
+						that.getInstruction(x,y,color).y = newY;
 						that.grid[x][y][color] = null;
 						App.Game.requestStaticRenderUpdate = true;
-						if(killRedo !== 1){ that.killRedo(mov); }
+						if(killRedo !== 1){ that.killRedo('mov'); }
 					}
 				}
 			}
@@ -346,6 +422,7 @@ App.PlanningLevel = function(){
 	// this function performs a delete operation on an instruction,
 	// it also creates and pushes a deleteOp object onto the stack
 	this.delete = function(x,y,color,killRedo){
+
 		if(that.isLocked(color)){ return; }
 		if(that.grid[x]){
 			if(that.grid[x][y]){
@@ -493,7 +570,9 @@ App.PlanningLevel = function(){
 			for(var j in that.grid[i]){
 				for(var c in that.grid[i][j]){
 					var ins = that.getInstruction(i,j,c);
-					new App.SimulationInstruction(newLevel,ins.x,ins.y,ins.color,ins.type);
+					if(ins){
+						new App.SimulationInstruction(newLevel,ins.x,ins.y,ins.color,ins.type);
+					}
 				}
 			}
 		}
@@ -501,8 +580,7 @@ App.PlanningLevel = function(){
 	};
 
 	this.staticRender = function(){
-		// TODO: FIX THIS
-		var selected;		
+		var selected;
 		var cs = App.Game.cellSize;
 		App.Game.translateCanvas(App.Game.instructionGfx);
 		App.Game.instructionGfx.lineWidth = 2;
@@ -538,7 +616,7 @@ App.PlanningLevel = function(){
 						App.InstCatalog.render(
 							App.Game.instructionGfx,
 							that.grid[i][j][c].type,
-							i*cs,j*cs,c,cs/2,selected);
+							i*cs,j*cs,c,cs/2,selected,that.copied,that.moving);
 					}
 
 			App.Game.instructionGfx.restore();

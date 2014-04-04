@@ -26,13 +26,11 @@ App.makeInstructionCatalog = function(){
 		'PAUSE'		: 24,
 	};
 
-	ins.render = function(gfx,type,x,y,c,size,selected){
+	ins.render = function(gfx,type,x,y,c,size,selected,copied,moving){
 		gfx.save();
 		gfx.translate(x,y);
 
 		// TODO: SPECIAL RENDER FUNCS (STREAM, SYNC)
-
-
 
 		switch(c){
 			case App.COLORS.RED:
@@ -57,9 +55,22 @@ App.makeInstructionCatalog = function(){
 				break;
 		}
 
+		// turn tile background white if selected
 		if(selected){
 			gfx.fillStyle = '#ffffff';
 			gfx.fillRect(2,2,size-2,size-2);
+
+			// turn tile background green if it is in the proccess of being moved
+			if(moving){
+				gfx.fillStyle = '#00cc33';
+				gfx.fillRect(2,2,size-2,size-2);
+			}
+
+			// turn tile background cyan if it is in the proccess of being copied
+			if(copied){
+				gfx.fillStyle = '#00ffcc';
+				gfx.fillRect(2,2,size-2,size-2);
+			}
 		}
 
 		gfx.beginPath();

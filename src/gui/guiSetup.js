@@ -229,10 +229,6 @@ var setupPlanningFrame = function(){
 	App.Gui.addNewComponent(key, zoomInButton);
 	App.Gui.addNewComponent(key, zoomOutButton);
 
-
-
-
-
 	var simButton = new App.GuiTextButton(400, 50, 'Simulate',function(){App.changeMode(App.MODES.SIMULATION);	}, false, null);
 	App.Gui.addNewComponent(key, simButton);
 
@@ -291,6 +287,9 @@ var setupPlanningFrame = function(){
 	App.Gui.addNewComponent(key, submitButton);
 
 	//Setup Key Bindings
+	App.InputHandler.registerKey('M', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.mkey(); });
+	App.InputHandler.registerKey('C', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.ckey(); });
+	App.InputHandler.registerKey('D', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.dkey(); });
 	App.InputHandler.registerKey('`', App.MODES.PLANNING,function(){ App.changeMode(App.MODES.SIMULATION);});
 	App.InputHandler.registerKey('Z', App.MODES.PLANNING, function(){
 			if(App.InputHandler.keysDown['Ctrl']) {
@@ -302,10 +301,5 @@ var setupPlanningFrame = function(){
 			}
 	});
 	App.InputHandler.registerKey('Esc', App.MODES.PLANNING, function(){App.Gui.endOverlay();});
-
-
-
-
-
 
 }
