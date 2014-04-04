@@ -263,17 +263,17 @@ var setupSandboxFrame = function(){
 	instructionPanel.xAlignment = 'right';
 	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,100,100,500));
 
-	var redButton 		= new App.GuiTextButton(0,300,'Red',		function(){	App.GuiDragButton.changeGlobalColor(0)	}, false, instructionPanel);
-	var greenButton 	= new App.GuiTextButton(0,330,'Green',	function(){	App.GuiDragButton.changeGlobalColor(1)	}, false, instructionPanel);
-	var blueButton 		= new App.GuiTextButton(0,360,'Blue',		function(){	App.GuiDragButton.changeGlobalColor(2)	}, false, instructionPanel);
-	var yellowButton	= new App.GuiTextButton(0,390,'Yellow',	function(){	App.GuiDragButton.changeGlobalColor(3)	}, false, instructionPanel);
+	var redDragBut 		= new App.GuiTextButton(0,300,'Red',		function(){	App.GuiDragButton.changeGlobalColor(0)	}, false, instructionPanel);
+	var greenDragBug 	= new App.GuiTextButton(0,330,'Green',	function(){	App.GuiDragButton.changeGlobalColor(1)	}, false, instructionPanel);
+	var blueDragBut 	= new App.GuiTextButton(0,360,'Blue',		function(){	App.GuiDragButton.changeGlobalColor(2)	}, false, instructionPanel);
+	var yellowDragBut	= new App.GuiTextButton(0,390,'Yellow',	function(){	App.GuiDragButton.changeGlobalColor(3)	}, false, instructionPanel);
 
 	App.Gui.addNewComponent(key, instructionPanel);
 	App.Gui.addNewComponent(key, controlsPanel);
-	App.Gui.addNewComponent(key, redButton);
-	App.Gui.addNewComponent(key, greenButton);
-	App.Gui.addNewComponent(key, blueButton);
-	App.Gui.addNewComponent(key, yellowButton);
+	App.Gui.addNewComponent(key, redDragBut);
+	App.Gui.addNewComponent(key, greenDragBug);
+	App.Gui.addNewComponent(key, blueDragBut);
+	App.Gui.addNewComponent(key, yellowDragBut);
 
 
 	for(var i=0; i < 8; i++){
