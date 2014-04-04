@@ -504,6 +504,7 @@ App.PlanningLevel = function(){
 	};
 
 	this.killRedo = function(str){ that.redoStack = []; console.warn(str); };
+	this.killUndo = function(str){ that.undoStack = []; console.warn(str); };
 
 	// each call to this function pops the redo stack, and undoes whatever operation it finds
 	this.redo = function(){

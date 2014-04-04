@@ -64,8 +64,6 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.createNewLevel = function(){} // TODO: implement?
-
 	// returns a planning level object, given an input string.
 	// Just a little string parser, really. If changes to
 	// Level format are made, they have to be updated here.
@@ -130,7 +128,7 @@ App.makeGame = function(){
 			}
 			return false;//a success/failure flag
 		}
-
+		lev.killUndo('New Level: Undo Cleared');
 		this.currentPlanningLevel = lev;
 		return true;
 	}

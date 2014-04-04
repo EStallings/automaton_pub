@@ -33,15 +33,23 @@ App.DIRECTIONS = {
 App.demoLevels = [
 	"Demo1,7,6;1,2,0,3;1,2,1,3;1,2,2,3;1,2,3,2;2,1,1,7;2,2,1,4;2,2,2,5;2,4,2,7;4,1,1,5;4,2,1,7;4,2,2,7;4,4,2,4;5,2,0,22;5,2,1,22;5,2,2,22;5,2,3,22",
 	"Demo2,8,3;1,1,0,3;1,1,3,3;2,1,0,12;2,1,3,23;3,1,0,10;3,1,3,14;4,1,0,17;4,1,3,17;5,1,0,11;5,1,3,15;6,1,0,13"
-
 ]
 App.getDemoLevel = function(){
 	App.Game.simulationSpeed = 512; //reset on entering menus
 	return App.demoLevels[Math.floor(Math.random() * App.demoLevels.length)];
 }
 
+App.getBlankLevel = function(){
+	return "Blank,10,10";
+}
+
+App.getNextLevel = function(){
+	//TODO make this return the next level based on local storage!
+	return App.Game.currentPlanningLevel; //right now does nothing.
+}
+
 App.setup = {};
-App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', MAIN_MENU:'Main Menu', LEVEL_SELECT:'Level Select', USER_LEVEL_SELECT:'User Level Selection', SETTINGS:'Settings'}
+App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', SANDBOX:'Sandbox',  MAIN_MENU:'Main Menu', LEVEL_SELECT:'Level Select', USER_LEVEL_SELECT:'User Level Selection', SETTINGS:'Settings'}
 App.setup.modes = {PLANNING:App.setup.frames.PLANNING, SIMULATION:App.setup.frames.SIMULATION}
 
 App.MODES = {
@@ -54,6 +62,11 @@ App.MODES = {
 	                     mode:App.setup.modes.PLANNING,
 	                     level:null,
 	                     toString:function(){return 'PLANNING'}},
+
+	SANDBOX          : {frame:App.setup.frames.SANDBOX,
+	                     mode:App.setup.modes.PLANNING,
+	                     level:App.getBlankLevel,
+	                     toString:function(){return 'SANDBOX'}},
 
 	SIMULATION        : {frame:App.setup.frames.SIMULATION,
 	                     mode:App.setup.modes.SIMULATION,

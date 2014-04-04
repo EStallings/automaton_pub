@@ -1,5 +1,6 @@
 App.setupGUI = function(){
 	setupPlanningFrame();
+	setupSandboxFrame();
 	setupSimulationFrame();
 	setupMainMenuFrame();
 	setupUserLevelSelectFrame();
@@ -121,11 +122,11 @@ var setupMainMenuFrame = function(){
 	 App.Gui.startOverlay(notyet);
 	}
 
-	var playBut = new App.GuiTextButton(100, 1000, 'Play', function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
-	var levelBut = new App.GuiTextButton(100, 1040, 'Level Select',function(){App.changeMode(App.MODES.SETTINGS);}, false, panel);
-	var userBut = new App.GuiTextButton(100, 1080, 'User Levels', function(){App.changeMode(App.MODES.USER_LEVEL_SELECT);}, false, panel);
-	var editBut = new App.GuiTextButton(100, 1120, 'Sandbox Mode',fun, false, panel);
-	var settingsBut = new App.GuiTextButton(100, 1160, 'Settings',function(){App.changeMode(App.MODES.SETTINGS);}, false, panel);
+	var playBut = new App.GuiTextButton(100, 1000, 'Play', 					function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
+	var levelBut = new App.GuiTextButton(100, 1040, 'Level Select',	function(){App.changeMode(App.MODES.SETTINGS);}, false, panel);
+	var userBut = new App.GuiTextButton(100, 1080, 'User Levels', 	function(){App.changeMode(App.MODES.USER_LEVEL_SELECT);}, false, panel);
+	var editBut = new App.GuiTextButton(100, 1120, 'Sandbox Mode',	function(){App.changeMode(App.MODES.SANDBOX);}, false, panel);
+	var settingsBut = new App.GuiTextButton(100, 1160, 'Settings',	function(){App.changeMode(App.MODES.SETTINGS);}, false, panel);
 
 	var text = new App.GuiTextWidget(['Automaton'], 0,'32px Futurastd', 5, 800, panel);
 	var creds = new App.GuiTextWidget(['Luke Balaoro','Khabbab Saleem','Kevin Dilts','Cameron Smith','Ezra Stallings'], 20, '10px Futurastd', 5, 0, p2);
@@ -195,6 +196,67 @@ var setupSimulationFrame = function(){
 
 var setupPlanningFrame = function(){
 	var key = App.setup.frames.PLANNING;
+
+	App.Gui.addNewFrame(key);
+	var instructionPanel = new App.GuiPanel(new App.GuiCollisionRect(0,0,100,600));
+	instructionPanel.xAlignment = 'right';
+	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,100,100,500));
+
+	var redButton 		= new App.GuiTextButton(0,300,'Red',		function(){	App.GuiDragButton.changeGlobalColor(0)	}, false, instructionPanel);
+	var greenButton 	= new App.GuiTextButton(0,330,'Green',	function(){	App.GuiDragButton.changeGlobalColor(1)	}, false, instructionPanel);
+	var blueButton 		= new App.GuiTextButton(0,360,'Blue',		function(){	App.GuiDragButton.changeGlobalColor(2)	}, false, instructionPanel);
+	var yellowButton	= new App.GuiTextButton(0,390,'Yellow',	function(){	App.GuiDragButton.changeGlobalColor(3)	}, false, instructionPanel);
+
+	App.Gui.addNewComponent(key, instructionPanel);
+	App.Gui.addNewComponent(key, controlsPanel);
+	App.Gui.addNewComponent(key, redButton);
+	App.Gui.addNewComponent(key, greenButton);
+	App.Gui.addNewComponent(key, blueButton);
+	App.Gui.addNewComponent(key, yellowButton);
+
+
+	for(var i=0; i < 8; i++){
+		App.Gui.addNewComponent(key, new App.GuiDragButton(0 , 31 * i, null, i, 			instructionPanel));
+		App.Gui.addNewComponent(key, new App.GuiDragButton(31, 31 * i, null, i + 8, 	instructionPanel));
+		App.Gui.addNewComponent(key, new App.GuiDragButton(62, 31 * i, null, i + 16, instructionPanel));
+
+	}
+	var joystick = new App.GuiJoystick(50, 50, controlsPanel);
+	App.Gui.addNewComponent(key, joystick);
+
+	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,1);}, false, controlsPanel);
+	var zoomOutButton = new App.GuiTextButton(0, 250, 'Zoom Out', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,-1);}, false, controlsPanel);
+
+	App.Gui.addNewComponent(key, zoomInButton);
+	App.Gui.addNewComponent(key, zoomOutButton);
+
+	var simButton = new App.GuiTextButton(400, 50, 'Simulate',function(){App.changeMode(App.MODES.SIMULATION);	}, false, null);
+	App.Gui.addNewComponent(key, simButton);
+
+	var menuButton = new App.GuiTextButton(525, 50, 'Menu',function(){App.changeMode(App.MODES.MAIN_MENU);	}, false, null);
+	App.Gui.addNewComponent(key, menuButton);
+
+	//Setup Key Bindings
+	App.InputHandler.registerKey('M', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.mkey(); });
+	App.InputHandler.registerKey('C', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.ckey(); });
+	App.InputHandler.registerKey('D', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.dkey(); });
+	App.InputHandler.registerKey('`', App.MODES.PLANNING,function(){ App.changeMode(App.MODES.SIMULATION);});
+	App.InputHandler.registerKey('Z', App.MODES.PLANNING, function(){
+			if(App.InputHandler.keysDown['Ctrl']) {
+				if(App.InputHandler.keysDown['Shift']){
+					App.Game.currentPlanningLevel.redo();
+				}
+				else
+					App.Game.currentPlanningLevel.undo();
+			}
+	});
+	App.InputHandler.registerKey('Esc', App.MODES.PLANNING, function(){App.Gui.endOverlay();});
+
+}
+
+
+var setupSandboxFrame = function(){
+	var key = App.setup.frames.SANDBOX;
 
 	App.Gui.addNewFrame(key);
 	var instructionPanel = new App.GuiPanel(new App.GuiCollisionRect(0,0,100,600));
