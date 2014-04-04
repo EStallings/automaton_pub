@@ -13,6 +13,7 @@ App.PlanningLevel = function(){
 	this.currentSelection = [];
 	this.input = new App.PlanningControls();
 	this.copied = false;
+	this.moving = false;
 
 	// flag that lets the operation functions know how to handle conflicts.
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
@@ -22,10 +23,32 @@ App.PlanningLevel = function(){
 	this.setUp = function(mX, mY, mC){ that.input.setUp(mX, mY, mC) }
 	this.setDown = function(mX, mY, mC){ that.input.setDown(mX, mY, mC); }
 
+	this.mkey = function(){
+		if(that.currentSelection.length !== 0 && that.currentSelection[0] !== null){
+			if(that.moving){ that.moving = false; }else{ that.moving = true; }
+			App.Game.requestStaticRenderUpdate = true;
+		}
+	}
+
 	this.ckey = function(){
 		if(that.currentSelection.length !== 0 && that.currentSelection[0] !== null){
 			if(that.copied){ that.copied = false; }else{ that.copied = true; }
 			App.Game.requestStaticRenderUpdate = true;
+		}
+	}
+
+	this.doMove = function(newX, newY){
+		if(that.currentSelection.length === 1){ // move 1 instruction
+			that.move(that.currentSelection[0].x,that.currentSelection[0].y,that.currentSelection[0].color,newX,newY,1);
+		}else{ // group move
+			var tempList = [];
+			for(var i = 0; i < that.currentSelection.length; ++i){
+				tempList[i] = [];
+				tempList[i][0] = that.currentSelection[i].x;
+				tempList[i][1] = that.currentSelection[i].y;
+				tempList[i][2] = that.currentSelection[i].color;
+			}
+			that.groupMove(tempList,newX-that.currentSelection[0].x,newY-that.currentSelection[0].y);
 		}
 	}
 
@@ -304,33 +327,41 @@ App.PlanningLevel = function(){
 			if(that.contains(x,y,color)){
 				if(that.contains(newX, newY, color)){
 					that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+					that.getInstruction(x,y,color).x = newX;
+					that.getInstruction(x,y,color).y = newY;
 					that.grid[x][y][color] = null;
 					App.Game.requestStaticRenderUpdate = true;
-					if(killRedo !== 1){ that.killRedo(mov); }
+					if(killRedo !== 1){ that.killRedo('mov'); }
 				}
 				else{
 					if(that.grid[newX]){
 						if(that.grid[newX][newY]){
 							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+							that.getInstruction(x,y,color).x = newX;
+							that.getInstruction(x,y,color).y = newY;
 							that.grid[x][y][color] = null;
 							App.Game.requestStaticRenderUpdate = true;
-							if(killRedo !== 1){ that.killRedo(mov); }
+							if(killRedo !== 1){ that.killRedo('mov'); }
 						}
 						else{
 							that.grid[newX][newY] = [];
 							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+							that.getInstruction(x,y,color).x = newX;
+							that.getInstruction(x,y,color).y = newY;
 							that.grid[x][y][color] = null;
 							App.Game.requestStaticRenderUpdate = true;
-							if(killRedo !== 1){ that.killRedo(mov); }
+							if(killRedo !== 1){ that.killRedo('mov'); }
 						}
 					}
 					else{
 						that.grid[newX] = [];
 						that.grid[newX][newY] = [];
 						that.grid[newX][newY][color] = that.getInstruction(x,y,color);
+						that.getInstruction(x,y,color).x = newX;
+						that.getInstruction(x,y,color).y = newY;
 						that.grid[x][y][color] = null;
 						App.Game.requestStaticRenderUpdate = true;
-						if(killRedo !== 1){ that.killRedo(mov); }
+						if(killRedo !== 1){ that.killRedo('mov'); }
 					}
 				}
 			}
@@ -585,7 +616,7 @@ App.PlanningLevel = function(){
 						App.InstCatalog.render(
 							App.Game.instructionGfx,
 							that.grid[i][j][c].type,
-							i*cs,j*cs,c,cs/2,selected,that.copied);
+							i*cs,j*cs,c,cs/2,selected,that.copied,that.moving);
 					}
 
 			App.Game.instructionGfx.restore();
