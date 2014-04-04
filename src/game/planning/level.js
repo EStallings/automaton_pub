@@ -26,9 +26,15 @@ App.PlanningLevel = function(){
 			if(that.currentSelection.length === 1){ // delete 1 instruction
 				var tempInst = that.currentSelection[0];
 				that.delete(tempInst.x,tempInst.y,tempInst.color,1);
-				console.log('b');
 			}else{ // group delete
-
+				var tempList = [];
+				for(var i = 0; i < that.currentSelection.length; ++i){
+					tempList[i] = [];
+					tempList[i][0] = that.currentSelection[i].x;
+					tempList[i][1] = that.currentSelection[i].y;
+					tempList[i][2] = that.currentSelection[i].color;
+				}
+				that.groupDelete(tempList);
 			}
 		}
 	}
@@ -140,7 +146,7 @@ App.PlanningLevel = function(){
 	// TODO change to take list of instructions
 	this.groupDelete = function(coords){
 		for(var x = 0; x < coords.length; x++){
-			that.delete(coords[x][0],coords[x][1],coords[x][2]);
+			that.delete(coords[x][0],coords[x][1],coords[x][2],1);
 		}
 		that.undoStack.push(new that.opObj.groupOp(coords.length));
 	};
