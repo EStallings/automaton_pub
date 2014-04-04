@@ -21,6 +21,10 @@ App.PlanningLevel = function(){
 	this.setUp = function(mX, mY, mC){ that.input.setUp(mX, mY, mC) }
 	this.setDown = function(mX, mY, mC){ that.input.setDown(mX, mY, mC); }
 
+	this.ckey = function(){
+		console.log('b');
+	}
+
 	this.dkey = function(){
 		if(that.currentSelection.length !== 0 && that.currentSelection[0] !== null){
 			if(that.currentSelection.length === 1){ // delete 1 instruction
@@ -90,6 +94,10 @@ App.PlanningLevel = function(){
 		instructions = [];
 		that.currentSelection = [];
 		numSelected = 0;
+
+		if(x1 > x2){ var temp = x1; x1 = x2; x2 = temp; }
+		if(y1 > y2){ var temp = y1; y1 = y2; y2 = temp; }
+
 		for(y = y1; y <= y2; ++y){
 			for(x = x1; x <= x2; ++x){
 				for(c = 0; c <= 3; ++c){
