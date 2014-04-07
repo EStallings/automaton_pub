@@ -314,75 +314,38 @@ App.PlanningLevel = function(){
 	// this function, performs a move operation on an instruction,
 	// and creates and pushes a moveOp object onto the undo stack.
 	this.move = function(x, y, color, newX, newY, killRedo){
-		if(that.isLocked(color)){ return; }
+		if(that.isLocked(color)){ return; } // check layer lock
+		if(!that.contains(x,y,color)){ return; } // check that the instruction to be moved exists
 
-		// make sure there is an instruction at the specified coordinate
-		if(!that.contains(x,y,color)){ return; }
-
-		// update undo stack
-		that.undoStack.push(new that.opObj.moveOp(that.getInstruction(x,y,color), newX, newY));
-
-		// update grid
-		if(!that.contains(newX,newY,color)){
-			if(that.contains(x,y,color)){
-				if(that.contains(newX, newY, color)){
-					that.grid[newX][newY][color] = that.getInstruction(x,y,color);
-					that.getInstruction(x,y,color).x = newX;
-					that.getInstruction(x,y,color).y = newY;
-					that.grid[x][y][color] = null;
-					App.Game.requestStaticRenderUpdate = true;
-					if(killRedo !== 1){ that.killRedo('mov'); }
-				}
-				else{
-					if(that.grid[newX]){
-						if(that.grid[newX][newY]){
-							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
-							that.getInstruction(x,y,color).x = newX;
-							that.getInstruction(x,y,color).y = newY;
-							that.grid[x][y][color] = null;
-							App.Game.requestStaticRenderUpdate = true;
-							if(killRedo !== 1){ that.killRedo('mov'); }
-						}
-						else{
-							that.grid[newX][newY] = [];
-							that.grid[newX][newY][color] = that.getInstruction(x,y,color);
-							that.getInstruction(x,y,color).x = newX;
-							that.getInstruction(x,y,color).y = newY;
-							that.grid[x][y][color] = null;
-							App.Game.requestStaticRenderUpdate = true;
-							if(killRedo !== 1){ that.killRedo('mov'); }
-						}
-					}
-					else{
-						that.grid[newX] = [];
-						that.grid[newX][newY] = [];
-						that.grid[newX][newY][color] = that.getInstruction(x,y,color);
-						that.getInstruction(x,y,color).x = newX;
-						that.getInstruction(x,y,color).y = newY;
-						that.grid[x][y][color] = null;
-						App.Game.requestStaticRenderUpdate = true;
-						if(killRedo !== 1){ that.killRedo('mov'); }
-					}
-				}
+		if(that.userOverlapSetting === 1){ // if necessary store overwrite information for undo / redo
+			if(that.getInstruction(newX,newY,color)){
+				that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(newX,newY,color);
 			}
 		}
-		else if(that.userOverlapSetting === 1){
-			// store the old instruction
-			that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(newX,newY,color);
+		else{ // prevent overwrite
+			if(that.getInstruction(newX,newY,color)){ return; }
+		}		
 
-			// overwrite
-			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
-			that.grid[x][y][color] = null;
-		}
+		that.undoStack.push(new that.opObj.moveOp(that.getInstruction(x,y,color), newX, newY)); // update undo stack
 
-	};
+		// update grid and instruction
+		if(!that.grid[newX]){ that.grid[newX] = []; }
+		if(!that.grid[newX][newY]){ that.grid[newX][newY] = []; }
+		that.grid[newX][newY][color] = that.grid[x][y][color];
+		that.grid[newX][newY][color].x = newX;
+		that.grid[newX][newY][color].y = newY;
+		that.grid[x][y][color] = null;
+
+		App.Game.requestStaticRenderUpdate = true; // ask for static render
+
+		if(killRedo !== 1){ that.killRedo('mov'); }	
+	}
 
 	// this function performs an insert operation on the grid,
 	// and creates and pushes an insertOp object onto the undo stack.
 	this.insert = function(instruction,killRedo){
 		if(that.isLocked(instruction.color)){ return; } // check if color is locked
-		that.undoStack.push(new that.opObj.insertOp(instruction)); // update undo stack
-
+		
 		if(that.userOverlapSetting === 1){ // if necessary store overwrite information for undo / redo
 			if(that.getInstruction(instruction.x,instruction.y,instruction.color)){
 				that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(instruction.x,instruction.y,instruction.color);
@@ -392,9 +355,11 @@ App.PlanningLevel = function(){
 			if(that.getInstruction(instruction.x,instruction.y,instruction.color)){ return; }
 		}
 
+		that.undoStack.push(new that.opObj.insertOp(instruction)); // update undo stack
+
 		// update grid
-		if(!that.grid[instruction.x]){ that.grid[instruction.x] = []; console.log('b'); }
-		if(!that.grid[instruction.x][instruction.y]){ that.grid[instruction.x][instruction.y] = []; console.log('a'); }
+		if(!that.grid[instruction.x]){ that.grid[instruction.x] = []; }
+		if(!that.grid[instruction.x][instruction.y]){ that.grid[instruction.x][instruction.y] = []; }
 		that.grid[instruction.x][instruction.y][instruction.color] = instruction;
 
 		App.Game.requestStaticRenderUpdate = true; // ask for static render
@@ -481,8 +446,8 @@ App.PlanningLevel = function(){
 		App.Game.requestStaticRenderUpdate = true;
 	};
 
-	this.killRedo = function(str){ that.redoStack = []; console.warn(str); };
-	this.killUndo = function(str){ that.undoStack = []; console.warn(str); };
+	this.killRedo = function(str){ that.redoStack = []; console.warn('killRedo: ' + str); };
+	this.killUndo = function(str){ that.undoStack = []; console.warn('killUndo: ' + str); };
 
 	// each call to this function pops the redo stack, and undoes whatever operation it finds
 	this.redo = function(){
@@ -544,7 +509,7 @@ App.PlanningLevel = function(){
 		return strings.join(';');
 	};
 
-	// TODO return a simulation level with instructions from the grid
+	// return a simulation level with instructions from the grid
 	this.generateSimulationLevel = function(){
 		var newLevel = new App.SimulationLevel(that.width, that.height);
 		for(var i in that.grid){
