@@ -407,21 +407,16 @@ App.PlanningLevel = function(){
 	this.delete = function(x,y,color,killRedo){
 
 		if(that.isLocked(color)){ return; }
-		if(that.grid[x]){
-			if(that.grid[x][y]){
-				if(that.grid[x][y][color]){
+		if(that.getInstruction(x,y,color)){
 
-					// update undo stack
-					if(killRedo !== 1){ that.killRedo('del'); }
-					that.undoStack.push(new that.opObj.deleteOp(that.getInstruction(x,y,color)));
+			// update undo stack
+			if(killRedo !== 1){ that.killRedo('del'); }
+			that.undoStack.push(new that.opObj.deleteOp(that.getInstruction(x,y,color)));
 
-					// update grid
-					that.grid[x][y][color] = null;
-					App.Game.requestStaticRenderUpdate = true;
-				}
-			}
+			// update grid
+			that.grid[x][y][color] = null;
+			App.Game.requestStaticRenderUpdate = true;
 		}
-
 	};
 
 	// TODO figure out how undo / redo will work with locked layers.
