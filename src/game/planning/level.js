@@ -234,41 +234,40 @@ App.PlanningLevel = function(){
 	// if the parameter is 'color', then this will try to move the instruction
 	// to the appropriate spot in the array.
 	this.modify = function(instruction, parameter, value, killRedo){
-		if(that.isLocked(instruction.color)){ return; }
-		if(that.contains(instruction.x, instruction.y, instruction.color) ){
+		if(that.isLocked(instruction.color)){ return; } // check layer lock
+		if(!that.contains(instruction.x,instruction.y,instruction.color)){ return; } // check that the instruction to be moved exists
+
+		if(parameter === 'color'){
 			var oldColor = instruction.color;
-			// update undo stack
-			that.undoStack.push(new that.opObj.modifyOp(instruction, parameter, value, instruction[parameter]));
+			if(that.getInstruction(instruction.x, instruction.y, value)){ // if there is something where the modified instruction would move to
+				that.undoStack.push(new that.opObj.modifyOp(instruction, parameter, value, instruction[parameter])); //update undo stack
 
-			// update instruction
-			that.grid[instruction.x][instruction.y][instruction.color][parameter] = value;
-
-			// update grid if the color changed
-			if(parameter === 'color'){
-				// if the location the cell would be moved to is free
-				if(!that.getInstruction(instruction.x, instruction.y,value)){
-					that.grid[instruction.x][instruction.y][value] = that.getInstruction(instruction.x, instruction.y,oldColor);
-					that.grid[instruction.x][instruction.y][oldColor] = null;
-					App.Game.requestStaticRenderUpdate = true;
-					if(killRedo !== 1){ that.killRedo('mod'); }
-				// if the location is not empty, and the user setting is set to overwrite
-				} else if(that.userOverlapSetting === 1){
-					// store the old instruction into the modiyOp object
-					that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(instruction.x,instruction.y,value);
-
-					// perform the overwrite
-					that.grid[instruction.x][instruction.y][value] = that.getInstruction(instruction.x, instruction.y,oldColor);
-					that.grid[instruction.x][instruction.y][oldColor] = null;
-					App.Game.requestStaticRenderUpdate = true;
-					if(killRedo !== 1){ that.killRedo('mod'); }
+				// check overwrite
+				if(that.userOverlapSetting === 1){ // if necessary store overwrite information for undo / redo
+					if(that.getInstruction(newX,newY,color)){
+						that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(newX,newY,color);
+					}
+				}else{ // prevent overwrite
+					if(that.getInstruction(newX,newY,color)){ return; }
 				}
-				else{
-					that.grid[instruction.x][instruction.y][oldColor][parameter] = oldColor; // reset the color if the move part of the operation got rejected
-				}
+				
+				// update cell
+				that.grid[instruction.x][instruction.y][value] = that.grid[instruction.x][instruction.y][oldColor];
+				that.grid[instruction.x][instruction.y][oldColor] = null;
+				return;
+			} else{
+				// update cell
+				that.grid[instruction.x][instruction.y][value] = that.grid[instruction.x][instruction.y][oldColor];
+				that.grid[instruction.x][instruction.y][oldColor] = null;
 			}
+		}else{
+			that.grid[instruction.x][instruction.y][instruction.color][parameter] = value; // update instruction
 		}
 
-	};
+		that.undoStack.push(new that.opObj.modifyOp(instruction, parameter, value, instruction[parameter])); // update undo stack
+		App.Game.requestStaticRenderUpdate = true;
+		if(killRedo !== 1){ that.killRedo('mod'); }
+	}
 
 	// this function performs a copy operation on an instruction,
 	// and creates and pushes a copyOp object onto the undo stack.
