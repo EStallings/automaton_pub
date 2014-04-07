@@ -322,10 +322,11 @@ App.makeGame = function(){
 
 		game.goalMX = game.mouseX*game.cellSize;
 		game.goalMY = game.mouseY*game.cellSize;
+
 		switch(game.mouseC){
-			case App.COLORS.RED:break;
-			case App.COLORS.GREEN:game.goalMX += game.cellSize/2;break;
-			case App.COLORS.BLUE:game.goalMY += game.cellSize/2;break;
+			case App.COLORS.RED:																			break;
+			case App.COLORS.GREEN:	game.goalMX += game.cellSize/2;		break;
+			case App.COLORS.BLUE:		game.goalMY += game.cellSize/2;		break;
 			case App.COLORS.YELLOW:
 				game.goalMX += game.cellSize/2;
 				game.goalMY += game.cellSize/2;
@@ -353,9 +354,9 @@ App.makeGame = function(){
 		game.renderX  += game.expInterp(game.renderX,game.goalRenderX  ,0.01,0.5);
 		game.renderY  += game.expInterp(game.renderY,game.goalRenderY  ,0.01,0.5);
 		game.cellSize += game.expInterp(game.cellSize,game.goalCellSize,0.01,0.01);
-		if(game.renderX != game.goalRenderX)game.requestStaticRenderUpdate=true;
-		if(game.renderY != game.goalRenderY)game.requestStaticRenderUpdate=true;
-		if(game.cellSize != game.goalCellSize)game.requestStaticRenderUpdate=true;
+		if(game.renderX != game.goalRenderX)		game.requestStaticRenderUpdate=true;
+		if(game.renderY != game.goalRenderY)		game.requestStaticRenderUpdate=true;
+		if(game.cellSize != game.goalCellSize)	game.requestStaticRenderUpdate=true;
 
 		// setup grid canvas
 		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height); // TODO: OPTIMIZE THIS
@@ -377,7 +378,8 @@ App.makeGame = function(){
 		if(gw !== 0){
 			l = Math.max(l,game.renderX);
 			r = Math.min(r,game.renderX+cs*gw);
-		}if(gh !== 0){
+		}
+		if(gh !== 0){
 			t = Math.max(t,game.renderY);
 			b = Math.min(b,game.renderY+cs*gh);
 		}
@@ -385,36 +387,57 @@ App.makeGame = function(){
 		// draw grid lines
 		game.gridGfx.strokeStyle = '#111111';
 		game.gridGfx.beginPath();
-		for(var i=l;i<=r+1;i+=cs){
-			game.gridGfx.moveTo(i,t);game.gridGfx.lineTo(i,b);
-		}for(var j=t;j<=b+1;j+=cs){
-			game.gridGfx.moveTo(l,j);game.gridGfx.lineTo(r,j);
-		}game.gridGfx.stroke();
+
+		for(var i=l; i<=r+1; i+=cs){
+			game.gridGfx.moveTo(i,t);
+			game.gridGfx.lineTo(i,b);
+		}
+
+		for(var j=t; j<=b+1; j+=cs){
+			game.gridGfx.moveTo(l,j);
+			game.gridGfx.lineTo(r,j);
+		}
+
+		game.gridGfx.stroke();
 
 		// draw cell corners
 		game.gridGfx.strokeStyle = '#444444';
 		game.gridGfx.beginPath();
-		for(var i=l;i<=r+1;i+=cs)
-		for(var j=t;j<=b+1;j+=cs){
-			game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
-			game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
-		}game.gridGfx.stroke();
+
+		for(var i=l; i<=r+1; i+=cs){
+			for(var j=t; j<=b+1; j+=cs){
+				game.gridGfx.moveTo(i-4, j);
+				game.gridGfx.lineTo(i+4, j);
+				game.gridGfx.moveTo(i, j-4);
+				game.gridGfx.lineTo(i, j+4);
+			}
+		}
+
+		game.gridGfx.stroke();
 
 		// draw cell centers
 		game.gridGfx.strokeStyle = '#222222';
 		game.gridGfx.beginPath();
-		for(var i=l+cs/2;i<r;i+=cs)
-		for(var j=t+cs/2;j<b;j+=cs){
-			game.gridGfx.moveTo(i-4,j);game.gridGfx.lineTo(i+4,j);
-			game.gridGfx.moveTo(i,j-4);game.gridGfx.lineTo(i,j+4);
-			if(game.cellSize < 30)continue;
-			game.gridGfx.moveTo(i-7,j);game.gridGfx.arc(i,j,7,-Math.PI,Math.PI);
-		}game.gridGfx.stroke();
+
+		for(var i=l+cs/2; i<r; i+=cs){
+			for(var j=t+cs/2; j<b; j+=cs){
+				game.gridGfx.moveTo(i-4, j);
+				game.gridGfx.lineTo(i+4, j);
+				game.gridGfx.moveTo(i, j-4);
+				game.gridGfx.lineTo(i, j+4);
+				if(game.cellSize < 30) continue;
+
+				game.gridGfx.moveTo(i-7, j);
+				game.gridGfx.arc(i, j, 7, -Math.PI, Math.PI);
+			}
+		}
+
+		game.gridGfx.stroke();
 
 		// draw level borders
 		game.gridGfx.strokeStyle = '#888888';
 		game.gridGfx.beginPath();
-		game.gridGfx.rect(l-4,t-4,r-l+8,b-t+8);
+		game.gridGfx.rect(l-4, t-4, r-l+8, b-t+8);
 		game.gridGfx.stroke();
 
 		// draw background and occlude level at borders
@@ -424,25 +447,28 @@ App.makeGame = function(){
 		game.bkgndGfx.fill();
 		game.bkgndGfx.strokeStyle = '#090909';
 		game.bkgndGfx.beginPath();
+
 		for(var i=1;i<App.Canvases.width+App.Canvases.height;i+=6){
 			game.bkgndGfx.moveTo(i,0);
 			game.bkgndGfx.lineTo(0,i);
-		}game.bkgndGfx.stroke();
+		}
+
+		game.bkgndGfx.stroke();
 		game.bkgndGfx.globalCompositeOperation = 'destination-out';
 		game.bkgndGfx.rect(l-6,t-6,r-l+12,b-t+12);
 		game.bkgndGfx.fill();
 		game.bkgndGfx.globalCompositeOperation = 'source-over';
 
-		if(game.mode === game.modes.PLANNING &&
-		   game.currentPlanningLevel !== undefined)
+		if(game.mode === game.modes.PLANNING && game.currentPlanningLevel !== undefined){
 			game.currentPlanningLevel.staticRender();
-		else if(game.currentSimulationLevel !== undefined)
+		}
+		else if(game.currentSimulationLevel !== undefined){
 			game.currentSimulationLevel.staticRender();
+		}
 	}
 
 	game.dynamicRender = function(){
-		if(game.mode === game.modes.PLANNING &&
-		   game.currentPlanningLevel !== undefined)
+		if(game.mode === game.modes.PLANNING && game.currentPlanningLevel !== undefined)
 			game.currentPlanningLevel.dynamicRender();
 		else if(game.currentSimulationLevel !== undefined){
 			game.interpolation = (App.Engine.tick-game.lastCycleTick)
