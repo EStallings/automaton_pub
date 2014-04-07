@@ -1,4 +1,6 @@
 App.PlanningLevel = function(){
+	var that = this;
+
 	this.name; // name of the level
 	this.width;	this.height; // grid size
 	this.numColors = 4; // number of different colors in the game
@@ -12,16 +14,15 @@ App.PlanningLevel = function(){
 	this.yellowLocked = false;
 	this.currentSelection = [];
 	this.input = new App.PlanningControls();
+	this.graphics = new App.PlanningGraphics();
 	this.copied = false;
 	this.moving = false;
 
 	// flag that lets the operation functions know how to handle conflicts.
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
 
-	var that = this;
-
 	this.setUp = function(mX, mY, mC){ that.input.setUp(mX, mY, mC) }
-	this.setDown = function(mX, mY, mC){ that.input.setDown(mX, mY, mC); }
+	this.setDown = function(mX, mY, mC, scrnX, scrnY){ that.input.setDown(mX, mY, mC, scrnX, scrnY); }
 
 	this.mkey = function(){
 		if(that.currentSelection.length !== 0 && that.currentSelection[0] !== null){
@@ -510,11 +511,6 @@ App.PlanningLevel = function(){
 		}
 		return newLevel;
 	};
-
-	this.renderOverlay = function(gfx){
-		gfx.fillStyle="#ffffff";
-		gfx.fillRect(0,0,100,100);
-	}
 
 	this.staticRender = function(){
 		var selected;

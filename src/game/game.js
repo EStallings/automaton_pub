@@ -237,10 +237,6 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.drawPlanningOverlay = function(){
-
-	}
-
 	game.followAutomaton = function(automaton){
 		this.followTarget = automaton;
 	}
@@ -465,6 +461,7 @@ App.makeGame = function(){
 
 		if(game.mode === game.modes.PLANNING && game.currentPlanningLevel !== undefined){
 			game.currentPlanningLevel.staticRender();
+			game.currentPlanningLevel.graphics.staticRender(game.tempGfx);
 		}
 		else if(game.currentSimulationLevel !== undefined){
 			game.currentSimulationLevel.staticRender();
@@ -474,7 +471,7 @@ App.makeGame = function(){
 	game.dynamicRender = function(){
 		if(game.mode === game.modes.PLANNING && game.currentPlanningLevel !== undefined){
 				game.currentPlanningLevel.dynamicRender();
-				game.currentPlanningLevel.renderOverlay(game.tempGfx);
+				if(App.Game.mode === 'Planning'){ game.currentPlanningLevel.graphics.dynamicRender(game.tempGfx); }
 		}
 		else if(game.currentSimulationLevel !== undefined){
 			game.interpolation = (App.Engine.tick-game.lastCycleTick)
