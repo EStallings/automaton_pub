@@ -273,43 +273,30 @@ App.PlanningLevel = function(){
 	// this function performs a copy operation on an instruction,
 	// and creates and pushes a copyOp object onto the undo stack.
 	this.copy = function(x, y, color, newX, newY, killRedo){
-		if(that.isLocked(color)){ return; }
+		if(that.isLocked(color)){ return; } // check layer lock
+		if(!that.contains(x,y,color)){ return; } // check that the instruction to be moved exists
+
+		if(that.userOverlapSetting === 1){ // if necessary store overwrite information for undo / redo
+			if(that.getInstruction(newX,newY,color)){
+				that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(newX,newY,color);
+			}
+		}
+		else{ // prevent overwrite
+			if(that.getInstruction(newX,newY,color)){ return; }
+		}
+
 		// update undo stack
 		that.undoStack.push(new that.opObj.copyOp(that.getInstruction(x,y,color), newX, newY));
 
-		// make sure there is an instruction at the specified coordinate
-		if(!that.contains(x,y,color)){ return; }
+		// update grid and instruction
+		if(!that.grid[newX]){ that.grid[newX] = []; }
+		if(!that.grid[newX][newY]){ that.grid[newX][newY] = []; }
+		that.grid[newX][newY][color] = new App.PlanningInstruction(newX, newY, color, that.grid[x][y][color].type);
 
-		// update grid
-		if(!that.getInstruction(newX,newY,color)){
-			// place the copy
-			if(that.grid[newX] && that.grid[newX][newY] ){
-				that.grid[newX][newY][color] = new App.PlanningInstruction(newX,newY,color,that.grid[x][y][color].type);
-				App.Game.requestStaticRenderUpdate = true;
-				if(killRedo !== 1){ that.killRedo('cpy'); }
-			} else if(that.grid[newX]){
-				that.grid[newX][newY] = [];
-				that.grid[newX][newY][color] = new App.PlanningInstruction(newX,newY,color,that.grid[x][y][color].type);
-				App.Game.requestStaticRenderUpdate = true;
-				if(killRedo !== 1){ that.killRedo('cpy'); }
-			} else {
-				that.grid[newX] = [];
-				that.grid[newX][newY] = [];
-				that.grid[newX][newY][color] = new App.PlanningInstruction(newX,newY,color,that.grid[x][y][color].type);
-				App.Game.requestStaticRenderUpdate = true;
-				if(killRedo !== 1){ that.killRedo('cpy'); }
-			}
+		App.Game.requestStaticRenderUpdate = true; // ask for static render
 
-		} else if(that.userOverlapSetting === 1){
-			// store the old instruction
-			that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(newX,newY,color);
-
-			// overwrite
-			that.grid[newX][newY][color] = that.getInstruction(x,y,color);
-			App.Game.requestStaticRenderUpdate = true;
-		}
-
-	};
+		if(killRedo !== 1){ that.killRedo('cpy'); }
+	}
 
 	// this function, performs a move operation on an instruction,
 	// and creates and pushes a moveOp object onto the undo stack.
