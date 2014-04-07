@@ -511,6 +511,11 @@ App.PlanningLevel = function(){
 		return newLevel;
 	};
 
+	this.renderOverlay = function(gfx){
+		gfx.fillStyle="#ffffff";
+		gfx.fillRect(0,0,100,100);
+	}
+
 	this.staticRender = function(){
 		var selected;
 		var cs = App.Game.cellSize;
