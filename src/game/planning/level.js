@@ -379,45 +379,28 @@ App.PlanningLevel = function(){
 
 	// this function performs an insert operation on the grid,
 	// and creates and pushes an insertOp object onto the undo stack.
-	// TODO refactor the way things are actually written to the grid
 	this.insert = function(instruction,killRedo){
-		if(that.isLocked(instruction.color)){ return; }
+		if(that.isLocked(instruction.color)){ return; } // check if color is locked
+		that.undoStack.push(new that.opObj.insertOp(instruction)); // update undo stack
 
-		// update undo stack
-		that.undoStack.push(new that.opObj.insertOp(instruction));
-
-		// update grid
-		if(!that.getInstruction(instruction.x,instruction.y,instruction.color)){
-			if(that.grid[instruction.x]){
-				if(that.grid[instruction.x][instruction.y]){
-					that.grid[instruction.x][instruction.y][instruction.color] = instruction;
-					App.Game.requestStaticRenderUpdate = true;
-					if(killRedo !== 1){ that.killRedo('ins'); }
-				}
-				else {
-					that.grid[instruction.x][instruction.y] = [];
-					that.grid[instruction.x][instruction.y][instruction.color] = instruction;
-					App.Game.requestStaticRenderUpdate = true;
-					if(killRedo !== 1){ that.killRedo('ins'); }
-				}
+		if(that.userOverlapSetting === 1){ // if necessary store overwrite information for undo / redo
+			if(that.getInstruction(instruction.x,instruction.y,instruction.color)){
+				that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(instruction.x,instruction.y,instruction.color);
 			}
-			else {
-				that.grid[instruction.x] = [];
-				that.grid[instruction.x][instruction.y] = [];
-				that.grid[instruction.x][instruction.y][instruction.color] = instruction;
-				App.Game.requestStaticRenderUpdate = true;
-				if(killRedo !== 1){ that.killRedo('ins'); }
-			}
-		} else if(that.userOverlapSetting === 1){
-			// store the old instruction
-			that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(instruction.x,instruction.y,instruction.color);
-
-			// overwrite
-			that.grid[instruction.x][instruction.y][instruction.color] = instruction;
-			App.Game.requestStaticRenderUpdate = true;
+		}
+		else{ // prevent overwrite
+			if(that.getInstruction(instruction.x,instruction.y,instruction.color)){ return; }
 		}
 
-	};
+		// update grid
+		if(!that.grid[instruction.x]){ that.grid[instruction.x] = []; console.log('b'); }
+		if(!that.grid[instruction.x][instruction.y]){ that.grid[instruction.x][instruction.y] = []; console.log('a'); }
+		that.grid[instruction.x][instruction.y][instruction.color] = instruction;
+
+		App.Game.requestStaticRenderUpdate = true; // ask for static render
+
+		if(killRedo !== 1){ that.killRedo('ins'); }		
+	}
 
 	// this function performs a delete operation on an instruction,
 	// it also creates and pushes a deleteOp object onto the stack
