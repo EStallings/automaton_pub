@@ -26,45 +26,46 @@ App.makeInstructionCatalog = function(){
 		'PAUSE'		: 24,
 	};
 
+	// TODO: SPECIAL RENDER FUNCS (STREAM, SYNC)
 	ins.render = function(gfx,type,x,y,c,size){
 		gfx.save();
 		gfx.translate(x,y);
-
-		// TODO: SPECIAL RENDER FUNCS (STREAM, SYNC)
+		gfx.lineCap  = 'round';
+		gfx.lineJoin = 'round';
+		gfx.lineWidth = 2;
 
 		switch(c){
-			case App.COLORS.RED:
-				gfx.fillStyle='#660000';
-				gfx.fillRect(2,2,size-4,size-4);
-				gfx.strokeStyle='#ff0000';
-				break;
-			case App.COLORS.GREEN:
-				gfx.fillStyle='#006600';
-				gfx.fillRect(2,2,size-4,size-4);
-				gfx.strokeStyle='#00ff00';
-				break;
-			case App.COLORS.BLUE:
-				gfx.fillStyle='#000066';
-				gfx.fillRect(2,2,size-4,size-4);
-				gfx.strokeStyle='#0000ff';
-				break;
-			case App.COLORS.YELLOW:
-				gfx.fillStyle='#666600';
-				gfx.fillRect(2,2,size-4,size-4);
-				gfx.strokeStyle='#ffff00';
-				break;
+			case App.COLORS.RED:    gfx.fillStyle='#ff0000';break;
+			case App.COLORS.GREEN:  gfx.fillStyle='#00ff00';break;
+			case App.COLORS.BLUE:   gfx.fillStyle='#0000ff';break;
+			case App.COLORS.YELLOW: gfx.fillStyle='#ffff00';break;
+		}gfx.fillRect(2,2,size-4,size-4);
+
+		switch(c){
+			case App.COLORS.RED:    gfx.strokeStyle='#aa0000';break;
+			case App.COLORS.GREEN:  gfx.strokeStyle='#00aa00';break;
+			case App.COLORS.BLUE:   gfx.strokeStyle='#0000aa';break;
+			case App.COLORS.YELLOW: gfx.strokeStyle='#aaaa00';break;
 		}
 
-		gfx.beginPath();
-		gfx.moveTo(2,2);
-		gfx.lineTo(2,size-2);
-		gfx.lineTo(size-2,size-2);
-		gfx.lineTo(size-2,2);
-		gfx.lineTo(2,2);
-		gfx.stroke();
+		if(size>11){
+			gfx.beginPath();
+			gfx.moveTo(2,2);
+			gfx.lineTo(2,size-2);
+			gfx.lineTo(size-2,size-2);
+			gfx.lineTo(size-2,2);
+			gfx.lineTo(2,2);
+			gfx.stroke();
+		}
 
-		if(size>15)ins.rFunc[type](gfx,size);
-		gfx.restore();
+		if(size>15){
+			switch(App.Game.cellSizeFactor){
+				case 4:gfx.lineWidth = 2;break;
+				case 5:gfx.lineWidth = 4;break;
+				case 6:gfx.lineWidth = 6;break;
+				case 7:gfx.lineWidth = 8;break;
+			}ins.rFunc[type](gfx,size);
+		}gfx.restore();
 	}
 
 	// ========================================================== //
