@@ -25,8 +25,31 @@ App.PlanningGraphics = function(){
 	this.selectionOverlay = function(gfx){
 		var currentSelection = App.Game.currentPlanningLevel.currentSelection;
 		gfx.fillStyle = '#ffffff';
+				
+		var gridX = currentSelection[0].x;
+		var gridY = currentSelection[0].y;
+		var color = currentSelection[0].color;
+		var size = App.Game.cellSize;
+		var scrnX = size * gridX;
+		var scrnY = size * gridY;
+		size = size / 2; // TODO: ask about cellSizeFactor
 
-		// TODO
+		var offsetX;
+		var offsetY;
+
+		if(color == 0){
+			offsetX = 0; offsetY = 0;
+		}else if(color == 1){
+			offsetX = size; offsetY = 0;
+		}else if(color == 2){
+			offsetX = 0; offsetY = size;
+		}else{
+			offsetX = size; offsetY = size;
+		}
+
+		App.Game.translateCanvas(gfx);
+		gfx.fillRect(scrnX+offsetX, scrnY+offsetY, size, size);
+		gfx.restore();
 	}
 
 	this.dynamicRender = function(gfx){
@@ -34,6 +57,9 @@ App.PlanningGraphics = function(){
 		//if(App.Game.currentPlanningLevel.currentSelection[0] !== null &&
 				//App.Game.currentPlanningLevel.currentSelection.length !== 0){ that.debug(gfx); }
 		if(App.Game.currentPlanningLevel.input.isDown){ that.drawSelectionBox(gfx); }
+
+		if(App.Game.currentPlanningLevel.currentSelection.length !== 0
+				&& App.Game.currentPlanningLevel.currentSelection[0] !== null ){ that.selectionOverlay(gfx); } // TODO: move to static render?
 	}
 
 	this.drawSelectionBox = function(gfx){
