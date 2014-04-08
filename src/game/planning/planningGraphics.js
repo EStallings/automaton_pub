@@ -1,5 +1,9 @@
 App.PlanningGraphics = function(){
 
+	// TODO: graphics for move
+	// TODO: graphics for copy
+	// TODO: different key mappings? esc for deselect?
+
 	var that = this;
 
 	this.staticRender = function(gfx){
@@ -74,6 +78,7 @@ App.PlanningGraphics = function(){
 				&& App.Game.currentPlanningLevel.currentSelection[0] !== null ){ that.selectionOverlay(gfx); } // TODO: move to static render?
 	}
 
+	// TODO: fix it so it draws even if something is already selected
 	this.drawSelectionBox = function(gfx){
 		var mouseData = App.Game.currentPlanningLevel.input;
 		var curX = mouseData.curX;

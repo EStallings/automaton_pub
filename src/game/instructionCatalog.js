@@ -55,24 +55,6 @@ App.makeInstructionCatalog = function(){
 				break;
 		}
 
-		/*// turn tile background white if selected
-		if(selected){
-			gfx.fillStyle = '#ffffff';
-			gfx.fillRect(2,2,size-2,size-2);
-
-			// turn tile background green if it is in the proccess of being moved
-			if(moving){
-				gfx.fillStyle = '#00cc33';
-				gfx.fillRect(2,2,size-2,size-2);
-			}
-
-			// turn tile background cyan if it is in the proccess of being copied
-			if(copied){
-				gfx.fillStyle = '#00ffcc';
-				gfx.fillRect(2,2,size-2,size-2);
-			}
-		}*/
-
 		gfx.beginPath();
 		gfx.moveTo(2,2);
 		gfx.lineTo(2,size-2);

@@ -39,7 +39,7 @@ App.PlanningControls = function(){
 	this.select = function(isDrag){
 		if(isDrag){
 			// group select
-				App.Game.currentPlanningLevel.selectCells(that.downX,that.downY,that.upX,that.upY);
+				App.Game.currentPlanningLevel.selectCells(that.downX, that.downY, that.downC, that.upX, that.upY, that.upC);
 		}else{
 			// single instruction select
 			App.Game.currentPlanningLevel.selectInstruction(that.upX, that.upY, that.upC);

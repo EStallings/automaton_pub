@@ -132,8 +132,58 @@ App.PlanningLevel = function(){
 		}
 	};
 
+	/*this.selectCells = function(x1, y1, c1, x2, y2, c2){
+		that.currentSelection = [];
+
+		var instructions = [];
+		var numSelected = 0;
+
+		var left = false;
+
+		var tlX = 0, tlY = 0, tlC = 0;
+		var brX = 0, brY = 0, brC = 0;
+
+		if(x1 < x2){ tlX = x1; brX = x2; } else { tlX = x2; brX = x1; left = true; }
+		if(y1 < y2){ tlY = y1; brY = y2; } else { tlY = y2; brY = y1; }
+
+		if(left){ tlC = c2; brC = c1; }else{ tlC = c1; brC = c2; }
+
+		for(var i = 0; i < (brY - tlY); ++i){
+			instructions = instructions.concat(that.selectRow(tlX, tlY+i, tlC, brC, brX - tlX));			
+		}
+
+		var numInstr = 0;
+		for(i = 0; i < instructions.length; ++i){
+			if(instructions[i] !== null && instructions[i] !== undefined){
+				that.currentSelection[numInstr] = instructions[i];
+				++numInstr;
+			}
+		}
+	}*/
+
+	this.selectRow = function(x, y, c1, c2, dist){
+		var instructions = [];
+		for(var i = 0; i < dist; i++){
+			if(c1 === App.COLORS.RED || c1 === App.COLORS.GREEN){
+				for(var c = 0; c <= 1; c++){
+					if(i === 0 && c1 === App.COLORS.GREEN){ c++; }
+					if(i === dist-1 && c2 === App.COLORS.RED){ console.log('b'); break; }
+					if(that.getInstruction(x+i,y,c)){ instructions[i*2+c] = that.getInstruction(x+i,y,c); }
+				}
+			}
+			else{
+				for(var c = 2; c <= 3; c++){
+					if(i === 0 && c1 === App.COLORS.YELLOW){ c++; }
+					if(i === dist-1 && c2 === App.COLORS.BLUE){ console.log('b'); break; }
+					if(that.getInstruction(x+i,y,c)){ instructions[i*2+c] = that.getInstruction(x+i,y,c); }
+				}	
+			}
+		}
+		return instructions; 
+	}
+
 	// fills currentSelection list of all unlocked instructions in cells between the specified coordinates
-	this.selectCells = function(x1, y1, x2, y2){
+	this.selectCells = function(x1, y1, c1, x2, y2, c2){
 		instructions = [];
 		that.currentSelection = [];
 		numSelected = 0;
