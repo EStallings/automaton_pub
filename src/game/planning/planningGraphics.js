@@ -42,12 +42,10 @@ App.PlanningGraphics = function(){
 		var curY = mouseData.curY;
 		var downX = App.Game.currentPlanningLevel.input.downScrnX;
 		var downY = App.Game.currentPlanningLevel.input.downScrnY;
-		gfx.fillStyle = '#ffffff';
+		gfx.fillStyle = 'rgba(25,150,25,.2)';
 		gfx.fillRect(curX, curY, (downX-curX), (downY-curY) );
-
-		if(curX < downX && curY < downY){ gfx.clearRect(curX+2, curY+2, (downX-curX)-4, (downY-curY)-4); }
-		if(curX > downX && curY < downY){ gfx.clearRect(curX-2, curY+2, (downX-curX)+4, (downY-curY)-4); }
-		if(curX < downX && curY > downY){ gfx.clearRect(curX+2, curY-2, (downX-curX)-4, (downY-curY)+4); }
-		if(curX > downX && curY > downY){ gfx.clearRect(curX-2, curY-2, (downX-curX)+4, (downY-curY)+4); }
+		gfx.strokeStyle = '#ffffff';
+		gfx.strokeRect(curX, curY, (downX-curX), (downY-curY) );
+		gfx.strokeRect(curX-1, curY-1, (downX-curX)-1, (downY-curY)-1 );
 	}
 }
