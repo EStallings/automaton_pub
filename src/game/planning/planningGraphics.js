@@ -72,10 +72,10 @@ App.PlanningGraphics = function(){
 		App.Game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		//if(App.Game.currentPlanningLevel.currentSelection[0] !== null &&
 				//App.Game.currentPlanningLevel.currentSelection.length !== 0){ that.debug(gfx); }
-		if(App.Game.currentPlanningLevel.input.isDown){ that.drawSelectionBox(gfx); }
-
 		if(App.Game.currentPlanningLevel.currentSelection.length !== 0
-				&& App.Game.currentPlanningLevel.currentSelection[0] !== null ){ that.selectionOverlay(gfx); } // TODO: move to static render?
+			&& App.Game.currentPlanningLevel.currentSelection[0] !== null ){ that.selectionOverlay(gfx); } // TODO: move to static render?
+
+		if(App.Game.currentPlanningLevel.input.isDown){ that.drawSelectionBox(gfx); }
 	}
 
 	// TODO: fix it so it draws even if something is already selected
