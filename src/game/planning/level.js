@@ -304,6 +304,12 @@ App.PlanningLevel = function(){
 		if(that.isLocked(color)){ return; } // check layer lock
 		if(!that.contains(x,y,color)){ return; } // check that the instruction to be moved exists
 
+		// update instruction x, y 
+		that.grid[x][y][color].x = newX;
+		that.grid[x][y][color].y = newY;
+
+		that.undoStack.push(new that.opObj.moveOp(that.getInstruction(x,y,color), x, y, newX, newY)); // update undo stack
+
 		if(that.userOverlapSetting === 1){ // if necessary store overwrite information for undo / redo
 			if(that.getInstruction(newX,newY,color)){
 				that.undoStack[that.undoStack.length-1].overWritten = that.getInstruction(newX,newY,color);
@@ -311,16 +317,12 @@ App.PlanningLevel = function(){
 		}
 		else{ // prevent overwrite
 			if(that.getInstruction(newX,newY,color)){ return; }
-		}		
+		}
 
-		that.undoStack.push(new that.opObj.moveOp(that.getInstruction(x,y,color), newX, newY)); // update undo stack
-
-		// update grid and instruction
+		// update grid
 		if(!that.grid[newX]){ that.grid[newX] = []; }
 		if(!that.grid[newX][newY]){ that.grid[newX][newY] = []; }
 		that.grid[newX][newY][color] = that.grid[x][y][color];
-		that.grid[newX][newY][color].x = newX;
-		that.grid[newX][newY][color].y = newY;
 		that.grid[x][y][color] = null;
 
 		App.Game.requestStaticRenderUpdate = true; // ask for static render
@@ -398,7 +400,7 @@ App.PlanningLevel = function(){
 			that.undoStack.pop();
 		}
 		else if(op.opId === 'move'){
-			that.move(op.newX, op.newY, op.instruction.color, op.instruction.x, op.instruction.y, 1)
+			that.move(op.instruction.x, op.instruction.y, op.instruction.color, op.oldX, op.oldY, 1)
 			that.undoStack.pop();
 
 			if(op.overWritten !== null){
@@ -457,7 +459,7 @@ App.PlanningLevel = function(){
 			that.undoStack.pop();
 		}
 		else if(op.opId === 'move'){
-			that.move(op.instruction.x, op.instruction.y, op.instruction.color, op.newX, op.newY,1);
+			that.move(op.oldX, op.oldY, op.instruction.color, op.newX, op.newY, 1);
 			that.undoStack.pop();
 		}
 		else if(op.opId === 'copy'){
