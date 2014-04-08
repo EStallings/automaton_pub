@@ -68,7 +68,7 @@ App.GuiTextButton = function(x, y, text, callback, continuous, panel){
 		
 		// there is no gfx.measureText(txt).height param so we must use font size
 		var font_size = 10;
-		textY = this.guiCollider.gety() + this.guiCollider.h/2 + font;
+		textY = this.guiCollider.gety() + this.guiCollider.h/2 + font/2;
 		
 		gfx.fillText(this.text, textX, textY);
 		var flair = (this.flair) ? this.flair : App.GuiTextButton.defaultFlair;
