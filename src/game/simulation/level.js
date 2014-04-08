@@ -46,7 +46,6 @@ App.SimulationLevel = function(width,height){
 	this.staticRender = function(){
 		// draw level bounds | XXX: SHOULD WE EVEN RENDER THIS...
 		App.Game.translateCanvas(App.Game.instructionGfx);
-		App.Game.instructionGfx.lineWidth = 2;
 		App.Game.translateCanvas(App.Game.tokenSGfx);
 		App.Game.tokenSGfx.textAlign = 'center';
 		App.Game.tokenSGfx.textBaseline = 'middle';
