@@ -26,7 +26,7 @@ App.makeInstructionCatalog = function(){
 		'PAUSE'		: 24,
 	};
 
-	ins.render = function(gfx,type,x,y,c,size,selected,copied,moving){
+	ins.render = function(gfx,type,x,y,c,size){
 		gfx.save();
 		gfx.translate(x,y);
 

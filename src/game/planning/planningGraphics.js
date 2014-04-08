@@ -36,6 +36,9 @@ App.PlanningGraphics = function(){
 
 		App.Game.translateCanvas(gfx);
 		do{
+			gfx.fillStyle = 'rgba(100,100,100,.5)';
+			gfx.strokeStyle = '#ffffff';
+
 			gridX = currentSelection[i].x;
 			gridY = currentSelection[i].y;
 			color = currentSelection[i].color;
@@ -63,6 +66,20 @@ App.PlanningGraphics = function(){
 			gfx.clearRect(scrnX+offsetX-2, scrnY+offsetY+5, size+4, size-10);
 			gfx.fillRect(scrnX+offsetX, scrnY+offsetY, size, size);
 			
+			if(App.Game.currentPlanningLevel.moving){
+				gfx.fillStyle = '#ffffff';
+				gfx.font='16px Georgia';
+		
+				gfx.fillText('M', scrnX+offsetX+4, scrnY+offsetY+18); // TODO: fix so it works with zoom
+			}
+
+			if(App.Game.currentPlanningLevel.copied){
+				gfx.fillStyle = '#ffffff';
+				gfx.font='16px Georgia';
+		
+				gfx.fillText('C', scrnX+offsetX+4, scrnY+offsetY+18); // TODO: fix so it works with zoom
+			}
+
 			++i;
 		}while(i < currentSelection.length);
 		gfx.restore();

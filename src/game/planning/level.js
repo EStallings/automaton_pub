@@ -601,7 +601,7 @@ App.PlanningLevel = function(){
 						App.InstCatalog.render(
 							App.Game.instructionGfx,
 							that.grid[i][j][c].type,
-							i*cs,j*cs,c,cs/2,selected,that.copied,that.moving);
+							i*cs,j*cs,c,cs/2);
 					}
 
 			App.Game.instructionGfx.restore();
