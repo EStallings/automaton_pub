@@ -24,31 +24,43 @@ App.PlanningGraphics = function(){
 
 	this.selectionOverlay = function(gfx){
 		var currentSelection = App.Game.currentPlanningLevel.currentSelection;
-		gfx.fillStyle = '#ffffff';
-				
-		var gridX = currentSelection[0].x;
-		var gridY = currentSelection[0].y;
-		var color = currentSelection[0].color;
-		var size = App.Game.cellSize;
-		var scrnX = size * gridX;
-		var scrnY = size * gridY;
-		size = size / 2; // TODO: ask about cellSizeFactor
+		gfx.fillStyle = 'rgba(100,100,100,.5)';
+		gfx.strokeStyle = '#ffffff';
 
-		var offsetX;
-		var offsetY;
-
-		if(color == 0){
-			offsetX = 0; offsetY = 0;
-		}else if(color == 1){
-			offsetX = size; offsetY = 0;
-		}else if(color == 2){
-			offsetX = 0; offsetY = size;
-		}else{
-			offsetX = size; offsetY = size;
-		}
+		var gridX, gridY, color, size, scrnX, scrnY, offsetX, offsetY;		
+		var i = 0;
 
 		App.Game.translateCanvas(gfx);
-		gfx.fillRect(scrnX+offsetX, scrnY+offsetY, size, size);
+		do{
+			gridX = currentSelection[i].x;
+			gridY = currentSelection[i].y;
+			color = currentSelection[i].color;
+			size = App.Game.cellSize;
+			scrnX = size * gridX;
+			scrnY = size * gridY;
+			size = size / 2; // TODO: ask about cellSizeFactor
+
+			offsetX;
+			offsetY;
+
+			if(color == 0){
+				offsetX = 0; offsetY = 0;
+			}else if(color == 1){
+				offsetX = size; offsetY = 0;
+			}else if(color == 2){
+				offsetX = 0; offsetY = size;
+			}else{
+				offsetX = size; offsetY = size;
+			}
+
+			gfx.strokeRect(scrnX+offsetX, scrnY+offsetY, size, size);
+			gfx.strokeRect(scrnX+offsetX-1, scrnY+offsetY-1, size+2, size+2);
+			gfx.clearRect(scrnX+offsetX+5, scrnY+offsetY-2, size-10, size+4);
+			gfx.clearRect(scrnX+offsetX-2, scrnY+offsetY+5, size+4, size-10);
+			gfx.fillRect(scrnX+offsetX, scrnY+offsetY, size, size);
+			
+			++i;
+		}while(i < currentSelection.length);
 		gfx.restore();
 	}
 

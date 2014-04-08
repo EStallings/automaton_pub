@@ -55,7 +55,7 @@ App.makeInstructionCatalog = function(){
 				break;
 		}
 
-		// turn tile background white if selected
+		/*// turn tile background white if selected
 		if(selected){
 			gfx.fillStyle = '#ffffff';
 			gfx.fillRect(2,2,size-2,size-2);
@@ -71,7 +71,7 @@ App.makeInstructionCatalog = function(){
 				gfx.fillStyle = '#00ffcc';
 				gfx.fillRect(2,2,size-2,size-2);
 			}
-		}
+		}*/
 
 		gfx.beginPath();
 		gfx.moveTo(2,2);
