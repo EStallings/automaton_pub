@@ -25,8 +25,6 @@ App.DIRECTIONS = {
 App.demoLevels = [
 	"AllInstructions,10,6;1,1,0,0;2,1,0,1;3,1,0,2;4,1,0,3;5,1,0,4;6,1,0,5;7,1,0,6;8,1,0,7;1,2,0,8;2,2,0,9;3,2,0,10;4,2,0,11;5,2,0,12;6,2,0,13;7,2,0,14;8,2,0,15;1,3,0,16;2,3,0,17;2,3,1,17;2,3,2,17;2,3,3,17;3,3,0,18;3,3,1,18;3,3,2,18;3,3,3,18;4,3,0,19;5,3,0,20;6,3,0,21;7,3,0,22;8,3,0,23;1,4,0,24;2,4,0,25;3,4,0,26;4,4,0,27;5,4,0,28;6,4,0,29;7,4,0,30;8,4,0,31",
 	"Test,7,7;1,1,0,3;1,1,1,18;2,1,0,10;3,1,0,8;3,1,1,12;4,1,0,17;4,1,2,17;4,1,1,16"
-//	"Demo1,7,6;1,2,0,3;1,2,1,3;1,2,2,3;1,2,3,2;2,1,1,7;2,2,1,4;2,2,2,5;2,4,2,7;4,1,1,5;4,2,1,7;4,2,2,7;4,4,2,4;5,2,0,22;5,2,1,22;5,2,2,22;5,2,3,22",
-//	"Demo2,8,3;1,1,0,3;1,1,3,3;2,1,0,12;2,1,3,23;3,1,0,10;3,1,3,14;4,1,0,17;4,1,3,17;5,1,0,11;5,1,3,15;6,1,0,13"
 ]
 
 App.getDemoLevel = function(){
@@ -58,7 +56,7 @@ App.MODES = {
 	                     level:null,
 	                     toString:function(){return 'PLANNING'}},
 
-	SANDBOX          : {frame:App.setup.frames.SANDBOX,
+	SANDBOX           : {frame:App.setup.frames.SANDBOX,
 	                     mode:App.setup.modes.PLANNING,
 	                     level:App.getBlankLevel,
 	                     toString:function(){return 'SANDBOX'}},
@@ -73,12 +71,12 @@ App.MODES = {
 	                     evel:App.getDemoLevel,
 	                     toString:function(){return 'USER_LEVEL_SELECT'}},
 
-	SETTINGS : {frame:App.setup.frames.SETTINGS,
+	SETTINGS :          {frame:App.setup.frames.SETTINGS,
 	                     mode:App.setup.modes.SIMULATION,
 	                     evel:App.getDemoLevel,
 	                     toString:function(){return 'SETTINGS'}},
 
-	LEVEL_SELECT : {frame:App.setup.frames.LEVEL_SELECT,
+	LEVEL_SELECT :      {frame:App.setup.frames.LEVEL_SELECT,
 	                     mode:App.setup.modes.SIMULATION,
 	                     evel:App.getDemoLevel,
 	                     toString:function(){return 'LEVEL_SELECT'}}
@@ -87,18 +85,7 @@ App.MODES = {
 App.MODE = App.MODES.PLANNING;
 
 App.changeMode = function(mode){
-
-	if(mode.level){
-		App.Game.loadNewLevel(mode.level());
-	}
-
-	// this becomes especially annoying when switching between planning and simulation mode
-	// a different transition will be written for level swapping once we get the functionality of that going
-
-
-	// |||Leave it for now: it's good for demo purposes and it doesn't do the transition when going between
-	// planning and simulation mode! It only does it when changing menus! And it's nice
-	// to have it start out centered, otherwise it tries to draw in a place it can't legally
+	if(mode.level)App.Game.loadNewLevel(mode.level());
 
 	// TODO: DUMP ALL THIS INTO App.Game.centerGrid() v v v v v v //
 	// TODO: this should only happen if a center-grid is requested
