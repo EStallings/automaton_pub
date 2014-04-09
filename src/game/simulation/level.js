@@ -65,12 +65,19 @@ App.SimulationLevel = function(width,height){
 	this.dynamicRender = function(){
 		App.Game.translateCanvas(App.Game.automGfx);
 		App.Game.translateCanvas(App.Game.tokenDGfx);
-		App.Game.tokenDGfx.textAlign = 'center';
-		App.Game.tokenDGfx.textBaseline = 'middle';
-		App.Game.tokenDGfx.font = 'bold '+App.Game.cellSize/2+'px arial';
+
 		// TODO: OPTIMIZE RENDERING: ONLY RENDER STUFF INSIDE WINDOW
 		for(var i in this.automatons)this.automatons[i].dynamicRender();
 		// TODO: render sfx animation layers
+
+		var cs = App.Game.cellSize;
+		App.Game.automGfx.globalCompositeOperation = 'destination-in';
+		App.Game.automGfx.fillRect(2,2,this.width*cs-4,this.height*cs-4);
+		App.Game.automGfx.globalCompositeOperation = 'source-over';
+		App.Game.tokenDGfx.globalCompositeOperation = 'destination-in';
+		App.Game.tokenDGfx.fillRect(2,2,this.width*cs-4,this.height*cs-4);
+		App.Game.tokenDGfx.globalCompositeOperation = 'source-over';
+
 		App.Game.automGfx.restore();
 		App.Game.tokenDGfx.restore();
 	}
