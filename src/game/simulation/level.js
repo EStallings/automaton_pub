@@ -5,8 +5,6 @@ App.SimulationLevel = function(width,height){
 	this.tokens       = [];
 	this.automatons   = [];
 	this.instructions = [];
-	this.inStreams    = [];
-	this.outStreams   = [];
 
 	// ========================================================== //
 

@@ -81,58 +81,34 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 
-		case App.InstCatalog.TYPES['IN STREAM']:
-
-			if(level.inStreams[color] === undefined)
-				level.inStreams[color] = [];
-			level.inStreams[color].push(this);
-
-			this.input = function(){
-				new App.SimulationToken(this.level,this.x,this.y,Math.floor(Math.random()*8+1));
-				App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
-			}
-
-			this.execute = function(a){};break; // do nothing
-
-		case App.InstCatalog.TYPES['OUT STREAM']:
-
-			if(level.outStreams[color] === undefined)
-				level.outStreams[color] = [];
-			level.outStreams[color].push(this);
-
-			this.output = function(){
-				if(this.cell.tokens.length !== 0){
-					this.cell.tokens.splice(0,1);
-					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
-				}
-			}
-
-			this.execute = function(a){};break; // do nothing
+//============================================================================//
 
 		case App.InstCatalog.TYPES['IN']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(!this.level.inStreams[this.color])return;
-				for(var i in this.level.inStreams[this.color])
-					this.level.inStreams[this.color][i].input();
+				if(a.tokenHeld !== undefined)return;
+				a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,Math.floor(Math.random()*8+1));
 			};break;
+
+//============================================================================//
 
 		case App.InstCatalog.TYPES['OUT']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				for(var i in this.level.outStreams[this.color])
-					this.level.outStreams[this.color][i].output();
+				if(a.tokenHeld === undefined)return;
+				a.tokenHeld = undefined;
 			};break;
+
+//============================================================================//
 
 		case App.InstCatalog.TYPES['GRAB']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined && this.cell.tokens.length !== 0){
-					a.tokenHeld = this.cell.tokens[0];
-					this.cell.tokens.splice(0,1);
+					a.tokenHeld = this.cell.tokens.pop();
 					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
 			};break;
@@ -154,8 +130,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined){
 					if(this.cell.tokens.length !== 0){
-						a.tokenHeld = this.cell.tokens[0];
-						this.cell.tokens.splice(0,1);
+						a.tokenHeld = this.cell.tokens.pop();
 						App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
 					}
 				}else{
