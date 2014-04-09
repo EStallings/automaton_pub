@@ -417,9 +417,20 @@ App.makeInstructionCatalog = function(){
 	}
 
 	ins.renderStream = function(gfx,x,y,c,cs,lw){
-		// TODO: I NEED TO KNOW WHAT STREAM I AM FOR LETTERING
+		// TODO: I NEED TO KNOW WHAT STREAM I AM FOR LETTERING AND IO
 		gfx.save();
 		gfx.translate(x,y);
+
+		console.log(x+" "+y);
+		gfx.lineWidth = 2;
+		gfx.strokeStyle = "#fff";
+		gfx.beginPath();
+		gfx.moveTo(2,2);
+		gfx.lineTo(cs-2,cs-2);
+		gfx.moveTo(2,cs-2);
+		gfx.lineTo(cs-2,2);
+		gfx.stroke();
+
 		gfx.restore();
 	}
 
