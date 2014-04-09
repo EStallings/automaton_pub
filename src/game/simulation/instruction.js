@@ -88,7 +88,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			level.inStreams[color].push(this);
 
 			this.input = function(){
-				new App.SimulationToken(this.level,this.x,this.y,0);
+				new App.SimulationToken(this.level,this.x,this.y,Math.floor(Math.random()*8+1));
 				App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
 			}
 

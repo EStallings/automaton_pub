@@ -22,6 +22,8 @@ App.makeGame = function(){
 	}
 
 	game.setMode = function(mode){
+		if(mode === game.mode)return;
+
 		if(! (mode === this.modes.SIMULATION || mode === this.modes.PLANNING)){
 			console.error("invalid gamemode: " + mode);
 			return;
@@ -187,7 +189,7 @@ App.makeGame = function(){
 
 	game.pause = function(){
 		game.paused = !game.paused;
-		if(!game.paused && game.mode === game.modes.PLANNING)game.toggleMode();
+		if(!game.paused && game.mode === game.modes.PLANNING)game.setMode(game.modes.SIMULATION);
 		game.pauseTick = App.Engine.tick;
 		game.pauseLastCycleTick = game.lastCycleTick;
 		game.pauseNextCycleTick = game.nextCycleTick;
@@ -291,7 +293,7 @@ App.makeGame = function(){
 
 	game.setSimulationSpeed = function(speed){
 		if(game.paused)game.pause();
-		if(game.mode === game.modes.PLANNING)game.toggleMode();
+		if(game.mode === game.modes.PLANNING)game.setMode(game.modes.SIMULATION);
 		if(speed<1)return;
 
 		var tick = App.Engine.tick;
@@ -378,6 +380,10 @@ App.makeGame = function(){
 			t = Math.max(t,game.renderY);
 			b = Math.min(b,game.renderY+cs*gh);
 		}
+
+		// lighter overlay
+		game.gridGfx.fillStyle = 'rgba(0,0,0,0.4)';
+		game.gridGfx.fillRect(game.renderX,game.renderY,gw*cs,gh*cs);
 
 	//============================================================//
 
@@ -478,7 +484,7 @@ App.makeGame = function(){
 
 		// draw background and occlude level at borders
 		// TODO: OPTIMIZE THIS
-		game.bkgndGfx.strokeStyle = '#080808';
+		game.bkgndGfx.strokeStyle = '#131313';
 		game.bkgndGfx.lineWidth = 4;
 		game.bkgndGfx.beginPath();
 		for(var i=1;i<App.Canvases.width+App.Canvases.height;i+=9){

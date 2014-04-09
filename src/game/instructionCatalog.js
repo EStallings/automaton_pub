@@ -423,7 +423,6 @@ App.makeInstructionCatalog = function(){
 		gfx.save();
 		gfx.translate(x,y);
 
-		console.log(x+" "+y);
 		gfx.lineWidth = 2;
 		gfx.strokeStyle = "#fff";
 		gfx.beginPath();
