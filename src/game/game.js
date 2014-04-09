@@ -477,8 +477,7 @@ App.makeGame = function(){
 				game.currentPlanningLevel.renderOverlay(game.tempGfx);
 		}
 		else if(game.currentSimulationLevel !== undefined){
-			game.interpolation = (App.Engine.tick-game.lastCycleTick)
-				           / (game.nextCycleTick-game.lastCycleTick); // this is a division, NOT A COMMENT
+			game.interpolation = (App.Engine.tick-game.lastCycleTick)/(game.nextCycleTick-game.lastCycleTick); // this is a division, NOT A COMMENT
 			game.currentSimulationLevel.dynamicRender();
 		}
 
