@@ -359,12 +359,12 @@ App.makeInstructionCatalog = function(){
 		break;
 
 		case ins.TYPES['PAUSE']:
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
-			gfx.moveTo(1*cs/4,2*cs/4);
-			gfx.lineTo(3*cs/4,2*cs/4);
-			gfx.lineTo(3*cs/4,1*cs/4);
-			gfx.lineTo(1*cs/4,1*cs/4);
-			gfx.lineTo(1*cs/4,3*cs/4);
+			gfx.moveTo(cs/2,cs/2);
+			gfx.lineTo(cs/2,3*cs/8);
+			gfx.moveTo(cs/2,cs/2);
+			gfx.lineTo(5*cs/8,cs/2);
 			gfx.stroke();
 		break;
 
