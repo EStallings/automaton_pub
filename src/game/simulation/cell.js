@@ -18,13 +18,14 @@ App.SimulationCell = function(level,x,y){
 	this.process = function(c){
 		// execute instructions
 		for(var a in this.automatons){
-			var instruction = this.instructions[App.COLORS[c]];
+			var instruction = this.instructions[c];
 			if(instruction)instruction.execute(this.automatons[a]);
 		}
 	}
 
 	this.staticRender = function(){
 		for(var i in this.instructions)this.instructions[i].staticRender();
+		// TODO: stack graphic for overlapping tokens
 		for(var t in this.tokens)this.tokens[t].staticRender(x*App.Game.cellSize,y*App.Game.cellSize);
 	}
 

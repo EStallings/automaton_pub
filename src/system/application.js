@@ -28,6 +28,7 @@ App.demoLevels = [
 //	"Demo1,7,6;1,2,0,3;1,2,1,3;1,2,2,3;1,2,3,2;2,1,1,7;2,2,1,4;2,2,2,5;2,4,2,7;4,1,1,5;4,2,1,7;4,2,2,7;4,4,2,4;5,2,0,22;5,2,1,22;5,2,2,22;5,2,3,22",
 //	"Demo2,8,3;1,1,0,3;1,1,3,3;2,1,0,12;2,1,3,23;3,1,0,10;3,1,3,14;4,1,0,17;4,1,3,17;5,1,0,11;5,1,3,15;6,1,0,13"
 ]
+
 App.getDemoLevel = function(){
 	App.Game.simulationSpeed = 512; //reset on entering menus
 	return App.demoLevels[Math.floor(Math.random() * App.demoLevels.length)];
@@ -44,7 +45,7 @@ App.getNextLevel = function(){
 
 App.setup = {};
 App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', SANDBOX:'Sandbox',  MAIN_MENU:'Main Menu', LEVEL_SELECT:'Level Select', USER_LEVEL_SELECT:'User Level Selection', SETTINGS:'Settings'}
-App.setup.modes = {PLANNING:App.setup.frames.PLANNING, SIMULATION:App.setup.frames.SIMULATION}
+App.setup.modes = {PLANNING:App.setup.frames.PLANNING, SIMULATION:App.setup.frames.SIMULATION} // XXX: why is this a nearly complete duplicate of App.Game.modes? why not just use App.Game.modes?
 
 App.MODES = {
 	MAIN_MENU         : {frame:App.setup.frames.MAIN_MENU,
@@ -91,8 +92,6 @@ App.changeMode = function(mode){
 		App.Game.loadNewLevel(mode.level());
 	}
 
-
-
 	// this becomes especially annoying when switching between planning and simulation mode
 	// a different transition will be written for level swapping once we get the functionality of that going
 
@@ -100,12 +99,18 @@ App.changeMode = function(mode){
 	// |||Leave it for now: it's good for demo purposes and it doesn't do the transition when going between
 	// planning and simulation mode! It only does it when changing menus! And it's nice
 	// to have it start out centered, otherwise it tries to draw in a place it can't legally
-	App.Game.renderY = App.Canvases.halfHeight - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
 
-	App.Game.goalRenderX = App.Canvases.halfWidth - (App.Game.currentPlanningLevel.width * App.Game.cellSize )/2;
-	App.Game.goalRenderY = App.Game.renderY;
+	// TODO: DUMP ALL THIS INTO App.Game.centerGrid() v v v v v v //
+	// TODO: this should only happen if a center-grid is requested
+	var cs = App.Game.cellSize;
+	App.Game.goalRenderX = (App.Canvases.width-App.Game.currentPlanningLevel.width*cs)/2;
+	App.Game.goalRenderY = (App.Canvases.height-App.Game.currentPlanningLevel.height*cs)/2;
+	// TODO: set optimal zoom
+	// TODO: ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  //
 
-	App.Game.renderX = ((App.MODE === App.MODES.PLANNING && mode === App.MODES.SIMULATION) || (App.MODE === App.MODES.SIMULATION && mode === App.MODES.PLANNING)) ? App.Game.goalRenderX : 20000;
+	// XXX: renderX and renderY shouldnt be set manually
+//	App.Game.renderX = ((App.MODE === App.MODES.PLANNING && mode === App.MODES.SIMULATION) || (App.MODE === App.MODES.SIMULATION && mode === App.MODES.PLANNING)) ? App.Game.goalRenderX : 20000;
+//	App.Game.renderY = App.Canvases.halfHeight - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
 
 	App.Game.setMode(mode.mode);
 	App.Gui.setCurrentFrame(mode.frame);

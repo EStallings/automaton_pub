@@ -38,7 +38,7 @@ App.SimulationLevel = function(width,height){
 		for(var c in App.COLORS)for(var i in this.grid)for(var j in this.grid[i]){
 			var cell = this.grid[i][j];
 			if(cell === undefined)continue;
-			this.grid[i][j].process(c);
+			this.grid[i][j].process(App.COLORS[c]);
 		}
 
 		// ALL automatons MUST be processed before theyre moved

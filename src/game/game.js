@@ -8,7 +8,7 @@ App.makeGame = function(){
 		/*+------------------------------------------+*/
 
 	game.modes = {SIMULATION:App.setup.modes.SIMULATION,PLANNING:App.setup.modes.PLANNING};
-	game.mode = game.modes.PLANNING;
+	game.mode = game.modes.PLANNING; // XXX: shouldnt this be setup by the initializing context
 
 	game.currentPlanningLevel;
 	game.currentSimulationLevel;
@@ -46,7 +46,7 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.simulationError = function(errorCode){
+	game.simulationError = function(errorMsg){
 		// TODO: stop simulation
 		// TODO: display error
 		// TODO: go back to planning mode
@@ -205,7 +205,6 @@ App.makeGame = function(){
 	game.instructionGfx = App.Canvases.addNewLayer('instruction'   ,-4);
 	game.gridGfx        = App.Canvases.addNewLayer('grid static'   ,-5);
 	game.bkgndGfx       = App.Canvases.addNewLayer('background'    ,-6);
-	// remember to add to clearRects
 
 	game.requestStaticRenderUpdate = true;
 
@@ -325,9 +324,9 @@ App.makeGame = function(){
 		game.goalMY = game.mouseY*game.cellSize;
 
 		switch(game.mouseC){
-			case App.COLORS.RED:																			break;
-			case App.COLORS.GREEN:	game.goalMX += game.cellSize/2;		break;
-			case App.COLORS.BLUE:		game.goalMY += game.cellSize/2;		break;
+			case App.COLORS.RED:break;
+			case App.COLORS.GREEN: game.goalMX += game.cellSize/2;break;
+			case App.COLORS.BLUE:  game.goalMY += game.cellSize/2;break;
 			case App.COLORS.YELLOW:
 				game.goalMX += game.cellSize/2;
 				game.goalMY += game.cellSize/2;
@@ -362,10 +361,6 @@ App.makeGame = function(){
 		// setup grid canvas
 		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height); // TODO: OPTIMIZE THIS
 
-		// game.gridGfx.fillRect(0,0,App.Canvases.width, App.Canvases.height);
-		// ^^^ this isnt anymore optimal than clearRect and breaks anything
-		// rendered behind the grid because canvas is no longer transparent
-
 		// setup grid vars
 		var gw = game.currentPlanningLevel.width;
 		var gh = game.currentPlanningLevel.height;
@@ -390,12 +385,11 @@ App.makeGame = function(){
 		game.gridGfx.strokeStyle = '#000000';
 		game.gridGfx.beginPath();
 
+		// grid outline | if block below is modified, reflect changes here
 		for(var i=l; i<=r+1; i+=cs){
 			game.gridGfx.moveTo(i,t);
 			game.gridGfx.lineTo(i,b);
-		}
-
-		for(var j=t; j<=b+1; j+=cs){
+		}for(var j=t; j<=b+1; j+=cs){
 			game.gridGfx.moveTo(l,j);
 			game.gridGfx.lineTo(r,j);
 		}for(var i=l; i<=r+1; i+=cs){
@@ -492,12 +486,6 @@ App.makeGame = function(){
 			game.bkgndGfx.lineTo(0,i);
 		}game.bkgndGfx.stroke();
 
-		// TODO: PUT OCCLUSION SOMEWHERE ELSE
-//		game.bkgndGfx.globalCompositeOperation = 'destination-out';
-//		game.bkgndGfx.rect(l-7,t-7,r-l+14,b-t+14);
-//		game.bkgndGfx.fill();
-//		game.bkgndGfx.globalCompositeOperation = 'source-over';
-
 		if(game.mode === game.modes.PLANNING && game.currentPlanningLevel !== undefined){
 			game.currentPlanningLevel.staticRender();
 			game.currentPlanningLevel.graphics.staticRender(game.tempGfx);
@@ -521,7 +509,6 @@ App.makeGame = function(){
 		game.renderDebug();
 	}
 
-	// This is a highly useful tool but not something we want while we show Nikan/Dave
 	game.renderDebug = function(){
 		if(!game.debug)return;
 		game.debugGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
