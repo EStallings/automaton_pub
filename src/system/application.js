@@ -15,14 +15,6 @@ App.COLORS = {
 };
 
 App.DIRECTIONS = {
-//	UP    : 0,
-//	LEFT  : 1,
-//	DOWN  : 2,
-//	RIGHT : 3
-
-	// /\ in modulo arithmetic this is exactly the same thing /\
-
-	// this order makes rotation much more convenient
 	LEFT  : 0,
 	DOWN  : 1,
 	RIGHT : 2,

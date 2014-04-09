@@ -258,18 +258,157 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		break;
 
-		case ins.TYPES['COND 0 U']:break;
-		case ins.TYPES['COND 0 D']:break;
-		case ins.TYPES['COND 0 L']:break;
-		case ins.TYPES['COND 0 R']:break;
-		case ins.TYPES['COND TOKEN U']:break;
-		case ins.TYPES['COND TOKEN D']:break;
-		case ins.TYPES['COND TOKEN L']:break;
-		case ins.TYPES['COND TOKEN R']:break;
-		case ins.TYPES['COND + U']:break;
-		case ins.TYPES['COND + D']:break;
-		case ins.TYPES['COND + L']:break;
-		case ins.TYPES['COND + R']:break;
+		case ins.TYPES['COND 0 U']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,3*cs/8);
+			gfx.lineTo(  cs/2,  cs/4);
+			gfx.lineTo(5*cs/8,3*cs/8);
+
+			gfx.moveTo(3*cs/8,4*cs/8);
+			gfx.lineTo(3*cs/8,6*cs/8);
+			gfx.lineTo(5*cs/8,6*cs/8);
+			gfx.lineTo(5*cs/8,4*cs/8);
+			gfx.lineTo(3*cs/8,4*cs/8);
+			gfx.lineTo(5*cs/8,6*cs/8);
+			gfx.stroke();
+		break;
+
+		case ins.TYPES['COND 0 D']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,5*cs/8);
+			gfx.lineTo(  cs/2,3*cs/4);
+			gfx.lineTo(5*cs/8,5*cs/8);
+
+			gfx.moveTo(3*cs/8,2*cs/8);
+			gfx.lineTo(3*cs/8,4*cs/8);
+			gfx.lineTo(5*cs/8,4*cs/8);
+			gfx.lineTo(5*cs/8,2*cs/8);
+			gfx.lineTo(3*cs/8,2*cs/8);
+			gfx.lineTo(5*cs/8,4*cs/8);
+			gfx.stroke();
+		break;
+
+		case ins.TYPES['COND 0 L']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,3*cs/8);
+			gfx.lineTo(  cs/4,  cs/2);
+			gfx.lineTo(3*cs/8,5*cs/8);
+
+			gfx.moveTo(4*cs/8,3*cs/8);
+			gfx.lineTo(4*cs/8,5*cs/8);
+			gfx.lineTo(6*cs/8,5*cs/8);
+			gfx.lineTo(6*cs/8,3*cs/8);
+			gfx.lineTo(4*cs/8,3*cs/8);
+			gfx.lineTo(6*cs/8,5*cs/8);
+			gfx.stroke();
+		break;
+
+		case ins.TYPES['COND 0 R']:
+			gfx.beginPath();
+			gfx.moveTo(5*cs/8,3*cs/8);
+			gfx.lineTo(3*cs/4,  cs/2);
+			gfx.lineTo(5*cs/8,5*cs/8);
+
+			gfx.moveTo(2*cs/8,3*cs/8);
+			gfx.lineTo(2*cs/8,5*cs/8);
+			gfx.lineTo(4*cs/8,5*cs/8);
+			gfx.lineTo(4*cs/8,3*cs/8);
+			gfx.lineTo(2*cs/8,3*cs/8);
+			gfx.lineTo(4*cs/8,5*cs/8);
+			gfx.stroke();
+		break;
+
+		case ins.TYPES['COND TOKEN U']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,3*cs/8);
+			gfx.lineTo(  cs/2,  cs/4);
+			gfx.lineTo(5*cs/8,3*cs/8);
+			gfx.stroke();
+
+			gfx.beginPath();gfx.arc(cs/2,5*cs/8,cs/8,-Math.PI,Math.PI);gfx.stroke();
+		break;
+
+		case ins.TYPES['COND TOKEN D']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,5*cs/8);
+			gfx.lineTo(  cs/2,3*cs/4);
+			gfx.lineTo(5*cs/8,5*cs/8);
+			gfx.stroke();
+
+			gfx.beginPath();gfx.arc(cs/2,3*cs/8,cs/8,-Math.PI,Math.PI);gfx.stroke();
+		break;
+
+		case ins.TYPES['COND TOKEN L']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,3*cs/8);
+			gfx.lineTo(  cs/4,  cs/2);
+			gfx.lineTo(3*cs/8,5*cs/8);
+			gfx.stroke();
+
+			gfx.beginPath();gfx.arc(5*cs/8,cs/2,cs/8,-Math.PI,Math.PI);gfx.stroke();
+		break;
+
+		case ins.TYPES['COND TOKEN R']:
+			gfx.beginPath();
+			gfx.moveTo(5*cs/8,3*cs/8);
+			gfx.lineTo(3*cs/4,  cs/2);
+			gfx.lineTo(5*cs/8,5*cs/8);
+			gfx.stroke();
+
+			gfx.beginPath();gfx.arc(3*cs/8,cs/2,cs/8,-Math.PI,Math.PI);gfx.stroke();
+		break;
+
+		case ins.TYPES['COND + U']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,3*cs/8);
+			gfx.lineTo(  cs/2,  cs/4);
+			gfx.lineTo(5*cs/8,3*cs/8);
+
+			gfx.moveTo( 8*cs/16, 7*cs/16);
+			gfx.lineTo( 8*cs/16,11*cs/16);
+			gfx.moveTo( 6*cs/16, 9*cs/16);
+			gfx.lineTo(10*cs/16, 9*cs/16);
+			gfx.stroke();
+		break;
+
+		case ins.TYPES['COND + D']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,5*cs/8);
+			gfx.lineTo(  cs/2,3*cs/4);
+			gfx.lineTo(5*cs/8,5*cs/8);
+
+			gfx.moveTo( 8*cs/16, 5*cs/16);
+			gfx.lineTo( 8*cs/16, 9*cs/16);
+			gfx.moveTo( 6*cs/16, 7*cs/16);
+			gfx.lineTo(10*cs/16, 7*cs/16);
+			gfx.stroke();
+		break;
+
+		case ins.TYPES['COND + L']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,3*cs/8);
+			gfx.lineTo(  cs/4,  cs/2);
+			gfx.lineTo(3*cs/8,5*cs/8);
+
+			gfx.moveTo( 9*cs/16, 6*cs/16);
+			gfx.lineTo( 9*cs/16,10*cs/16);
+			gfx.moveTo( 7*cs/16, 8*cs/16);
+			gfx.lineTo(11*cs/16, 8*cs/16);
+			gfx.stroke();
+		break;
+
+		case ins.TYPES['COND + R']:
+			gfx.beginPath();
+			gfx.moveTo(5*cs/8,3*cs/8);
+			gfx.lineTo(3*cs/4,  cs/2);
+			gfx.lineTo(5*cs/8,5*cs/8);
+
+			gfx.moveTo( 7*cs/16, 6*cs/16);
+			gfx.lineTo( 7*cs/16,10*cs/16);
+			gfx.moveTo( 5*cs/16, 8*cs/16);
+			gfx.lineTo( 9*cs/16, 8*cs/16);
+			gfx.stroke();
+		break;
 	}
 
 	// ========================================================== //
