@@ -227,7 +227,7 @@ App.GuiPanel = function(guiCollider){
 	}
 
 }
-App.GuiPanel.rgba = 'rgba(0,0,0, 0.55)';
+App.GuiPanel.rgba = 'rgba(0,0,0, 0.75)';
 
 //Subclassing in JS is awful. Breaks everything. Use factories instead usually
 App.makeBlockingPanel = function(){
