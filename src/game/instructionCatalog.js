@@ -10,20 +10,23 @@ App.makeInstructionCatalog = function(){
 	// ------------------------------------------- DIRECTION CONTROL
 		'UP'		: 4,		'DOWN'		: 5,
 		'LEFT'		: 6,		'RIGHT'		: 7,
-		'ROTATE CW'	: 8,		'ROTATE CCW'	: 9, // TODO: remove these, they're unnecessary
 	// ---------------------------------------------------- TOKEN IO
-		'IN STREAM'	: 10,		'OUT STREAM'	: 11,
-		'IN'		: 12,		'OUT'		: 13,
+		'IN STREAM'	: 8,		'OUT STREAM'	: 9,
+		'IN'		: 10,		'OUT'		: 11,
 	// ------------------------------------------ TOKEN MANIPULATION
-		'GRAB'		: 14,		'DROP'		: 15,
-		'GRAB/DROP'	: 16,		'INC'		: 17,
-		'DEC'		: 18,
-	// ----------------------------------------- CONDITIONAL CONTROL
-		'COND 0'	: 19,		'COND +-'	: 20,
-		'COND EVEN ODD'	: 21,		// TODO: COND TOKEN
+		'GRAB'		: 12,		'DROP'		: 13,
+		'GRAB/DROP'	: 14,		'INC'		: 15,
+		'DEC'		: 16,
 	// -------------------------------------------------------- MISC
-		'SYNC'		: 22,		'COLOR TOGGLE'	: 23,
-		'PAUSE'		: 24,
+		'SYNC'		: 17,		'COLOR TOGGLE'	: 18,
+		'PAUSE'		: 19,
+	// ----------------------------------------- CONDITIONAL CONTROL
+		'COND 0 U'	: 20,		'COND 0 D'	: 21,
+		'COND 0 L'	: 22,		'COND 0 R'	: 23,
+		'COND TOKEN U'	: 24,		'COND TOKEN D'	: 25,
+		'COND TOKEN L'	: 26,		'COND TOKEN R'	: 27,
+		'COND +- U'	: 28,		'COND +- D'	: 29,
+		'COND +- L'	: 30,		'COND +- R'	: 31,
 	};
 
 	// TODO: SPECIAL RENDER FUNCS (STREAM, SYNC)
@@ -169,30 +172,8 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
-		// DELETE DELETE DELETE DELETE
-	//	ins.TYPES['ROTATE CW']:function(){
-		8:function(gfx,cs){
-			gfx.beginPath();
-			gfx.moveTo(0,0);
-			gfx.lineTo(cs,cs);
-			gfx.moveTo(0,cs);
-			gfx.lineTo(cs,0);
-			gfx.stroke();
-		},
-
-		// DELETE DELETE DELETE DELETE
-	//	ins.TYPES['ROTATE CCW']:function(){
-		9:function(gfx,cs){
-			gfx.beginPath();
-			gfx.moveTo(0,0);
-			gfx.lineTo(cs,cs);
-			gfx.moveTo(0,cs);
-			gfx.lineTo(cs,0);
-			gfx.stroke();
-		},
-
 	//	ins.TYPES['IN STREAM']:
-		10:function(gfx,cs){
+		8:function(gfx,cs){
 			// TODO: override render func
 			// TODO: make letters for each stream
 			gfx.beginPath();
@@ -204,7 +185,7 @@ App.makeInstructionCatalog = function(){
 		},
 
 	//	ins.TYPES['OUT STREAM']:
-		11:function(gfx,cs){
+		9:function(gfx,cs){
 			// TODO: override render func
 			// TODO: make letters for each stream
 			gfx.beginPath();
@@ -216,7 +197,7 @@ App.makeInstructionCatalog = function(){
 		},
 
 	//	ins.TYPES['IN']:function(){
-		12:function(gfx,cs){
+		10:function(gfx,cs){
 			gfx.beginPath();gfx.arc(cs/2,15*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
 			gfx.moveTo(  cs/2,  cs/4); // i loop like this to avoid square joints
@@ -232,7 +213,7 @@ App.makeInstructionCatalog = function(){
 		},
 
 	//	ins.TYPES['OUT']:function(){
-		13:function(gfx,cs){
+		11:function(gfx,cs){
 			gfx.beginPath();gfx.arc(cs/2,17*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
 			gfx.moveTo(  cs/2,3*cs/4); // i loop like this to avoid square joints
@@ -246,7 +227,7 @@ App.makeInstructionCatalog = function(){
 		},
 
 	//	ins.TYPES['GRAB']:function(){
-		14:function(gfx,cs){
+		12:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,3*cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
@@ -259,7 +240,7 @@ App.makeInstructionCatalog = function(){
 		},
 
 	//	ins.TYPES['DROP']:function(){
-		15:function(gfx,cs){
+		13:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,3*cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
@@ -272,7 +253,7 @@ App.makeInstructionCatalog = function(){
 		},
 
 	//	ins.TYPES['GRAB/DROP']:function(){
-		16:function(gfx,cs){
+		14:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,3*cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
@@ -288,7 +269,7 @@ App.makeInstructionCatalog = function(){
 		},
 
 	//	ins.TYPES['INC']:function(){
-		17:function(gfx,cs){
+		15:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,cs/2);
 			gfx.lineTo(3*cs/4,cs/2);
@@ -298,35 +279,15 @@ App.makeInstructionCatalog = function(){
 		},
 
 	//	ins.TYPES['DEC']:function(){
-		18:function(gfx,cs){
+		16:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,cs/2);
 			gfx.lineTo(3*cs/4,cs/2);
 			gfx.stroke();
 		},
 
-	//	ins.TYPES['COND 0']:
-		19:function(gfx,cs){
-			// TODO: UP DOWN LEFT RIGHT
-			gfx.beginPath();
-			gfx.stroke();
-			gfx.closePath();
-		},
-
-	//	ins.TYPES['COND +-']:
-		20:function(gfx,cs){
-			// TODO: UP DOWN LEFT RIGHT
-			gfx.beginPath();
-			gfx.stroke();
-		},
-
-	//	ins.TYPES['COND EVEN ODD']:
-		21:function(gfx,cs){
-			// TODO: UP DOWN LEFT RIGHT
-		},
-
 	//	ins.TYPES['SYNC']:
-		22:function(gfx,cs){
+		17:function(gfx,cs){
 			// TODO: override render | custom syms for each color
 /*
 			staticRender = function(){
@@ -409,7 +370,7 @@ App.makeInstructionCatalog = function(){
 		},
 
 	//	ins.TYPES['COLOR TOGGLE']:function(){
-		23:function(gfx,cs){
+		18:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(1*cs/4,1*cs/4);
 			gfx.lineTo(3*cs/4,1*cs/4);
@@ -419,7 +380,7 @@ App.makeInstructionCatalog = function(){
 		},
 
 	//	ins.TYPES['PAUSE']:function(){
-		24:function(gfx,cs){
+		19:function(gfx,cs){
 			gfx.beginPath();
 			gfx.moveTo(1*cs/4,2*cs/4);
 			gfx.lineTo(3*cs/4,2*cs/4);
@@ -427,7 +388,43 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(1*cs/4,1*cs/4);
 			gfx.lineTo(1*cs/4,3*cs/4);
 			gfx.stroke();
-		}
+		},
+
+	//	ins.TYPES['COND 0 U']:
+		20:function(gfx,cs){},
+
+	//	ins.TYPES['COND 0 D']:
+		21:function(gfx,cs){},
+
+	//	ins.TYPES['COND 0 L']:
+		22:function(gfx,cs){},
+
+	//	ins.TYPES['COND 0 R']:
+		23:function(gfx,cs){},
+
+	//	ins.TYPES['COND TOKEN U']:
+		24:function(gfx,cs){},
+
+	//	ins.TYPES['COND TOKEN D']:
+		25:function(gfx,cs){},
+
+	//	ins.TYPES['COND TOKEN L']:
+		26:function(gfx,cs){},
+
+	//	ins.TYPES['COND TOKEN R']:
+		27:function(gfx,cs){},
+
+	//	ins.TYPES['COND +- U']:
+		28:function(gfx,cs){},
+
+	//	ins.TYPES['COND +- D']:
+		29:function(gfx,cs){},
+
+	//	ins.TYPES['COND +- L']:
+		30:function(gfx,cs){},
+
+	//	ins.TYPES['COND +- R']:
+		31:function(gfx,cs){},
 	};
 
 	return ins;
