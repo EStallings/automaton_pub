@@ -392,14 +392,20 @@ App.makeInstructionCatalog = function(){
 		gfx.save();
 		gfx.translate(x,y);
 
-		gfx.lineWidth = 2;
-		gfx.strokeStyle = "#fff";
+		switch(c){
+			case App.COLORS.RED:    gfx.strokeStyle='#ff0000';break;
+			case App.COLORS.GREEN:  gfx.strokeStyle='#00ff00';break;
+			case App.COLORS.BLUE:   gfx.strokeStyle='#0000ff';break;
+			case App.COLORS.YELLOW: gfx.strokeStyle='#ffff00';break;
+		}gfx.lineWidth = 2;
+
 		gfx.beginPath();
 		gfx.moveTo(2,2);
 		gfx.lineTo(cs-2,cs-2);
 		gfx.moveTo(2,cs-2);
 		gfx.lineTo(cs-2,2);
 		gfx.stroke();
+
 
 		gfx.restore();
 
