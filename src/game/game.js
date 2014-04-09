@@ -379,6 +379,10 @@ App.makeGame = function(){
 			b = Math.min(b,game.renderY+cs*gh);
 		}
 
+		// lighter overlay
+		game.gridGfx.fillStyle = 'rgba(0,0,0,0.4)';
+		game.gridGfx.fillRect(game.renderX,game.renderY,gw*cs,gh*cs);
+
 	//============================================================//
 
 		game.gridGfx.lineWidth = 6;
@@ -478,7 +482,7 @@ App.makeGame = function(){
 
 		// draw background and occlude level at borders
 		// TODO: OPTIMIZE THIS
-		game.bkgndGfx.strokeStyle = '#080808';
+		game.bkgndGfx.strokeStyle = '#131313';
 		game.bkgndGfx.lineWidth = 4;
 		game.bkgndGfx.beginPath();
 		for(var i=1;i<App.Canvases.width+App.Canvases.height;i+=9){
@@ -501,8 +505,7 @@ App.makeGame = function(){
 				if(App.Game.mode === 'Planning'){ game.currentPlanningLevel.graphics.dynamicRender(game.tempGfx); }
 		}
 		else if(game.currentSimulationLevel !== undefined){
-			game.interpolation = (App.Engine.tick-game.lastCycleTick)
-				           / (game.nextCycleTick-game.lastCycleTick); // this is a division, NOT A COMMENT
+			game.interpolation = (App.Engine.tick-game.lastCycleTick)/(game.nextCycleTick-game.lastCycleTick); // this is a division, NOT A COMMENT
 			game.currentSimulationLevel.dynamicRender();
 		}
 

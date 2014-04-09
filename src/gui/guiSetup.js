@@ -287,7 +287,7 @@ var setupSandboxFrame = function(){
 	for(var i=0; i < 8; i++){
 		App.Gui.addNewComponent(key, new App.GuiDragButton(0 , 31 * i, null, i, 			instructionPanel));
 		App.Gui.addNewComponent(key, new App.GuiDragButton(31, 31 * i, null, i + 8, 	instructionPanel));
-		App.Gui.addNewComponent(key, new App.GuiDragButton(62, 31 * i, null, i + 16, instructionPanel));
+		App.Gui.addNewComponent(key, new App.GuiDragButton(62, 31 * i, null, i + 16, 	instructionPanel));
 
 	}
 	var joystick = new App.GuiJoystick(50, 50, controlsPanel);
