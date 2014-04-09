@@ -505,8 +505,7 @@ App.makeGame = function(){
 				if(App.Game.mode === 'Planning'){ game.currentPlanningLevel.graphics.dynamicRender(game.tempGfx); }
 		}
 		else if(game.currentSimulationLevel !== undefined){
-			game.interpolation = (App.Engine.tick-game.lastCycleTick)
-				           / (game.nextCycleTick-game.lastCycleTick); // this is a division, NOT A COMMENT
+			game.interpolation = (App.Engine.tick-game.lastCycleTick)/(game.nextCycleTick-game.lastCycleTick); // this is a division, NOT A COMMENT
 			game.currentSimulationLevel.dynamicRender();
 		}
 
