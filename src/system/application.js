@@ -15,14 +15,6 @@ App.COLORS = {
 };
 
 App.DIRECTIONS = {
-//	UP    : 0,
-//	LEFT  : 1,
-//	DOWN  : 2,
-//	RIGHT : 3
-
-	// /\ in modulo arithmetic this is exactly the same thing /\
-
-	// this order makes rotation much more convenient
 	LEFT  : 0,
 	DOWN  : 1,
 	RIGHT : 2,
@@ -31,9 +23,10 @@ App.DIRECTIONS = {
 
 
 App.demoLevels = [
-	"Demo1,7,6;1,2,0,3;1,2,1,3;1,2,2,3;1,2,3,2;2,1,1,7;2,2,1,4;2,2,2,5;2,4,2,7;4,1,1,5;4,2,1,7;4,2,2,7;4,4,2,4;5,2,0,22;5,2,1,22;5,2,2,22;5,2,3,22",
-	"Demo2,8,3;1,1,0,3;1,1,3,3;2,1,0,12;2,1,3,23;3,1,0,10;3,1,3,14;4,1,0,17;4,1,3,17;5,1,0,11;5,1,3,15;6,1,0,13"
+	"AllInstructions,10,6;1,1,0,0;2,1,0,1;3,1,0,2;4,1,0,3;5,1,0,4;6,1,0,5;7,1,0,6;8,1,0,7;1,2,0,8;2,2,0,9;3,2,0,10;4,2,0,11;5,2,0,12;6,2,0,13;7,2,0,14;8,2,0,15;1,3,0,16;2,3,0,17;2,3,1,17;2,3,2,17;2,3,3,17;3,3,0,18;3,3,1,18;3,3,2,18;3,3,3,18;4,3,0,19;5,3,0,20;6,3,0,21;7,3,0,22;8,3,0,23;1,4,0,24;2,4,0,25;3,4,0,26;4,4,0,27;5,4,0,28;6,4,0,29;7,4,0,30;8,4,0,31",
+	"Test,7,7;1,1,0,3;1,1,1,18;2,1,0,10;3,1,0,8;3,1,1,12;4,1,0,17;4,1,2,17;4,1,1,16"
 ]
+
 App.getDemoLevel = function(){
 	App.Game.simulationSpeed = 512; //reset on entering menus
 	return App.demoLevels[Math.floor(Math.random() * App.demoLevels.length)];
@@ -50,7 +43,7 @@ App.getNextLevel = function(){
 
 App.setup = {};
 App.setup.frames = {PLANNING:'Planning', SIMULATION:'Simulation', SANDBOX:'Sandbox',  MAIN_MENU:'Main Menu', LEVEL_SELECT:'Level Select', USER_LEVEL_SELECT:'User Level Selection', SETTINGS:'Settings'}
-App.setup.modes = {PLANNING:App.setup.frames.PLANNING, SIMULATION:App.setup.frames.SIMULATION}
+App.setup.modes = {PLANNING:App.setup.frames.PLANNING, SIMULATION:App.setup.frames.SIMULATION} // XXX: why is this a nearly complete duplicate of App.Game.modes? why not just use App.Game.modes?
 
 App.MODES = {
 	MAIN_MENU         : {frame:App.setup.frames.MAIN_MENU,
@@ -63,7 +56,7 @@ App.MODES = {
 	                     level:null,
 	                     toString:function(){return 'PLANNING'}},
 
-	SANDBOX          : {frame:App.setup.frames.SANDBOX,
+	SANDBOX           : {frame:App.setup.frames.SANDBOX,
 	                     mode:App.setup.modes.PLANNING,
 	                     level:App.getBlankLevel,
 	                     toString:function(){return 'SANDBOX'}},
@@ -78,12 +71,12 @@ App.MODES = {
 	                     evel:App.getDemoLevel,
 	                     toString:function(){return 'USER_LEVEL_SELECT'}},
 
-	SETTINGS : {frame:App.setup.frames.SETTINGS,
+	SETTINGS :          {frame:App.setup.frames.SETTINGS,
 	                     mode:App.setup.modes.SIMULATION,
 	                     evel:App.getDemoLevel,
 	                     toString:function(){return 'SETTINGS'}},
 
-	LEVEL_SELECT : {frame:App.setup.frames.LEVEL_SELECT,
+	LEVEL_SELECT :      {frame:App.setup.frames.LEVEL_SELECT,
 	                     mode:App.setup.modes.SIMULATION,
 	                     evel:App.getDemoLevel,
 	                     toString:function(){return 'LEVEL_SELECT'}}
@@ -92,26 +85,19 @@ App.MODES = {
 App.MODE = App.MODES.PLANNING;
 
 App.changeMode = function(mode){
+	if(mode.level)App.Game.loadNewLevel(mode.level());
 
-	if(mode.level){
-		App.Game.loadNewLevel(mode.level());
-	}
+	// TODO: DUMP ALL THIS INTO App.Game.centerGrid() v v v v v v //
+	// TODO: this should only happen if a center-grid is requested
+	var cs = App.Game.cellSize;
+	App.Game.goalRenderX = (App.Canvases.width-App.Game.currentPlanningLevel.width*cs)/2;
+	App.Game.goalRenderY = (App.Canvases.height-App.Game.currentPlanningLevel.height*cs)/2;
+	// TODO: set optimal zoom
+	// TODO: ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  //
 
-
-
-	// this becomes especially annoying when switching between planning and simulation mode
-	// a different transition will be written for level swapping once we get the functionality of that going
-
-
-	// |||Leave it for now: it's good for demo purposes and it doesn't do the transition when going between
-	// planning and simulation mode! It only does it when changing menus! And it's nice
-	// to have it start out centered, otherwise it tries to draw in a place it can't legally
-	App.Game.renderY = App.Canvases.halfHeight - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
-
-	App.Game.goalRenderX = App.Canvases.halfWidth - (App.Game.currentPlanningLevel.width * App.Game.cellSize )/2;
-	App.Game.goalRenderY = App.Game.renderY;
-
-	App.Game.renderX = ((App.MODE === App.MODES.PLANNING && mode === App.MODES.SIMULATION) || (App.MODE === App.MODES.SIMULATION && mode === App.MODES.PLANNING)) ? App.Game.goalRenderX : 20000;
+	// XXX: renderX and renderY shouldnt be set manually
+//	App.Game.renderX = ((App.MODE === App.MODES.PLANNING && mode === App.MODES.SIMULATION) || (App.MODE === App.MODES.SIMULATION && mode === App.MODES.PLANNING)) ? App.Game.goalRenderX : 20000;
+//	App.Game.renderY = App.Canvases.halfHeight - ( App.Game.currentPlanningLevel.height * App.Game.cellSize )/2;
 
 	App.Game.setMode(mode.mode);
 	App.Gui.setCurrentFrame(mode.frame);

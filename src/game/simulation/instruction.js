@@ -81,20 +81,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 
-		case App.InstCatalog.TYPES['ROTATE CW']:
-
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				a.direction = (a.direction+3)%4;
-			};break;
-
-		case App.InstCatalog.TYPES['ROTATE CCW']:
-
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				a.direction = (a.direction+1)%4;
-			};break;
-
 		case App.InstCatalog.TYPES['IN STREAM']:
 
 			if(level.inStreams[color] === undefined)
@@ -183,32 +169,14 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld !== undefined)++a.tokenHeld.number;
+				if(a.tokenHeld !== undefined)a.tokenHeld.increment();
 			};break;
 
 		case App.InstCatalog.TYPES['DEC']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld !== undefined)--a.tokenHeld.number;
-			};break;
-
-		case App.InstCatalog.TYPES['COND 0']:
-
-			// TODO: UP DOWN LEFT RIGHT
-			this.execute = function(a){
-			};break;
-
-		case App.InstCatalog.TYPES['COND +-']:
-
-			// TODO: UP DOWN LEFT RIGHT
-			this.execute = function(a){
-			};break;
-
-		case App.InstCatalog.TYPES['COND EVEN ODD']:
-
-			// TODO: UP DOWN LEFT RIGHT
-			this.execute = function(a){
+				if(a.tokenHeld !== undefined)a.tokenHeld.decrement();
 			};break;
 
 		case App.InstCatalog.TYPES['SYNC']:
@@ -228,6 +196,111 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				App.Game.requestPause = true;
+			};break;
+
+		case App.InstCatalog.TYPES['COND 0 U']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number === 0)
+					a.direction = App.DIRECTIONS.UP;
+					
+			};break;
+
+		case App.InstCatalog.TYPES['COND 0 D']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number === 0)
+					a.direction = App.DIRECTIONS.DOWN;
+			};break;
+
+		case App.InstCatalog.TYPES['COND 0 L']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number === 0)
+					a.direction = App.DIRECTIONS.LEFT;
+			};break;
+
+		case App.InstCatalog.TYPES['COND 0 R']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number === 0)
+					a.direction = App.DIRECTIONS.RIGHT;
+			};break;
+
+		case App.InstCatalog.TYPES['COND TOKEN U']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				a.direction = App.DIRECTIONS.UP;
+			};break;
+
+		case App.InstCatalog.TYPES['COND TOKEN D']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				a.direction = App.DIRECTIONS.DOWN;
+			};break;
+
+		case App.InstCatalog.TYPES['COND TOKEN L']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				a.direction = App.DIRECTIONS.LEFT;
+			};break;
+
+		case App.InstCatalog.TYPES['COND TOKEN R']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				a.direction = App.DIRECTIONS.RIGHT;
+			};break;
+
+		case App.InstCatalog.TYPES['COND + U']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number > 0)
+					a.direction = App.DIRECTIONS.UP;
+			};break;
+
+		case App.InstCatalog.TYPES['COND + D']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number > 0)
+					a.direction = App.DIRECTIONS.DOWN;
+			};break;
+
+		case App.InstCatalog.TYPES['COND + L']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number > 0)
+					a.direction = App.DIRECTIONS.LEFT;
+			};break;
+
+		case App.InstCatalog.TYPES['COND + R']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number > 0)
+					a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 	}
 }

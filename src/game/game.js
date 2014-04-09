@@ -8,7 +8,7 @@ App.makeGame = function(){
 		/*+------------------------------------------+*/
 
 	game.modes = {SIMULATION:App.setup.modes.SIMULATION,PLANNING:App.setup.modes.PLANNING};
-	game.mode = game.modes.PLANNING;
+	game.mode = game.modes.PLANNING; // XXX: shouldnt this be setup by the initializing context
 
 	game.currentPlanningLevel;
 	game.currentSimulationLevel;
@@ -46,7 +46,7 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.simulationError = function(errorCode){
+	game.simulationError = function(errorMsg){
 		// TODO: stop simulation
 		// TODO: display error
 		// TODO: go back to planning mode
@@ -109,8 +109,9 @@ App.makeGame = function(){
 				if((y < 0 || y > lev.height) && lev.height !== 0)
 					errors.push('  Instruction y out of range for instruction #' + i + ': ' + y);
 
-				if(typ >= 25)
-					errors.push('  Instruction type out of range for instruction #' + i + ': ' + typ);
+				// TODO: modify this to error if an instruction wasnt found in InstCatalog.TYPES
+//				if(typ >= 25)
+//					errors.push('  Instruction type out of range for instruction #' + i + ': ' + typ);
 
 				if(col >= 4)
 					errors.push('  Instruction color out of range for instruction #' + i + ': ' + col);
@@ -198,13 +199,12 @@ App.makeGame = function(){
 
 	game.tempGfx        = App.Canvases.addNewLayer('gameTemp'       ,0);
 	game.debugGfx       = App.Canvases.addNewLayer('debug info'     ,0);
-	game.bkgndGfx       = App.Canvases.addNewLayer('background'    ,-1);
-	game.automGfx       = App.Canvases.addNewLayer('autom'         ,-2);
-	game.tokenDGfx      = App.Canvases.addNewLayer('token dynamic' ,-3);
-	game.tokenSGfx      = App.Canvases.addNewLayer('token static'  ,-4);
-	game.instructionGfx = App.Canvases.addNewLayer('instruction'   ,-5);
-	game.gridGfx        = App.Canvases.addNewLayer('grid static'   ,-6);
-	// remember to add to clearRects
+	game.automGfx       = App.Canvases.addNewLayer('autom'         ,-1);
+	game.tokenDGfx      = App.Canvases.addNewLayer('token dynamic' ,-2);
+	game.tokenSGfx      = App.Canvases.addNewLayer('token static'  ,-3);
+	game.instructionGfx = App.Canvases.addNewLayer('instruction'   ,-4);
+	game.gridGfx        = App.Canvases.addNewLayer('grid static'   ,-5);
+	game.bkgndGfx       = App.Canvases.addNewLayer('background'    ,-6);
 
 	game.requestStaticRenderUpdate = true;
 
@@ -236,10 +236,6 @@ App.makeGame = function(){
 	game.followTarget = null;
 
 		/*+------------------------------------------+*/
-
-	game.drawPlanningOverlay = function(){
-
-	}
 
 	game.followAutomaton = function(automaton){
 		this.followTarget = automaton;
@@ -280,7 +276,7 @@ App.makeGame = function(){
 
 	game.zoom = function(x,y,f){
 		game.cellSizeFactor += f;
-		if(game.cellSizeFactor<2)game.cellSizeFactor=2;
+		if(game.cellSizeFactor<3)game.cellSizeFactor=3;
 		if(game.cellSizeFactor>7)game.cellSizeFactor=7;
 
 		var oldCellSize = game.goalCellSize;
@@ -328,9 +324,9 @@ App.makeGame = function(){
 		game.goalMY = game.mouseY*game.cellSize;
 
 		switch(game.mouseC){
-			case App.COLORS.RED:																			break;
-			case App.COLORS.GREEN:	game.goalMX += game.cellSize/2;		break;
-			case App.COLORS.BLUE:		game.goalMY += game.cellSize/2;		break;
+			case App.COLORS.RED:break;
+			case App.COLORS.GREEN: game.goalMX += game.cellSize/2;break;
+			case App.COLORS.BLUE:  game.goalMY += game.cellSize/2;break;
 			case App.COLORS.YELLOW:
 				game.goalMX += game.cellSize/2;
 				game.goalMY += game.cellSize/2;
@@ -364,11 +360,6 @@ App.makeGame = function(){
 
 		// setup grid canvas
 		game.gridGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height); // TODO: OPTIMIZE THIS
-		game.gridGfx.lineWidth = 2;
-
-		// game.gridGfx.fillRect(0,0,App.Canvases.width, App.Canvases.height);
-		// ^^^ this isnt anymore optimal than clearRect and breaks anything
-		// rendered behind the grid because canvas is no longer transparent
 
 		// setup grid vars
 		var gw = game.currentPlanningLevel.width;
@@ -387,6 +378,45 @@ App.makeGame = function(){
 			t = Math.max(t,game.renderY);
 			b = Math.min(b,game.renderY+cs*gh);
 		}
+
+	//============================================================//
+
+		game.gridGfx.lineWidth = 6;
+		game.gridGfx.strokeStyle = '#000000';
+		game.gridGfx.beginPath();
+
+		// grid outline | if block below is modified, reflect changes here
+		for(var i=l; i<=r+1; i+=cs){
+			game.gridGfx.moveTo(i,t);
+			game.gridGfx.lineTo(i,b);
+		}for(var j=t; j<=b+1; j+=cs){
+			game.gridGfx.moveTo(l,j);
+			game.gridGfx.lineTo(r,j);
+		}for(var i=l; i<=r+1; i+=cs){
+			for(var j=t; j<=b+1; j+=cs){
+				game.gridGfx.moveTo(i-4, j);
+				game.gridGfx.lineTo(i+4, j);
+				game.gridGfx.moveTo(i, j-4);
+				game.gridGfx.lineTo(i, j+4);
+			}
+		}for(var i=l+cs/2; i<r; i+=cs){
+			for(var j=t+cs/2; j<b; j+=cs){
+				game.gridGfx.moveTo(i-4, j);
+				game.gridGfx.lineTo(i+4, j);
+				game.gridGfx.moveTo(i, j-4);
+				game.gridGfx.lineTo(i, j+4);
+				if(game.cellSize < 30) continue;
+
+				game.gridGfx.moveTo(i-7, j);
+				game.gridGfx.arc(i, j, 7, -Math.PI, Math.PI);
+			}
+		}game.gridGfx.rect(l-4, t-4, r-l+8, b-t+8);
+
+		game.gridGfx.stroke();
+
+	//============================================================//
+
+		game.gridGfx.lineWidth = 2;
 
 		// draw grid lines
 		game.gridGfx.strokeStyle = '#111111';
@@ -444,27 +474,21 @@ App.makeGame = function(){
 		game.gridGfx.rect(l-4, t-4, r-l+8, b-t+8);
 		game.gridGfx.stroke();
 
+	//============================================================//
+
 		// draw background and occlude level at borders
 		// TODO: OPTIMIZE THIS
-		game.bkgndGfx.fillStyle = '#000000';
-		game.bkgndGfx.rect(0,0,App.Canvases.width,App.Canvases.height);
-		game.bkgndGfx.fill();
-		game.bkgndGfx.strokeStyle = '#090909';
+		game.bkgndGfx.strokeStyle = '#080808';
+		game.bkgndGfx.lineWidth = 4;
 		game.bkgndGfx.beginPath();
-
-		for(var i=1;i<App.Canvases.width+App.Canvases.height;i+=6){
+		for(var i=1;i<App.Canvases.width+App.Canvases.height;i+=9){
 			game.bkgndGfx.moveTo(i,0);
 			game.bkgndGfx.lineTo(0,i);
-		}
-
-		game.bkgndGfx.stroke();
-		game.bkgndGfx.globalCompositeOperation = 'destination-out';
-		game.bkgndGfx.rect(l-6,t-6,r-l+12,b-t+12);
-		game.bkgndGfx.fill();
-		game.bkgndGfx.globalCompositeOperation = 'source-over';
+		}game.bkgndGfx.stroke();
 
 		if(game.mode === game.modes.PLANNING && game.currentPlanningLevel !== undefined){
 			game.currentPlanningLevel.staticRender();
+			game.currentPlanningLevel.graphics.staticRender(game.tempGfx);
 		}
 		else if(game.currentSimulationLevel !== undefined){
 			game.currentSimulationLevel.staticRender();
@@ -474,7 +498,7 @@ App.makeGame = function(){
 	game.dynamicRender = function(){
 		if(game.mode === game.modes.PLANNING && game.currentPlanningLevel !== undefined){
 				game.currentPlanningLevel.dynamicRender();
-				game.currentPlanningLevel.renderOverlay(game.tempGfx);
+				if(App.Game.mode === 'Planning'){ game.currentPlanningLevel.graphics.dynamicRender(game.tempGfx); }
 		}
 		else if(game.currentSimulationLevel !== undefined){
 			game.interpolation = (App.Engine.tick-game.lastCycleTick)/(game.nextCycleTick-game.lastCycleTick); // this is a division, NOT A COMMENT
@@ -484,7 +508,6 @@ App.makeGame = function(){
 		game.renderDebug();
 	}
 
-	// This is a highly useful tool but not something we want while we show Nikan/Dave
 	game.renderDebug = function(){
 		if(!game.debug)return;
 		game.debugGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);

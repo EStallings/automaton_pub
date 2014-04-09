@@ -43,8 +43,6 @@ App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
 		this.text = this.defaultText;
 	}
 
-
-
 	//Draw the text box, including cursor
 	this.render = function(gfx){
 		gfx.fillStyle = this.color;
