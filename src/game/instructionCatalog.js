@@ -424,21 +424,39 @@ App.makeInstructionCatalog = function(){
 		gfx.save();
 		gfx.translate(x,y);
 
-		switch(c){
-			case App.COLORS.RED:    gfx.fillStyle='#ff0000';gfx.strokeStyle='#800000';break;
-			case App.COLORS.GREEN:  gfx.fillStyle='#00ff00';gfx.strokeStyle='#008000';break;
-			case App.COLORS.BLUE:   gfx.fillStyle='#0000ff';gfx.strokeStyle='#000080';break;
-			case App.COLORS.YELLOW: gfx.fillStyle='#ffff00';gfx.strokeStyle='#808000';break;
-		}
-
 		gfx.lineWidth = 2;
 		gfx.beginPath();
-		gfx.moveTo(2,2);
-		gfx.lineTo(2,cs-2);
-		gfx.lineTo(cs-2,2);
-		gfx.lineTo(2,2);
-		gfx.fill();
-		gfx.stroke();
+		switch(c){
+			case App.COLORS.RED:
+				gfx.fillStyle='#ff0000';gfx.strokeStyle='#800000';
+				gfx.moveTo(cs-2,cs-2);
+				gfx.lineTo(2,cs-2);
+				gfx.lineTo(cs-2,2);
+				gfx.lineTo(cs-2,cs-2);
+				break;
+			case App.COLORS.GREEN:
+				gfx.fillStyle='#00ff00';gfx.strokeStyle='#008000';
+				gfx.moveTo(2,cs-2);
+				gfx.lineTo(2,2);
+				gfx.lineTo(cs-2,cs-2);
+				gfx.lineTo(2,cs-2);
+				break;
+			case App.COLORS.BLUE:
+				gfx.fillStyle='#0000ff';gfx.strokeStyle='#000080';
+				gfx.moveTo(cs-2,2);
+				gfx.lineTo(2,2);
+				gfx.lineTo(cs-2,cs-2);
+				gfx.lineTo(cs-2,2);
+				break;
+			case App.COLORS.YELLOW:
+				gfx.fillStyle='#ffff00';gfx.strokeStyle='#808000';
+				gfx.moveTo(2,2);
+				gfx.lineTo(2,cs-2);
+				gfx.lineTo(cs-2,2);
+				gfx.lineTo(2,2);
+				break;
+		}gfx.fill();gfx.stroke();
+
 		if(cs>15){
 			gfx.lineWidth = lw;
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
