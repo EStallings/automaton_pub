@@ -86,8 +86,8 @@ App.MODES = {
 App.MODE = App.MODES.PLANNING;
 App.LASTMODE = App.MODES.PLANNING;
 
-App.changeMode = function(mode){
-	if(mode.level)App.Game.loadNewLevel(mode.level());
+App.changeMode = function(mode, ignoreLevel){
+	if(mode.level && !ignoreLevel)App.Game.loadNewLevel(mode.level());
 
 	// TODO: DUMP ALL THIS INTO App.Game.centerGrid() v v v v v v //
 	// TODO: this should only happen if a center-grid is requested

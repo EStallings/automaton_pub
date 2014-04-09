@@ -169,7 +169,7 @@ var setupSimulationFrame = function(){
 
 	var zoomOutButton = new App.GuiTextButton(0, 250, 'Zoom Out', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,-1);}, false, controlsPanel);
 
-	var simButton = new App.GuiTextButton(400, 50, 'Return',function(){ App.changeMode(App.LASTMODE);	}, false, null);
+	var simButton = new App.GuiTextButton(400, 50, 'Return',function(){ App.changeMode(App.LASTMODE, true);	}, false, null);
 	var pauseButton = new App.GuiTextButton(0, 325, 'Pause',function(){ App.Game.pause();}, false, controlsPanel);
 	var speedSliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(x+10,100,width-20,10), controlsPanel);
 
@@ -198,7 +198,7 @@ var setupSimulationFrame = function(){
 	App.InputHandler.registerKey('[', App.MODES.SIMULATION, function(){App.Game.setSimulationSpeed(App.Game.simulationSpeed*2);});
 	App.InputHandler.registerKey(']', App.MODES.SIMULATION,function(){App.Game.setSimulationSpeed(App.Game.simulationSpeed/2);});
 	App.InputHandler.registerKey('Space', App.MODES.SIMULATION,function(){App.Game.pause();});
-	App.InputHandler.registerKey('`', App.MODES.SIMULATION,function(){ App.changeMode(App.MODES.PLANNING);});
+	App.InputHandler.registerKey('`', App.MODES.SIMULATION,function(){ App.changeMode(App.LASTMODE, true);});
 	App.InputHandler.registerKey('Esc', App.MODES.SIMULATION, function(){App.changeMode(App.MODES.PLANNING);});
 }
 
