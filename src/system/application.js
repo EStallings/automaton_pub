@@ -72,12 +72,12 @@ App.MODES = {
 	                     evel:App.getDemoLevel,
 	                     toString:function(){return 'USER_LEVEL_SELECT'}},
 
-	SETTINGS :          {frame:App.setup.frames.SETTINGS,
+	SETTINGS          : {frame:App.setup.frames.SETTINGS,
 	                     mode:App.setup.modes.SIMULATION,
 	                     evel:App.getDemoLevel,
 	                     toString:function(){return 'SETTINGS'}},
 
-	LEVEL_SELECT :      {frame:App.setup.frames.LEVEL_SELECT,
+	LEVEL_SELECT      : {frame:App.setup.frames.LEVEL_SELECT,
 	                     mode:App.setup.modes.SIMULATION,
 	                     evel:App.getDemoLevel,
 	                     toString:function(){return 'LEVEL_SELECT'}}
