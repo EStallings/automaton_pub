@@ -357,11 +357,11 @@ var setupSandboxFrame = function(){
 	App.Gui.addNewComponent(key, submitButton);
 
 	//Setup Key Bindings
-	App.InputHandler.registerKey('M', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.mkey(); });
-	App.InputHandler.registerKey('C', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.ckey(); });
-	App.InputHandler.registerKey('D', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.dkey(); });
-	App.InputHandler.registerKey('`', App.MODES.PLANNING,function(){ App.changeMode(App.MODES.SIMULATION);});
-	App.InputHandler.registerKey('Z', App.MODES.PLANNING, function(){
+	App.InputHandler.registerKey('M', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.mkey(); });
+	App.InputHandler.registerKey('C', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.ckey(); });
+	App.InputHandler.registerKey('D', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.dkey(); });
+	App.InputHandler.registerKey('`', App.MODES.SANDBOX,function(){ App.changeMode(App.MODES.SIMULATION);});
+	App.InputHandler.registerKey('Z', App.MODES.SANDBOX, function(){
 			if(App.InputHandler.keysDown['Ctrl']) {
 				if(App.InputHandler.keysDown['Shift']){
 					App.Game.currentPlanningLevel.redo();
@@ -370,6 +370,6 @@ var setupSandboxFrame = function(){
 					App.Game.currentPlanningLevel.undo();
 			}
 	});
-	App.InputHandler.registerKey('Esc', App.MODES.PLANNING, function(){App.Gui.endOverlay();});
+	App.InputHandler.registerKey('Esc', App.MODES.SANDBOX, function(){App.Gui.endOverlay();});
 
 }

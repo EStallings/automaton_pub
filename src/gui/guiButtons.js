@@ -306,5 +306,3 @@ App.GuiCollisionRect = function(x, y, w, h){
 
 	this.positionRelative = positionRelative;
 }
-
-
