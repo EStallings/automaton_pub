@@ -10,7 +10,7 @@ App.makeInstructionCatalog = function(){
 	// ------------------------------------------- DIRECTION CONTROL
 		'UP'		: 4,		'DOWN'		: 5,
 		'LEFT'		: 6,		'RIGHT'		: 7,
-		'ROTATE CW'	: 8,		'ROTATE CCW'	: 9,
+		'ROTATE CW'	: 8,		'ROTATE CCW'	: 9, // TODO: remove these, they're unnecessary
 	// ---------------------------------------------------- TOKEN IO
 		'IN STREAM'	: 10,		'OUT STREAM'	: 11,
 		'IN'		: 12,		'OUT'		: 13,
@@ -20,7 +20,7 @@ App.makeInstructionCatalog = function(){
 		'DEC'		: 18,
 	// ----------------------------------------- CONDITIONAL CONTROL
 		'COND 0'	: 19,		'COND +-'	: 20,
-		'COND EVEN ODD'	: 21,
+		'COND EVEN ODD'	: 21,		// TODO: COND TOKEN
 	// -------------------------------------------------------- MISC
 		'SYNC'		: 22,		'COLOR TOGGLE'	: 23,
 		'PAUSE'		: 24,
@@ -42,10 +42,10 @@ App.makeInstructionCatalog = function(){
 		}gfx.fillRect(2,2,size-4,size-4);
 
 		switch(c){
-			case App.COLORS.RED:    gfx.strokeStyle='#aa0000';break;
-			case App.COLORS.GREEN:  gfx.strokeStyle='#00aa00';break;
-			case App.COLORS.BLUE:   gfx.strokeStyle='#0000aa';break;
-			case App.COLORS.YELLOW: gfx.strokeStyle='#aaaa00';break;
+			case App.COLORS.RED:    gfx.strokeStyle='#800000';break;
+			case App.COLORS.GREEN:  gfx.strokeStyle='#008000';break;
+			case App.COLORS.BLUE:   gfx.strokeStyle='#000080';break;
+			case App.COLORS.YELLOW: gfx.strokeStyle='#808000';break;
 		}
 
 		if(size>11){
@@ -57,28 +57,6 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(2,2);
 			gfx.stroke();
 		}
-
-/*
-		if(size>15){
-			if(size>40){
-				switch(App.Game.cellSizeFactor){
-					case 4:gfx.lineWidth = 6;break;
-					case 5:gfx.lineWidth = 8;break;
-					case 6:gfx.lineWidth = 10;break;
-					case 7:gfx.lineWidth = 12;break;
-				}ins.rFunc[type](gfx,size);
-			}
-
-			gfx.globalCompositeOperation = 'destination-out';
-			switch(App.Game.cellSizeFactor){
-				case 4:gfx.lineWidth = 2;break;
-				case 5:gfx.lineWidth = 4;break;
-				case 6:gfx.lineWidth = 6;break;
-				case 7:gfx.lineWidth = 8;break;
-			}ins.rFunc[type](gfx,size);
-			gfx.globalCompositeOperation = 'source-over';
-		}gfx.restore();
-*/
 
 		if(size>15){
 			switch(Math.round(Math.log(size/6)/Math.log(2)+2)){
@@ -97,41 +75,53 @@ App.makeInstructionCatalog = function(){
 	ins.rFunc = {
 	//	ins.TYPES['SPAWN UP']:function(){
 		0:function(gfx,cs){
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.42,-Math.PI*0.08);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.08, Math.PI*0.42);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.58, Math.PI*0.92);gfx.stroke();
 			gfx.beginPath();
-			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
-			gfx.moveTo(3*cs/8,2*cs/8);
-			gfx.lineTo(4*cs/8,cs/8);
-			gfx.lineTo(5*cs/8,2*cs/8);
+			gfx.moveTo(3*cs/8,  cs/2);
+			gfx.lineTo(4*cs/8,3*cs/8);
+			gfx.lineTo(5*cs/8,  cs/2);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES['SPAWN DOWN']:function(){
 		1:function(gfx,cs){
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.42,-Math.PI*0.08);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.08, Math.PI*0.42);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.58, Math.PI*0.92);gfx.stroke();
 			gfx.beginPath();
-			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
-			gfx.moveTo(3*cs/8,6*cs/8);
-			gfx.lineTo(4*cs/8,7*cs/8);
-			gfx.lineTo(5*cs/8,6*cs/8);
+			gfx.moveTo(3*cs/8,  cs/2);
+			gfx.lineTo(4*cs/8,5*cs/8);
+			gfx.lineTo(5*cs/8,  cs/2);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES['SPAWN LEFT']:function(){
 		2:function(gfx,cs){
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.42,-Math.PI*0.08);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.08, Math.PI*0.42);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.58, Math.PI*0.92);gfx.stroke();
 			gfx.beginPath();
-			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
-			gfx.moveTo(2*cs/8,3*cs/8);
-			gfx.lineTo(cs/8,4*cs/8);
-			gfx.lineTo(2*cs/8,5*cs/8);
+			gfx.moveTo(  cs/2,3*cs/8);
+			gfx.lineTo(3*cs/8,4*cs/8);
+			gfx.lineTo(  cs/2,5*cs/8);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES['SPAWN RIGHT']:function(){
 		3:function(gfx,cs){
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.42,-Math.PI*0.08);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.08, Math.PI*0.42);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.58, Math.PI*0.92);gfx.stroke();
 			gfx.beginPath();
-			gfx.arc(cs/2,cs/2,cs/8,-Math.PI,Math.PI);
-			gfx.moveTo(6*cs/8,3*cs/8);
-			gfx.lineTo(7*cs/8,4*cs/8);
-			gfx.lineTo(6*cs/8,5*cs/8);
+			gfx.moveTo(  cs/2,3*cs/8);
+			gfx.lineTo(5*cs/8,4*cs/8);
+			gfx.lineTo(  cs/2,5*cs/8);
 			gfx.stroke();
 		},
 
@@ -306,46 +296,6 @@ App.makeInstructionCatalog = function(){
 		19:function(gfx,cs){
 			// TODO: UP DOWN LEFT RIGHT
 			gfx.beginPath();
-/*
-			gfx.fillStyle='#0F0F0F';
-			gfx.strokeStyle='#FF0000';
-
-			gfx.moveTo(12*cs/64,16*cs/64);
-			gfx.lineTo(52*cs/64,16*cs/64);
-
-			gfx.moveTo(52*cs/64,16*cs/64);
-			gfx.lineTo(52*cs/64,24*cs/64);
-
-			gfx.moveTo(52*cs/64,24*cs/64);
-			gfx.lineTo(20*cs/64,24*cs/64);
-
-			gfx.moveTo(20*cs/64,24*cs/64);
-			gfx.lineTo(20*cs/64,28*cs/64);
-
-			gfx.moveTo(20*cs/64,28*cs/64);
-			gfx.lineTo(52*cs/64,28*cs/64);
-
-			gfx.moveTo(52*cs/64,28*cs/64);
-			gfx.lineTo(52*cs/64,48*cs/64);
-
-			gfx.moveTo(52*cs/64,48*cs/64);
-			gfx.lineTo(12*cs/64,48*cs/64);
-
-			gfx.moveTo(12*cs/64,48*cs/64);
-			gfx.lineTo(12*cs/64,40*cs/64);
-
-			gfx.moveTo(12*cs/64,40*cs/64);
-			gfx.lineTo(44*cs/64,40*cs/64);
-
-			gfx.moveTo(44*cs/64,40*cs/64);
-			gfx.lineTo(44*cs/64,36*cs/64);
-
-			gfx.moveTo(44*cs/64,36*cs/64);
-			gfx.lineTo(12*cs/64,36*cs/64);
-
-			gfx.moveTo(12*cs/64,36*cs/64);
-			gfx.lineTo(12*cs/64,16*cs/64);
-*/
 			gfx.stroke();
 			gfx.closePath();
 		},
@@ -360,29 +310,6 @@ App.makeInstructionCatalog = function(){
 	//	ins.TYPES['COND EVEN ODD']:
 		21:function(gfx,cs){
 			// TODO: UP DOWN LEFT RIGHT
-/*
-			gfx.fillStyle='#0F0F0F';
-			gfx.fillRect(0,0,cs/2,cs/2);
-
-			gfx.strokeStyle='#AAAAAA';
-			gfx.strokeRect(0,0,cs/2,cs/2);
-
-			gfx.fillStyle='#F0F0F0';
-			gfx.fillRect(cs/2,0,cs/2,cs/2);
-
-			gfx.strokeRect(cs/2,0,cs/2,cs/2);
-
-			gfx.fillStyle='#F0F0F0';
-			gfx.fillRect(0,cs/2,cs/2,cs/2);
-
-			gfx.strokeRect(0,cs/2,cs/2,cs/2);
-
-			gfx.fillStyle='#0F0F0F';
-			gfx.fillRect(cs/2,cs/2,cs/2,cs/2);
-
-			gfx.strokeRect(cs/2,cs/2,cs/2,cs/2);
-			gfx.stroke();
-*/
 		},
 
 	//	ins.TYPES['SYNC']:
