@@ -201,61 +201,106 @@ App.SimulationInstruction = function(level,x,y,color,type){
 		case App.InstCatalog.TYPES['COND 0 U']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number === 0)
+					a.direction = App.DIRECTIONS.UP;
+					
 			};break;
 
 		case App.InstCatalog.TYPES['COND 0 D']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number === 0)
+					a.direction = App.DIRECTIONS.DOWN;
 			};break;
 
 		case App.InstCatalog.TYPES['COND 0 L']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number === 0)
+					a.direction = App.DIRECTIONS.LEFT;
 			};break;
 
 		case App.InstCatalog.TYPES['COND 0 R']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number === 0)
+					a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 
 		case App.InstCatalog.TYPES['COND TOKEN U']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				a.direction = App.DIRECTIONS.UP;
 			};break;
 
 		case App.InstCatalog.TYPES['COND TOKEN D']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				a.direction = App.DIRECTIONS.DOWN;
 			};break;
 
 		case App.InstCatalog.TYPES['COND TOKEN L']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				a.direction = App.DIRECTIONS.LEFT;
 			};break;
 
 		case App.InstCatalog.TYPES['COND TOKEN R']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 
-		case App.InstCatalog.TYPES['COND +- U']:
+		case App.InstCatalog.TYPES['COND + U']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number > 0)
+					a.direction = App.DIRECTIONS.UP;
 			};break;
 
-		case App.InstCatalog.TYPES['COND +- D']:
+		case App.InstCatalog.TYPES['COND + D']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number > 0)
+					a.direction = App.DIRECTIONS.DOWN;
 			};break;
 
-		case App.InstCatalog.TYPES['COND +- L']:
+		case App.InstCatalog.TYPES['COND + L']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number > 0)
+					a.direction = App.DIRECTIONS.LEFT;
 			};break;
 
-		case App.InstCatalog.TYPES['COND +- R']:
+		case App.InstCatalog.TYPES['COND + R']:
 
 			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number > 0)
+					a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 	}
 }

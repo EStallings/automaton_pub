@@ -25,8 +25,8 @@ App.makeInstructionCatalog = function(){
 		'COND 0 L'	: 22,		'COND 0 R'	: 23,
 		'COND TOKEN U'	: 24,		'COND TOKEN D'	: 25,
 		'COND TOKEN L'	: 26,		'COND TOKEN R'	: 27,
-		'COND +- U'	: 28,		'COND +- D'	: 29,
-		'COND +- L'	: 30,		'COND +- R'	: 31,
+		'COND + U'	: 28,		'COND + D'	: 29,
+		'COND + L'	: 30,		'COND + R'	: 31,
 	};
 
 	// TODO: SPECIAL RENDER FUNCS (STREAM, SYNC)
@@ -414,16 +414,16 @@ App.makeInstructionCatalog = function(){
 	//	ins.TYPES['COND TOKEN R']:
 		27:function(gfx,cs){},
 
-	//	ins.TYPES['COND +- U']:
+	//	ins.TYPES['COND + U']:
 		28:function(gfx,cs){},
 
-	//	ins.TYPES['COND +- D']:
+	//	ins.TYPES['COND + D']:
 		29:function(gfx,cs){},
 
-	//	ins.TYPES['COND +- L']:
+	//	ins.TYPES['COND + L']:
 		30:function(gfx,cs){},
 
-	//	ins.TYPES['COND +- R']:
+	//	ins.TYPES['COND + R']:
 		31:function(gfx,cs){},
 	};
 
