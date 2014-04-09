@@ -169,6 +169,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
+		// DELETE DELETE DELETE DELETE
 	//	ins.TYPES['ROTATE CW']:function(){
 		8:function(gfx,cs){
 			gfx.beginPath();
@@ -179,6 +180,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		},
 
+		// DELETE DELETE DELETE DELETE
 	//	ins.TYPES['ROTATE CCW']:function(){
 		9:function(gfx,cs){
 			gfx.beginPath();
@@ -194,12 +196,10 @@ App.makeInstructionCatalog = function(){
 			// TODO: override render func
 			// TODO: make letters for each stream
 			gfx.beginPath();
-			gfx.moveTo(3*cs/4,1*cs/4);
-			gfx.lineTo(1*cs/4,1*cs/4);
-			gfx.lineTo(1*cs/4,2*cs/4);
-			gfx.lineTo(3*cs/4,2*cs/4);
-			gfx.lineTo(3*cs/4,3*cs/4);
-			gfx.lineTo(1*cs/4,3*cs/4);
+			gfx.moveTo(cs/2,2*cs/8);
+			gfx.lineTo(cs/2,5*cs/8);
+			gfx.moveTo(cs/2,6*cs/8);
+			gfx.lineTo(cs/2,6*cs/8);
 			gfx.stroke();
 		},
 
@@ -208,33 +208,40 @@ App.makeInstructionCatalog = function(){
 			// TODO: override render func
 			// TODO: make letters for each stream
 			gfx.beginPath();
-			gfx.moveTo(3*cs/4,1*cs/4);
-			gfx.lineTo(1*cs/4,1*cs/4);
-			gfx.lineTo(1*cs/4,2*cs/4);
-			gfx.lineTo(3*cs/4,2*cs/4);
-			gfx.lineTo(3*cs/4,3*cs/4);
-			gfx.lineTo(1*cs/4,3*cs/4);
+			gfx.moveTo(cs/2,2*cs/8);
+			gfx.lineTo(cs/2,5*cs/8);
+			gfx.moveTo(cs/2,6*cs/8);
+			gfx.lineTo(cs/2,6*cs/8);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES['IN']:function(){
 		12:function(gfx,cs){
-			// TODO: this should NOT be an 'I' (streams get letters as symbols)
+			gfx.beginPath();gfx.arc(cs/2,15*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
-			gfx.moveTo(cs/2,cs/4);
-			gfx.lineTo(cs/2,3*cs/4);
-			gfx.moveTo(cs/4,cs/4);
-			gfx.lineTo(3*cs/4,cs/4);
-			gfx.moveTo(cs/4,3*cs/4);
+			gfx.moveTo(  cs/2,  cs/4); // i loop like this to avoid square joints
+			gfx.lineTo(3*cs/4,  cs/4);
+			gfx.lineTo(3*cs/4,9*cs/16);
+			gfx.lineTo(  cs/2,3*cs/4);
+			gfx.lineTo(  cs/4,9*cs/16);
+			gfx.lineTo(  cs/4,  cs/4);
+			gfx.lineTo(  cs/2,  cs/4);
+			gfx.moveTo(  cs/4,3*cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES['OUT']:function(){
 		13:function(gfx,cs){
-			// TODO: this should NOT be an 'O' (streams get letters as symbols)
+			gfx.beginPath();gfx.arc(cs/2,17*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
-			gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);
+			gfx.moveTo(  cs/2,3*cs/4); // i loop like this to avoid square joints
+			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.lineTo(3*cs/4,7*cs/16);
+			gfx.lineTo(  cs/2,  cs/4);
+			gfx.lineTo(  cs/4,7*cs/16);
+			gfx.lineTo(  cs/4,3*cs/4);
+			gfx.lineTo(  cs/2,3*cs/4);
 			gfx.stroke();
 		},
 
