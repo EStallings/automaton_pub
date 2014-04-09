@@ -169,14 +169,14 @@ App.SimulationInstruction = function(level,x,y,color,type){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld !== undefined)++a.tokenHeld.increment();
+				if(a.tokenHeld !== undefined)a.tokenHeld.increment();
 			};break;
 
 		case App.InstCatalog.TYPES['DEC']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld !== undefined)--a.tokenHeld.decrement();
+				if(a.tokenHeld !== undefined)a.tokenHeld.decrement();
 			};break;
 
 		case App.InstCatalog.TYPES['SYNC']:
