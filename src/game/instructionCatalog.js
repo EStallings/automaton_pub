@@ -58,8 +58,30 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		}
 
+/*
 		if(size>15){
+			if(size>40){
+				switch(App.Game.cellSizeFactor){
+					case 4:gfx.lineWidth = 6;break;
+					case 5:gfx.lineWidth = 8;break;
+					case 6:gfx.lineWidth = 10;break;
+					case 7:gfx.lineWidth = 12;break;
+				}ins.rFunc[type](gfx,size);
+			}
+
+			gfx.globalCompositeOperation = 'destination-out';
 			switch(App.Game.cellSizeFactor){
+				case 4:gfx.lineWidth = 2;break;
+				case 5:gfx.lineWidth = 4;break;
+				case 6:gfx.lineWidth = 6;break;
+				case 7:gfx.lineWidth = 8;break;
+			}ins.rFunc[type](gfx,size);
+			gfx.globalCompositeOperation = 'source-over';
+		}gfx.restore();
+*/
+
+		if(size>15){
+			switch(Math.round(Math.log(size/6)/Math.log(2)+2)){
 				case 4:gfx.lineWidth = 2;break;
 				case 5:gfx.lineWidth = 4;break;
 				case 6:gfx.lineWidth = 6;break;

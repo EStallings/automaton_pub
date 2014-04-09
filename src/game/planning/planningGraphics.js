@@ -60,11 +60,12 @@ App.PlanningGraphics = function(){
 				offsetX = size; offsetY = size;
 			}
 
+			// this is extremely inefficient...
 			gfx.strokeRect(scrnX+offsetX, scrnY+offsetY, size, size);
-			gfx.strokeRect(scrnX+offsetX-1, scrnY+offsetY-1, size+2, size+2);
+		//	gfx.strokeRect(scrnX+offsetX-1, scrnY+offsetY-1, size+2, size+2);
 			gfx.clearRect(scrnX+offsetX+5, scrnY+offsetY-2, size-10, size+4);
 			gfx.clearRect(scrnX+offsetX-2, scrnY+offsetY+5, size+4, size-10);
-			gfx.fillRect(scrnX+offsetX, scrnY+offsetY, size, size);
+		//	gfx.fillRect(scrnX+offsetX, scrnY+offsetY, size, size);
 			
 			if(App.Game.currentPlanningLevel.moving){
 				gfx.fillStyle = '#ffffff';
@@ -102,10 +103,11 @@ App.PlanningGraphics = function(){
 		var curY = mouseData.curY;
 		var downX = App.Game.currentPlanningLevel.input.downScrnX;
 		var downY = App.Game.currentPlanningLevel.input.downScrnY;
-		gfx.fillStyle = 'rgba(25,150,25,.2)';
+		gfx.fillStyle = 'rgba(255,255,255,0.1)';
 		gfx.fillRect(curX, curY, (downX-curX), (downY-curY) );
 		gfx.strokeStyle = '#ffffff';
+		gfx.lineWidth = 2;
 		gfx.strokeRect(curX, curY, (downX-curX), (downY-curY) );
-		gfx.strokeRect(curX-1, curY-1, (downX-curX)-1, (downY-curY)-1 );
+	//	gfx.strokeRect(curX-1, curY-1, (downX-curX)-1, (downY-curY)-1 );
 	}
 }
