@@ -71,10 +71,10 @@ App.SimulationLevel = function(width,height){
 
 		var cs = App.Game.cellSize;
 		App.Game.automGfx.globalCompositeOperation = 'destination-in';
-		App.Game.automGfx.fillRect(2,2,this.width*cs-4,this.height*cs-4);
+		App.Game.automGfx.fillRect(-2,-2,this.width*cs+4,this.height*cs+4);
 		App.Game.automGfx.globalCompositeOperation = 'source-over';
 		App.Game.tokenDGfx.globalCompositeOperation = 'destination-in';
-		App.Game.tokenDGfx.fillRect(2,2,this.width*cs-4,this.height*cs-4);
+		App.Game.tokenDGfx.fillRect(-2,-2,this.width*cs+4,this.height*cs+4);
 		App.Game.tokenDGfx.globalCompositeOperation = 'source-over';
 
 		App.Game.automGfx.restore();
