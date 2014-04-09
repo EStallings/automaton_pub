@@ -22,6 +22,8 @@ App.makeGame = function(){
 	}
 
 	game.setMode = function(mode){
+		if(mode === game.mode)return;
+
 		if(! (mode === this.modes.SIMULATION || mode === this.modes.PLANNING)){
 			console.error("invalid gamemode: " + mode);
 			return;
@@ -187,7 +189,7 @@ App.makeGame = function(){
 
 	game.pause = function(){
 		game.paused = !game.paused;
-		if(!game.paused && game.mode === game.modes.PLANNING)game.toggleMode();
+		if(!game.paused && game.mode === game.modes.PLANNING)game.setMode(game.modes.SIMULATION);
 		game.pauseTick = App.Engine.tick;
 		game.pauseLastCycleTick = game.lastCycleTick;
 		game.pauseNextCycleTick = game.nextCycleTick;
@@ -291,7 +293,7 @@ App.makeGame = function(){
 
 	game.setSimulationSpeed = function(speed){
 		if(game.paused)game.pause();
-		if(game.mode === game.modes.PLANNING)game.toggleMode();
+		if(game.mode === game.modes.PLANNING)game.setMode(game.modes.SIMULATION);
 		if(speed<1)return;
 
 		var tick = App.Engine.tick;
