@@ -248,85 +248,6 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		break;
 
-		case ins.TYPES['SYNC']:
-			// TODO: override render | custom syms for each color
-/*
-			staticRender = function(){
-				gfx.beginPath();
-				switch(color){
-					case App.COLORS.RED:
-			break;			gfx.translate(x*cs,y*cs);
-						gfx.fillStyle='#660000';
-						gfx.strokeStyle='#ff0000';
-						gfx.moveTo(2,cs-2);
-						gfx.lineTo(2,2);
-						gfx.lineTo(cs-2,2);
-						if(App.Game.cellSize>30){
-							gfx.lineTo(cs-2,cs/2);
-							gfx.lineTo(cs/2,cs/2);
-							gfx.lineTo(cs/2,cs-2);
-							gfx.lineTo(2,cs-2);
-						}else{
-							gfx.lineTo(cs-2,cs-2);
-							gfx.lineTo(2,cs-2);
-						}
-						break;
-					case App.COLORS.GREEN:
-						gfx.translate(x*cs+cs,y*cs);
-						gfx.fillStyle='#006600';
-						gfx.strokeStyle='#00ff00';
-						gfx.moveTo(2,2);
-						gfx.lineTo(cs-2,2);
-						gfx.lineTo(cs-2,cs-2);
-						if(App.Game.cellSize>30){
-							gfx.lineTo(cs/2,cs-2);
-							gfx.lineTo(cs/2,cs/2);
-							gfx.lineTo(2,cs/2);
-							gfx.lineTo(2,2);
-						}else{
-							gfx.lineTo(2,cs-2);
-							gfx.lineTo(2,2)
-						}
-						break;
-					case App.COLORS.BLUE:
-						gfx.translate(x*cs,y*cs+cs);
-						gfx.fillStyle='#000066';
-						gfx.strokeStyle='#0000ff';
-						gfx.moveTo(cs-2,cs-2);
-						gfx.lineTo(2,cs-2);
-						gfx.lineTo(2,2);
-						if(App.Game.cellSize>30){
-							gfx.lineTo(cs/2,2);
-							gfx.lineTo(cs/2,cs/2);
-							gfx.lineTo(cs-2,cs/2);
-							gfx.lineTo(cs-2,cs-2);
-						}else{
-							gfx.lineTo(cs-2,2);
-							gfx.lineTo(cs-2,cs-2);
-						}
-						break;
-					case App.COLORS.YELLOW:
-						gfx.translate(x*cs+cs,y*cs+cs);
-						gfx.fillStyle='#666600';
-						gfx.strokeStyle='#ffff00';
-						gfx.moveTo(cs-2,2);
-						gfx.lineTo(cs-2,cs-2);
-						gfx.lineTo(2,cs-2);
-						if(App.Game.cellSize>30){
-							gfx.lineTo(2,cs/2);
-							gfx.lineTo(cs/2,cs/2);
-							gfx.lineTo(cs/2,2);
-							gfx.lineTo(cs-2,2);
-						}else{
-							gfx.lineTo(2,2);
-							gfx.lineTo(cs-2,2);
-						}
-						break;
-				}gfx.fill();
-				gfx.stroke();
-*/
-		break;
-
 		case ins.TYPES['PAUSE']:
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
@@ -357,12 +278,7 @@ App.makeInstructionCatalog = function(){
 	}
 
 	ins.renderStream = function(gfx,x,y,c,cs,lw){
-		gfx.save();
-		gfx.translate(x,y);
-		gfx.restore();
-	}
-
-	ins.renderStream = function(gfx,x,y,c,cs,lw){
+		// TODO: I NEED TO KNOW WHAT STREAM I AM
 		gfx.save();
 		gfx.translate(x,y);
 		gfx.restore();
@@ -457,6 +373,7 @@ App.makeInstructionCatalog = function(){
 				break;
 		}gfx.fill();gfx.stroke();
 
+/*
 		if(cs>15){
 			gfx.lineWidth = lw;
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
@@ -464,6 +381,7 @@ App.makeInstructionCatalog = function(){
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.08, Math.PI*0.42);gfx.stroke();
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.58, Math.PI*0.92);gfx.stroke();
 		}
+*/
 
 		gfx.restore();
 	}

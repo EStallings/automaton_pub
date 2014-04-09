@@ -109,8 +109,9 @@ App.makeGame = function(){
 				if((y < 0 || y > lev.height) && lev.height !== 0)
 					errors.push('  Instruction y out of range for instruction #' + i + ': ' + y);
 
-				if(typ >= 25)
-					errors.push('  Instruction type out of range for instruction #' + i + ': ' + typ);
+				// TODO: modify this to error if an instruction wasnt found in InstCatalog.TYPES
+//				if(typ >= 25)
+//					errors.push('  Instruction type out of range for instruction #' + i + ': ' + typ);
 
 				if(col >= 4)
 					errors.push('  Instruction color out of range for instruction #' + i + ': ' + col);
