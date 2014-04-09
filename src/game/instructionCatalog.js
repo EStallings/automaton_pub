@@ -30,7 +30,7 @@ App.makeInstructionCatalog = function(){
 	};
 
 	// TODO: SPECIAL RENDER FUNCS (STREAM, SYNC)
-	ins.render = function(gfx,type,x,y,c,size){
+	ins.render = function(gfx,type,x,y,c,cs){
 		gfx.save();
 		gfx.translate(x,y);
 		gfx.lineCap  = 'round';
@@ -42,7 +42,7 @@ App.makeInstructionCatalog = function(){
 			case App.COLORS.GREEN:  gfx.fillStyle='#00ff00';break;
 			case App.COLORS.BLUE:   gfx.fillStyle='#0000ff';break;
 			case App.COLORS.YELLOW: gfx.fillStyle='#ffff00';break;
-		}gfx.fillRect(2,2,size-4,size-4);
+		}gfx.fillRect(2,2,cs-4,cs-4);
 
 		switch(c){
 			case App.COLORS.RED:    gfx.strokeStyle='#800000';break;
@@ -51,33 +51,30 @@ App.makeInstructionCatalog = function(){
 			case App.COLORS.YELLOW: gfx.strokeStyle='#808000';break;
 		}
 
-		if(size>11){
+		if(cs>11){
 			gfx.beginPath();
 			gfx.moveTo(2,2);
-			gfx.lineTo(2,size-2);
-			gfx.lineTo(size-2,size-2);
-			gfx.lineTo(size-2,2);
+			gfx.lineTo(2,cs-2);
+			gfx.lineTo(cs-2,cs-2);
+			gfx.lineTo(cs-2,2);
 			gfx.lineTo(2,2);
 			gfx.stroke();
 		}
 
-		if(size>15){
-			switch(Math.round(Math.log(size/6)/Math.log(2)+2)){
+		if(cs>15){
+			switch(Math.round(Math.log(cs/6)/Math.log(2)+2)){
 				case 4:gfx.lineWidth = 2;break;
 				case 5:gfx.lineWidth = 4;break;
 				case 6:gfx.lineWidth = 6;break;
 				case 7:gfx.lineWidth = 8;break;
-			}ins.rFunc[type](gfx,size);
-		}gfx.restore();
-	}
+			}
 
 	// ========================================================== //
 	// ================= I N S T R U C T I O N S ================ //
 	// ========================================================== //
 
-	ins.rFunc = {
-	//	ins.TYPES['SPAWN UP']:function(){
-		0:function(gfx,cs){
+	switch(type){
+		case ins.TYPES['SPAWN UP']:
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.42,-Math.PI*0.08);gfx.stroke();
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.08, Math.PI*0.42);gfx.stroke();
@@ -89,10 +86,9 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(4*cs/8,3*cs/8);
 			gfx.lineTo(4*cs/8,5*cs/8);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['SPAWN DOWN']:function(){
-		1:function(gfx,cs){
+		case ins.TYPES['SPAWN DOWN']:
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.42,-Math.PI*0.08);gfx.stroke();
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.08, Math.PI*0.42);gfx.stroke();
@@ -104,10 +100,9 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(4*cs/8,3*cs/8);
 			gfx.lineTo(4*cs/8,5*cs/8);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['SPAWN LEFT']:function(){
-		2:function(gfx,cs){
+		case ins.TYPES['SPAWN LEFT']:
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.42,-Math.PI*0.08);gfx.stroke();
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.08, Math.PI*0.42);gfx.stroke();
@@ -119,10 +114,9 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(3*cs/8,4*cs/8);
 			gfx.lineTo(5*cs/8,4*cs/8);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['SPAWN RIGHT']:function(){
-		3:function(gfx,cs){
+		case ins.TYPES['SPAWN RIGHT']:
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.42,-Math.PI*0.08);gfx.stroke();
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.08, Math.PI*0.42);gfx.stroke();
@@ -134,46 +128,41 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(3*cs/8,4*cs/8);
 			gfx.lineTo(5*cs/8,4*cs/8);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['UP']:function(){
-		4:function(gfx,cs){
+		case ins.TYPES['UP']:
 			gfx.beginPath();
 			gfx.moveTo(  cs/4,3*cs/4);
 			gfx.lineTo(  cs/2,  cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['DOWN']:function(){
-		5:function(gfx,cs){
+		case ins.TYPES['DOWN']:
 			gfx.beginPath();
 			gfx.moveTo(  cs/4,  cs/4);
 			gfx.lineTo(  cs/2,3*cs/4);
 			gfx.lineTo(3*cs/4,  cs/4);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['LEFT']:function(){
-		6:function(gfx,cs){
+		case ins.TYPES['LEFT']:
 			gfx.beginPath();
 			gfx.moveTo(3*cs/4,  cs/4);
 			gfx.lineTo(  cs/4,  cs/2);
 			gfx.lineTo(3*cs/4,3*cs/4);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['RIGHT']:function(){
-		7:function(gfx,cs){
+		case ins.TYPES['RIGHT']:
 			gfx.beginPath();
 			gfx.moveTo(  cs/4,  cs/4);
 			gfx.lineTo(3*cs/4,  cs/2);
 			gfx.lineTo(  cs/4,3*cs/4);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['IN STREAM']:
-		8:function(gfx,cs){
+		case ins.TYPES['IN STREAM']:
 			// TODO: override render func
 			// TODO: make letters for each stream
 			gfx.beginPath();
@@ -182,10 +171,9 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(cs/2,6*cs/8);
 			gfx.lineTo(cs/2,6*cs/8);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['OUT STREAM']:
-		9:function(gfx,cs){
+		case ins.TYPES['OUT STREAM']:
 			// TODO: override render func
 			// TODO: make letters for each stream
 			gfx.beginPath();
@@ -194,10 +182,9 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(cs/2,6*cs/8);
 			gfx.lineTo(cs/2,6*cs/8);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['IN']:function(){
-		10:function(gfx,cs){
+		case ins.TYPES['IN']:
 			gfx.beginPath();gfx.arc(cs/2,15*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
 			gfx.moveTo(  cs/2,  cs/4); // i loop like this to avoid square joints
@@ -210,10 +197,9 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(  cs/4,3*cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['OUT']:function(){
-		11:function(gfx,cs){
+		case ins.TYPES['OUT']:
 			gfx.beginPath();gfx.arc(cs/2,17*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
 			gfx.moveTo(  cs/2,3*cs/4); // i loop like this to avoid square joints
@@ -224,10 +210,9 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/4,3*cs/4);
 			gfx.lineTo(  cs/2,3*cs/4);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['GRAB']:function(){
-		12:function(gfx,cs){
+		case ins.TYPES['GRAB']:
 			gfx.beginPath();
 			gfx.moveTo(cs/4,3*cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
@@ -237,10 +222,9 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(cs/2,cs/4);
 			gfx.lineTo(5*cs/8,3*cs/8);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['DROP']:function(){
-		13:function(gfx,cs){
+		case ins.TYPES['DROP']:
 			gfx.beginPath();
 			gfx.moveTo(cs/4,3*cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
@@ -250,10 +234,9 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.lineTo(5*cs/8,5*cs/8);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['GRAB/DROP']:function(){
-		14:function(gfx,cs){
+		case ins.TYPES['GRAB/DROP']:
 			gfx.beginPath();
 			gfx.moveTo(cs/4,3*cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
@@ -266,28 +249,25 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.lineTo(5*cs/8,5*cs/8);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['INC']:function(){
-		15:function(gfx,cs){
+		case ins.TYPES['INC']:
 			gfx.beginPath();
 			gfx.moveTo(cs/4,cs/2);
 			gfx.lineTo(3*cs/4,cs/2);
 			gfx.moveTo(cs/2,cs/4);
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['DEC']:function(){
-		16:function(gfx,cs){
+		case ins.TYPES['DEC']:
 			gfx.beginPath();
 			gfx.moveTo(cs/4,cs/2);
 			gfx.lineTo(3*cs/4,cs/2);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['SYNC']:
-		17:function(gfx,cs){
+		case ins.TYPES['SYNC']:
 			// TODO: override render | custom syms for each color
 /*
 			staticRender = function(){
@@ -295,7 +275,7 @@ App.makeInstructionCatalog = function(){
 				gfx.beginPath();
 				switch(color){
 					case App.COLORS.RED:
-						gfx.translate(x*cs,y*cs);
+			break;			gfx.translate(x*cs,y*cs);
 						gfx.fillStyle='#660000';
 						gfx.strokeStyle='#ff0000';
 						gfx.moveTo(2,cs-2);
@@ -367,20 +347,18 @@ App.makeInstructionCatalog = function(){
 
 				gfx.restore();
 */
-		},
+		break;
 
-	//	ins.TYPES['COLOR TOGGLE']:function(){
-		18:function(gfx,cs){
+		case ins.TYPES['COLOR TOGGLE']:
 			gfx.beginPath();
 			gfx.moveTo(1*cs/4,1*cs/4);
 			gfx.lineTo(3*cs/4,1*cs/4);
 			gfx.moveTo(2*cs/4,1*cs/4);
 			gfx.lineTo(2*cs/4,3*cs/4);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['PAUSE']:function(){
-		19:function(gfx,cs){
+		case ins.TYPES['PAUSE']:
 			gfx.beginPath();
 			gfx.moveTo(1*cs/4,2*cs/4);
 			gfx.lineTo(3*cs/4,2*cs/4);
@@ -388,44 +366,26 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(1*cs/4,1*cs/4);
 			gfx.lineTo(1*cs/4,3*cs/4);
 			gfx.stroke();
-		},
+		break;
 
-	//	ins.TYPES['COND 0 U']:
-		20:function(gfx,cs){},
+		case ins.TYPES['COND 0 U']:break;
+		case ins.TYPES['COND 0 D']:break;
+		case ins.TYPES['COND 0 L']:break;
+		case ins.TYPES['COND 0 R']:break;
+		case ins.TYPES['COND TOKEN U']:break;
+		case ins.TYPES['COND TOKEN D']:break;
+		case ins.TYPES['COND TOKEN L']:break;
+		case ins.TYPES['COND TOKEN R']:break;
+		case ins.TYPES['COND + U']:break;
+		case ins.TYPES['COND + D']:break;
+		case ins.TYPES['COND + L']:break;
+		case ins.TYPES['COND + R']:break;
+	}
 
-	//	ins.TYPES['COND 0 D']:
-		21:function(gfx,cs){},
+	// ========================================================== //
 
-	//	ins.TYPES['COND 0 L']:
-		22:function(gfx,cs){},
-
-	//	ins.TYPES['COND 0 R']:
-		23:function(gfx,cs){},
-
-	//	ins.TYPES['COND TOKEN U']:
-		24:function(gfx,cs){},
-
-	//	ins.TYPES['COND TOKEN D']:
-		25:function(gfx,cs){},
-
-	//	ins.TYPES['COND TOKEN L']:
-		26:function(gfx,cs){},
-
-	//	ins.TYPES['COND TOKEN R']:
-		27:function(gfx,cs){},
-
-	//	ins.TYPES['COND + U']:
-		28:function(gfx,cs){},
-
-	//	ins.TYPES['COND + D']:
-		29:function(gfx,cs){},
-
-	//	ins.TYPES['COND + L']:
-		30:function(gfx,cs){},
-
-	//	ins.TYPES['COND + R']:
-		31:function(gfx,cs){},
-	};
+		}gfx.restore();
+	}
 
 	return ins;
 }
