@@ -199,7 +199,8 @@ App.GuiSliderButton = function(guiCollider, panel){
 		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 
 		gfx.fillStyle = App.GuiColors.gray[0];
-		gfx.fillText (Math.floor(this.sliderLine.value), this.guiCollider.getx(), this.guiCollider.gety() + this.guiCollider.h/2);
+
+		// gfx.fillText(Math.floor(this.sliderLine.value), textX, this.guiCollider.gety() + this.guiCollider.h/2);
 	}
 
 	//Begins the dragging of the slider

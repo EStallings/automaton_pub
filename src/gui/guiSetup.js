@@ -159,8 +159,11 @@ var setupSimulationFrame = function(){
 	controlsPanel.yAlignment = 'bottom';
 
 	var joystick = new App.GuiJoystick(50, 50, controlsPanel);
+
 	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,1);}, false, controlsPanel);
+
 	var zoomOutButton = new App.GuiTextButton(0, 250, 'Zoom Out', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,-1);}, false, controlsPanel);
+
 	var simButton = new App.GuiTextButton(400, 50, 'Return',function(){ App.changeMode(App.MODES.PLANNING);	}, false, null);
 	var pauseButton = new App.GuiTextButton(0, 325, 'Pause',function(){ App.Game.pause();}, false, controlsPanel);
 	var speedSliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(150,10,50,25), controlsPanel);
@@ -168,7 +171,7 @@ var setupSimulationFrame = function(){
 	var min = 0;
 	var max = 7;
 	var diff = 3;
-	var speedSliderLine = new App.GuiSliderLine(new App.GuiCollisionRect(150,10,10, 400), min, max, 2, function(n){
+	var speedSliderLine = new App.GuiSliderLine(new App.GuiCollisionRect(150,10,10, 200), min, max, 2, function(n){
 		var k = 0 - n + max;
 		App.Game.setSimulationSpeed(Math.pow(2,k+diff));
 	}, controlsPanel);
