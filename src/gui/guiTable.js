@@ -78,7 +78,10 @@ App.GuiTable = function(x, y, ppanel){
 				gfx.fillStyle = App.GuiTextButton.fg;
 				var textX = x + this.colWidth/2 - entryWidth/2;
 				var textY = y + this.rowHeight/2 + 5;
-				gfx.fillText(entry, textX, textY);
+
+				if (textX >= x && entryWidth < this.colWidth)
+					gfx.fillText(entry, textX, textY);
+				else gfx.fillText(entry, x + 2, textY);
 
 				gfx.fillStyle = App.GuiColors.gray[1];
 				gfx.fillRect(x-1,this.guiCollider.gety(), 1, this.guiCollider.h);
@@ -205,7 +208,9 @@ App.GuiTable.TableButton = function(x, string, table){
 		var textW = gfx.measureText(this.text).width;
 		var textX = this.guiCollider.getx() + this.guiCollider.w/2 - textW/2;
 		var textY = this.guiCollider.gety() + (this.guiCollider.h / 2) + 5;
-		gfx.fillText(this.text, textX, textY);
+		if (textX > this.guiCollider.getx())
+			gfx.fillText(this.text, textX, textY);
+		else gfx.fillText(this.text, this.guiCollider.getx() + 2, textY);
 	}
 
 	//Changes the color and initiates the click
