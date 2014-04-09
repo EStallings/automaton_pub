@@ -29,13 +29,20 @@ App.makeInstructionCatalog = function(){
 		'COND + L'	: 30,		'COND + R'	: 31,
 	};
 
-	// TODO: SPECIAL RENDER FUNCS (STREAM, SYNC)
 	ins.render = function(gfx,type,x,y,c,cs){
-		gfx.save();
-		gfx.translate(x,y);
 		gfx.lineCap  = 'round';
 		gfx.lineJoin = 'round';
-		gfx.lineWidth = 2;
+		var lw = (Math.round(Math.log(cs/6)/Math.log(2)+2)-3)*2;
+
+		switch(type){ // branch off if special rendering required
+			case ins.TYPES['IN STREAM']:    ins.renderStream(gfx,x,y,c,cs,lw);      return;
+			case ins.TYPES['OUT STREAM']:   ins.renderStream(gfx,x,y,c,cs,lw);      return;
+			case ins.TYPES['SYNC']:         ins.renderSync(gfx,x,y,c,cs,lw);        return;
+			case ins.TYPES['COLOR TOGGLE']: ins.renderColorToggle(gfx,x,y,c,cs,lw); return;
+		}
+
+		gfx.save();
+		gfx.translate(x,y);
 
 		switch(c){
 			case App.COLORS.RED:    gfx.fillStyle='#ff0000';break;
@@ -52,6 +59,7 @@ App.makeInstructionCatalog = function(){
 		}
 
 		if(cs>11){
+			gfx.lineWidth = 2;
 			gfx.beginPath();
 			gfx.moveTo(2,2);
 			gfx.lineTo(2,cs-2);
@@ -62,12 +70,7 @@ App.makeInstructionCatalog = function(){
 		}
 
 		if(cs>15){
-			switch(Math.round(Math.log(cs/6)/Math.log(2)+2)){
-				case 4:gfx.lineWidth = 2;break;
-				case 5:gfx.lineWidth = 4;break;
-				case 6:gfx.lineWidth = 6;break;
-				case 7:gfx.lineWidth = 8;break;
-			}
+			gfx.lineWidth = lw;
 
 	// ========================================================== //
 	// ================= I N S T R U C T I O N S ================ //
@@ -162,28 +165,6 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 		break;
 
-		case ins.TYPES['IN STREAM']:
-			// TODO: override render func
-			// TODO: make letters for each stream
-			gfx.beginPath();
-			gfx.moveTo(cs/2,2*cs/8);
-			gfx.lineTo(cs/2,5*cs/8);
-			gfx.moveTo(cs/2,6*cs/8);
-			gfx.lineTo(cs/2,6*cs/8);
-			gfx.stroke();
-		break;
-
-		case ins.TYPES['OUT STREAM']:
-			// TODO: override render func
-			// TODO: make letters for each stream
-			gfx.beginPath();
-			gfx.moveTo(cs/2,2*cs/8);
-			gfx.lineTo(cs/2,5*cs/8);
-			gfx.moveTo(cs/2,6*cs/8);
-			gfx.lineTo(cs/2,6*cs/8);
-			gfx.stroke();
-		break;
-
 		case ins.TYPES['IN']:
 			gfx.beginPath();gfx.arc(cs/2,15*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
@@ -271,7 +252,6 @@ App.makeInstructionCatalog = function(){
 			// TODO: override render | custom syms for each color
 /*
 			staticRender = function(){
-				gfx.save();
 				gfx.beginPath();
 				switch(color){
 					case App.COLORS.RED:
@@ -344,18 +324,7 @@ App.makeInstructionCatalog = function(){
 						break;
 				}gfx.fill();
 				gfx.stroke();
-
-				gfx.restore();
 */
-		break;
-
-		case ins.TYPES['COLOR TOGGLE']:
-			gfx.beginPath();
-			gfx.moveTo(1*cs/4,1*cs/4);
-			gfx.lineTo(3*cs/4,1*cs/4);
-			gfx.moveTo(2*cs/4,1*cs/4);
-			gfx.lineTo(2*cs/4,3*cs/4);
-			gfx.stroke();
 		break;
 
 		case ins.TYPES['PAUSE']:
@@ -387,9 +356,99 @@ App.makeInstructionCatalog = function(){
 		}gfx.restore();
 	}
 
+	ins.renderStream = function(gfx,x,y,c,cs,lw){
+		gfx.save();
+		gfx.translate(x,y);
+		gfx.restore();
+	}
+
+	ins.renderStream = function(gfx,x,y,c,cs,lw){
+		gfx.save();
+		gfx.translate(x,y);
+		gfx.restore();
+	}
+
+	ins.renderSync = function(gfx,x,y,c,cs,lw){
+		gfx.save();
+		gfx.translate(x,y);
+
+		gfx.lineWidth = 2;
+		gfx.beginPath();
+		switch(c){
+			case App.COLORS.RED:
+				gfx.fillStyle='#ff0000';gfx.strokeStyle='#800000';
+				gfx.moveTo(2,2);
+				gfx.lineTo(cs-2,2);
+				gfx.lineTo(cs-2,cs/2);
+				gfx.lineTo(cs/2,cs/2);
+				gfx.lineTo(cs/2,cs-2);
+				gfx.lineTo(2,cs-2);
+				gfx.lineTo(2,2);
+				break;
+			case App.COLORS.GREEN:
+				gfx.fillStyle='#00ff00';gfx.strokeStyle='#008000';
+				gfx.moveTo(cs-2,2);
+				gfx.lineTo(2,2);
+				gfx.lineTo(2,cs/2);
+				gfx.lineTo(cs/2,cs/2);
+				gfx.lineTo(cs/2,cs-2);
+				gfx.lineTo(cs-2,cs-2);
+				gfx.lineTo(cs-2,2);
+				break;
+			case App.COLORS.BLUE:
+				gfx.fillStyle='#0000ff';gfx.strokeStyle='#000080';
+				gfx.moveTo(2,cs-2);
+				gfx.lineTo(cs-2,cs-2);
+				gfx.lineTo(cs-2,cs/2);
+				gfx.lineTo(cs/2,cs/2);
+				gfx.lineTo(cs/2,2);
+				gfx.lineTo(2,2);
+				gfx.lineTo(2,cs-2);
+				break;
+			case App.COLORS.YELLOW:
+				gfx.fillStyle='#ffff00';gfx.strokeStyle='#808000';
+				gfx.moveTo(cs-2,cs-2);
+				gfx.lineTo(2,cs-2);
+				gfx.lineTo(2,cs/2);
+				gfx.lineTo(cs/2,cs/2);
+				gfx.lineTo(cs/2,2);
+				gfx.lineTo(cs-2,2);
+				gfx.lineTo(cs-2,cs-2);
+				break;
+		}gfx.fill();gfx.stroke();
+
+		gfx.restore();
+	}
+
+	ins.renderColorToggle = function(gfx,x,y,c,cs,lw){
+		gfx.save();
+		gfx.translate(x,y);
+
+		switch(c){
+			case App.COLORS.RED:    gfx.fillStyle='#ff0000';gfx.strokeStyle='#800000';break;
+			case App.COLORS.GREEN:  gfx.fillStyle='#00ff00';gfx.strokeStyle='#008000';break;
+			case App.COLORS.BLUE:   gfx.fillStyle='#0000ff';gfx.strokeStyle='#000080';break;
+			case App.COLORS.YELLOW: gfx.fillStyle='#ffff00';gfx.strokeStyle='#808000';break;
+		}
+
+		gfx.lineWidth = 2;
+		gfx.beginPath();
+		gfx.moveTo(2,2);
+		gfx.lineTo(2,cs-2);
+		gfx.lineTo(cs-2,2);
+		gfx.lineTo(2,2);
+		gfx.fill();
+		gfx.stroke();
+		if(cs>15){
+			gfx.lineWidth = lw;
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.42,-Math.PI*0.08);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.08, Math.PI*0.42);gfx.stroke();
+			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.58, Math.PI*0.92);gfx.stroke();
+		}
+
+		gfx.restore();
+	}
+
 	return ins;
 }
-
-/*
-
-*/
