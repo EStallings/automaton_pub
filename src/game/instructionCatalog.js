@@ -83,6 +83,8 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(3*cs/8,  cs/2);
 			gfx.lineTo(4*cs/8,3*cs/8);
 			gfx.lineTo(5*cs/8,  cs/2);
+			gfx.moveTo(4*cs/8,3*cs/8);
+			gfx.lineTo(4*cs/8,5*cs/8);
 			gfx.stroke();
 		},
 
@@ -96,6 +98,8 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(3*cs/8,  cs/2);
 			gfx.lineTo(4*cs/8,5*cs/8);
 			gfx.lineTo(5*cs/8,  cs/2);
+			gfx.moveTo(4*cs/8,3*cs/8);
+			gfx.lineTo(4*cs/8,5*cs/8);
 			gfx.stroke();
 		},
 
@@ -109,6 +113,8 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(  cs/2,3*cs/8);
 			gfx.lineTo(3*cs/8,4*cs/8);
 			gfx.lineTo(  cs/2,5*cs/8);
+			gfx.moveTo(3*cs/8,4*cs/8);
+			gfx.lineTo(5*cs/8,4*cs/8);
 			gfx.stroke();
 		},
 
@@ -122,64 +128,64 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(  cs/2,3*cs/8);
 			gfx.lineTo(5*cs/8,4*cs/8);
 			gfx.lineTo(  cs/2,5*cs/8);
+			gfx.moveTo(3*cs/8,4*cs/8);
+			gfx.lineTo(5*cs/8,4*cs/8);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES['UP']:function(){
 		4:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(cs/2,cs/4);
-			gfx.lineTo(cs/4,3*cs/4);
+			gfx.moveTo(  cs/4,3*cs/4);
+			gfx.lineTo(  cs/2,  cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
-			gfx.lineTo(cs/2,cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES['DOWN']:function(){
 		5:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(cs/2,3*cs/4);
-			gfx.lineTo(cs/4,cs/4);
-			gfx.lineTo(3*cs/4,cs/4);
-			gfx.lineTo(cs/2,3*cs/4);
+			gfx.moveTo(  cs/4,  cs/4);
+			gfx.lineTo(  cs/2,3*cs/4);
+			gfx.lineTo(3*cs/4,  cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES['LEFT']:function(){
 		6:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(cs/4,cs/2);
-			gfx.lineTo(3*cs/4,cs/4);
+			gfx.moveTo(3*cs/4,  cs/4);
+			gfx.lineTo(  cs/4,  cs/2);
 			gfx.lineTo(3*cs/4,3*cs/4);
-			gfx.lineTo(cs/4,cs/2);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES['RIGHT']:function(){
 		7:function(gfx,cs){
 			gfx.beginPath();
-			gfx.moveTo(3*cs/4,cs/2);
-			gfx.lineTo(cs/4,cs/4);
-			gfx.lineTo(cs/4,3*cs/4);
-			gfx.lineTo(3*cs/4,cs/2);
+			gfx.moveTo(  cs/4,  cs/4);
+			gfx.lineTo(3*cs/4,  cs/2);
+			gfx.lineTo(  cs/4,3*cs/4);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES['ROTATE CW']:function(){
 		8:function(gfx,cs){
 			gfx.beginPath();
-			gfx.arc(cs/2,cs/2,cs/4,Math.PI/2,2*Math.PI);
-			gfx.moveTo(3*cs/4,cs/2);
-			gfx.lineTo(3*cs/4,cs/4);
+			gfx.moveTo(0,0);
+			gfx.lineTo(cs,cs);
+			gfx.moveTo(0,cs);
+			gfx.lineTo(cs,0);
 			gfx.stroke();
 		},
 
 	//	ins.TYPES['ROTATE CCW']:function(){
 		9:function(gfx,cs){
 			gfx.beginPath();
-			gfx.arc(cs/2,cs/2,cs/4,Math.PI,Math.PI/2);
-			gfx.moveTo(cs/4,cs/2);
-			gfx.lineTo(cs/4,cs/4);
+			gfx.moveTo(0,0);
+			gfx.lineTo(cs,cs);
+			gfx.moveTo(0,cs);
+			gfx.lineTo(cs,0);
 			gfx.stroke();
 		},
 
