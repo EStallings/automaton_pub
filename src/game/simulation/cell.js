@@ -14,14 +14,9 @@ App.SimulationCell = function(level,x,y){
 			return;
 		}
 
-		// report error if token collision detected
-		var total = this.tokens.length;
-		for(var i in this.automatons)
-		if(this.automatons[i].tokenHeld !== undefined)++total;
-		if(total > 1)App.Game.simulationError(); // TODO: tell game reached invalid state (token collision)
-
 		// execute instructions
-		for(var a in this.automatons)for(var i in App.COLORS){
+		// TODO: APPLY COLOR PRIORITY LEVEL-WIDE
+		for(var i in App.COLORS)for(var a in this.automatons){
 			var instruction = this.instructions[App.COLORS[i]];
 			if(instruction)instruction.execute(this.automatons[a]);
 		}

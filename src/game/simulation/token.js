@@ -6,6 +6,9 @@ App.SimulationToken = function(level,x,y,number){
 	this.gfxD = App.Game.tokenDGfx;
 	this.number = number;
 
+	this.increment = function(){if(++this.number>127)this.number=-128;}
+	this.decrement = function(){if(--this.number<-128)this.number=127;}
+
 	this.rFunc = function(x,y,gfx){
 		var cs = App.Game.cellSize;
 
