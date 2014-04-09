@@ -11,8 +11,6 @@ App.SimulationLevel = function(width,height){
 	// ========================================================== //
 
 	this.getCell = function(x,y){
-	//	x = addr(x,this.width);  // valid input is assumed, this isn't necessary
-	//	y = addr(y,this.height); // valid input is assumed, this isn't necessary
 		var i = this.grid[x];
 		if(i === undefined)i = this.grid[x] = [];
 		var j = i[y];
@@ -21,8 +19,6 @@ App.SimulationLevel = function(width,height){
 	}
 
 	this.removeCell = function(x,y){
-	//	x = addr(x,this.width);  // valid input is assumed, this isn't necessary
-	//	y = addr(y,this.height); // valid input is assumed, this isn't necessary
 		var i = this.grid[x];
 		if(i === undefined)return;
 		i[y] = undefined;
@@ -32,25 +28,28 @@ App.SimulationLevel = function(width,height){
 
 	this.update = function(){
 		// cell verification
-		// TODO: TOKEN MID-CELL COLLISION
 		for(var i in this.grid)for(var j in this.grid[i]){
 			var cell = this.grid[i][j];
 			if(cell === undefined)continue;
-			this.grid[i][j].process();
+			this.grid[i][j].clean();
 		}
 
-		// ALL automatons MUST be processes before theyre moved
+		// level-wide color-prioritized instruction execution
+		for(var c in App.COLORS)for(var i in this.grid)for(var j in this.grid[i]){
+			var cell = this.grid[i][j];
+			if(cell === undefined)continue;
+			this.grid[i][j].process(c);
+		}
+
+		// ALL automatons MUST be processed before theyre moved
 		for(var i in this.automatons)this.automatons[i].move();
 	}
 
 	this.staticRender = function(){
-		// draw level bounds | XXX: SHOULD WE EVEN RENDER THIS...
 		App.Game.translateCanvas(App.Game.instructionGfx);
 		App.Game.translateCanvas(App.Game.tokenSGfx);
-		App.Game.tokenSGfx.textAlign = 'center';
-		App.Game.tokenSGfx.textBaseline = 'middle';
-		App.Game.tokenSGfx.font = 'bold '+App.Game.cellSize/2+'px arial';
 
+		// TODO: OPTIMIZE RENDERING: ONLY RENDER STUFF INSIDE WINDOW
 		for(var i in this.grid)/* TODO: if i intersects with window */
 		for(var j in this.grid[i])/* TODO: if j intersects with window */{
 			var cell = this.grid[i][j];

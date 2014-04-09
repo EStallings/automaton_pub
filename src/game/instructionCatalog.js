@@ -168,7 +168,8 @@ App.makeInstructionCatalog = function(){
 		case ins.TYPES['IN']:
 			gfx.beginPath();gfx.arc(cs/2,15*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
-			gfx.moveTo(  cs/2,  cs/4); // i loop like this to avoid square joints
+			// TODO: optimize loop
+			gfx.moveTo(  cs/2,  cs/4);
 			gfx.lineTo(3*cs/4,  cs/4);
 			gfx.lineTo(3*cs/4,9*cs/16);
 			gfx.lineTo(  cs/2,3*cs/4);
@@ -183,7 +184,8 @@ App.makeInstructionCatalog = function(){
 		case ins.TYPES['OUT']:
 			gfx.beginPath();gfx.arc(cs/2,17*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
-			gfx.moveTo(  cs/2,3*cs/4); // i loop like this to avoid square joints
+			// TODO: optimize loop
+			gfx.moveTo(  cs/2,3*cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
 			gfx.lineTo(3*cs/4,7*cs/16);
 			gfx.lineTo(  cs/2,  cs/4);

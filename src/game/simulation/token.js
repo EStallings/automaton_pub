@@ -23,10 +23,10 @@ App.SimulationToken = function(level,x,y,number){
 		gfx.fill();
 		gfx.stroke();
 
-		gfx.strokeStyle = '#000000';
+		gfx.strokeStyle = '#404040';
 		gfx.lineWidth = (Math.round(Math.log(cs/3)/Math.log(2)+2)-5)*2;
-		gfx.save();
 
+		gfx.save();
 		var str = this.number.toString();
 		gfx.translate(x+Math.floor(17*cs/32-str.length*3*cs/32),y);
 		for(var i=0;i<str.length;++i){

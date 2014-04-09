@@ -6,18 +6,19 @@ App.SimulationCell = function(level,x,y){
 	this.automatons   = [];
 	this.instructions = [];
 
-	this.process = function(){
+	this.clean = function(){
 		// remove this cell if its empty
 		if(this.tokens.length       === 0 && this.automatons.length === 0 &&
 		   this.instructions.length === 0){
 			level.removeCell(this.x,this.y);
 			return;
 		}
+	}
 
+	this.process = function(c){
 		// execute instructions
-		// TODO: APPLY COLOR PRIORITY LEVEL-WIDE
-		for(var i in App.COLORS)for(var a in this.automatons){
-			var instruction = this.instructions[App.COLORS[i]];
+		for(var a in this.automatons){
+			var instruction = this.instructions[App.COLORS[c]];
 			if(instruction)instruction.execute(this.automatons[a]);
 		}
 	}
