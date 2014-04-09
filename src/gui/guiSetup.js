@@ -152,23 +152,31 @@ var setupMainMenuFrame = function(){
 var setupSimulationFrame = function(){
 
 
+	var x = 0;
+	var y = 0;
+	var width = 100;
+	var height = 400;
+
 	var key = App.setup.frames.SIMULATION;
 	App.Gui.addNewFrame(key);
 
-	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,0,200,500));
-	controlsPanel.yAlignment = 'bottom';
+	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(x,y,width,height));
+	controlsPanel.yAlignment = 'top';
 
 	var joystick = new App.GuiJoystick(50, 50, controlsPanel);
+
 	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,1);}, false, controlsPanel);
+
 	var zoomOutButton = new App.GuiTextButton(0, 250, 'Zoom Out', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,-1);}, false, controlsPanel);
+
 	var simButton = new App.GuiTextButton(400, 50, 'Return',function(){ App.changeMode(App.MODES.PLANNING);	}, false, null);
 	var pauseButton = new App.GuiTextButton(0, 325, 'Pause',function(){ App.Game.pause();}, false, controlsPanel);
-	var speedSliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(150,10,50,25), controlsPanel);
+	var speedSliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(x+10,100,width-20,10), controlsPanel);
 
 	var min = 0;
 	var max = 7;
 	var diff = 3;
-	var speedSliderLine = new App.GuiSliderLine(new App.GuiCollisionRect(150,10,10, 400), min, max, 2, function(n){
+	var speedSliderLine = new App.GuiSliderLine(new App.GuiCollisionRect(x+10,100,width-20,10), min, max, 0, function(n){
 		var k = 0 - n + max;
 		App.Game.setSimulationSpeed(Math.pow(2,k+diff));
 	}, controlsPanel);
@@ -200,7 +208,7 @@ var setupPlanningFrame = function(){
 	App.Gui.addNewFrame(key);
 	var instructionPanel = new App.GuiPanel(new App.GuiCollisionRect(0,0,100,600));
 	instructionPanel.xAlignment = 'right';
-	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,100,100,500));
+	var controlsPanel = new App.GuiPanel(new App.GuiCollisionRect(0,0,100,500));
 
 	var redButton 		= new App.GuiTextButton(0,300,'Red',		function(){	App.GuiDragButton.changeGlobalColor(0)	}, false, instructionPanel);
 	var greenButton 	= new App.GuiTextButton(0,330,'Green',	function(){	App.GuiDragButton.changeGlobalColor(1)	}, false, instructionPanel);

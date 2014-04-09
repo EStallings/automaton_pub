@@ -58,8 +58,17 @@ App.GuiTextButton = function(x, y, text, callback, continuous, panel){
 		gfx.fillStyle = this.color;
 		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
 		gfx.fillStyle = App.GuiTextButton.fg;
+		
 		var textX = this.guiCollider.getx() + 2;
 		var textY = this.guiCollider.gety() + (this.guiCollider.h / 2);
+		
+		var text_w = gfx.measureText(this.text).width;
+
+		textX = this.guiCollider.getx() + (this.guiCollider.w/2 - text_w/2);
+		
+		// there is no gfx.measureText(txt).height param so we must use font size
+		textY = this.guiCollider.gety() + this.guiCollider.h/2 + 5;
+		
 		gfx.fillText(this.text, textX, textY);
 		var flair = (this.flair) ? this.flair : App.GuiTextButton.defaultFlair;
 		App.GuiTextButton.flairs[flair](gfx, this.flairColor, this.guiCollider.getx(), this.guiCollider.gety());
