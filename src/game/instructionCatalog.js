@@ -89,7 +89,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(4*cs/8,3*cs/8);
 			gfx.lineTo(4*cs/8,5*cs/8);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['SPAWN DOWN']:
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
@@ -103,7 +103,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(4*cs/8,3*cs/8);
 			gfx.lineTo(4*cs/8,5*cs/8);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['SPAWN LEFT']:
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
@@ -117,7 +117,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(3*cs/8,4*cs/8);
 			gfx.lineTo(5*cs/8,4*cs/8);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['SPAWN RIGHT']:
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
@@ -131,7 +131,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(3*cs/8,4*cs/8);
 			gfx.lineTo(5*cs/8,4*cs/8);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['UP']:
 			gfx.beginPath();
@@ -139,7 +139,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/2,  cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['DOWN']:
 			gfx.beginPath();
@@ -147,7 +147,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/2,3*cs/4);
 			gfx.lineTo(3*cs/4,  cs/4);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['LEFT']:
 			gfx.beginPath();
@@ -155,7 +155,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/4,  cs/2);
 			gfx.lineTo(3*cs/4,3*cs/4);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['RIGHT']:
 			gfx.beginPath();
@@ -163,7 +163,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(3*cs/4,  cs/2);
 			gfx.lineTo(  cs/4,3*cs/4);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['IN']:
 			gfx.beginPath();gfx.arc(cs/2,15*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
@@ -178,7 +178,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(  cs/4,3*cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['OUT']:
 			gfx.beginPath();gfx.arc(cs/2,17*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
@@ -191,7 +191,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/4,3*cs/4);
 			gfx.lineTo(  cs/2,3*cs/4);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['GRAB']:
 			gfx.beginPath();
@@ -203,7 +203,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(cs/2,cs/4);
 			gfx.lineTo(5*cs/8,3*cs/8);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['DROP']:
 			gfx.beginPath();
@@ -215,7 +215,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.lineTo(5*cs/8,5*cs/8);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['GRAB/DROP']:
 			gfx.beginPath();
@@ -230,7 +230,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.lineTo(5*cs/8,5*cs/8);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['INC']:
 			gfx.beginPath();
@@ -239,14 +239,14 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(cs/2,cs/4);
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['DEC']:
 			gfx.beginPath();
 			gfx.moveTo(cs/4,cs/2);
 			gfx.lineTo(3*cs/4,cs/2);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['PAUSE']:
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);gfx.stroke();
@@ -256,7 +256,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(cs/2,cs/2);
 			gfx.lineTo(5*cs/8,cs/2);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND 0 U']:
 			gfx.beginPath();
@@ -271,7 +271,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(3*cs/8,4*cs/8);
 			gfx.lineTo(5*cs/8,6*cs/8);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND 0 D']:
 			gfx.beginPath();
@@ -286,7 +286,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(3*cs/8,2*cs/8);
 			gfx.lineTo(5*cs/8,4*cs/8);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND 0 L']:
 			gfx.beginPath();
@@ -301,7 +301,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(4*cs/8,3*cs/8);
 			gfx.lineTo(6*cs/8,5*cs/8);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND 0 R']:
 			gfx.beginPath();
@@ -316,7 +316,7 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(2*cs/8,3*cs/8);
 			gfx.lineTo(4*cs/8,5*cs/8);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND TOKEN U']:
 			gfx.beginPath();
@@ -326,7 +326,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 
 			gfx.beginPath();gfx.arc(cs/2,5*cs/8,cs/8,-Math.PI,Math.PI);gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND TOKEN D']:
 			gfx.beginPath();
@@ -336,7 +336,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 
 			gfx.beginPath();gfx.arc(cs/2,3*cs/8,cs/8,-Math.PI,Math.PI);gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND TOKEN L']:
 			gfx.beginPath();
@@ -346,7 +346,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 
 			gfx.beginPath();gfx.arc(5*cs/8,cs/2,cs/8,-Math.PI,Math.PI);gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND TOKEN R']:
 			gfx.beginPath();
@@ -356,7 +356,7 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 
 			gfx.beginPath();gfx.arc(3*cs/8,cs/2,cs/8,-Math.PI,Math.PI);gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND + U']:
 			gfx.beginPath();
@@ -369,7 +369,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo( 6*cs/16, 9*cs/16);
 			gfx.lineTo(10*cs/16, 9*cs/16);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND + D']:
 			gfx.beginPath();
@@ -382,7 +382,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo( 6*cs/16, 7*cs/16);
 			gfx.lineTo(10*cs/16, 7*cs/16);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND + L']:
 			gfx.beginPath();
@@ -395,7 +395,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo( 7*cs/16, 8*cs/16);
 			gfx.lineTo(11*cs/16, 8*cs/16);
 			gfx.stroke();
-		break;
+			break;
 
 		case ins.TYPES['COND + R']:
 			gfx.beginPath();
@@ -408,7 +408,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo( 5*cs/16, 8*cs/16);
 			gfx.lineTo( 9*cs/16, 8*cs/16);
 			gfx.stroke();
-		break;
+			break;
 	}
 
 	// ========================================================== //
@@ -417,7 +417,7 @@ App.makeInstructionCatalog = function(){
 	}
 
 	ins.renderStream = function(gfx,x,y,c,cs,lw){
-		// TODO: I NEED TO KNOW WHAT STREAM I AM
+		// TODO: I NEED TO KNOW WHAT STREAM I AM FOR LETTERING
 		gfx.save();
 		gfx.translate(x,y);
 		gfx.restore();
@@ -511,16 +511,6 @@ App.makeInstructionCatalog = function(){
 				gfx.lineTo(2,2);
 				break;
 		}gfx.fill();gfx.stroke();
-
-/*
-		if(cs>15){
-			gfx.lineWidth = lw;
-			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.92,-Math.PI*0.58);gfx.stroke();
-			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI*0.42,-Math.PI*0.08);gfx.stroke();
-			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.08, Math.PI*0.42);gfx.stroke();
-			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4, Math.PI*0.58, Math.PI*0.92);gfx.stroke();
-		}
-*/
 
 		gfx.restore();
 	}
