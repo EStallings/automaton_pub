@@ -24,7 +24,7 @@ App.SimulationToken = function(level,x,y,number){
 		gfx.stroke();
 
 		gfx.strokeStyle = '#000000';
-		gfx.lineWidth = 2; // TODO: MAKE THIS CONSISTENT WITH INSTRUCTION GLYPH LINE WIDTH
+		gfx.lineWidth = (Math.round(Math.log(cs/3)/Math.log(2)+2)-5)*2;
 		gfx.save();
 
 		var str = this.number.toString();
