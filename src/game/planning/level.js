@@ -71,12 +71,20 @@ App.PlanningLevel = function(){
 	};
 
 	// fills currentSelection list of all unlocked instructions in cells between the specified coordinates
-	this.selectCells = function(x1, y1, c1, x2, y2, c2){}
 
-	// selects a single instruction
-	this.selectInstruction = function(x,y,c){
-		that.currentSelection = [];
-		that.currentSelection[0] = that.getInstruction(x,y,c);
+	this.selectInstructions = function(x1, y1, c1, x2, y2, c2){
+		var that = App.Game.currentPlanningLevel; // TODO wierd bug with 'that'. not sure why this was needed
+		if(x1 === x2 && y1 === y2 && c1 === c2){ // click select
+			if(that.getInstruction(x1,y1,c1)){
+				that.currentSelection[0] = that.getInstruction(x1,y1,c1);
+			}
+			else{ // click in empty space - clear selection
+				that.currentSelection = [];
+			}
+		}
+		else{ //drag select
+			//TODO
+		}
 	}
 
 	// toggles the state of the specified layer lock
@@ -101,7 +109,7 @@ App.PlanningLevel = function(){
 	this.insert = function(instructions){
 		// TODO layer lock stuff
 		instructions = that.toList(instructions);
-
+console.log(that);
 		for(var i in instructions){
 			if(that.getInstruction(instructions[i].x,instructions[i].y,instructions[i].color) !== null){ // space occupied
 				// TODO overwrite

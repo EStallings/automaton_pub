@@ -16,9 +16,17 @@ App.makeGameInput = function(){
 		//do dragging of instructions that have already been placed
 		//OR
 		//do selection box (to select a number of instructions)			
-		if(mouseData.lmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonDown('lmb', mouseData.x, mouseData.y); }
-		if(mouseData.mmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonDown('mmb', mouseData.x, mouseData.y); }
-		if(mouseData.rmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonDown('rmb', mouseData.x, mouseData.y); }
+		if(mouseData.lmb && game.mode === game.modes.PLANNING){
+			App.Game.currentPlanningLevel.input.buttonDown('lmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
+		}
+		
+		if(mouseData.mmb && game.mode === game.modes.PLANNING){
+			App.Game.currentPlanningLevel.input.buttonDown('mmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
+		}
+		
+		if(mouseData.rmb && game.mode === game.modes.PLANNING){
+			App.Game.currentPlanningLevel.input.buttonDown('rmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
+		}
 
 		else if(mouseData.lmb && game.mode === game.modes.SIMULATION){
 			//show data about a node?
@@ -32,10 +40,17 @@ App.makeGameInput = function(){
 		App.Game.screenToGridCoords(mouseData.x,mouseData.y);
 
 		// TODO: do dragging of instructions that have already been placed
-		if(mouseData.lmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonUp('lmb', mouseData.x, mouseData.y); }
-		if(mouseData.mmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonUp('mmb', mouseData.x, mouseData.y); }
-		if(mouseData.rmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonUp('rmb', mouseData.x, mouseData.y); }
-
+		if(mouseData.lmb && game.mode === game.modes.PLANNING){
+			App.Game.currentPlanningLevel.input.buttonUp('lmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
+		}
+		
+		if(mouseData.mmb && game.mode === game.modes.PLANNING){
+			App.Game.currentPlanningLevel.input.buttonUp('mmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
+		}
+		
+		if(mouseData.rmb && game.mode === game.modes.PLANNING){
+			App.Game.currentPlanningLevel.input.buttonUp('rmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
+		}
 	}
 
 	gInput.mouseMove = function(mouseData){
@@ -48,7 +63,7 @@ App.makeGameInput = function(){
 		}
 
 		if(game.mode === game.modes.PLANNING){
-			App.Game.currentPlanningLevel.input.mouseMove(mouseData.x,mouseData.y);
+			App.Game.currentPlanningLevel.input.mouseMove(mouseData.x,mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
 		}
 	}
 
