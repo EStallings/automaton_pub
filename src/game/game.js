@@ -66,6 +66,7 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
+	// TODO: move this to planningLevel
 	// returns a planning level object, given an input string.
 	// Just a little string parser, really. If changes to
 	// Level format are made, they have to be updated here.
