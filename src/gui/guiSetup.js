@@ -247,7 +247,7 @@ var setupPlanningFrame = function(){
 	//Setup Key Bindings
 	App.InputHandler.registerKey('M', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.mkey(); });
 	App.InputHandler.registerKey('C', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.ckey(); });
-	App.InputHandler.registerKey('D', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.input.delKey(); });
+	App.InputHandler.registerKey('Delete', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.input.delKey(); });
 	App.InputHandler.registerKey('`', App.MODES.PLANNING,function(){ App.changeMode(App.MODES.SIMULATION);});
 	App.InputHandler.registerKey('Z', App.MODES.PLANNING, function(){
 			if(App.InputHandler.keysDown['Ctrl']) {

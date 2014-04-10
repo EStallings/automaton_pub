@@ -93,16 +93,16 @@ App.PlanningGraphics = function(){
 		if(App.Game.currentPlanningLevel.currentSelection.length !== 0
 			&& App.Game.currentPlanningLevel.currentSelection[0] !== null ){ that.selectionOverlay(gfx); } // TODO: move to static render?
 
-		if(App.Game.currentPlanningLevel.input.isDown){ that.drawSelectionBox(gfx); }
+		if(App.Game.currentPlanningLevel.input.mmb[0] === 'down'){ that.drawSelectionBox(gfx); }
 	}
 
 	// TODO: fix it so it draws even if something is already selected
 	this.drawSelectionBox = function(gfx){
 		var mouseData = App.Game.currentPlanningLevel.input;
-		var curX = mouseData.curX;
-		var curY = mouseData.curY;
-		var downX = App.Game.currentPlanningLevel.input.downScrnX;
-		var downY = App.Game.currentPlanningLevel.input.downScrnY;
+		var curX = mouseData.scrnX;
+		var curY = mouseData.scrnY;
+		var downX = App.Game.currentPlanningLevel.input.mmb[1];
+		var downY = App.Game.currentPlanningLevel.input.mmb[2];
 		gfx.fillStyle = 'rgba(255,255,255,0.1)';
 		gfx.fillRect(curX, curY, (downX-curX), (downY-curY) );
 		gfx.strokeStyle = '#ffffff';
