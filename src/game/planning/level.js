@@ -8,8 +8,8 @@ App.PlanningLevel = function(){
 	this.undoStack = [];
 	this.redoStack = [];
 	// TODO layer locks
-	// TODO input
 	this.input = new App.PlanningControls();
+	this.graphics = new App.PlanningGraphics();
 	// TODO graphics
 
 	// flag that lets the operation functions know how to handle conflicts.
