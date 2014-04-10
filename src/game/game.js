@@ -494,7 +494,7 @@ App.makeGame = function(){
 
 		if(game.mode === game.modes.PLANNING && game.currentPlanningLevel !== undefined){
 			game.currentPlanningLevel.staticRender();
-			game.currentPlanningLevel.graphics.staticRender(game.tempGfx);
+			//game.currentPlanningLevel.graphics.staticRender(game.tempGfx);
 		}
 		else if(game.currentSimulationLevel !== undefined){
 			game.currentSimulationLevel.staticRender();
@@ -504,7 +504,7 @@ App.makeGame = function(){
 	game.dynamicRender = function(){
 		if(game.mode === game.modes.PLANNING && game.currentPlanningLevel !== undefined){
 				game.currentPlanningLevel.dynamicRender();
-				if(App.Game.mode === 'Planning'){ game.currentPlanningLevel.graphics.dynamicRender(game.tempGfx); }
+				//if(App.Game.mode === 'Planning'){ game.currentPlanningLevel.graphics.dynamicRender(game.tempGfx); }
 		}
 		else if(game.currentSimulationLevel !== undefined){
 			game.interpolation = (App.Engine.tick-game.lastCycleTick)/(game.nextCycleTick-game.lastCycleTick); // this is a division, NOT A COMMENT

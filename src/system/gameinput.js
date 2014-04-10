@@ -18,8 +18,8 @@ App.makeGameInput = function(){
 			//OR
 			//do selection box (to select a number of instructions)
 			
-			App.Game.currentPlanningLevel.setDown(App.Game.mouseX,
-				App.Game.mouseY, App.Game.mouseC, mouseData.x, mouseData.y);
+			//App.Game.currentPlanningLevel.setDown(App.Game.mouseX,
+				//App.Game.mouseY, App.Game.mouseC, mouseData.x, mouseData.y);
 		}
 		else if(mouseData.lmb && game.mode === game.modes.SIMULATION){
 			//show data about a node?
@@ -33,8 +33,8 @@ App.makeGameInput = function(){
 		App.Game.screenToGridCoords(mouseData.x,mouseData.y);
 
 		if(mouseData.lmb && game.mode === game.modes.PLANNING){
-			App.Game.currentPlanningLevel.setUp(App.Game.mouseX,
-				App.Game.mouseY, App.Game.mouseC);
+			//App.Game.currentPlanningLevel.setUp(App.Game.mouseX,
+				//App.Game.mouseY, App.Game.mouseC);
 			// TODO: do dragging of instructions that have already been placed
 		}
 
@@ -49,13 +49,13 @@ App.makeGameInput = function(){
 			game.pan(mouseData.x, mouseData.y);
 
 		if(mouseData.lmb && game.mode === game.modes.PLANNING){
-			App.Game.currentPlanningLevel.input.setCurrentMouseCoords(mouseData.x,mouseData.y);
+			//App.Game.currentPlanningLevel.input.setCurrentMouseCoords(mouseData.x,mouseData.y);
 			//do dragging of instructions that have already been placed
 		}
 
 		if(game.mode === game.modes.PLANNING){
-			App.Game.currentPlanningLevel.input.curX = mouseData.x;
-			App.Game.currentPlanningLevel.input.curY = mouseData.y;
+			//App.Game.currentPlanningLevel.input.curX = mouseData.x;
+			//App.Game.currentPlanningLevel.input.curY = mouseData.y;
 		}
 	}
 
