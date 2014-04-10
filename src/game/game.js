@@ -66,6 +66,7 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
+	// TODO: move this to planningLevel
 	// returns a planning level object, given an input string.
 	// Just a little string parser, really. If changes to
 	// Level format are made, they have to be updated here.
@@ -484,8 +485,9 @@ App.makeGame = function(){
 
 		// draw background and occlude level at borders
 		// TODO: OPTIMIZE THIS
+		game.bkgndGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		game.bkgndGfx.strokeStyle = '#131313';
-		game.bkgndGfx.lineWidth = 4;
+		game.bkgndGfx.lineWidth = 5;
 		game.bkgndGfx.beginPath();
 		for(var i=1;i<App.Canvases.width+App.Canvases.height;i+=9){
 			game.bkgndGfx.moveTo(i,0);
