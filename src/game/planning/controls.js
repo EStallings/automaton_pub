@@ -46,14 +46,9 @@ App.PlanningControls = function(){
 		console.log('');*/
 	}
 
-	this.downKeys = [];
-	
-	this.keyDown = function(x){ that.downKeys.push(x); }
-
-	this.keyUp = function(x){ 
-		var idx = that.downKeys.indexOf(x);
-		if(idx !== -1){
-			var temp = that.downKeys.splice(idx,1);
+	this.delKey = function(){
+		if(App.Game.currentPlanningLevel.currentSelection !== []){
+			App.Game.currentPlanningLevel.delete(App.Game.currentPlanningLevel.currentSelection);
 		}
 	}
 }

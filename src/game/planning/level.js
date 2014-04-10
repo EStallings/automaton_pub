@@ -131,6 +131,7 @@ console.log(that);
 
 	// this function takes a list of coordinate triplets and deletes the corresponding instructions from the grid
 	this.delete = function(instructions){
+		if(that.currentSelection === []){ return; }
 		instructions = that.toList(instructions);
 		for(i in instructions){
 			that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = null;
@@ -138,6 +139,7 @@ console.log(that);
 		that.undoStack.push(new that.operation('del', instructions, null, null, null, null));
 		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: delete');
+		that.currentSelection = [];
 	}
 
 	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
