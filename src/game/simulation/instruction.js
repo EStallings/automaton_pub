@@ -81,17 +81,13 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 
-//============================================================================//
-
 		case App.InstCatalog.TYPES['IN']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)return;
-				a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,Math.floor(Math.random()*8+1));
+				a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,Math.floor(Math.random()*9+1));
 			};break;
-
-//============================================================================//
 
 		case App.InstCatalog.TYPES['OUT']:
 
@@ -100,8 +96,6 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(a.tokenHeld === undefined)return;
 				a.tokenHeld = undefined;
 			};break;
-
-//============================================================================//
 
 		case App.InstCatalog.TYPES['GRAB']:
 
