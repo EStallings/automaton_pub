@@ -10,7 +10,3 @@ function addr(i,dimension){
 	if(dimension===0)return i;
 	return fmod(i,dimension);
 }
-
-//NOT cross-browser compatible.
-//Throws a typeError in Chrome
-//var print = console.log
