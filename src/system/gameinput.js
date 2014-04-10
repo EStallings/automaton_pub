@@ -13,14 +13,13 @@ App.makeGameInput = function(){
 		if(mouseData.rmb)
 			game.beginPan(mouseData.x, mouseData.y);
 
-		if(mouseData.lmb && game.mode === game.modes.PLANNING){
-			//do dragging of instructions that have already been placed
-			//OR
-			//do selection box (to select a number of instructions)
-			
-			//App.Game.currentPlanningLevel.setDown(App.Game.mouseX,
-				//App.Game.mouseY, App.Game.mouseC, mouseData.x, mouseData.y);
-		}
+		//do dragging of instructions that have already been placed
+		//OR
+		//do selection box (to select a number of instructions)			
+		if(mouseData.lmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonDown('lmb', mouseData.x, mouseData.y); }
+		if(mouseData.mmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonDown('mmb', mouseData.x, mouseData.y); }
+		if(mouseData.rmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonDown('rmb', mouseData.x, mouseData.y); }
+
 		else if(mouseData.lmb && game.mode === game.modes.SIMULATION){
 			//show data about a node?
 		}
@@ -32,11 +31,10 @@ App.makeGameInput = function(){
 
 		App.Game.screenToGridCoords(mouseData.x,mouseData.y);
 
-		if(mouseData.lmb && game.mode === game.modes.PLANNING){
-			//App.Game.currentPlanningLevel.setUp(App.Game.mouseX,
-				//App.Game.mouseY, App.Game.mouseC);
-			// TODO: do dragging of instructions that have already been placed
-		}
+		// TODO: do dragging of instructions that have already been placed
+		if(mouseData.lmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonUp('lmb', mouseData.x, mouseData.y); }
+		if(mouseData.mmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonUp('mmb', mouseData.x, mouseData.y); }
+		if(mouseData.rmb && game.mode === game.modes.PLANNING){ App.Game.currentPlanningLevel.input.buttonUp('rmb', mouseData.x, mouseData.y); }
 
 	}
 
@@ -45,17 +43,12 @@ App.makeGameInput = function(){
 
 		App.Game.screenToGridCoords(mouseData.x,mouseData.y); // DELETE
 
-		if(mouseData.rmb)
+		if(mouseData.rmb){
 			game.pan(mouseData.x, mouseData.y);
-
-		if(mouseData.lmb && game.mode === game.modes.PLANNING){
-			//App.Game.currentPlanningLevel.input.setCurrentMouseCoords(mouseData.x,mouseData.y);
-			//do dragging of instructions that have already been placed
 		}
 
 		if(game.mode === game.modes.PLANNING){
-			//App.Game.currentPlanningLevel.input.curX = mouseData.x;
-			//App.Game.currentPlanningLevel.input.curY = mouseData.y;
+			App.Game.currentPlanningLevel.input.mouseMove(mouseData.x,mouseData.y);
 		}
 	}
 

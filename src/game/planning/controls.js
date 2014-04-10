@@ -1,49 +1,41 @@
 App.PlanningControls = function(){
 	var that = this;
-	this.downX; this.downY; this.downC; this.downScrnX; this.downScrnY;
-	this.upX; this.upY; this.upC
-	this.curX; this.curY;
-	this.dragged = false;
-	this.isDown = false;
 
-	this.setCurrentMouseCoords = function(x, y){
-		that.curX = x;
-		that.curY = y;
+	this.mX; this.mY; // current mouse position
+	this.lmb = ['up',-1,-1]; // 1st index is for up (0) or down (1). 2nd is for x coordinate of click, 3rd is for y
+	this.mmb = ['up',-1,-1];
+	this.rmb = ['up',-1,-1];
+	this.lmbDrag = false;
+	this.mmbDrag = false;
+	this.rmbDrag = false;
+
+	this.mouseMove = function(x,y){
+		this.mX = x; this.mY = y;
+		if(that.lmb[0] === 'down' && (that.lmb[1] !== x || that.lmb[2] !== y)){ that.lmbDrag = true; } else { that.lmbDrag = false; }
+		if(that.mmb[0] === 'down' && (that.mmb[1] !== x || that.mmb[2] !== y)){ that.mmbDrag = true; } else { that.mmbDrag = false; }
+		if(that.rmb[0] === 'down' && (that.rmb[1] !== x || that.rmb[2] !== y)){ that.rmbDrag = true; } else { that.rmbDrag = false; }
 	}
 
-	this.setDown = function(mX, mY, mC, scrnX, scrnY){
-		that.dragged = false;
-		that.isDown = true;
-		that.downX = mX;
-		that.downY = mY;
-		that.downC = mC;
-		that.downScrnX = scrnX;
-		that.downScrnY = scrnY;
+	this.buttonDown = function(button,x,y){
+		if(button == 'lmb'){ that.lmb = ['down',x,y]; }
+		if(button == 'mmb'){ that.mmb = ['down',x,y]; }
+		if(button == 'rmb'){ that.rmb = ['down',x,y]; }
 	}
+
+	this.buttonUp = function(button,x,y){
+		if(button == 'lmb'){ that.lmb = ['up',x,y]; }
+		if(button == 'mmb'){ that.mmb = ['up',x,y]; }
+		if(button == 'rmb'){ that.rmb = ['up',x,y]; }
+	}
+
+	this.downKeys = [];
 	
-	this.setUp = function(mX, mY, mC){
-		that.isDown = false;
-		that.upX = mX; that.upY = mY; that.upC = mC;
-		if(that.downX !== that.upX || that.downY !== that.upY || that.downC !== that.upC){
-			this.dragged = true;
-		} else { this.dragged = false; }
-		//console.log(mX + ' ' + mY + ' ' + mC + ' ' + that.dragged);
-		if(!App.Game.currentPlanningLevel.copied && !App.Game.currentPlanningLevel.moving){ that.select(that.dragged); }
-		else if(App.Game.currentPlanningLevel.copied){
-			App.Game.currentPlanningLevel.doCopy(that.downX, that.downY);
-		}else{
-			App.Game.currentPlanningLevel.doMove(that.downX, that.downY);
-		}
-	}
+	this.keyDown = function(x){ that.downKeys.push(x); }
 
-	this.select = function(isDrag){
-		if(isDrag){
-			// group select
-				App.Game.currentPlanningLevel.selectCells(that.downX, that.downY, that.downC, that.upX, that.upY, that.upC);
-		}else{
-			// single instruction select
-			App.Game.currentPlanningLevel.selectInstruction(that.upX, that.upY, that.upC);
+	this.keyUp = function(x){ 
+		var idx = that.downKeys.indexOf(x);
+		if(idx !== -1){
+			that.downKeys.splice(idx-1,idx+1);
 		}
-		App.Game.requestStaticRenderUpdate = true;
 	}
 }
