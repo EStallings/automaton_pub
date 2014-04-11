@@ -5,6 +5,7 @@ App.setupPlanGui = function(){
 
 	planMode.gfx = App.Canvases.addNewLayer('planning gui',1);
 	planMode.direction = App.DIRECTIONS.UP;
+	planMode.color = App.COLORS.RED;
 
 		// ---------------------------------------------
 
@@ -21,24 +22,24 @@ App.setupPlanGui = function(){
 		planMode.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
 		var x=0;
-		App.InstCatalog.render(planMode.gfx, 0+planMode.direction,10+x++*50,10,0,48);
-		App.InstCatalog.render(planMode.gfx, 4,10+x++*50,10,0,48);
-		App.InstCatalog.render(planMode.gfx,12,10+x++*50,10,0,48);
-		App.InstCatalog.render(planMode.gfx,15,10+x++*50,10,0,48);
-		App.InstCatalog.render(planMode.gfx,13,10+x++*50,10,0,48);
-		App.InstCatalog.render(planMode.gfx,18+planMode.direction,10+x++*50,10,0,48);
-		App.InstCatalog.render(planMode.gfx,26+planMode.direction,10+x++*50,10,0,48);
-		App.InstCatalog.render(planMode.gfx, 8,10+x++*50,10,0,48);
+		App.InstCatalog.render(planMode.gfx, 0+planMode.direction,10+x++*50,10,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx, 4,10+x++*50,10,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,12,10+x++*50,10,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,15,10+x++*50,10,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,13,10+x++*50,10,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,18+planMode.direction,10+x++*50,10,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,26+planMode.direction,10+x++*50,10,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx, 8,10+x++*50,10,planMode.color,48);
 
 		var x=0;
-		App.InstCatalog.render(planMode.gfx, 7,10+x++*50,10+50,0,48);
-		App.InstCatalog.render(planMode.gfx, 6,10+x++*50,10+50,0,48);
-		App.InstCatalog.render(planMode.gfx, 5,10+x++*50,10+50,0,48);
-		App.InstCatalog.render(planMode.gfx,16,10+x++*50,10+50,0,48);
-		App.InstCatalog.render(planMode.gfx,14,10+x++*50,10+50,0,48);
-		App.InstCatalog.render(planMode.gfx,22+planMode.direction,10+x++*50,10+50,0,48);
-		App.InstCatalog.render(planMode.gfx,17,10+x++*50,10+50,0,48);
-		App.InstCatalog.render(planMode.gfx, 9,10+x++*50,10+50,0,48);
+		App.InstCatalog.render(planMode.gfx, 7,10+x++*50,10+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx, 6,10+x++*50,10+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx, 5,10+x++*50,10+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,16,10+x++*50,10+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,14,10+x++*50,10+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,22+planMode.direction,10+x++*50,10+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,17,10+x++*50,10+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx, 9,10+x++*50,10+50,planMode.color,48);
 
 		if(planMode.exitFlag && planMode.requestStaticRenderUpdate === false){
 			planMode.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
@@ -80,6 +81,26 @@ App.setupPlanGui = function(){
 
 	planMode.registerKeyDownFunc('D',function(){
 		planMode.direction = App.DIRECTIONS.RIGHT;
+		planMode.requestStaticRenderUpdate = true;
+	});
+
+	planMode.registerKeyDownFunc('1',function(){
+		planMode.color = App.COLORS.RED;
+		planMode.requestStaticRenderUpdate = true;
+	});
+
+	planMode.registerKeyDownFunc('2',function(){
+		planMode.color = App.COLORS.GREEN;
+		planMode.requestStaticRenderUpdate = true;
+	});
+
+	planMode.registerKeyDownFunc('3',function(){
+		planMode.color = App.COLORS.BLUE;
+		planMode.requestStaticRenderUpdate = true;
+	});
+
+	planMode.registerKeyDownFunc('4',function(){
+		planMode.color = App.COLORS.YELLOW;
 		planMode.requestStaticRenderUpdate = true;
 	});
 

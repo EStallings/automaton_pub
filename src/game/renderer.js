@@ -219,7 +219,7 @@ App.makeGameRenderer = function(){
 		}
 
 		// lighter overlay
-		game.gridGfx.fillStyle = 'rgba(0,0,0,0.4)';
+		game.gridGfx.fillStyle = 'rgba(0,0,0,0.55)';
 		game.gridGfx.fillRect(game.renderX,game.renderY,gw*cs,gh*cs);
 
 		// grid outline | if block below is modified, reflect changes here
@@ -302,7 +302,7 @@ App.makeGameRenderer = function(){
 	}
 
 	game.renderBackground = function(){ // TODO: OPTIMIZE THIS
-		game.bkgndGfx.strokeStyle = '#131313';
+		game.bkgndGfx.strokeStyle = '#151515';
 		game.bkgndGfx.lineWidth = 5;
 		game.bkgndGfx.beginPath();
 		for(var i=1;i<App.Canvases.width+App.Canvases.height;i+=9){
