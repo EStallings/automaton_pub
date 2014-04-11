@@ -6,12 +6,12 @@ App.makeEngine = function(){
 
 	engine.run = function(){
 		window.onresize();
+		engine.tick = new Date().getTime();
+		engine.elapsed = 1;
 	// DELETE ====================================================//
 		App.Game.currentPlanningLevel = App.Game.parseLevel(App.demoLevels[2]);
 	//============================================================//
 		App.ModeHandler.pushMode('main menu');
-		engine.tick = new Date().getTime();
-		engine.elapsed = 1;
 		requestAnimationFrame(engine.frame);
 	};
 

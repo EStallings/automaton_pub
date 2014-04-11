@@ -14,18 +14,19 @@ App.makeModeHandler = function(){
 		if(modeHandler.currentMode)modeHandler.currentMode.exitFunc();
 		modeHandler.modeStack.push(mode);
 		modeHandler.currentMode = mode;
-		modeHandler.currentMode.entranceFunc();
+		modeHandler.currentMode.enterFunc();
 	}
 
 	modeHandler.popMode = function(){
 		modeHandler.currentMode.exitFunc();
-		modeHandler.currentMode = modeHandler.pop();
-		modeHandler.currentMode.entranceFunc();
+		modeHandler.modeStack.pop();
+		modeHandler.currentMode = modeHandler.modeStack[modeHandler.modeStack.length-1];
+		modeHandler.currentMode.enterFunc();
 	}
 
 	// ========================================================== //
 
-	// REMEMBER TO SET UPDATEFUNC,ENTRANCEFUNC,EXITFUNC WHEN CREATING NEW MODE
+	// REMEMBER TO SET UPDATEFUNC,enterFunc,EXITFUNC WHEN CREATING NEW MODE
 	// remember to set updatingActive to false when the transition is complete
 
 	modeHandler.addNewMode = function(name){
@@ -39,6 +40,7 @@ App.makeModeHandler = function(){
 		mode.mouseMoveFunc;
 		mode.mouseUpFuncs    = [];
 		mode.mouseWheelFunc;
+		mode.resizeFunc;
 
 		mode.registerKeyDownFunc    = function(key,func){mode.keyDownFuncs[App.InputHandler.keyCharToCode[key]]=func;}
 		mode.registerKeyUpFunc      = function(key,func){mode.keyUpFuncs[App.InputHandler.keyCharToCode[key]]=func;}
@@ -46,10 +48,12 @@ App.makeModeHandler = function(){
 		mode.registerMouseMoveFunc  = function(func){mode.mouseMoveFunc=func;}
 		mode.registerMouseUpFunc    = function(button,func){mode.mouseUpFuncs[button]=func;}
 		mode.registerMouseWheelFunc = function(func){mode.mouseWheelFunc=func;}
+		mode.registerResizeFunc     = function(func){mode.resizeFunc=func;}
 
 		// update/render -------------------------------
 
 		mode.updatingActive = false;
+		mode.requestStaticRenderUpdate = false;
 
 		mode.updateFunc = function(){
 			if(mode.exitFlag)mode.updatingActive=false;
@@ -60,10 +64,10 @@ App.makeModeHandler = function(){
 
 		mode.exitFlag;
 
-		mode.entranceFunc = function(){
+		mode.enterFunc = function(){
 			mode.updatingActive=true;
 			mode.exitFlag = false;
-			console.log(name+' entering'+" | TODO: OVERWRITE ENTRANCEFUNC");
+			console.log(name+' entering'+" | TODO: OVERWRITE enterFunc");
 		};
 
 		mode.exitFunc = function(){
@@ -83,6 +87,14 @@ App.makeModeHandler = function(){
 		for(var i in modeHandler.modes)
 		if(modeHandler.modes[i].updatingActive)
 			modeHandler.modes[i].updateFunc();
+	}
+
+	modeHandler.callResizeFuncs = function(){
+		for(var i in modeHandler.modes){
+			var mode = modeHandler.modes[i];
+			mode.requestStaticRenderUpdate = true;
+			if(mode.resizeFunc)mode.resizeFunc();
+		}
 	}
 
 	// ========================================================== //

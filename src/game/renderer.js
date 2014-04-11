@@ -118,11 +118,19 @@ App.makeGameRenderer = function(){
 	}
 
 	game.bestFit = function(){
-		game.goalRenderX = Math.round((App.Canvases.width-App.Game.currentPlanningLevel.width*game.goalCellSize)/2);
-		game.goalRenderY = Math.round((App.Canvases.height-App.Game.currentPlanningLevel.height*game.goalCellSize)/2);
+		var level = App.Game.currentPlanningLevel;
+		if(!level)return;
+		game.goalRenderX = Math.round((App.Canvases.width-level.width*game.goalCellSize)/2);
+		game.goalRenderY = Math.round((App.Canvases.height-level.height*game.goalCellSize)/2);
+		game.requestStaticRenderUpdate = true;
 	}
 
-	game.centerOn = function(x,y,zoom){} // TODO: IMPLEMENT THIS
+	game.centerOn = function(x,y,zoom){
+		var level = App.Game.currentPlanningLevel;
+		if(!level)return;
+		// TODO: IMPLEMENT THIS
+		game.requestStaticRenderUpdate = true;
+	}
 
 	// ========================================================== //
 

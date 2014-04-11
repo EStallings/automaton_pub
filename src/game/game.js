@@ -9,7 +9,7 @@ App.makeGame = function(){
 	game.currentSimulationLevel;
 
 	game.createNewLevel = function(name,width,height){
-		var lvl = new PlanningLevel();
+		var lvl = new App.PlanningLevel();
 		lvl.name        = name;
 		lvl.dateCreated = new Date.getTime();
 		lvl.width       = width;
@@ -19,7 +19,7 @@ App.makeGame = function(){
 
 	// returns undefined if the level string is invalid
 	game.parseLevel = function(str){
-		var lvl = new PlanningLevel();
+		var lvl = new App.PlanningLevel();
 		if(!str)return undefined;
 		var data = str.split('~');
 		for(var i=0;i<data.length;++i)data[i] = data[i].split('`');

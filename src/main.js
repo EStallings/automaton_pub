@@ -12,8 +12,9 @@ window.onload = function(){
 	App.setupLevelSelect();
 	App.setupLibrary();
 	App.setupSettings();
-	App.setupGameGui(); // TODO: split this into planningGui and simulationGui
-	                    // TODO: split above into normal and sandbox versions?
+	// TODO: split below into normal and sandbox versions?
+	App.setupPlanGui();
+	App.setupSimGui();
 
 	App.Engine.run();
 }

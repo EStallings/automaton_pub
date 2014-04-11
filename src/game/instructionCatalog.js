@@ -5,11 +5,11 @@ App.makeInstructionCatalog = function(){
 	// TODO: ALL SWITCHES NEED UP DOWN LEFT RIGHT
 	ins.TYPES = {
 	// --------------------------------------------- AUTOMATON SPAWN
-		'SPAWN UP'	: 0,		'SPAWN DOWN'	: 1,
-		'SPAWN LEFT'	: 2,		'SPAWN RIGHT'	: 3,
+		'SPAWN UP'	: 0,		'SPAWN RIGHT'	: 1,
+		'SPAWN DOWN'	: 2,		'SPAWN LEFT'	: 3,
 	// ------------------------------------------- DIRECTION CONTROL
-		'UP'		: 4,		'DOWN'		: 5,
-		'LEFT'		: 6,		'RIGHT'		: 7,
+		'UP'		: 4,		'RIGHT'		: 5,
+		'DOWN'		: 6,		'LEFT'		: 7,
 	// ---------------------------------------------------- TOKEN IO
 		'IN'		: 8,		'OUT'		: 9,
 	// ------------------------------------------ TOKEN MANIPULATION
@@ -20,12 +20,12 @@ App.makeInstructionCatalog = function(){
 		'SYNC'		: 15,		'COLOR TOGGLE'	: 16,
 		'PAUSE'		: 17,
 	// ----------------------------------------- CONDITIONAL CONTROL
-		'COND 0 U'	: 18,		'COND 0 D'	: 19,
-		'COND 0 L'	: 20,		'COND 0 R'	: 21,
-		'COND TOKEN U'	: 22,		'COND TOKEN D'	: 23,
-		'COND TOKEN L'	: 24,		'COND TOKEN R'	: 25,
-		'COND + U'	: 26,		'COND + D'	: 27,
-		'COND + L'	: 28,		'COND + R'	: 29,
+		'COND 0 U'	: 18,		'COND 0 R'	: 19,
+		'COND 0 D'	: 20,		'COND 0 L'	: 21,
+		'COND TOKEN U'	: 22,		'COND TOKEN R'	: 23,
+		'COND TOKEN D'	: 24,		'COND TOKEN L'	: 25,
+		'COND + U'	: 26,		'COND + R'	: 27,
+		'COND + D'	: 28,		'COND + L'	: 29,
 	};
 
 	ins.render = function(gfx,type,x,y,c,cs){
