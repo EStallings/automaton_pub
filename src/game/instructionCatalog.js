@@ -134,33 +134,71 @@ App.makeInstructionCatalog = function(){
 
 		case ins.TYPES['UP']:
 			gfx.beginPath();
+			/*
 			gfx.moveTo(  cs/4,3*cs/4);
 			gfx.lineTo(  cs/2,  cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.stroke();
+			*/
+			gfx.moveTo(cs/2,3*cs/4);
+			gfx.lineTo(cs/2,cs/4);
+			gfx.moveTo(cs/2-cs/8, cs/2);
+			gfx.lineTo(cs/2,cs/4);
+			gfx.moveTo(cs/2+cs/8, cs/2);
+			gfx.lineTo(cs/2,cs/4);
 			gfx.stroke();
 			break;
 
 		case ins.TYPES['DOWN']:
 			gfx.beginPath();
+
+			/*
 			gfx.moveTo(  cs/4,  cs/4);
 			gfx.lineTo(  cs/2,3*cs/4);
 			gfx.lineTo(3*cs/4,  cs/4);
+			*/
+			
+			gfx.moveTo(cs/2,cs/4);
+			gfx.lineTo(cs/2,3*cs/4);
+			gfx.moveTo(cs/2-cs/8, cs/2);
+			gfx.lineTo(cs/2,3*cs/4);
+			gfx.moveTo(cs/2+cs/8, cs/2);
+			gfx.lineTo(cs/2,3*cs/4);
+			gfx.stroke();
+			
 			gfx.stroke();
 			break;
 
 		case ins.TYPES['LEFT']:
 			gfx.beginPath();
+			/*
 			gfx.moveTo(3*cs/4,  cs/4);
 			gfx.lineTo(  cs/4,  cs/2);
 			gfx.lineTo(3*cs/4,3*cs/4);
+			*/
+			gfx.moveTo(3*cs/4,cs/2);
+			gfx.lineTo(cs/4,cs/2);
+			gfx.moveTo(cs/2, cs/2-cs/8);
+			gfx.lineTo(cs/4, cs/2);
+			gfx.moveTo(cs/2, cs/2+cs/8);
+			gfx.lineTo(cs/4, cs/2);
 			gfx.stroke();
 			break;
 
 		case ins.TYPES['RIGHT']:
 			gfx.beginPath();
+			/*			
 			gfx.moveTo(  cs/4,  cs/4);
 			gfx.lineTo(3*cs/4,  cs/2);
 			gfx.lineTo(  cs/4,3*cs/4);
+			*/
+			gfx.moveTo(3*cs/4,cs/2);
+			gfx.lineTo(cs/4,cs/2);
+			gfx.moveTo(cs/2, cs/2-cs/8);
+			gfx.lineTo(3*cs/4, cs/2);
+			gfx.moveTo(cs/2, cs/2+cs/8);
+			gfx.lineTo(3*cs/4, cs/2);
+			
 			gfx.stroke();
 			break;
 
@@ -205,17 +243,38 @@ App.makeInstructionCatalog = function(){
 
 		case ins.TYPES['INC']:
 			gfx.beginPath();
+			/*
 			gfx.moveTo(cs/4,cs/2);
 			gfx.lineTo(3*cs/4,cs/2);
 			gfx.moveTo(cs/2,cs/4);
 			gfx.lineTo(cs/2,3*cs/4);
+			*/
+			gfx.moveTo(cs/4-cs/16,cs/2);
+			gfx.lineTo(cs/2-cs/16,cs/2);
+			
+			gfx.moveTo(3*cs/4+cs/16,cs/2);
+			gfx.lineTo(cs/2+cs/16,cs/2);
+			
+			gfx.moveTo(cs/2-cs/8-cs/16,cs/2-cs/8);
+			gfx.lineTo(cs/2-cs/8-cs/16,cs/2+cs/8);
+			
+			gfx.moveTo(cs/2+cs/8+cs/16,cs/2-cs/8);
+			gfx.lineTo(cs/2+cs/8+cs/16,cs/2+cs/8);	
+			
 			gfx.stroke();
 			break;
 
 		case ins.TYPES['DEC']:
 			gfx.beginPath();
+			/*
 			gfx.moveTo(cs/4,cs/2);
 			gfx.lineTo(3*cs/4,cs/2);
+			*/
+			gfx.moveTo(cs/4-cs/16,cs/2);
+			gfx.lineTo(cs/2-cs/16,cs/2);
+			gfx.moveTo(cs/2+cs/16,cs/2);
+			gfx.lineTo(3*cs/4+cs/16,cs/2);
+
 			gfx.stroke();
 			break;
 
