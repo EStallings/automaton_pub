@@ -15,14 +15,24 @@ var setupLevelSelectFrame = function(){
 	var blockPanel = App.makeBlockingPanel();
 	App.Gui.addNewComponent(key, blockPanel);
 
-	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,50,800,450));
+	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,0,800,450));
 	panel.xAlignment = 'center';
 	panel.yAlignment = 'center';
 
-	var menuButton = new App.GuiTextButton(400, 50, 'Main Menu',function(){App.changeMode(App.MODES.MAIN_MENU);	}, false, null);
+	var menuButton = new App.GuiTextButton(0,0, 'Main Menu',function(){App.changeMode(App.MODES.MAIN_MENU);}, false, null);
 
 	App.Gui.addNewComponent(key, panel);
 	App.Gui.addNewComponent(key, menuButton);
+
+	var levels = [];
+	var rows = 4;
+	var cols = 4;
+	for (var i=0;i<rows;i++)
+		for (var j=0;j<cols;j++) {
+			var index = j+i*rows;
+			levels[index] = new App.GuiTextButton(200*(j+1),100*(i+1), 'Level '+index,function(){App.changeMode(App.MODES.MAIN_MENU);}, false, null);
+			App.Gui.addNewComponent(key,levels[index]);
+	}
 }
 
 var setupSettingsFrame = function(){
@@ -122,8 +132,8 @@ var setupMainMenuFrame = function(){
 	 App.Gui.startOverlay(notyet);
 	}
 
-	var playBut = new App.GuiTextButton(100, 1000, 'Play', 					function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
-	var levelBut = new App.GuiTextButton(100, 1040, 'Level Select',	function(){App.changeMode(App.MODES.SETTINGS);}, false, panel);
+	var playBut = new App.GuiTextButton(100, 1000, 'Play', 		function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
+	var levelBut = new App.GuiTextButton(100, 1040, 'Level Select',	function(){App.changeMode(App.MODES.LEVEL_SELECT);}, false, panel);
 	var userBut = new App.GuiTextButton(100, 1080, 'User Levels', 	function(){App.changeMode(App.MODES.USER_LEVEL_SELECT);}, false, panel);
 	var editBut = new App.GuiTextButton(100, 1120, 'Sandbox Mode',	function(){App.changeMode(App.MODES.SANDBOX);}, false, panel);
 	var settingsBut = new App.GuiTextButton(100, 1160, 'Settings',	function(){App.changeMode(App.MODES.SETTINGS);}, false, panel);
@@ -166,11 +176,9 @@ var setupSimulationFrame = function(){
 	var joystick = new App.GuiJoystick(50, 50, controlsPanel);
 
 	var zoomInButton = new App.GuiTextButton(0, 200, 'Zoom In', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,1);}, false, controlsPanel);
-
 	var zoomOutButton = new App.GuiTextButton(0, 250, 'Zoom Out', function(){App.Game.zoom(App.Canvases.halfWidth, App.Canvases.halfHeight,-1);}, false, controlsPanel);
-
-	var simButton = new App.GuiTextButton(400, 50, 'Return',function(){ App.changeMode(App.LASTMODE, true);	}, false, null);
-	var pauseButton = new App.GuiTextButton(0, 325, 'Pause',function(){ App.Game.pause();}, false, controlsPanel);
+	var simButton = new App.GuiTextButton(0, 350, 'Return',function(){ App.changeMode(App.LASTMODE, true);	}, false, null);
+	var pauseButton = new App.GuiTextButton(0, 300, 'Pause',function(){ App.Game.pause();}, false, controlsPanel);
 	var speedSliderButton = new App.GuiSliderButton(new App.GuiCollisionRect(x+10,100,width-20,10), controlsPanel);
 
 	var min = 0;
