@@ -15,8 +15,6 @@ App.makeInputHandler = function(){
 
 	// ========================================================== //
 
-	// XXX: why is this not input.canvas.addEventListener
-
 	document.addEventListener('keydown',function(e){
 		input.keysDown[e.keyCode] = true;
 		var mode = App.ModeHandler.currentMode;
@@ -34,8 +32,6 @@ App.makeInputHandler = function(){
 	},false);
 
 	// ========================================================== //
-
-	// XXX: why is this not document.addEventListener
 
 	input.canvas.addEventListener('mousedown',function(e){
 		switch(e.button){
@@ -111,8 +107,6 @@ App.makeInputHandler = function(){
 	input.canvas.oncontextmenu = function(){return false;};
 
 	// ========================================================== //
-
-	// XXX: what is this needed for
 
 	input.keyCharToCode = {"Backspace":8,"Tab":9,"Enter":13,"Shift":16,
 		"Ctrl":17,"Alt":18,"Pause/Break":19,"Caps Lock":20,"Esc":27,

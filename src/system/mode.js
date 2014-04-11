@@ -2,7 +2,7 @@ App.makeModeHandler = function(){
 	var modeHandler = {};
 
 	modeHandler.modes = [];
-	modeHandler.modeStack = []; // TODO: INITIALIZE MODE STACK WITH MAIN MENU
+	modeHandler.modeStack = [];
 	modeHandler.currentMode;
 
 	// ========================================================== //
@@ -101,7 +101,3 @@ App.makeModeHandler = function(){
 
 	return modeHandler;
 }
-
-// text function
-// box collider
-// button
