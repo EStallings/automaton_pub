@@ -31,26 +31,16 @@ App.makeGame = function(){
 
 		game.mode = mode;
 		if(game.mode === game.modes.SIMULATION){
-			game.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-			game.tokenDGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel();
 			game.requestStaticRenderUpdate = true;
 			game.paused = false;
 			game.nextCycleTick = App.Engine.tick;
 			game.cycle = 0;
-			
-			// band-aid for a draw problem on mode switching
-			game.currentPlanningLevel.graphics.dynamicRender(game.tempGfx); 
-			game.currentPlanningLevel.currentSelection = [];
-			game.currentPlanningLevel.moving = false;
-			game.currentPlanningLevel.copied = false;
-			//
 		}else{
 			game.mode = game.modes.PLANNING;
 			game.currentSimulationLevel = undefined;
 			game.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			game.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-			game.tokenDGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			game.requestStaticRenderUpdate = true;
 			game.paused = true;
 		}

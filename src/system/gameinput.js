@@ -17,7 +17,15 @@ App.makeGameInput = function(){
 		//OR
 		//do selection box (to select a number of instructions)			
 		if(mouseData.lmb && game.mode === game.modes.PLANNING){
-			App.Game.currentPlanningLevel.setDown(App.Game.mouseX, App.Game.mouseY, App.Game.mouseC, mouseData.x, mouseData.y);
+			App.Game.currentPlanningLevel.input.buttonDown('lmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
+		}
+		
+		if(mouseData.mmb && game.mode === game.modes.PLANNING){
+			App.Game.currentPlanningLevel.input.buttonDown('mmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
+		}
+		
+		if(mouseData.rmb && game.mode === game.modes.PLANNING){
+			App.Game.currentPlanningLevel.input.buttonDown('rmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
 		}
 
 		else if(mouseData.lmb && game.mode === game.modes.SIMULATION){
@@ -33,9 +41,16 @@ App.makeGameInput = function(){
 
 		// TODO: do dragging of instructions that have already been placed
 		if(mouseData.lmb && game.mode === game.modes.PLANNING){
-			App.Game.currentPlanningLevel.setUp(App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
+			App.Game.currentPlanningLevel.input.buttonUp('lmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
 		}
 		
+		if(mouseData.mmb && game.mode === game.modes.PLANNING){
+			App.Game.currentPlanningLevel.input.buttonUp('mmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
+		}
+		
+		if(mouseData.rmb && game.mode === game.modes.PLANNING){
+			App.Game.currentPlanningLevel.input.buttonUp('rmb', mouseData.x, mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
+		}
 	}
 
 	gInput.mouseMove = function(mouseData){
@@ -48,7 +63,7 @@ App.makeGameInput = function(){
 		}
 
 		if(game.mode === game.modes.PLANNING){
-			App.Game.currentPlanningLevel.input.setCurrentMouseCoords(mouseData.x,mouseData.y);
+			App.Game.currentPlanningLevel.input.mouseMove(mouseData.x,mouseData.y, App.Game.mouseX, App.Game.mouseY, App.Game.mouseC);
 		}
 	}
 

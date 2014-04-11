@@ -253,9 +253,7 @@ var setupPlanningFrame = function(){
 	App.Gui.addNewComponent(key, menuButton);
 
 	//Setup Key Bindings
-	App.InputHandler.registerKey('M', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.mkey(); });
-	App.InputHandler.registerKey('C', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.ckey(); });
-	App.InputHandler.registerKey('Delete', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.dkey(); });
+	App.InputHandler.registerKey('Delete', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.input.delKey(); });
 	App.InputHandler.registerKey('`', App.MODES.PLANNING,function(){ App.changeMode(App.MODES.SIMULATION);});
 	App.InputHandler.registerKey('Z', App.MODES.PLANNING, function(){
 			if(App.InputHandler.keysDown['Ctrl']) {
@@ -313,11 +311,6 @@ var setupSandboxFrame = function(){
 	var menuButton = new App.GuiTextButton(525, 50, 'Menu',function(){App.changeMode(App.MODES.MAIN_MENU);	}, false, null);
 	App.Gui.addNewComponent(key, menuButton);
 
-	var clearButton = new App.GuiTextButton(275, 50, 'Clear',function(){App.Game.loadNewLevel("Blank,10,10"); App.Game.requestStaticRenderUpdate = true}, false, null);
-	App.Gui.addNewComponent(key, clearButton);
-
-
-
 	var submitDialog = [];
 	submitDialog[0] = App.makeBlockingPanel();
 	submitDialog[1] = new App.GuiPanel(new App.GuiCollisionRect(0,0,150,500));
@@ -370,9 +363,7 @@ var setupSandboxFrame = function(){
 	App.Gui.addNewComponent(key, submitButton);
 
 	//Setup Key Bindings
-	App.InputHandler.registerKey('M', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.mkey(); });
-	App.InputHandler.registerKey('C', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.ckey(); });
-	App.InputHandler.registerKey('Delete', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.dkey(); });
+	App.InputHandler.registerKey('Delete', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.input.delKey(); });
 	App.InputHandler.registerKey('`', App.MODES.SANDBOX,function(){ App.changeMode(App.MODES.SIMULATION);});
 	App.InputHandler.registerKey('Z', App.MODES.SANDBOX, function(){
 			if(App.InputHandler.keysDown['Ctrl']) {
