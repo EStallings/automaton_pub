@@ -38,6 +38,13 @@ App.makeGame = function(){
 			game.paused = false;
 			game.nextCycleTick = App.Engine.tick;
 			game.cycle = 0;
+			
+			// band-aid for a draw problem on mode switching
+			game.currentPlanningLevel.graphics.dynamicRender(game.tempGfx); 
+			game.currentPlanningLevel.currentSelection = [];
+			game.currentPlanningLevel.moving = false;
+			game.currentPlanningLevel.copied = false;
+			//
 		}else{
 			game.mode = game.modes.PLANNING;
 			game.currentSimulationLevel = undefined;

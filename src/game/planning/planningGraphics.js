@@ -8,7 +8,8 @@ App.PlanningGraphics = function(){
 
 	this.staticRender = function(gfx){
 		if(App.Game.currentPlanningLevel.currentSelection.length !== 0
-				&& App.Game.currentPlanningLevel.currentSelection[0] !== null ){ that.selectionOverlay(gfx); }
+				&& App.Game.currentPlanningLevel.currentSelection[0] !== null
+				&& App.Game.mode === 'Planning' ){ that.selectionOverlay(gfx); }
 	}
 
 	this.debug = function(gfx){
@@ -92,7 +93,8 @@ App.PlanningGraphics = function(){
 		//if(App.Game.currentPlanningLevel.currentSelection[0] !== null &&
 				//App.Game.currentPlanningLevel.currentSelection.length !== 0){ that.debug(gfx); }
 		if(App.Game.currentPlanningLevel.currentSelection.length !== 0
-			&& App.Game.currentPlanningLevel.currentSelection[0] !== null ){ that.selectionOverlay(gfx); } // TODO: move to static render?
+			&& App.Game.currentPlanningLevel.currentSelection[0] !== null 
+			&& App.Game.mode === 'Planning'){ that.selectionOverlay(gfx); } // TODO: move to static render?
 
 		if(App.Game.currentPlanningLevel.input.isDown){ that.drawSelectionBox(gfx); }
 	}
