@@ -19,7 +19,7 @@ var setupLevelSelectFrame = function(){
 	panel.xAlignment = 'center';
 	panel.yAlignment = 'center';
 
-	var menuButton = new App.GuiTextButton(200, 0, 'Main Menu',function(){App.changeMode(App.MODES.MAIN_MENU);}, false, null);
+	var menuButton = new App.GuiTextButton(200, 100, 'Main Menu',function(){App.changeMode(App.MODES.MAIN_MENU);}, false, null);
 
 	
 	App.Gui.addNewComponent(key, panel);
@@ -29,13 +29,12 @@ var setupLevelSelectFrame = function(){
 	var rows = 4;
 	var cols = 4;
 
-	for (var i=0;i<cols;i++)
+	for (var i=0;i<rows;i++)
 		for (var j=0;j<cols;j++) {
 			var index = j+i*rows;
-			levels[j+i*rows] = new App.GuiTextButton(200*(i+1),100*(j+1), 'Level '+index,function(){App.changeMode(App.MODES.MAIN_MENU);}, false, null);
+			levels[j+i*rows] = new App.GuiTextButton(200*(j+1),100*(i+1), 'Level '+index,function(){App.changeMode(App.MODES.MAIN_MENU);}, false, null);
 			App.Gui.addNewComponent(key,levels[index]);
 	}
-
 }
 
 var setupSettingsFrame = function(){
