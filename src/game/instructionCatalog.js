@@ -157,15 +157,12 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/2,3*cs/4);
 			gfx.lineTo(3*cs/4,  cs/4);
 			*/
-			
 			gfx.moveTo(cs/2,cs/4);
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.moveTo(cs/2-cs/8, cs/2);
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.moveTo(cs/2+cs/8, cs/2);
 			gfx.lineTo(cs/2,3*cs/4);
-			gfx.stroke();
-			
 			gfx.stroke();
 			break;
 
@@ -198,16 +195,15 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(3*cs/4, cs/2);
 			gfx.moveTo(cs/2, cs/2+cs/8);
 			gfx.lineTo(3*cs/4, cs/2);
-			
 			gfx.stroke();
 			break;
 
 		case ins.TYPES['GRAB']:
 			gfx.beginPath();
-			gfx.moveTo(cs/4,3*cs/4);
-			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.moveTo(3*cs/8,cs/2);
+			gfx.lineTo(5*cs/8,cs/2);
 			gfx.moveTo(cs/2,cs/4);
-			gfx.lineTo(cs/2,3*cs/4);
+			gfx.lineTo(cs/2,cs/2);
 			gfx.moveTo(3*cs/8,3*cs/8);
 			gfx.lineTo(cs/2,cs/4);
 			gfx.lineTo(5*cs/8,3*cs/8);
@@ -216,9 +212,9 @@ App.makeInstructionCatalog = function(){
 
 		case ins.TYPES['DROP']:
 			gfx.beginPath();
-			gfx.moveTo(cs/4,3*cs/4);
-			gfx.lineTo(3*cs/4,3*cs/4);
-			gfx.moveTo(cs/2,cs/4);
+			gfx.moveTo(3*cs/8,cs/2);
+			gfx.lineTo(5*cs/8,cs/2);
+			gfx.moveTo(cs/2,cs/2);
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.moveTo(3*cs/8,5*cs/8);
 			gfx.lineTo(cs/2,3*cs/4);
@@ -228,8 +224,8 @@ App.makeInstructionCatalog = function(){
 
 		case ins.TYPES['GRAB/DROP']:
 			gfx.beginPath();
-			gfx.moveTo(cs/4,3*cs/4);
-			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.moveTo(3*cs/8,cs/2);
+			gfx.lineTo(5*cs/8,cs/2);
 			gfx.moveTo(cs/2,cs/4);
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.moveTo(3*cs/8,3*cs/8);
@@ -251,16 +247,12 @@ App.makeInstructionCatalog = function(){
 			*/
 			gfx.moveTo(cs/4-cs/16,cs/2);
 			gfx.lineTo(cs/2-cs/16,cs/2);
-			
 			gfx.moveTo(3*cs/4+cs/16,cs/2);
 			gfx.lineTo(cs/2+cs/16,cs/2);
-			
 			gfx.moveTo(cs/2-cs/8-cs/16,cs/2-cs/8);
 			gfx.lineTo(cs/2-cs/8-cs/16,cs/2+cs/8);
-			
 			gfx.moveTo(cs/2+cs/8+cs/16,cs/2-cs/8);
 			gfx.lineTo(cs/2+cs/8+cs/16,cs/2+cs/8);	
-			
 			gfx.stroke();
 			break;
 
@@ -274,17 +266,16 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(cs/2-cs/16,cs/2);
 			gfx.moveTo(cs/2+cs/16,cs/2);
 			gfx.lineTo(3*cs/4+cs/16,cs/2);
-
 			gfx.stroke();
 			break;
 
 		case ins.TYPES['PAUSE']:
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
-			gfx.moveTo(cs/2,cs/2);
-			gfx.lineTo(cs/2,3*cs/8);
-			gfx.moveTo(cs/2,cs/2);
-			gfx.lineTo(5*cs/8,cs/2);
+			gfx.moveTo(cs/2-cs/16,cs/2-cs/16);
+			gfx.lineTo(cs/2-cs/16,cs/2+cs/16);
+			gfx.moveTo(cs/2+cs/16,cs/2-cs/16);
+			gfx.lineTo(cs/2+cs/16,cs/2+cs/16);
 			gfx.stroke();
 			break;
 
