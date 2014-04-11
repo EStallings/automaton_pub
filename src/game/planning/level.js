@@ -84,12 +84,14 @@ App.PlanningLevel = function(){
 		else{ //drag select
 			var p1 = that.xycToij(x1, y1, c1);
 			var p2 = that.xycToij(x2, y2, c2);
+			console.log('p1: ' + p1 + ' p2: ' + p2);
 
 			var upperLeft = [-1,-1];
 			var lowerRight = [-1,-1];
 
 			if(p1[0] < p2[0]){ upperLeft[0] = p1[0]; lowerRight[0] = p2[0]; }else{ upperLeft[0] = p2[0]; lowerRight[0] = p1[0]; }
 			if(p1[1] < p2[1]){ upperLeft[1] = p1[1]; lowerRight[1] = p2[1]; }else{ upperLeft[1] = p2[1]; lowerRight[1] = p1[1]; }
+			console.log('uL: (' + upperLeft[0] + ',' + upperLeft[1] + ') lR: (' + lowerRight[0] + ',' + lowerRight[1] + ')');
 
 			var numInstr = 0;
 			var temp;
