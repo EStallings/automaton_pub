@@ -83,18 +83,44 @@ App.PlanningLevel = function(){
 			}
 		}
 		else{ //drag select
-			var upperLeft = [];
-			var	lowerRight = [];
+			var p1 = that.xycToij(x1, y1, c1);
+			var p2 = that.xycToij(x2, y2, c2);
 
-			var dragLeft = false;
-			var dragUp = false;
+			var upperLeft = [-1,-1];
+			var lowerRight = [-1,-1];
 
-			if(x1 < x2){ upperLeft[0] = x1; lowerRight = x2; }else{ upperLeft[0] = x2; lowerRight = x1; dragLeft = true; }
-			if(y1 < y2){ upperLeft[1] = y1; lowerRight = x2; }else{ upperLeft[1] = y2; lowerRight = x1; dragUp = true; }
+			if(p1[0] < p2[0]){ upperLeft[0] = p1[0]; lowerRight[0] = p2[0]; }else{ upperLeft[0] = p2[0]; lowerRight[0] = p1[0]; }
+			if(p1[1] < p2[1]){ upperLeft[1] = p1[1]; lowerRight[1] = p2[1]; }else{ upperLeft[1] = p2[1]; lowerRight[1] = p1[1]; }
 
-
-
+			var numInstr = 0;
+			var temp;
+			for(var j = upperLeft[1]; j < lowerRight[1]; j += .5){
+				for(var i = upperLeft[0]; i < lowerRight[0]; i += .5){
+					temp = that.getInstruction(that.ijToxyc(i,j)[0], that.ijToxyc(i,j)[1], that.ijToxyc(i,j)[2]);
+					if(temp){
+						that.currentSelection[numInstr] = temp;
+						++numInstr;
+						console.log('numInstr: ' + numInstr);
+					}
+				}
+			}
 		}
+	}
+
+	this.xycToij = function(x,y,c){
+		var coords = [x, y];
+		if(c === 1 || c === 2){ coords[0] += .5; }
+		if(c === 3 || c === 2){ coords[1] += .5; }
+		return coords;
+	}
+
+	this.ijToxyc = function(i,j){
+		var coords = [i,j];
+		if(i%1 === 0 && j%1 === 0){ coords[2] = 0; }
+		if(i%1 === .5 && j%1 === 0){ coords[2] = 1; coords[0] -= .5; }
+		if(i%1 === 0 && j%1 === .5){ coords[2] = 3; coords[1] -= .5; }
+		if(i%1 === .5 && j%1 === .5){ coords[2] = 2; coords[0] -= .5; coords[1] -= .5;}
+		return coords;
 	}
 
 	// toggles the state of the specified layer lock

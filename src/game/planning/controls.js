@@ -15,6 +15,7 @@ App.PlanningControls = function(){
 	this.mouseMove = function(scrnX, scrnY, cellX, cellY, cellC){
 		this.scrnX = scrnX; this.scrnY = scrnY;
 		this.cellX = cellX; this.cellY = cellY; this.cellC = cellC;
+		//console.log(cellX + ' ' + cellY + ' ' + cellC);
 		if(that.lmb[0] === 'down' && (that.lmb[1] !== scrnX || that.lmb[2] !== scrnY)){ that.lmbDrag = true; } else { that.lmbDrag = false; }
 		if(that.mmb[0] === 'down' && (that.mmb[1] !== scrnX || that.mmb[2] !== scrnY)){ that.mmbDrag = true; } else { that.mmbDrag = false; }
 		if(that.rmb[0] === 'down' && (that.rmb[1] !== scrnX || that.rmb[2] !== scrnY)){ that.rmbDrag = true; } else { that.rmbDrag = false; }
@@ -22,7 +23,13 @@ App.PlanningControls = function(){
 
 	this.buttonDown = function(button, scrnX, scrnY, cellX, cellY, cellC){
 		if(button === 'lmb'){ that.lmb = ['down', scrnX, scrnY, cellX, cellY, cellC]; }
-		if(button === 'mmb'){ that.mmb = ['down', scrnX, scrnY, cellX, cellY, cellC]; that.selectStart = [cellX, cellY, cellC]; }
+		
+		if(button === 'mmb'){
+			that.mmb = ['down', scrnX, scrnY, cellX, cellY, cellC];
+			that.selectStart = [cellX, cellY, cellC];
+			App.Game.currentPlanningLevel.currentSelection = [];
+		}
+		
 		if(button ==='rmb'){ that.rmb = ['down', scrnX, scrnY, cellX, cellY, cellC]; }
 		/*console.log('lmb: ' + that.lmb);
 		console.log('mmb: ' + that.mmb);
