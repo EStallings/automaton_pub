@@ -96,7 +96,7 @@ App.makeInputHandler = function(){
 
 	var wheelEvtFunc = function(e){
 		var event = window.event || e;
-		var delta = event.detail?event.detail*-1:event.wheelData;
+		var delta = event.detail?event.detail*-1:event.wheelDelta;
 		var mode = App.ModeHandler.currentMode;
 		if(!mode)return;
 		var f = mode.mouseWheelFunc;
