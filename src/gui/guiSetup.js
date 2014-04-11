@@ -15,14 +15,27 @@ var setupLevelSelectFrame = function(){
 	var blockPanel = App.makeBlockingPanel();
 	App.Gui.addNewComponent(key, blockPanel);
 
-	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,50,800,450));
+	var panel = new App.GuiPanel(new App.GuiCollisionRect(0,0,800,450));
 	panel.xAlignment = 'center';
 	panel.yAlignment = 'center';
 
-	var menuButton = new App.GuiTextButton(400, 50, 'Main Menu',function(){App.changeMode(App.MODES.MAIN_MENU);	}, false, null);
+	var menuButton = new App.GuiTextButton(200, 0, 'Main Menu',function(){App.changeMode(App.MODES.MAIN_MENU);}, false, null);
 
+	
 	App.Gui.addNewComponent(key, panel);
 	App.Gui.addNewComponent(key, menuButton);
+
+	var levels = [];
+	var rows = 4;
+	var cols = 4;
+
+	for (var i=0;i<cols;i++)
+		for (var j=0;j<cols;j++) {
+			var index = j+i*rows;
+			levels[j+i*rows] = new App.GuiTextButton(200*(i+1),100*(j+1), 'Level '+index,function(){App.changeMode(App.MODES.MAIN_MENU);}, false, null);
+			App.Gui.addNewComponent(key,levels[index]);
+	}
+
 }
 
 var setupSettingsFrame = function(){
@@ -122,8 +135,8 @@ var setupMainMenuFrame = function(){
 	 App.Gui.startOverlay(notyet);
 	}
 
-	var playBut = new App.GuiTextButton(100, 1000, 'Play', 					function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
-	var levelBut = new App.GuiTextButton(100, 1040, 'Level Select',	function(){App.changeMode(App.MODES.SETTINGS);}, false, panel);
+	var playBut = new App.GuiTextButton(100, 1000, 'Play', 		function(){App.changeMode(App.MODES.PLANNING);}, false, panel);
+	var levelBut = new App.GuiTextButton(100, 1040, 'Level Select',	function(){App.changeMode(App.MODES.LEVEL_SELECT);}, false, panel);
 	var userBut = new App.GuiTextButton(100, 1080, 'User Levels', 	function(){App.changeMode(App.MODES.USER_LEVEL_SELECT);}, false, panel);
 	var editBut = new App.GuiTextButton(100, 1120, 'Sandbox Mode',	function(){App.changeMode(App.MODES.SANDBOX);}, false, panel);
 	var settingsBut = new App.GuiTextButton(100, 1160, 'Settings',	function(){App.changeMode(App.MODES.SETTINGS);}, false, panel);
