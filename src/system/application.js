@@ -33,8 +33,13 @@ App.getDemoLevel = function(){
 	return App.demoLevels[Math.floor(Math.random() * App.demoLevels.length)];
 }
 
-App.getBlankLevel = function(){
-	return "Blank,10,10";
+App.lastSandboxLevel = null;
+App.getSandboxLevel = function(){
+	if(App.lastSandboxLevel)
+	{
+		return App.lastSandboxLevel;
+	}
+return "Blank,10,10";
 }
 
 App.getNextLevel = function(){
@@ -50,26 +55,31 @@ App.MODES = {
 	MAIN_MENU         : {frame:App.setup.frames.MAIN_MENU,
 	                     mode:App.setup.modes.SIMULATION,
 	                     level:App.getDemoLevel,
+	                     exit:null,
 	                     toString:function(){return 'MAIN_MENU'}},
 
 	PLANNING          : {frame:App.setup.frames.PLANNING,
 	                     mode:App.setup.modes.PLANNING,
 	                     level:null,
+	                     exit:null,
 	                     toString:function(){return 'PLANNING'}},
 
 	SANDBOX           : {frame:App.setup.frames.SANDBOX,
 	                     mode:App.setup.modes.PLANNING,
-	                     level:App.getBlankLevel,
+	                     level:App.getSandboxLevel,
+	                     exit:function(){App.lastSandboxLevel = App.Game.currentPlanningLevel.generateParseString();},
 	                     toString:function(){return 'SANDBOX'}},
 
 	SIMULATION        : {frame:App.setup.frames.SIMULATION,
 	                     mode:App.setup.modes.SIMULATION,
 	                     level:null,
+	                     exit:null,
 	                     toString:function(){return 'SIMULATION'}},
 
 	USER_LEVEL_SELECT : {frame:App.setup.frames.USER_LEVEL_SELECT,
 	                     mode:App.setup.modes.SIMULATION,
-	                     evel:App.getDemoLevel,
+	                     level:App.getDemoLevel,
+	                     exit:null,
 	                     toString:function(){return 'USER_LEVEL_SELECT'}},
 
 	SETTINGS          : {frame:App.setup.frames.SETTINGS,
@@ -87,6 +97,8 @@ App.MODE = App.MODES.PLANNING;
 App.LASTMODE = App.MODES.PLANNING;
 
 App.changeMode = function(mode, ignoreLevel){
+	if(App.MODE.exit)
+		App.MODE.exit();
 	if(mode.level && !ignoreLevel)App.Game.loadNewLevel(mode.level());
 
 	// TODO: DUMP ALL THIS INTO App.Game.centerGrid() v v v v v v //

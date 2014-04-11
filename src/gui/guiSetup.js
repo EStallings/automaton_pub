@@ -313,6 +313,11 @@ var setupSandboxFrame = function(){
 	var menuButton = new App.GuiTextButton(525, 50, 'Menu',function(){App.changeMode(App.MODES.MAIN_MENU);	}, false, null);
 	App.Gui.addNewComponent(key, menuButton);
 
+	var clearButton = new App.GuiTextButton(275, 50, 'Clear',function(){App.Game.loadNewLevel("Blank,10,10"); App.Game.requestStaticRenderUpdate = true}, false, null);
+	App.Gui.addNewComponent(key, clearButton);
+
+
+
 	var submitDialog = [];
 	submitDialog[0] = App.makeBlockingPanel();
 	submitDialog[1] = new App.GuiPanel(new App.GuiCollisionRect(0,0,150,500));
