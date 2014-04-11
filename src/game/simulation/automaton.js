@@ -4,11 +4,9 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 
 	this.level = level;
 	this.cell = level.getCell(x,y);
-	this.gfx = App.Game.automGfx;
+	this.gfx = App.GameRenderer.automGfx;
 	this.x = x;
 	this.y = y;
-	this.drawX = 0;
-	this.drawY = 0;
 	this.direction = direction;
 	this.colorFlags = [false,false,false,false];
 	this.colorFlags[color] = true;
@@ -37,21 +35,16 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 	}
 
 	this.rFunc = function(x,y){
-		var c = App.Game.cellSize;
-		var h = App.Game.cellSize/2;
+		var c = App.GameRenderer.cellSize;
+		var h = App.GameRenderer.cellSize/2;
 
 		// interpolation adjustment
 		if(!this.wait)switch(this.direction){
-			case App.DIRECTIONS.UP    : y+=(1-App.Game.interpolation);break;
-			case App.DIRECTIONS.DOWN  : y-=(1-App.Game.interpolation);break;
-			case App.DIRECTIONS.LEFT  : x+=(1-App.Game.interpolation);break;
-			case App.DIRECTIONS.RIGHT : x-=(1-App.Game.interpolation);break;
+			case App.DIRECTIONS.UP    : y+=(1-App.GameRenderer.interpolation);break;
+			case App.DIRECTIONS.DOWN  : y-=(1-App.GameRenderer.interpolation);break;
+			case App.DIRECTIONS.LEFT  : x+=(1-App.GameRenderer.interpolation);break;
+			case App.DIRECTIONS.RIGHT : x-=(1-App.GameRenderer.interpolation);break;
 		}
-
-		//Added these so the camera can follow an automaton.
-		//Only sort of works.
-		this.drawX = x*c;
-		this.drawY = y*c;
 
 		// render token if holding one
 		if(this.tokenHeld != undefined)this.tokenHeld.dynamicRender(x*c,y*c);

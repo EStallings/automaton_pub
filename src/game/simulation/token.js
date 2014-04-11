@@ -1,8 +1,6 @@
 App.SimulationToken = function(level,x,y,number){
 	level.tokens.push(this);
 
-	this.gfxS = App.Game.tokenSGfx;
-	this.gfxD = App.Game.tokenDGfx;
 	this.number = number;
 
 	this.increment = function(){if(++this.number>127)this.number=-128;}
@@ -12,7 +10,7 @@ App.SimulationToken = function(level,x,y,number){
 		gfx.lineCap  = 'round';
 		gfx.lineJoin = 'round';
 
-		var cs = App.Game.cellSize;
+		var cs = App.GameRenderer.cellSize;
 
 		gfx.fillStyle = '#ffffff';
 		gfx.strokeStyle = '#aaaaaa';
@@ -136,6 +134,6 @@ App.SimulationToken = function(level,x,y,number){
 		gfx.restore();
 	}
 
-	this.staticRender = function(x,y){this.rFunc(x,y,this.gfxS);}
-	this.dynamicRender = function(x,y){this.rFunc(x,y,this.gfxD);}
+	this.staticRender = function(x,y){this.rFunc(x,y,App.GameRenderer.tokenSGfx);}
+	this.dynamicRender = function(x,y){this.rFunc(x,y,App.GameRenderer.tokenDGfx);}
 }

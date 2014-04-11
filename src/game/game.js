@@ -64,7 +64,7 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.modes = {SIMULATION:0,PLANNING:1};
+	game.modes = {PLANNING:0,SIMULATION:1};
 	game.mode = game.modes.PLANNING; // XXX: shouldnt this be setup by the initializing context
 
 	game.setMode = function(mode){
@@ -72,19 +72,21 @@ App.makeGame = function(){
 		game.toggleMode();
 	}
 
-	game.toggleMode = function(mode){
-		if(game.mode === game.modes.SIMULATION){
+	game.toggleMode = function(){
+		if(game.mode === game.modes.PLANNING){
+			game.mode = game.modes.SIMULATION;
 			game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel();
-			game.requestStaticRenderUpdate = true;
+			App.GameRenderer.requestStaticRenderUpdate = true;
 			game.paused = false;
 			game.nextCycleTick = App.Engine.tick;
 			game.cycle = 0;
 		}else{
 			game.mode = game.modes.PLANNING;
 			game.currentSimulationLevel = undefined;
-			game.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-			game.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
-			game.requestStaticRenderUpdate = true;
+			// XXX XXX: WHY ARE THESE BEING CLEARED HERE
+			App.GameRenderer.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+			App.GameRenderer.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+			App.GameRenderer.requestStaticRenderUpdate = true;
 			game.paused = true;
 		}
 	}

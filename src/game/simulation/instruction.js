@@ -4,7 +4,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 	level.instructions.push(this);
 	level.getCell(x,y).instructions[color] = this;
 
-	this.gfx = App.Game.instructionGfx;
+	this.gfx = App.GameRenderer.instructionGfx;
 	this.level = level;
 	this.cell = level.getCell(x,y);
 	this.x = x;
@@ -15,15 +15,15 @@ App.SimulationInstruction = function(level,x,y,color,type){
 	this.staticRender = function(){
 		this.gfx.save();
 
-		var rx,ry,size = App.Game.cellSize;
+		var rx,ry,cs = App.GameRenderer.cellSize;
 		switch(this.color){
-			case App.COLORS.RED:    rx=x*size;        ry=y*size;        break;
-			case App.COLORS.GREEN:  rx=x*size+size/2; ry=y*size;        break;
-			case App.COLORS.BLUE:   rx=x*size;        ry=y*size+size/2; break;
-			case App.COLORS.YELLOW: rx=x*size+size/2; ry=y*size+size/2; break;
+			case App.COLORS.RED:    rx=this.x*cs;      ry=this.y*cs;      break;
+			case App.COLORS.GREEN:  rx=this.x*cs+cs/2; ry=this.y*cs;      break;
+			case App.COLORS.BLUE:   rx=this.x*cs;      ry=this.y*cs+cs/2; break;
+			case App.COLORS.YELLOW: rx=this.x*cs+cs/2; ry=this.y*cs+cs/2; break;
 		}
 
-		App.InstCatalog.render(this.gfx,this.type,rx,ry,this.color,size/2);
+		App.InstCatalog.render(this.gfx,this.type,rx,ry,this.color,cs/2);
 		this.gfx.restore();
 	}
 
@@ -103,7 +103,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined && this.cell.tokens.length !== 0){
 					a.tokenHeld = this.cell.tokens.pop();
-					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
+					App.GameRenderer.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
 			};break;
 
@@ -114,7 +114,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(a.tokenHeld !== undefined){
 					this.cell.tokens.push(a.tokenHeld);
 					a.tokenHeld = undefined;
-					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
+					App.GameRenderer.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
 			};break;
 
@@ -125,12 +125,12 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(a.tokenHeld === undefined){
 					if(this.cell.tokens.length !== 0){
 						a.tokenHeld = this.cell.tokens.pop();
-						App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
+						App.GameRenderer.requestStaticRenderUpdate = true; // XXX: move this to token...?
 					}
 				}else{
 					this.cell.tokens.push(a.tokenHeld);
 					a.tokenHeld = undefined;
-					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
+					App.GameRenderer.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
 			};break;
 

@@ -27,8 +27,8 @@ App.makeGameRenderer = function(){
 	game.cellSize = 3*Math.pow(2,3);
 	game.interpolation;
 
-	game.goalRenderX  = 16;
-	game.goalRenderY  = 93;
+	game.goalRenderX  = 0;
+	game.goalRenderY  = 0;
 	game.goalCellSize = 3*Math.pow(2,game.cellSizeFactor);
 
 	game.panRenderX,game.panRenderY;
@@ -117,6 +117,14 @@ App.makeGameRenderer = function(){
 		game.requestStaticRenderUpdate = true;
 	}
 
+	game.bestFit = function(){
+		game.goalRenderX = Math.round((App.Canvases.width-App.Game.currentPlanningLevel.width*game.cellSize)/2);
+		game.goalRenderY = Math.round((App.Canvases.height-App.Game.currentPlanningLevel.height*game.cellSize)/2);
+		console.log(game.goalRenderX+" "+game.goalRenderY);
+	}
+
+	game.centerOn = function(x,y,zoom){} // TODO: IMPLEMENT THIS
+
 	// ========================================================== //
 
 	game.render = function(){
@@ -143,18 +151,40 @@ App.makeGameRenderer = function(){
 
 			// render static level stuff
 			if(App.Game.mode === App.Game.modes.PLANNING && App.Game.currentPlanningLevel !== undefined){
+				game.translateCanvas(game.instructionGfx);
 				App.Game.currentPlanningLevel.staticRender();
-			}else if(game.currentSimulationLevel !== undefined){
-				game.currentSimulationLevel.staticRender();
+				game.instructionGfx.restore();
+			}else if(App.Game.currentSimulationLevel !== undefined){
+				game.translateCanvas(game.instructionGfx);
+				game.translateCanvas(game.tokenSGfx);
+
+				App.Game.currentSimulationLevel.staticRender();
+
+				game.instructionGfx.restore();
+				game.tokenSGfx.restore();
 			}
 		}
 
 		// dynamic rendering
 		if(App.Game.mode === App.Game.modes.PLANNING && App.Game.currentPlanningLevel !== undefined){
 			App.Game.currentPlanningLevel.dynamicRender();
-		}else if(game.currentSimulationLevel !== undefined){
-			game.interpolation = (App.Engine.tick-game.lastCycleTick)/(game.nextCycleTick-game.lastCycleTick);
-			game.currentSimulationLevel.dynamicRender();
+		}else if(App.Game.currentSimulationLevel !== undefined){
+			game.interpolation = (App.Engine.tick-App.Game.lastCycleTick)/(App.Game.nextCycleTick-App.Game.lastCycleTick);
+
+			game.translateCanvas(game.automGfx);
+			game.translateCanvas(game.tokenDGfx);
+
+			App.Game.currentSimulationLevel.dynamicRender();
+
+			game.automGfx.globalCompositeOperation = 'destination-in';
+			game.automGfx.fillRect(-2,-2,App.Game.currentPlanningLevel.width*game.cellSize+4,App.Game.currentPlanningLevel.height*game.cellSize+4);
+			game.automGfx.globalCompositeOperation = 'source-over';
+			game.tokenDGfx.globalCompositeOperation = 'destination-in';
+			game.tokenDGfx.fillRect(-2,-2,App.Game.currentPlanningLevel.width*game.cellSize+4,App.Game.currentPlanningLevel.height*game.cellSize+4);
+			game.tokenDGfx.globalCompositeOperation = 'source-over';
+
+			game.automGfx.restore();
+			game.tokenDGfx.restore();
 		}
 
 		game.renderDebug();
@@ -268,7 +298,7 @@ App.makeGameRenderer = function(){
 
 	game.renderBackground = function(){ // TODO: OPTIMIZE THIS
 		game.bkgndGfx.strokeStyle = '#131313';
-		game.bkgndGfx.lineWidth = 4;
+		game.bkgndGfx.lineWidth = 5;
 		game.bkgndGfx.beginPath();
 		for(var i=1;i<App.Canvases.width+App.Canvases.height;i+=9){
 			game.bkgndGfx.moveTo(i,0);
@@ -287,15 +317,15 @@ App.makeGameRenderer = function(){
 		game.debugGfx.font = 'bold 11px arial';
 		game.debugGfx.fillStyle = '#ffffff';
 		game.debugGfx.fillText('FPS: '+Math.round(App.Engine.fps) ,11,22);
-		game.debugGfx.fillText('Cycle: '+game.cycle               ,11,33);
+		game.debugGfx.fillText('Cycle: '+App.Game.cycle               ,11,33);
 		if(game.paused){
 			game.debugGfx.fillStyle = '#ff0000';
 			game.debugGfx.fillText('Speed: PAUSED',11,44);
 			game.debugGfx.fillStyle = '#ffffff';
-		}else game.debugGfx.fillText('Speed: '+game.simulationSpeed+' ms/tick',11,44);
+		}else game.debugGfx.fillText('Speed: '+App.Game.simulationSpeed+' ms/tick',11,44);
 		game.debugGfx.fillText('Tick: '+App.Engine.tick           ,11,55);
 		game.debugGfx.fillText('Zoom: '+game.cellSizeFactor       ,11,66);
-		game.debugGfx.fillText('Mode: '+game.mode       ,11,77);
+		game.debugGfx.fillText('Mode: '+(App.Game.mode===0?"PLANNING":"SIMULATION"),11,77);
 
 		game.debugGfx.fillText('Pan X: '+game.renderX             ,132,22);
 		game.debugGfx.fillText('Pan Y: '+game.renderY             ,132,33);

@@ -5,13 +5,6 @@ var PlanningLevel = function(){
 	this.height;
 	this.grid = [];
 
-	this.print = function(){
-		for(var i in this.grid)
-		for(var j in this.grid[i])
-		for(var c in this.grid[i][j])
-			console.log(i+" "+j+" "+c+" "+this.grid[i][j][c]);
-	}
-
 	this.insert = function(x,y,color,type){
 		var i = this.grid[x];
 		if(i === undefined)i = this.grid[x] = [];
@@ -29,7 +22,7 @@ var PlanningLevel = function(){
 		for(var j in this.grid[i])
 		for(var c in this.grid[i][j])
 		if(this.grid[i][j][c])
-			new App.SimulationInstruction(level,i,j,c,this.grid[i][j][c]);
+			new App.SimulationInstruction(level,parseInt(i),parseInt(j),parseInt(c),this.grid[i][j][c]);
 		return level;
 	};
 
@@ -46,7 +39,6 @@ var PlanningLevel = function(){
 
 	this.staticRender = function(){
 		var cs = App.GameRenderer.cellSize;
-		App.GameRenderer.translateCanvas(App.GameRenderer.instructionGfx);
 		for(var c=0;c<4;++c){
 			App.GameRenderer.instructionGfx.save();
 			switch(c){
@@ -62,7 +54,7 @@ var PlanningLevel = function(){
 				App.InstCatalog.render(App.GameRenderer.instructionGfx,this.grid[i][j][c],i*cs,j*cs,c,cs/2);
 
 			App.GameRenderer.instructionGfx.restore();
-		}App.GameRenderer.instructionGfx.restore();
+		}
 	}
 
 	this.dynamicRender = function(){}

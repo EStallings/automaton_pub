@@ -6,9 +6,11 @@ window.onload = function(){
 
 	App.Game         = App.makeGame();
 	App.GameRenderer = App.makeGameRenderer();
+	App.setupGameGui();
 
 	// TODO: MOVE THIS TO ENGINE.RUN =============================//
 	App.Game.currentPlanningLevel = App.Game.parseLevel(App.demoLevels[2]);
 	//============================================================//
+
 	App.Engine.run();
 }
