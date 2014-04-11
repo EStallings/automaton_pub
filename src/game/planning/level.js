@@ -23,45 +23,47 @@ var PlanningLevel = function(){
 		return true;
 	}
 
-	this.staticRender = function(){}
-	this.dynamicRender = function(){
-		
+	this.generateSimulationLevel = function(){
+		var level = new App.SimulationLevel(this.width,this.height);
+		for(var i in this.grid)
+		for(var j in this.grid[i])
+		for(var c in this.grid[i][j])
+		if(this.grid[i][j][c])
+			new App.SimulationInstruction(level,i,j,c,this.grid[i][j][c]);
+		return level;
+	};
+
+	this.generateParseString = function(){
+		var str = [];
+		str.push(this.name+'`'+this.dateCreated+'`'+this.width+'`'+this.height);
+		for(var i in this.grid)
+		for(var j in this.grid[i])
+		for(var c in this.grid[i][j])
+		if(this.grid[i][j][c])
+			str.push(i+'`'+j+'`'+c+'`'+this.grid[i][j][c]);
+		return str.join('~');
+	};
+
+	this.staticRender = function(){
+		var cs = App.GameRenderer.cellSize;
+		App.GameRenderer.translateCanvas(App.GameRenderer.instructionGfx);
+		for(var c=0;c<4;++c){
+			App.GameRenderer.instructionGfx.save();
+			switch(c){
+				case 0:App.GameRenderer.instructionGfx.translate(0,0);break;
+				case 1:App.GameRenderer.instructionGfx.translate(cs/2,0);break;
+				case 2:App.GameRenderer.instructionGfx.translate(0,cs/2);break;
+				case 3:App.GameRenderer.instructionGfx.translate(cs/2,cs/2);break;
+			}
+
+			for(var i in this.grid)
+			for(var j in this.grid[i])
+			if(this.grid[i][j][c])
+				App.InstCatalog.render(App.GameRenderer.instructionGfx,this.grid[i][j][c],i*cs,j*cs,c,cs/2);
+
+			App.GameRenderer.instructionGfx.restore();
+		}App.GameRenderer.instructionGfx.restore();
 	}
-}
 
-var createNewLevel = function(name,width,height){
-	var lvl = new PlanningLevel();
-	lvl.name        = name;
-	lvl.dateCreated = new Date.getTime();
-	lvl.width       = width;
-	lvl.height      = height;
-	return lvl;
-}
-
-// returns undefined if the level string is invalid
-var parseLevel = function(str){
-	var lvl = new PlanningLevel();
-	if(!str)return undefined;
-	var data = str.split('~');
-	for(var i=0;i<data.length;++i)data[i] = data[i].split('`');
-	if(data.length<1)return undefined;
-	if(data[0].length!==4)return undefined;
-	lvl.name        = data[0][0];
-	lvl.dateCreated = parseInt(data[0][1]);
-	lvl.width       = parseInt(data[0][2]);
-	lvl.height      = parseInt(data[0][3]);
-	if(isNaN(lvl.dateCreated) || isNaN(lvl.width) || isNaN(lvl.height))return undefined;
-	if(lvl.width < 0 || lvl.height < 0)return undefined;
-	for(var i=1;i<data.length;++i){
-		if(data[i].length<4)return undefined;
-		var x = parseInt(data[i][0]);
-		var y = parseInt(data[i][1]);
-		var c = parseInt(data[i][2]);
-		var t = parseInt(data[i][3]);
-		if(isNaN(x) || isNaN(y) || isNaN(c) || isNaN(t))return undefined;
-		if(lvl.width  !== 0 && (x < 0 || x >= lvl.width ))return undefined;
-		if(lvl.height !== 0 && (y < 0 || y >= lvl.height))return undefined;
-		if(c < 0 || c >= 4)return undefined;
-		if(!lvl.insert(x,y,c,t))return undefined;
-	}return lvl;
+	this.dynamicRender = function(){}
 }

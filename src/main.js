@@ -7,7 +7,7 @@ window.onload = function(){
 	App.GameRenderer = App.makeGameRenderer();
 
 	// TODO: MOVE THIS TO ENGINE.RUN =============================//
-	App.Game.currentPlanningLevel = parseLevel(App.demoLevels[0]);
+	App.Game.currentPlanningLevel = App.Game.parseLevel(App.demoLevels[2]);
 	//============================================================//
 	App.Engine.run();
 }

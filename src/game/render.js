@@ -13,7 +13,7 @@ App.makeGameRenderer = function(){
 	game.translateCanvas = function(gfx){ // TODO: OPTIMIZE THIS, THIS IS A BOTTLENECK
 		gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		gfx.save();
-		gfx.translate(App.Game.renderX,App.Game.renderY);
+		gfx.translate(game.renderX,game.renderY);
 	}
 
 	game.requestStaticRenderUpdate = true;
