@@ -22,6 +22,11 @@ var PlanningLevel = function(){
 		j[color] = type;
 		return true;
 	}
+
+	this.staticRender = function(){}
+	this.dynamicRender = function(){
+		
+	}
 }
 
 var createNewLevel = function(name,width,height){

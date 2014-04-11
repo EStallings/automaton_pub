@@ -10,3 +10,11 @@ function addr(i,dimension){
 	if(dimension===0)return i;
 	return fmod(i,dimension);
 }
+
+function expInterp(val,goal,speed,threshold){
+	var factor = App.Engine.elapsed*speed;
+	if(factor>1)factor=1;
+	var retVal = (goal-val)*factor;
+	if(Math.abs(val+retVal-goal)<threshold)retVal=goal-val;
+	return retVal;
+}
