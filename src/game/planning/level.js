@@ -92,7 +92,8 @@ App.PlanningLevel = function(){
 			if(x1 < x2){ upperLeft[0] = x1; lowerRight = x2; }else{ upperLeft[0] = x2; lowerRight = x1; dragLeft = true; }
 			if(y1 < y2){ upperLeft[1] = y1; lowerRight = x2; }else{ upperLeft[1] = y2; lowerRight = x1; dragUp = true; }
 
-			
+
+
 		}
 	}
 
