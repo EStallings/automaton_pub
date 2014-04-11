@@ -18,18 +18,9 @@ App.makeEngine = function(){
 		engine.tick = currentTick;
 		if (engine.elapsed>0) engine.fps = 1000/engine.elapsed;
 
-		engine.update();
-		engine.render();
-	};
-
-	engine.update = function(){
 		App.Game.update();
-	// XXX:	App.Gui.update();
-	};
-
-	engine.render = function(){
 		App.GameRenderer.render();
-	// XXX:	App.Gui.render();
+		App.ModeHandler.update();
 	};
 
 	return engine;

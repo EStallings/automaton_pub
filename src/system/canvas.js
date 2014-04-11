@@ -9,14 +9,15 @@ App.createCanvasArray = function(){
 	// adds and returns a new canvas to the canvas array
 	canvases.addNewLayer = function(name,z){
 		var layer = document.createElement('canvas');
+
 		layer.id = name;
-		layer.width = this.width;
-		layer.height = this.height;
+		layer.width = canvases.width;
+		layer.height = canvases.height;
 		layer.style.zIndex = z;
 		layer.style.position = 'absolute';
 		document.body.appendChild(layer);
 
-		this.layers[name] = layer;
+		canvases.layers[name] = layer;
 		return layer.getContext('2d'); //skip the middleman for most of these...
 	}
 
