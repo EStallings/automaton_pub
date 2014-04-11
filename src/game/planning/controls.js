@@ -36,7 +36,7 @@ App.PlanningControls = function(){
 		
 		if(button === 'mmb'){
 				that.mmb = ['up', scrnX, scrnY, cellX, cellY, cellC];
-				lvl.selectInstructions(that.selectStart[0], that.selectStart[1], that.selectStart[2], cellX, cellY, cellC);
+				App.Game.currentPlanningLevel.selectInstructions(that.selectStart[0], that.selectStart[1], that.selectStart[2], cellX, cellY, cellC);
 			}
 		
 		if(button === 'rmb'){ that.rmb = ['up', scrnX, scrnY, cellX, cellY, cellC]; }
