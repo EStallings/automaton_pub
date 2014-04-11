@@ -7,12 +7,13 @@ window.onload = function(){
 
 	App.Game         = App.makeGame();
 	App.GameRenderer = App.makeGameRenderer();
-	App.setupGameGui();
 
-	// TODO: MOVE THIS TO ENGINE.RUN =============================//
-	App.Game.currentPlanningLevel = App.Game.parseLevel(App.demoLevels[2]);
-	App.ModeHandler.pushMode('planning'); // CHANGE THIS TO MAIN MENU
-	//============================================================//
+	App.setupMainMenu();
+	App.setupLevelSelect();
+	App.setupLibrary();
+	App.setupSettings();
+	App.setupGameGui(); // TODO: split this into planningGui and simulationGui
+	                    // TODO: split above into normal and sandbox versions?
 
 	App.Engine.run();
 }

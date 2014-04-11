@@ -118,9 +118,8 @@ App.makeGameRenderer = function(){
 	}
 
 	game.bestFit = function(){
-		game.goalRenderX = Math.round((App.Canvases.width-App.Game.currentPlanningLevel.width*game.cellSize)/2);
-		game.goalRenderY = Math.round((App.Canvases.height-App.Game.currentPlanningLevel.height*game.cellSize)/2);
-		console.log(game.goalRenderX+" "+game.goalRenderY);
+		game.goalRenderX = Math.round((App.Canvases.width-App.Game.currentPlanningLevel.width*game.goalCellSize)/2);
+		game.goalRenderY = Math.round((App.Canvases.height-App.Game.currentPlanningLevel.height*game.goalCellSize)/2);
 	}
 
 	game.centerOn = function(x,y,zoom){} // TODO: IMPLEMENT THIS
@@ -186,8 +185,6 @@ App.makeGameRenderer = function(){
 			game.automGfx.restore();
 			game.tokenDGfx.restore();
 		}
-
-		game.renderDebug();
 	}
 
 	// ========================================================== //

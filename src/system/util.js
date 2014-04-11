@@ -18,3 +18,12 @@ function expInterp(val,goal,speed,threshold){
 	if(Math.abs(val+retVal-goal)<threshold)retVal=goal-val;
 	return retVal;
 }
+
+function text(gfx,string,x,y,size,spacing){
+	gfx.textBaseline = "alphabetic";
+	gfx.font = "800 "+size*1.37+"px arial";
+	for(var i=0;i<string.length;++i){
+		gfx.fillText(string.charAt(i),x,y+size);
+		x += gfx.measureText(string.charAt(i)).width+spacing;
+	}
+}
