@@ -383,7 +383,7 @@ App.makeGame = function(){
 		}
 
 		// lighter overlay
-		game.gridGfx.fillStyle = 'rgba(0,0,0,0.4)';
+		game.gridGfx.fillStyle = 'rgba(0,0,0,0.2)';
 		game.gridGfx.fillRect(game.renderX,game.renderY,gw*cs,gh*cs);
 
 	//============================================================//
@@ -485,7 +485,8 @@ App.makeGame = function(){
 
 		// draw background and occlude level at borders
 		// TODO: OPTIMIZE THIS
-		game.bkgndGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+		game.bkgndGfx.strokeStyle = '#2d2d2d';
+		game.bkgndGfx.fillRect(0,0,App.Canvases.width,App.Canvases.height);
 		game.bkgndGfx.strokeStyle = '#131313';
 		game.bkgndGfx.lineWidth = 5;
 		game.bkgndGfx.beginPath();
