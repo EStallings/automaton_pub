@@ -31,6 +31,8 @@ App.makeGame = function(){
 
 		game.mode = mode;
 		if(game.mode === game.modes.SIMULATION){
+			game.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+			game.tokenDGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel();
 			game.requestStaticRenderUpdate = true;
 			game.paused = false;
@@ -41,6 +43,7 @@ App.makeGame = function(){
 			game.currentSimulationLevel = undefined;
 			game.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			game.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+			game.tokenDGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			game.requestStaticRenderUpdate = true;
 			game.paused = true;
 		}

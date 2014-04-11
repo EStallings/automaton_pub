@@ -87,6 +87,7 @@ App.PlanningGraphics = function(){
 	}
 
 	this.dynamicRender = function(gfx){
+
 		App.Game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		//if(App.Game.currentPlanningLevel.currentSelection[0] !== null &&
 				//App.Game.currentPlanningLevel.currentSelection.length !== 0){ that.debug(gfx); }
