@@ -166,6 +166,7 @@ App.PlanningLevel = function(){
 		for(var i in instructions){
 			if(instructions[i].x < 0 || instructions[i].x >= that.width){ console.log('insert out of bounds'); return; }
 			if(instructions[i].y < 0 || instructions[i].y >= that.height){ console.log('insert out of bounds'); return; }
+			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return; }
 			if(that.getInstruction(instructions[i].x,instructions[i].y,instructions[i].color) !== null){ // space occupied
 				// TODO overwrite
 				console.log('insert blocked');
@@ -190,6 +191,7 @@ App.PlanningLevel = function(){
 		if(that.currentSelection === []){ return; }
 		instructions = that.toList(instructions);
 		for(i in instructions){
+			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return; }
 			that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = null;
 		}
 		that.undoStack.push(new that.operation('del', instructions, null, null, null, null));
@@ -206,6 +208,8 @@ App.PlanningLevel = function(){
 
 		that.undoStack.push(new that.operation('mov', instructions, shiftX, shiftY, null, null)); // will have to pop if move fails
 		for(i in instructions){
+			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return; }
+
 			var x = instructions[i].x;
 			var y = instructions[i].y;
 			var c = instructions[i].color;
@@ -235,6 +239,7 @@ App.PlanningLevel = function(){
 		that.undoStack.push(new that.operation('cpy', instructions, shiftX, shiftY, null, null)); // will have to pop if move fails
 
 		for(i in instructions){
+			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return; }
 
 			if(!instructions[i]){
 				console.log('instruction doesn\'t exist');
