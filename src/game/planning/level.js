@@ -105,6 +105,18 @@ App.PlanningLevel = function(){
 		}
 	}
 
+	this.validateGrid = function(){
+		for(var x in that.grid){
+			if(that.grid[x]) for(var y in that.grid[x]){
+				if(that.grid[x][y]) for(var c in that.grid[x][y]){
+					if(that.grid[x][y][c] && (('' + that.grid[x][y][c].x !== x) || ('' + that.grid[x][y][c].y !== y))){
+						console.log(x + ' ' + y + ' ' + c + ' : ' + that.grid[x][y][c].x + ' ' + that.grid[x][y][c].y);
+					}
+				}
+			}
+		}
+	}
+
 	this.xycToij = function(x,y,c){
 		var coords = [x, y];
 		if(c === 1 || c === 3){ coords[0] += .5; }
@@ -163,6 +175,7 @@ App.PlanningLevel = function(){
 		that.undoStack.push(new that.operation('ins', instructions, null, null, null, null));
 		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: insert');
+		that.validateGrid();
 	}
 
 	// this function takes a list of coordinate triplets and deletes the corresponding instructions from the grid
@@ -176,6 +189,7 @@ App.PlanningLevel = function(){
 		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: delete');
 		that.currentSelection = [];
+		that.validateGrid();
 	}
 
 	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
@@ -205,6 +219,7 @@ App.PlanningLevel = function(){
 		}
 		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: move');
+		that.validateGrid();
 	}
 
 	// this function takes a list of coordinate triplets and copies the instructions they point to to a new cell shiftX and shiftY away from the first
@@ -238,6 +253,7 @@ App.PlanningLevel = function(){
 		}
 		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: copy');
+		that.validateGrid();
 	}
 
 	// TODO
@@ -293,6 +309,7 @@ App.PlanningLevel = function(){
 			}			
 		}
 		App.Game.requestStaticRenderUpdate = true;
+		that.validateGrid();
 	};
 
 	// each call to this function pops the redo stack, and undoes whatever operation it finds
@@ -343,6 +360,7 @@ App.PlanningLevel = function(){
 			}			
 		}
 		App.Game.requestStaticRenderUpdate = true;
+		that.validateGrid();
 	}
 
 	this.killUndo = function(str){ that.undoStack = []; console.log(str); }
