@@ -25,7 +25,7 @@ App.PlanningControls = function(){
 	this.buttonDown = function(button, scrnX, scrnY, cellX, cellY, cellC){
 		if(button === 'lmb'){
 			that.lmb = ['down', scrnX, scrnY, cellX, cellY, cellC];
-			if(App.Game.currentPlanningLevel.currentSelection !== []){
+			if(App.Game.currentPlanningLevel.currentSelection.length !== 0){
 				this.moveStart = [cellX, cellY, cellC];
 			}
 		}
@@ -51,7 +51,10 @@ App.PlanningControls = function(){
 				var shiftX = cellX - that.moveStart[0];
 				var shiftY = cellY - that.moveStart[1];
 
-				App.Game.currentPlanningLevel.move(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+				if(App.InputHandler.keysDown['Ctrl']){ App.Game.currentPlanningLevel.copy( App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY); }
+				else{ App.Game.currentPlanningLevel.move( App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY); }
+
+				console.log(App.InputHandler.keysDown);
 
 				that.moveStart = [-1,-1,-1];
 			}
