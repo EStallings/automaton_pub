@@ -258,6 +258,11 @@ var setupPlanningFrame = function(){
 	App.InputHandler.registerKey('3', App.MODES.PLANNING,function(){ App.GuiDragButton.changeGlobalColor(2); });
 	App.InputHandler.registerKey('4', App.MODES.PLANNING,function(){ App.GuiDragButton.changeGlobalColor(3); });
 
+	App.InputHandler.registerKey('Left', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.insertDir = 'Left'; });
+	App.InputHandler.registerKey('Right', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.insertDir = 'Right'; });
+	App.InputHandler.registerKey('Up', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.insertDir = 'Up'; });
+	App.InputHandler.registerKey('Down', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.insertDir = 'Down'; });
+
 	App.InputHandler.registerKey('Numpad 1', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.toggleLock(0); });
 	App.InputHandler.registerKey('Numpad 2', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.toggleLock(1); });
 	App.InputHandler.registerKey('Numpad 3', App.MODES.PLANNING,function(){ App.Game.currentPlanningLevel.toggleLock(2); });
@@ -382,6 +387,11 @@ var setupSandboxFrame = function(){
 	App.InputHandler.registerKey('Numpad 2', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.toggleLock(1); });
 	App.InputHandler.registerKey('Numpad 3', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.toggleLock(2); });
 	App.InputHandler.registerKey('Numpad 4', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.toggleLock(3); });
+
+	App.InputHandler.registerKey('Left', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.insertDir = 'Left'; });
+	App.InputHandler.registerKey('Right', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.insertDir = 'Right'; });
+	App.InputHandler.registerKey('Up', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.insertDir = 'Up'; });
+	App.InputHandler.registerKey('Down', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.insertDir = 'Down'; });
 
 	App.InputHandler.registerKey('Delete', App.MODES.SANDBOX,function(){ App.Game.currentPlanningLevel.input.delKey(); });
 	App.InputHandler.registerKey('`', App.MODES.SANDBOX,function(){ App.changeMode(App.MODES.SIMULATION);});

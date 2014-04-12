@@ -10,6 +10,7 @@ App.PlanningLevel = function(){
 	this.locks = [false, false, false, false]; // R,G,B,Y
 	this.input = new App.PlanningControls();
 	this.graphics = new App.PlanningGraphics();
+	this.insertDir = 'Left';
 
 	// flag that lets the operation functions know how to handle conflicts.
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
