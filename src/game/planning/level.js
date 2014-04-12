@@ -70,7 +70,13 @@ App.PlanningLevel = function(){
 	};
 
 	this.toggleLock = function(color){
-		if(that.locks[color] === true){that.locks[color] = false; }else{ that.locks[color] = true; }
+		if(that.locks[color] === true){that.locks[color] = false; }
+		else{
+			that.locks[color] = true;
+			for(var i = 0; i < that.currentSelection.length; ++i){
+				if(that.isLocked(that.currentSelection[i].color)){ that.currentSelection.splice(i,1); i--; }
+			}
+		}
 	}
 
 	// returns the states of the specified layer lock
@@ -80,7 +86,7 @@ App.PlanningLevel = function(){
 	this.selectInstructions = function(x1, y1, c1, x2, y2, c2){
 		var that = App.Game.currentPlanningLevel; // TODO wierd bug with 'that'. not sure why this was needed
 		if(x1 === x2 && y1 === y2 && c1 === c2){ // click select
-			if(that.getInstruction(x1,y1,c1)){
+			if(that.getInstruction(x1,y1,c1) && !that.isLocked(that.getInstruction(x1,y1,c1).color)){
 				that.currentSelection[0] = that.getInstruction(x1,y1,c1);
 			}
 			else{ // click in empty space - clear selection
@@ -102,7 +108,7 @@ App.PlanningLevel = function(){
 			for(var j = upperLeft[1]; j <= lowerRight[1]; j += .5){
 				for(var i = upperLeft[0]; i <= lowerRight[0]; i += .5){
 					temp = that.getInstruction(that.ijToxyc(i,j)[0], that.ijToxyc(i,j)[1], that.ijToxyc(i,j)[2]);
-					if(temp){
+					if(temp && !that.isLocked(temp.color)){
 						that.currentSelection[numInstr] = temp;
 						++numInstr;
 					}
