@@ -7,10 +7,9 @@ App.PlanningLevel = function(){
 	this.currentSelection = [];
 	this.undoStack = [];
 	this.redoStack = [];
-	// TODO layer locks
+	this.locks = [false, false, false, false]; // R,G,B,Y
 	this.input = new App.PlanningControls();
 	this.graphics = new App.PlanningGraphics();
-	// TODO graphics
 
 	// flag that lets the operation functions know how to handle conflicts.
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
@@ -69,6 +68,13 @@ App.PlanningLevel = function(){
 			}
 		}
 	};
+
+	this.toggleLock = function(color){
+		if(that.locks[color] === true){that.locks[color] = false; }else{ that.locks[color] = true; }
+	}
+
+	// returns the states of the specified layer lock
+	this.isLocked = function(color){ return that.locks[color]; }
 
 	// fills currentSelection list of all unlocked instructions in cells between the specified coordinates
 	this.selectInstructions = function(x1, y1, c1, x2, y2, c2){
@@ -132,12 +138,6 @@ App.PlanningLevel = function(){
 		if(i%1 === .5 && j%1 === .5){ coords[2] = 3; coords[0] -= .5; coords[1] -= .5;}
 		return coords;
 	}
-
-	// toggles the state of the specified layer lock
-	this.toggleLock = function(col){}
-
-	// returns the states of the specified layer lock
-	this.isLocked = function(color){}
 
 	this.toList = function(x){
 
