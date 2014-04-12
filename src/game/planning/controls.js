@@ -56,6 +56,12 @@ App.PlanningControls = function(){
 
 				that.moveStart = [-1,-1,-1];
 			}
+			else{ // single click
+				if(App.InputHandler.keysDown['Left']){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,6));	}
+				if(App.InputHandler.keysDown['Right']){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,7));	}
+				if(App.InputHandler.keysDown['Up']){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,4));	}
+				if(App.InputHandler.keysDown['Down']){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,5));	}
+			}
 		}
 		
 		if(button === 'mmb'){
