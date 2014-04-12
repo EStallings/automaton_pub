@@ -54,8 +54,6 @@ App.PlanningControls = function(){
 				if(App.InputHandler.keysDown['Ctrl']){ App.Game.currentPlanningLevel.copy( App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY); }
 				else{ App.Game.currentPlanningLevel.move( App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY); }
 
-				console.log(App.InputHandler.keysDown);
-
 				that.moveStart = [-1,-1,-1];
 			}
 		}

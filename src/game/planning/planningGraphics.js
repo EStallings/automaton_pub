@@ -60,25 +60,13 @@ App.PlanningGraphics = function(){
 				offsetX = size; offsetY = size;
 			}
 
-			// this is extremely inefficient...
-			gfx.strokeRect(scrnX+offsetX, scrnY+offsetY, size, size);
-		//	gfx.strokeRect(scrnX+offsetX-1, scrnY+offsetY-1, size+2, size+2);
-			gfx.clearRect(scrnX+offsetX+5, scrnY+offsetY-2, size-10, size+4);
-			gfx.clearRect(scrnX+offsetX-2, scrnY+offsetY+5, size+4, size-10);
-		//	gfx.fillRect(scrnX+offsetX, scrnY+offsetY, size, size);
-			
-			if(App.Game.currentPlanningLevel.moving){
-				gfx.fillStyle = '#ffffff';
-				gfx.font='16px Georgia';
-		
-				gfx.fillText('M', scrnX+offsetX+4, scrnY+offsetY+18); // TODO: fix so it works with zoom
-			}
-
-			if(App.Game.currentPlanningLevel.copied){
-				gfx.fillStyle = '#ffffff';
-				gfx.font='16px Georgia';
-		
-				gfx.fillText('C', scrnX+offsetX+4, scrnY+offsetY+18); // TODO: fix so it works with zoom
+			if(App.Game.currentPlanningLevel.grid[gridX][gridY][color] !== null){
+				// this is extremely inefficient...
+				gfx.strokeRect(scrnX+offsetX, scrnY+offsetY, size, size);
+			//	gfx.strokeRect(scrnX+offsetX-1, scrnY+offsetY-1, size+2, size+2);
+				gfx.clearRect(scrnX+offsetX+5, scrnY+offsetY-2, size-10, size+4);
+				gfx.clearRect(scrnX+offsetX-2, scrnY+offsetY+5, size+4, size-10);
+			//	gfx.fillRect(scrnX+offsetX, scrnY+offsetY, size, size);
 			}
 
 			++i;
