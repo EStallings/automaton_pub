@@ -10,7 +10,8 @@ App.PlanningControls = function(){
 	this.lmbDrag = false;
 	this.mmbDrag = false;
 	this.rmbDrag = false;
-	this.selectStart = [-1,-1,-1] // x,y,c where the mmb was pressed down
+	this.selectStart = [-1,-1,-1]; // x,y,c where the mmb was pressed down
+	this.moveStart = [-1,-1,-1]; // x,y,c where the move started
 
 	this.mouseMove = function(scrnX, scrnY, cellX, cellY, cellC){
 		this.scrnX = scrnX; this.scrnY = scrnY;
@@ -22,7 +23,12 @@ App.PlanningControls = function(){
 	}
 
 	this.buttonDown = function(button, scrnX, scrnY, cellX, cellY, cellC){
-		if(button === 'lmb'){ that.lmb = ['down', scrnX, scrnY, cellX, cellY, cellC]; }
+		if(button === 'lmb'){
+			that.lmb = ['down', scrnX, scrnY, cellX, cellY, cellC];
+			if(App.Game.currentPlanningLevel.currentSelection !== []){
+				this.moveStart = [cellX, cellY, cellC];
+			}
+		}
 		
 		if(button === 'mmb'){
 			that.mmb = ['down', scrnX, scrnY, cellX, cellY, cellC];
@@ -39,7 +45,17 @@ App.PlanningControls = function(){
 
 	// TODO make it so that one button can be held while another is released
 	this.buttonUp = function(button, scrnX, scrnY, cellX, cellY, cellC){
-		if(button === 'lmb'){ that.lmb = ['up', scrnX, scrnY, cellX, cellY, cellC]; }
+		if(button === 'lmb'){
+			that.lmb = ['up', scrnX, scrnY, cellX, cellY, cellC];
+			if(that.moveStart[0] !== -1){
+				var shiftX = cellX - that.moveStart[0];
+				var shiftY = cellY - that.moveStart[1];
+
+				App.Game.currentPlanningLevel.move(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+
+				that.moveStart = [-1,-1,-1];
+			}
+		}
 		
 		if(button === 'mmb'){
 				that.mmb = ['up', scrnX, scrnY, cellX, cellY, cellC];
