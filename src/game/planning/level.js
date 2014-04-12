@@ -95,8 +95,10 @@ App.PlanningLevel = function(){
 
 			var numInstr = 0;
 			var temp;
+			console.log('');
 			for(var j = upperLeft[1]; j <= lowerRight[1]; j += .5){
 				for(var i = upperLeft[0]; i <= lowerRight[0]; i += .5){
+					console.log(i + ' ' + j + ' ' + that.ijToxyc(i,j)[0] + ' ' + that.ijToxyc(i,j)[1] + ' ' + that.ijToxyc(i,j)[2]);
 					temp = that.getInstruction(that.ijToxyc(i,j)[0], that.ijToxyc(i,j)[1], that.ijToxyc(i,j)[2]);
 					if(temp){
 						that.currentSelection[numInstr] = temp;
@@ -145,8 +147,10 @@ App.PlanningLevel = function(){
 	this.insert = function(instructions){
 		// TODO layer lock stuff
 		instructions = that.toList(instructions);
-console.log(that);
+
 		for(var i in instructions){
+			if(instructions[i].x < 0 || instructions[i].x >= that.width){ console.log('insert out of bounds'); return; }
+			if(instructions[i].y < 0 || instructions[i].y >= that.height){ console.log('insert out of bounds'); return; }
 			if(that.getInstruction(instructions[i].x,instructions[i].y,instructions[i].color) !== null){ // space occupied
 				// TODO overwrite
 				console.log('insert blocked');
