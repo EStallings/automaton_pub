@@ -38,6 +38,8 @@ App.makeGame = function(){
 			game.paused = false;
 			game.nextCycleTick = App.Engine.tick;
 			game.cycle = 0;
+			game.currentPlanningLevel.currentSelection = [];
+			game.currentPlanningLevel.graphics.dynamicRender(game.tempGfx);
 		}else{
 			game.mode = game.modes.PLANNING;
 			game.currentSimulationLevel = undefined;
@@ -509,7 +511,6 @@ App.makeGame = function(){
 
 	game.dynamicRender = function(){
 		if(game.mode === game.modes.PLANNING && game.currentPlanningLevel !== undefined){
-				game.currentPlanningLevel.dynamicRender();
 				if(App.Game.mode === 'Planning'){ game.currentPlanningLevel.graphics.dynamicRender(game.tempGfx); }
 		}
 		else if(game.currentSimulationLevel !== undefined){

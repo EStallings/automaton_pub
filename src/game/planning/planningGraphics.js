@@ -2,14 +2,10 @@ App.PlanningGraphics = function(){
 
 	// TODO: graphics for move
 	// TODO: graphics for copy
-	// TODO: different key mappings? esc for deselect?
 
 	var that = this;
 
-	this.staticRender = function(gfx){
-		if(App.Game.currentPlanningLevel.currentSelection.length !== 0
-				&& App.Game.currentPlanningLevel.currentSelection[0] !== null ){ that.selectionOverlay(gfx); }
-	}
+	this.staticRender = function(gfx){}
 
 	this.debug = function(gfx){
 		gfx.fillStyle = '#ffffff';
@@ -84,7 +80,6 @@ App.PlanningGraphics = function(){
 		if(App.Game.currentPlanningLevel.input.mmb[0] === 'down'){ that.drawSelectionBox(gfx); }
 	}
 
-	// TODO: fix it so it draws even if something is already selected
 	this.drawSelectionBox = function(gfx){
 		var mouseData = App.Game.currentPlanningLevel.input;
 		var curX = mouseData.scrnX;

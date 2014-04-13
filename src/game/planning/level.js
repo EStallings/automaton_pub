@@ -219,7 +219,7 @@ App.PlanningLevel = function(){
 			var x = instructions[i].x;
 			var y = instructions[i].y;
 			var c = instructions[i].color;
-			if(that.getInstruction(x + shiftX, y + shiftY, c) && that.currentPlanningLevel.indexOf(that.getInstruction(x + shiftX, y + shiftY, c)) === -1){  // space occupied
+			if(that.getInstruction(x + shiftX, y + shiftY, c) && that.currentSelection.indexOf(that.getInstruction(x + shiftX, y + shiftY, c)) === -1){  // space occupied
 				// TODO overwrite
 				if(that.userOverlapSetting == 1){ // overwrite
 					console.log('insert blocked');
@@ -290,7 +290,6 @@ App.PlanningLevel = function(){
 	// this function takes a list of coordinate triplets and changes the specified parameter of all of them to value
 	this.modify = function(instructions, parameter, value){}
 
-	// TODO figure out how undo / redo will work with locked layers.
 	// each call to this function pops the undo stack, and undoes whatever operation it finds
 	this.undo = function(){
 		var op = that.undoStack.pop();
@@ -396,11 +395,6 @@ App.PlanningLevel = function(){
 	this.killUndo = function(str){ that.undoStack = []; console.log(str); }
 	this.killRedo = function(str){ that.redoStack = []; console.log(str); }
 
-	/*this.generateParseString = function(){}
-	this.generateSimulationLevel = function(){}
-	this.staticRender = function(){}*/
-
-	// TODO it sounds like we may want to include the level title in the string?
 	this.generateParseString = function(){
 		var strings = [];
 		strings.push(this.name + ',' + this.width + ',' + this.height);
