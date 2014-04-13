@@ -511,7 +511,7 @@ App.makeInstructionCatalog = function(){
 				break;
 			case 'Q':
 				gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);
-				gfx.moveTo(  cs/2,  cs/2);
+				gfx.moveTo(5*cs/8,5*cs/8);
 				gfx.lineTo(3*cs/4,3*cs/4);
 				break;
 			case 'R':
@@ -552,7 +552,7 @@ App.makeInstructionCatalog = function(){
 			case 'W':
 				gfx.moveTo(  cs/4,  cs/4);
 				gfx.lineTo(3*cs/8,3*cs/4);
-				gfx.lineTo(  cs/2,  cs/2);
+				gfx.lineTo(  cs/2,9*cs/16);
 				gfx.lineTo(5*cs/8,3*cs/4);
 				gfx.lineTo(3*cs/4,  cs/4);
 				break;
@@ -576,11 +576,14 @@ App.makeInstructionCatalog = function(){
 				gfx.lineTo(3*cs/4,3*cs/4);
 				break;
 			default:
-				gfx.strokeStyle = '#fff';
-				gfx.moveTo(2,2);
-				gfx.lineTo(cs-2,cs-2);
-				gfx.moveTo(2,cs-2);
-				gfx.lineTo(cs-2,2);
+				gfx.moveTo(  cs/4,3*cs/8);
+				gfx.lineTo(  cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,  cs/2);
+				gfx.lineTo(  cs/2,  cs/2);
+				gfx.lineTo(  cs/2,5*cs/8);
+				gfx.moveTo(15*cs/32,3*cs/4);
+				gfx.lineTo(17*cs/32,3*cs/4);
 				break;
 		}
 
