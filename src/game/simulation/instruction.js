@@ -24,7 +24,9 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			case App.COLORS.YELLOW: rx=this.x*cs+cs/2; ry=this.y*cs+cs/2; break;
 		}
 
-		App.InstCatalog.render(this.gfx,this.type,rx,ry,this.color,cs/2);
+		var streamBkg = false;
+		if(this.type === App.InstCatalog.TYPES['IN'] || this.type === App.InstCatalog.TYPES['OUT'])streamBkg = true;
+		App.InstCatalog.render(this.gfx,this.type,rx,ry,this.color,cs/2,this.data,streamBkg);
 		this.gfx.restore();
 	}
 

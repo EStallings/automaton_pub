@@ -392,22 +392,18 @@ App.makeInstructionCatalog = function(){
 
 		if(streamBkg)switch(c){
 			case App.COLORS.RED:
-//				gfx.fillStyle='#330000';
 				gfx.fillStyle='rgba(255,0,0,0.2)';
 				gfx.fillRect(2,2,2*cs-4,2*cs-4);
 				break;
 			case App.COLORS.GREEN:
-//				gfx.fillStyle='#003300';
 				gfx.fillStyle='rgba(0,255,0,0.2)';
 				gfx.fillRect(-cs+2,2,2*cs-4,2*cs-4);
 				break;
 			case App.COLORS.BLUE:
-//				gfx.fillStyle='#000033';
 				gfx.fillStyle='rgba(0,0,255,0.2)';
 				gfx.fillRect(2,-cs+2,2*cs-4,2*cs-4);
 				break;
 			case App.COLORS.YELLOW:
-//				gfx.fillStyle='#333300';
 				gfx.fillStyle='rgba(255,255,0,0.2)';
 				gfx.fillRect(-cs+2,-cs+2,2*cs-4,2*cs-4);
 				break;
