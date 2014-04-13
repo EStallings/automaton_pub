@@ -219,7 +219,7 @@ App.PlanningLevel = function(){
 			var x = instructions[i].x;
 			var y = instructions[i].y;
 			var c = instructions[i].color;
-			if(that.getInstruction(x + shiftX, y + shiftY, c)){  // space occupied
+			if(that.getInstruction(x + shiftX, y + shiftY, c) && that.currentPlanningLevel.indexOf(that.getInstruction(x + shiftX, y + shiftY, c)) === -1){  // space occupied
 				// TODO overwrite
 				if(that.userOverlapSetting == 1){ // overwrite
 					console.log('insert blocked');
