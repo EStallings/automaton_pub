@@ -211,8 +211,6 @@ App.PlanningLevel = function(){
 
 		instructions = that.toList(instructions);
 
-		that.undoStack.push(new that.operation('mov', instructions, shiftX, shiftY, null, null)); // will have to pop if move fails
-
 		for(i in instructions){ // remove all from grid to prevent groups from overlapping themselves also update coordinates
 			var instr = instructions[i];
 			that.grid[instr.x][instr.y][instr.color] = null;
@@ -220,7 +218,24 @@ App.PlanningLevel = function(){
 			instructions[i].y += shiftY; 
 		}
 
-		// TODO check that no overlap occurs
+		// check that no overlap
+		for(i in instructions){
+			var instr = instructions[i];
+
+			if(that.getInstruction(instr.x, instr.y, instr.color)){
+				if(that.userOverlapSetting === 0){ // reject
+					for(z in instructions){
+						instructions[z].x -= shiftX;
+						instructions[z].y -= shiftY;
+						that.grid[instructions[z].x][instructions[z].y][instructions[z].color] = instructions[z];
+					}
+					return;
+				}
+				else{ // overwrite
+					// TODO
+				}
+			}
+		}
 
 		for(i in instructions){ // place instructions
 			var instr = instructions[i];
@@ -230,6 +245,7 @@ App.PlanningLevel = function(){
 			that.grid[instr.x][instr.y][instr.color] = instr;
 		}
 
+		that.undoStack.push(new that.operation('mov', instructions, shiftX, shiftY, null, null));
 		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: move');
 		that.validateGrid();
