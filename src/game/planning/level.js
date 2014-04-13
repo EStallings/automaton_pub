@@ -176,18 +176,7 @@ App.PlanningLevel = function(){
 					console.log('insert blocked');
 					return; // this probably causes things to break
 				}
-					return; // this probably causes things to break
-				}
-				else{ // reject
-					console.log('insert blocked');
-					return; // this probably causes things to break
-				}
-					return; // this probably causes things to break
-				}
-				else{ // reject
-					console.log('insert blocked');
-					return; // this probably causes things to break
-				}
+
 			}
 			else{ // free space
 				if(!that.grid[instructions[i].x]){ that.grid[instructions[i].x] = []; }
@@ -234,12 +223,6 @@ App.PlanningLevel = function(){
 				// TODO overwrite
 				if(that.userOverlapSetting == 1){ // overwrite
 					console.log('insert blocked');
-					return; // this probably causes things to break
-				}
-				else{ // reject
-					console.log('insert blocked');
-					return; // this probably causes things to break
-				}
 					return; // this probably causes things to break
 				}
 				else{ // reject
