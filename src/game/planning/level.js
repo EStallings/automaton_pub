@@ -160,7 +160,6 @@ App.PlanningLevel = function(){
 
 	// this function takes a list of PlanningInstructions and inserts them into the grid
 	this.insert = function(instructions){
-		// TODO layer lock stuff
 		instructions = that.toList(instructions);
 
 		for(var i in instructions){
@@ -169,8 +168,26 @@ App.PlanningLevel = function(){
 			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return; }
 			if(that.getInstruction(instructions[i].x,instructions[i].y,instructions[i].color) !== null){ // space occupied
 				// TODO overwrite
-				console.log('insert blocked');
-				return; // this probably causes things to break
+				if(that.userOverlapSetting == 1){ // overwrite
+					console.log('insert blocked');
+					return; // this probably causes things to break
+				}
+				else{ // reject
+					console.log('insert blocked');
+					return; // this probably causes things to break
+				}
+					return; // this probably causes things to break
+				}
+				else{ // reject
+					console.log('insert blocked');
+					return; // this probably causes things to break
+				}
+					return; // this probably causes things to break
+				}
+				else{ // reject
+					console.log('insert blocked');
+					return; // this probably causes things to break
+				}
 			}
 			else{ // free space
 				if(!that.grid[instructions[i].x]){ that.grid[instructions[i].x] = []; }
@@ -215,8 +232,20 @@ App.PlanningLevel = function(){
 			var c = instructions[i].color;
 			if(that.getInstruction(x + shiftX, y + shiftY, c)){  // space occupied
 				// TODO overwrite
-				console.log('move blocked');
-				return; // this probably causes things to break
+				if(that.userOverlapSetting == 1){ // overwrite
+					console.log('insert blocked');
+					return; // this probably causes things to break
+				}
+				else{ // reject
+					console.log('insert blocked');
+					return; // this probably causes things to break
+				}
+					return; // this probably causes things to break
+				}
+				else{ // reject
+					console.log('insert blocked');
+					return; // this probably causes things to break
+				}
 			}
 			else{ // free space
 				if(!that.grid[x+shiftX]){ that.grid[x+shiftX] = []; }
@@ -251,8 +280,14 @@ App.PlanningLevel = function(){
 			var c = instructions[i].color;
 			if(that.getInstruction(x + shiftX, y + shiftY, c)){  // space occupied
 				// TODO overwrite
-				console.log('copy blocked');
-				return; // this probably causes things to break
+				if(that.userOverlapSetting == 1){ // overwrite
+					console.log('insert blocked');
+					return; // this probably causes things to break
+				}
+				else{ // reject
+					console.log('insert blocked');
+					return; // this probably causes things to break
+				}
 			}
 			else{ // free space
 				if(!that.grid[x+shiftX]){ that.grid[x+shiftX] = []; }
