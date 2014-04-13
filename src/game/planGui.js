@@ -3,7 +3,7 @@ App.setupPlanGui = function(){
 
 		// ---------------------------------------------
 
-	planMode.gfx = App.Canvases.addNewLayer('planning gui',1);
+	planMode.gfx = App.Canvases.addNewLayer(1).getContext('2d');
 	planMode.direction = App.DIRECTIONS.UP;
 	planMode.color = App.COLORS.RED;
 

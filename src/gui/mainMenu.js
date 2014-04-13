@@ -3,7 +3,7 @@ App.setupMainMenu = function(){
 
 		// ---------------------------------------------
 
-	mainMenu.gfx = App.Canvases.addNewLayer('main menu',1);
+	mainMenu.gfx = App.Canvases.addNewLayer(1).getContext('2d');
 	mainMenu.playButton     = new App.Button('Play'    ,'#fff','#000','#f00','#fff',mainMenu.gfx,15,56+28*0,512,24,200,000);
 	mainMenu.libraryButton  = new App.Button('Library' ,'#fff','#000','#0f0','#fff',mainMenu.gfx,15,56+28*1,512,24,300,100);
 	mainMenu.sandboxButton  = new App.Button('Sandbox' ,'#fff','#000','#00f','#fff',mainMenu.gfx,15,56+28*2,512,24,400,200);

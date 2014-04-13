@@ -3,7 +3,7 @@ App.setupLevelSelect = function(){
 
 		// ---------------------------------------------
 
-	levelSelect.gfx = App.Canvases.addNewLayer('level select',1);
+	levelSelect.gfx = App.Canvases.addNewLayer(1).getContext('2d');
 	levelSelect.backButton = new App.Button('Back to Main Menu','#fff','#000','#f00','#fff',levelSelect.gfx,15,56+28*0,512,24,200,000);
 
 		// ---------------------------------------------

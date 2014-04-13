@@ -7,18 +7,17 @@ App.createCanvasArray = function(){
 	canvases.layers = [];
 
 	// adds and returns a new canvas to the canvas array
-	canvases.addNewLayer = function(name,z){
+	canvases.addNewLayer = function(z){
 		var layer = document.createElement('canvas');
 
-		layer.id = name;
 		layer.width = canvases.width;
 		layer.height = canvases.height;
 		layer.style.zIndex = z;
 		layer.style.position = 'absolute';
 		document.body.appendChild(layer);
 
-		canvases.layers[name] = layer;
-		return layer.getContext('2d'); //skip the middleman for most of these...
+		canvases.layers.push(layer);
+		return layer;
 	}
 
 	// resizes all canvases when browser window is resized

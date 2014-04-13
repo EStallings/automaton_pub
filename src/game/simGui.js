@@ -3,7 +3,7 @@ App.setupSimGui = function(){
 
 		// ---------------------------------------------
 
-	simMode.gfx = App.Canvases.addNewLayer('simulation gui',1);
+	simMode.gfx = App.Canvases.addNewLayer(1).getContext('2d');
 
 		// ---------------------------------------------
 

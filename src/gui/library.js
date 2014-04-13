@@ -3,7 +3,7 @@ App.setupLibrary = function(){
 
 		// ---------------------------------------------
 
-	library.gfx = App.Canvases.addNewLayer('library',1);
+	library.gfx = App.Canvases.addNewLayer(1).getContext('2d');
 	library.backButton = new App.Button('Back to Main Menu','#fff','#000','#0f0','#fff',library.gfx,15,56+28*0,512,24,200,000);
 
 		// ---------------------------------------------
