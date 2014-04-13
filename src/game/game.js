@@ -44,21 +44,23 @@ App.makeGame = function(){
 			var y = parseInt(data[i][1]);
 			var c = parseInt(data[i][2]);
 			var t = parseInt(data[i][3]);
-			var d = data[i][4]; // TODO: CHECK FOR DUPLICATE STREAMS
+			var d = data[i][4];
 			if(isNaN(x) || isNaN(y) || isNaN(c) || isNaN(t))return undefined;
 			if(lvl.width  !== 0 && (x < 0 || x >= lvl.width ))return undefined;
 			if(lvl.height !== 0 && (y < 0 || y >= lvl.height))return undefined;
 			if(c < 0 || c >= 4)return undefined;
-			if(d && game.streams[d])return undefined;
+			if(d !== undefined && game.streams[d])return undefined;
 			if(!lvl.insert(x,y,c,t,d))return undefined;
 			switch(t){
 				case App.InstCatalog.TYPES['IN']:
-					var p = Parser.parse(data[i][5]); // TODO: ERROR CHECK THIS
+					var p = Parser.parse(data[i][5]);
+					if(p === undefined)return undefined;
 					game.inStreams[d]=[data[i][5],p,[],0];
 					break;
 				case App.InstCatalog.TYPES['OUT']:
 					++game.totalOutStreams;
-					var p = Parser.parse(data[i][5]); // TODO: ERROR CHECK THIS
+					var p = Parser.parse(data[i][5]);
+					if(p === undefined)return undefined;
 					game.outStreams[d]=[data[i][5],p,[],0,data[i][6],data[i][7]];
 					break;
 			}game.streams[d] = true;
@@ -147,9 +149,17 @@ App.makeGame = function(){
 		var vals = [];
 		for(var i in game.inStreams){
 			var val = vals[i] = game.inStreams[i][1].evaluate();
-			game.inStreams[i][2].push(val);
-		}for(var i in game.outStreams)
-			game.outStreams[i][2].push(game.outStreams[i][1].evaluate(vals));
+			if(val === undefined){
+				game.simulationError("Invalid stream input"); // XXX: CAN WE DETERMINE THIS AT LEVEL PARSE TIME
+				return;
+			}game.inStreams[i][2].push(val);
+		}for(var i in game.outStreams){
+			var val = game.outStreams[i][1].evaluate(vals);
+			if(val === undefined){
+				game.simulationError("Invalid stream output"); // XXX: CAN WE DETERMINE THIS AT LEVEL PARSE TIME
+				return;
+			}game.outStreams[i][2].push(val);
+		}
 	}
 
 	game.update = function(){
