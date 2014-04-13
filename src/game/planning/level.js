@@ -207,6 +207,9 @@ App.PlanningLevel = function(){
 		that.validateGrid();
 	}
 
+	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
+	// TODO overwrite
+	// TODO disallow moving outside grid boundary
 	this.move = function(instructions,shiftX,shiftY){
 
 		instructions = that.toList(instructions);
@@ -251,46 +254,48 @@ App.PlanningLevel = function(){
 		that.validateGrid();
 	}
 
-	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
-	/*this.move = function(instructions,shiftX,shiftY){
+	// this function takes a list of coordinate triplets and copies the instructions they point to to a new cell shiftX and shiftY away from the first
+	// TODO overwrite
+	// TODO disallow copying outside of grid
+	this.copy = function(instructions,shiftX,shiftY){
 
 		instructions = that.toList(instructions);
 
-		that.undoStack.push(new that.operation('mov', instructions, shiftX, shiftY, null, null)); // will have to pop if move fails
+		// create new instructions
+		var newInstr = [];
 		for(i in instructions){
-			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return; }
+			var instr = instructions[i];
+			newInstr[i] = new App.PlanningInstruction(instr.x+shiftX, instr.y+shiftY, instr.color, instr.type);
+		}
 
-			var x = instructions[i].x;
-			var y = instructions[i].y;
-			var c = instructions[i].color;
-			if(that.getInstruction(x + shiftX, y + shiftY, c) && that.currentSelection.indexOf(that.getInstruction(x + shiftX, y + shiftY, c)) === -1){  // space occupied
-				// TODO overwrite
-				if(that.userOverlapSetting == 1){ // overwrite
-					console.log('insert blocked');
-					return; // this probably causes things to break
+		// check that no overlap
+		for(i in newInstr){
+			var instr = newInstr[i];
+			if(that.getInstruction(instr.x, instr.y, instr.color)){
+				if(that.userOverlapSetting === 0){ // reject
+					return;
 				}
-				else{ // reject
-					console.log('insert blocked');
-					return; // this probably causes things to break
+				else{ // overwrite
+					// TODO
 				}
-			}
-			else{ // free space
-				if(!that.grid[x+shiftX]){ that.grid[x+shiftX] = []; }
-				if(!that.grid[x+shiftX][y+shiftY]){ that.grid[x+shiftX][y+shiftY] = []; }
-
-				that.grid[x+shiftX][y+shiftY][c] = instructions[i];
-				instructions[i].x += shiftX;
-				instructions[i].y += shiftY;
-				that.grid[x][y][c] = null;
 			}
 		}
+
+		for(i in newInstr){ // place instructions
+			var instr = newInstr[i];
+			
+			if(!that.grid[instr.x]){ that.grid[instr.x] = []; }
+			if(!that.grid[instr.x][instr.y]){ that.grid[instr.x][instr.y] = []; }
+			that.grid[instr.x][instr.y][instr.color] = instr;
+		}
+
+		that.undoStack.push(new that.operation('cpy', instructions, shiftX, shiftY, null, null));
 		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: move');
 		that.validateGrid();
-	}*/
+	}
 
-	// this function takes a list of coordinate triplets and copies the instructions they point to to a new cell shiftX and shiftY away from the first
-	this.copy = function(instructions,shiftX,shiftY){
+	/*this.copy = function(instructions,shiftX,shiftY){
 		instructions = that.toList(instructions);
 		that.undoStack.push(new that.operation('cpy', instructions, shiftX, shiftY, null, null)); // will have to pop if move fails
 
@@ -328,7 +333,7 @@ App.PlanningLevel = function(){
 		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: copy');
 		that.validateGrid();
-	}
+	}*/
 
 	// TODO
 	// this function takes a list of coordinate triplets and changes the specified parameter of all of them to value
