@@ -207,8 +207,36 @@ App.PlanningLevel = function(){
 		that.validateGrid();
 	}
 
-	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
 	this.move = function(instructions,shiftX,shiftY){
+
+		instructions = that.toList(instructions);
+
+		that.undoStack.push(new that.operation('mov', instructions, shiftX, shiftY, null, null)); // will have to pop if move fails
+
+		for(i in instructions){ // remove all from grid to prevent groups from overlapping themselves also update coordinates
+			var instr = instructions[i];
+			that.grid[instr.x][instr.y][instr.color] = null;
+			instructions[i].x += shiftX;
+			instructions[i].y += shiftY; 
+		}
+
+		// TODO check that no overlap occurs
+
+		for(i in instructions){ // place instructions
+			var instr = instructions[i];
+			
+			if(!that.grid[instr.x]){ that.grid[instr.x] = []; }
+			if(!that.grid[instr.x][instr.y]){ that.grid[instr.x][instr.y] = []; }
+			that.grid[instr.x][instr.y][instr.color] = instr;
+		}
+
+		App.Game.requestStaticRenderUpdate = true;
+		that.killRedo('kill redo: move');
+		that.validateGrid();
+	}
+
+	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
+	/*this.move = function(instructions,shiftX,shiftY){
 
 		instructions = that.toList(instructions);
 
@@ -243,7 +271,7 @@ App.PlanningLevel = function(){
 		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: move');
 		that.validateGrid();
-	}
+	}*/
 
 	// this function takes a list of coordinate triplets and copies the instructions they point to to a new cell shiftX and shiftY away from the first
 	this.copy = function(instructions,shiftX,shiftY){
