@@ -3,7 +3,7 @@ App.makeInputHandler = function(){
 
 	input.MOUSEBUTTON = {LEFT:0,MIDDLE:1,RIGHT:2};
 
-	input.canvas = App.Canvases.addNewLayer(10);
+	input.canvas = App.Canvases.addNewLayer(100);
 	input.context  = input.canvas.getContext('2d');
 
 	input.keysDown = [];

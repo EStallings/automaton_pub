@@ -35,10 +35,10 @@ App.Box = function(gfx,x,y,width,height,enterDelay,exitDelay){
 
 		if(box.left != box.goalLeft){
 			updating = true;
-			if(App.Engine.tick >= box.interpLeftTick)box.left += expInterp(box.left,box.goalLeft,0.003,2);
+			if(App.Engine.tick >= box.interpLeftTick)box.left += expInterp(box.left,box.goalLeft,0.005,1);
 		}if(box.right != box.goalRight){
 			updating = true;
-			if(App.Engine.tick >= box.interpRightTick)box.right += expInterp(box.right,box.goalRight,0.003,2);
+			if(App.Engine.tick >= box.interpRightTick)box.right += expInterp(box.right,box.goalRight,0.005,1);
 		}
 
 		gfx.fillRect(box.left,box.y,box.right-box.left,box.height);

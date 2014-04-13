@@ -90,7 +90,7 @@ App.PlanningLevel = function(){
 			for(var i in this.grid)
 			for(var j in this.grid[i]){
 				var ins = this.grid[i][j][c];
-				if(ins)App.InstCatalog.render(App.GameRenderer.instructionGfx,ins.type,ins.x*cs,ins.y*cs,ins.color,cs/2);
+				if(ins)App.InstCatalog.render(App.GameRenderer.instructionGfx,ins.type,ins.x*cs,ins.y*cs,ins.color,cs/2,ins.data);
 			}
 
 			App.GameRenderer.instructionGfx.restore();

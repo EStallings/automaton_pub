@@ -1,8 +1,8 @@
 App.makeGameRenderer = function(){
 	var game = {};
 
+	game.debugGfx       = App.Canvases.addNewLayer(99).getContext('2d');
 	game.tempGfx        = App.Canvases.addNewLayer( 0).getContext('2d');
-	game.debugGfx       = App.Canvases.addNewLayer( 0).getContext('2d');
 	game.automGfx       = App.Canvases.addNewLayer(-1).getContext('2d');
 	game.tokenDGfx      = App.Canvases.addNewLayer(-2).getContext('2d');
 	game.tokenSGfx      = App.Canvases.addNewLayer(-3).getContext('2d');
@@ -197,6 +197,8 @@ App.makeGameRenderer = function(){
 			game.automGfx.restore();
 			game.tokenDGfx.restore();
 		}
+
+		game.renderDebug();
 	}
 
 	// ========================================================== //
