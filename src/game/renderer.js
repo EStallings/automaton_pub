@@ -11,7 +11,6 @@ App.makeGameRenderer = function(){
 	game.bkgndGfx       = App.Canvases.addNewLayer(-6).getContext('2d');
 
 	game.translateCanvas = function(gfx){ // TODO: OPTIMIZE THIS, THIS IS A BOTTLENECK
-		gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		gfx.save();
 		gfx.translate(game.renderX,game.renderY);
 	}
@@ -158,11 +157,14 @@ App.makeGameRenderer = function(){
 
 			// render static level stuff
 			if(App.Game.mode === App.Game.modes.PLANNING && App.Game.currentPlanningLevel !== undefined){
+				game.instructionGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 				game.translateCanvas(game.instructionGfx);
 				App.Game.currentPlanningLevel.staticRender();
 				game.instructionGfx.restore();
 			}else if(App.Game.currentSimulationLevel !== undefined){
+				game.instructionGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 				game.translateCanvas(game.instructionGfx);
+				game.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 				game.translateCanvas(game.tokenSGfx);
 
 				App.Game.currentSimulationLevel.staticRender();
@@ -178,7 +180,9 @@ App.makeGameRenderer = function(){
 		}else if(App.Game.currentSimulationLevel !== undefined){
 			game.interpolation = (App.Engine.tick-App.Game.lastCycleTick)/(App.Game.nextCycleTick-App.Game.lastCycleTick);
 
+			game.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			game.translateCanvas(game.automGfx);
+			game.tokenDGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			game.translateCanvas(game.tokenDGfx);
 
 			App.Game.currentSimulationLevel.dynamicRender();
