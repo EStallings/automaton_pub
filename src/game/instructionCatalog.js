@@ -28,14 +28,14 @@ App.makeInstructionCatalog = function(){
 		'COND + D'	: 28,		'COND + L'	: 29,
 	};
 
-	ins.render = function(gfx,type,x,y,c,cs,streamVar){
+	ins.render = function(gfx,type,x,y,c,cs,streamVar,streamBkg){
 		gfx.lineCap  = 'round';
 		gfx.lineJoin = 'round';
 		var lw = (Math.round(Math.log(cs/6)/Math.log(2)+2)-3)*2;
 
 		switch(type){ // branch off if special rendering required
-			case ins.TYPES['IN']:           if(cs>15)ins.renderStream(gfx,x,y,c,cs,lw,streamVar); return;
-			case ins.TYPES['OUT']:          if(cs>15)ins.renderStream(gfx,x,y,c,cs,lw,streamVar); return;
+			case ins.TYPES['IN']:           ins.renderStream(gfx,x,y,c,cs,lw,streamVar,streamBkg); return;
+			case ins.TYPES['OUT']:          ins.renderStream(gfx,x,y,c,cs,lw,streamVar,streamBkg); return;
 			case ins.TYPES['SYNC']:         ins.renderSync(gfx,x,y,c,cs,lw);        return;
 			case ins.TYPES['COLOR TOGGLE']: ins.renderColorToggle(gfx,x,y,c,cs,lw); return;
 		}
@@ -385,10 +385,29 @@ App.makeInstructionCatalog = function(){
 		}gfx.restore();
 	}
 
-	ins.renderStream = function(gfx,x,y,c,cs,lw,streamVar){
+	ins.renderStream = function(gfx,x,y,c,cs,lw,streamVar,streamBkg){
 		// TODO: I NEED TO KNOW WHAT STREAM I AM FOR LETTERING AND IO
 		gfx.save();
 		gfx.translate(x,y);
+
+		if(streamBkg)switch(c){
+			case App.COLORS.RED:
+				gfx.fillStyle='#330000';
+				gfx.fillRect(2,2,2*cs-4,2*cs-4);
+				break;
+			case App.COLORS.GREEN:
+				gfx.fillStyle='#003300';
+				gfx.fillRect(-cs+2,2,2*cs-4,2*cs-4);
+				break;
+			case App.COLORS.BLUE:
+				gfx.fillStyle='#000033';
+				gfx.fillRect(2,-cs+2,2*cs-4,2*cs-4);
+				break;
+			case App.COLORS.YELLOW:
+				gfx.fillStyle='#333300';
+				gfx.fillRect(-cs+2,-cs+2,2*cs-4,2*cs-4);
+				break;
+		}
 
 		switch(c){
 			case App.COLORS.RED:    gfx.strokeStyle='#ff0000';break;
@@ -399,7 +418,7 @@ App.makeInstructionCatalog = function(){
 
 		gfx.beginPath();
 
-		switch(streamVar){
+		if(cs>15)switch(streamVar){
 			case 'A':
 				gfx.moveTo(  cs/4,3*cs/4);
 				gfx.lineTo(2*cs/4,  cs/4);

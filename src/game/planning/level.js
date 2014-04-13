@@ -90,7 +90,11 @@ App.PlanningLevel = function(){
 			for(var i in this.grid)
 			for(var j in this.grid[i]){
 				var ins = this.grid[i][j][c];
-				if(ins)App.InstCatalog.render(App.GameRenderer.instructionGfx,ins.type,ins.x*cs,ins.y*cs,ins.color,cs/2,ins.data);
+				if(ins){
+					var streamBkg = false;
+					if(ins.type === App.InstCatalog.TYPES['IN'] || ins.type === App.InstCatalog.TYPES['OUT'])streamBkg = true;
+					App.InstCatalog.render(App.GameRenderer.instructionGfx,ins.type,ins.x*cs,ins.y*cs,ins.color,cs/2,ins.data,streamBkg);
+				}
 			}
 
 			App.GameRenderer.instructionGfx.restore();
