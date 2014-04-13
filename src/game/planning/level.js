@@ -295,46 +295,6 @@ App.PlanningLevel = function(){
 		that.validateGrid();
 	}
 
-	/*this.copy = function(instructions,shiftX,shiftY){
-		instructions = that.toList(instructions);
-		that.undoStack.push(new that.operation('cpy', instructions, shiftX, shiftY, null, null)); // will have to pop if move fails
-
-		for(i in instructions){
-			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return; }
-
-			if(!instructions[i]){
-				console.log('instruction doesn\'t exist');
-				return;
-			}
-
-			var x = instructions[i].x;
-			var y = instructions[i].y;
-			var c = instructions[i].color;
-			if(that.getInstruction(x + shiftX, y + shiftY, c)){  // space occupied
-				// TODO overwrite
-				if(that.userOverlapSetting == 1){ // overwrite
-					console.log('insert blocked');
-					return; // this probably causes things to break
-				}
-				else{ // reject
-					console.log('insert blocked');
-					return; // this probably causes things to break
-				}
-			}
-			else{ // free space
-				if(!that.grid[x+shiftX]){ that.grid[x+shiftX] = []; }
-				if(!that.grid[x+shiftX][y+shiftY]){ that.grid[x+shiftX][y+shiftY] = []; }
-
-				that.grid[x+shiftX][y+shiftY][c] = new App.PlanningInstruction(x+shiftX, y+shiftY, c, instructions[i].type);
-				that.grid[x+shiftX][y+shiftY][c].x += shiftX;
-				that.grid[x+shiftX][y+shiftY][c].y += shiftY;
-			}
-		}
-		App.Game.requestStaticRenderUpdate = true;
-		that.killRedo('kill redo: copy');
-		that.validateGrid();
-	}*/
-
 	// TODO
 	// this function takes a list of coordinate triplets and changes the specified parameter of all of them to value
 	this.modify = function(instructions, parameter, value){}

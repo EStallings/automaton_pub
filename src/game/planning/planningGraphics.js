@@ -74,10 +74,27 @@ App.PlanningGraphics = function(){
 		App.Game.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		//if(App.Game.currentPlanningLevel.currentSelection[0] !== null &&
 				//App.Game.currentPlanningLevel.currentSelection.length !== 0){ that.debug(gfx); }
+
+		// selection overlay
 		if(App.Game.currentPlanningLevel.currentSelection.length !== 0
 			&& App.Game.currentPlanningLevel.currentSelection[0] !== null ){ that.selectionOverlay(gfx); } // TODO: move to static render?
 
+		// drag selection box
 		if(App.Game.currentPlanningLevel.input.mmb[0] === 'down'){ that.drawSelectionBox(gfx); }
+
+		// move / copy graphics
+		if(App.Game.currentPlanningLevel.currentSelection.length !== 0
+			&& App.Game.currentPlanningLevel.input.moveStart[0] !== -1){ that.moveCopy(gfx); }
+	}
+
+	this.moveCopy = function(gfx){
+		var mX = App.Game.currentPlanningLevel.input.scrnX;
+		var mY = App.Game.currentPlanningLevel.input.scrnY;
+		gfx.strokeStyle = 'rgba(200,200,200,.5)';
+		gfx.beginPath();
+		gfx.moveTo(App.Game.currentPlanningLevel.input.moveStart[3], App.Game.currentPlanningLevel.input.moveStart[4]);
+		gfx.lineTo(mX, mY);
+		gfx.stroke();
 	}
 
 	this.drawSelectionBox = function(gfx){

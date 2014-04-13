@@ -26,7 +26,7 @@ App.PlanningControls = function(){
 		if(button === 'lmb'){
 			that.lmb = ['down', scrnX, scrnY, cellX, cellY, cellC];
 			if(App.Game.currentPlanningLevel.currentSelection.length !== 0){
-				this.moveStart = [cellX, cellY, cellC];
+				this.moveStart = [cellX, cellY, cellC, scrnX, scrnY];
 			}
 		}
 		
