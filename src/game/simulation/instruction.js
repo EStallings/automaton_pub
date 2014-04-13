@@ -1,4 +1,4 @@
-App.SimulationInstruction = function(level,x,y,color,type){
+App.SimulationInstruction = function(level,x,y,color,type,data){
 	// this assumes valid input from the planning level
 
 	level.instructions.push(this);
@@ -11,6 +11,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 	this.y = y;
 	this.color = color;
 	this.type = type;
+	this.data = data;
 
 	this.staticRender = function(){
 		this.gfx.save();
@@ -86,7 +87,13 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)return;
-				a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,Math.floor(Math.random()*9+1));
+
+				var stackNum = App.Game.inStreams[this.data][3];
+				while(stackNum >= App.Game.inStreams[this.data][2].length)
+					App.Game.generateTokenWave();
+				var tokenNum = App.Game.inStreams[this.data][2][stackNum];
+				a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,tokenNum);
+				++App.Game.inStreams[this.data][3];
 			};break;
 
 		case App.InstCatalog.TYPES['OUT']:
@@ -94,7 +101,16 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				a.tokenHeld = undefined;
+
+				var stackNum = App.Game.outStreams[this.data][3];
+				while(stackNum >= App.Game.outStreams[this.data][2].length)
+					App.Game.generateTokenWave();
+				var tokenNum = App.Game.outStreams[this.data][2][stackNum];
+				if(a.tokenHeld.number !== tokenNum){
+					App.Game.simulationError(a.tokenHeld.number+" !== "+tokenNum);
+					return;
+				}a.tokenHeld = undefined;
+				++App.Game.outStreams[this.data][3];
 			};break;
 
 		case App.InstCatalog.TYPES['GRAB']:

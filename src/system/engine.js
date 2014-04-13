@@ -9,7 +9,7 @@ App.makeEngine = function(){
 		engine.tick = new Date().getTime();
 		engine.elapsed = 1;
 	// DELETE ====================================================//
-		App.Game.currentPlanningLevel = App.Game.parseLevel(App.demoLevels[2]);
+		App.Game.currentPlanningLevel = App.Game.parseLevel(App.demoLevels[1]);
 	//============================================================//
 		App.ModeHandler.pushMode('main menu');
 		requestAnimationFrame(engine.frame);

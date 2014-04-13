@@ -8,6 +8,12 @@ App.makeGame = function(){
 	game.currentPlanningLevel;
 	game.currentSimulationLevel;
 
+	game.streams    = [];
+	game.inStreams  = []; // inStreams[variable] = [raw,parsed,[gives],stackPtr]
+	game.outStreams = []; // outStreams[variable] = [raw,parsed,[wants],stackPtr,quota,description]
+	game.totalOutStreams;
+	// variables must be in caps
+
 	game.createNewLevel = function(name,width,height){
 		var lvl = new App.PlanningLevel();
 		lvl.name        = name;
@@ -29,6 +35,7 @@ App.makeGame = function(){
 		lvl.dateCreated = parseInt(data[0][1]);
 		lvl.width       = parseInt(data[0][2]);
 		lvl.height      = parseInt(data[0][3]);
+		game.totalOutStreams = 0;
 		if(isNaN(lvl.dateCreated) || isNaN(lvl.width) || isNaN(lvl.height))return undefined;
 		if(lvl.width < 0 || lvl.height < 0)return undefined;
 		for(var i=1;i<data.length;++i){
@@ -37,11 +44,23 @@ App.makeGame = function(){
 			var y = parseInt(data[i][1]);
 			var c = parseInt(data[i][2]);
 			var t = parseInt(data[i][3]);
+			var d = data[i][4]; // TODO: CHECK FOR DUPLICATE STREAMS
 			if(isNaN(x) || isNaN(y) || isNaN(c) || isNaN(t))return undefined;
 			if(lvl.width  !== 0 && (x < 0 || x >= lvl.width ))return undefined;
 			if(lvl.height !== 0 && (y < 0 || y >= lvl.height))return undefined;
 			if(c < 0 || c >= 4)return undefined;
-			if(!lvl.insert(x,y,c,t))return undefined;
+			if(!lvl.insert(x,y,c,t,d))return undefined;
+			switch(t){
+				case App.InstCatalog.TYPES['IN']:
+					var p = Parser.parse(data[i][5]); // TODO: ERROR CHECK THIS
+					game.inStreams[d]=[data[i][5],p,[],0];
+					break;
+				case App.InstCatalog.TYPES['OUT']:
+					++game.totalOutStreams;
+					var p = Parser.parse(data[i][5]); // TODO: ERROR CHECK THIS
+					game.outStreams[d]=[data[i][5],p,[],0,data[i][6],data[i][7]];
+					break;
+			}
 		}return lvl;
 	}
 
@@ -76,10 +95,18 @@ App.makeGame = function(){
 		if(game.mode === game.modes.PLANNING){
 			game.mode = game.modes.SIMULATION;
 			game.currentSimulationLevel = game.currentPlanningLevel.generateSimulationLevel();
-			App.GameRenderer.requestStaticRenderUpdate = true;
 			game.paused = false;
 			game.nextCycleTick = App.Engine.tick;
 			game.cycle = 0;
+			App.GameRenderer.requestStaticRenderUpdate = true;
+			game.tokenSeed = game.currentPlanningLevel.dateCreated;
+			for(var i in game.inStreams){
+				game.inStreams[i][2] = [];
+				game.inStreams[i][3] = 0;
+			}for(var i in game.outStreams){
+				game.outStreams[i][2] = [];
+				game.outStreams[i][3] = 0;
+			}game.generateTokenWave();
 		}else{
 			game.mode = game.modes.PLANNING;
 			game.currentSimulationLevel = undefined;
@@ -109,20 +136,19 @@ App.makeGame = function(){
 
 		/*+------------------------------------------+*/
 
-	game.simulationError = function(errorMsg){
-		// TODO: stop simulation
-		// TODO: display error
-		// TODO: go back to planning mode
+	game.tokenSeed;
+
+	game.randToken = function(a,b){
+		return Math.floor((Math.abs(9876413*Math.tan(++game.tokenSeed))%(b-a))+a);
 	}
 
-	game.simulationSuccess = function(){
-		// TODO: stop simulation
-		// TODO: display scores
-		//       instruction count
-		//       ticks elapsed
-		//       automaton count (fork?) (min max total)
-		//       cell usage
-		// TODO: exit/next level...
+	game.generateTokenWave = function(){
+		var vals = [];
+		for(var i in game.inStreams){
+			var val = vals[i] = game.inStreams[i][1].evaluate();
+			game.inStreams[i][2].push(val);
+		}for(var i in game.outStreams)
+			game.outStreams[i][2].push(game.outStreams[i][1].evaluate(vals));
 	}
 
 	game.update = function(){
@@ -137,6 +163,15 @@ App.makeGame = function(){
 				game.nextCycleTick += game.simulationSpeed;
 				++game.cycle;
 				game.currentSimulationLevel.update();
+
+				if(game.totalOutStreams > 0){
+					var success = false;
+					for(var i in game.outStreams)
+					if(game.outStreams[i][4] <= game.outStreams[i][3])
+						success = true;
+					if(success)game.simulationSuccess();
+				}
+
 				if(game.requestPause){
 					game.requestPause = false;
 					game.lastCycleTick = App.Engine.tick;
@@ -174,6 +209,26 @@ App.makeGame = function(){
 		game.lastCycleTick = tick-(tick-last)*factor;
 		game.nextCycleTick = tick+(next-tick)*factor;
 		game.simulationSpeed = speed;
+	}
+
+	game.simulationError = function(errorMsg){
+		console.log("SIMULATION ERROR: "+errorMsg);
+		game.requestPause = true;
+		// TODO: stop simulation
+		// TODO: display error
+		// TODO: go back to planning mode
+	}
+
+	game.simulationSuccess = function(){
+		console.log("SIMULATION SUCCESS");
+		game.requestPause = true;
+		// TODO: stop simulation
+		// TODO: display scores
+		//       instruction count
+		//       ticks elapsed
+		//       automaton count (fork?) (min max total)
+		//       cell usage
+		// TODO: exit/next level...
 	}
 
 	// ========================================================== //

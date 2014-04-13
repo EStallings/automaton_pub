@@ -59,7 +59,7 @@ App.PlanningLevel = function(){
 		for(var j in this.grid[i])
 		for(var c in this.grid[i][j]){
 			var ins = this.grid[i][j][c];
-			if(ins)new App.SimulationInstruction(level,ins.x,ins.y,ins.color,ins.type);
+			if(ins)new App.SimulationInstruction(level,ins.x,ins.y,ins.color,ins.type,ins.data);
 		}return level;
 	};
 
