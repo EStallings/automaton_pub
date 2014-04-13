@@ -49,6 +49,7 @@ App.makeGame = function(){
 			if(lvl.width  !== 0 && (x < 0 || x >= lvl.width ))return undefined;
 			if(lvl.height !== 0 && (y < 0 || y >= lvl.height))return undefined;
 			if(c < 0 || c >= 4)return undefined;
+			if(d && game.streams[d])return undefined;
 			if(!lvl.insert(x,y,c,t,d))return undefined;
 			switch(t){
 				case App.InstCatalog.TYPES['IN']:
@@ -60,7 +61,7 @@ App.makeGame = function(){
 					var p = Parser.parse(data[i][5]); // TODO: ERROR CHECK THIS
 					game.outStreams[d]=[data[i][5],p,[],0,data[i][6],data[i][7]];
 					break;
-			}
+			}game.streams[d] = true;
 		}return lvl;
 	}
 
