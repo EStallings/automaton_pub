@@ -242,14 +242,13 @@ App.PlanningLevel = function(){
 				if(!that.grid[instructions[i].x]){ that.grid[instructions[i].x] = []; }
 				if(!that.grid[instructions[i].x][instructions[i].y]){ that.grid[instructions[i].x][instructions[i].y] = []; }
 				that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = instructions[i];
-				return true;
 			}
 		}
 
 		that.undoStack.push(new that.operation('ins', instructions, null, null, null, null));
-		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: insert');
 		that.validateGrid();
+		return true;
 	}
 
 	// this function takes a list of coordinate triplets and deletes the corresponding instructions from the grid
@@ -261,7 +260,6 @@ App.PlanningLevel = function(){
 			that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = null;
 		}
 		that.undoStack.push(new that.operation('del', instructions, null, null, null, null));
-		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: delete');
 		that.currentSelection = [];
 		that.validateGrid();
@@ -309,7 +307,6 @@ App.PlanningLevel = function(){
 		}
 
 		that.undoStack.push(new that.operation('mov', instructions, shiftX, shiftY, null, null));
-		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: move');
 		that.validateGrid();
 	}
@@ -350,7 +347,6 @@ App.PlanningLevel = function(){
 		}
 
 		that.undoStack.push(new that.operation('cpy', instructions, shiftX, shiftY, null, null));
-		App.Game.requestStaticRenderUpdate = true;
 		that.killRedo('kill redo: move');
 		that.validateGrid();
 	}
@@ -406,7 +402,6 @@ App.PlanningLevel = function(){
 				that.redoStack.push(op);
 			}			
 		}
-		App.Game.requestStaticRenderUpdate = true;
 		that.validateGrid();
 	};
 
@@ -457,7 +452,6 @@ App.PlanningLevel = function(){
 				that.undoStack.push(op);
 			}			
 		}
-		App.Game.requestStaticRenderUpdate = true;
 		that.validateGrid();
 	}
 

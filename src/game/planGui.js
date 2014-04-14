@@ -29,7 +29,6 @@ App.setupPlanGui = function(){
 
 	// TOP BAR -----------------------------------------------------
 
-		// TODO: TRIGGER A STATIC RENDER UPDATE WHEN TOKEN CHANGES
 		var keys = Object.keys(App.Game.inStreams);
 		for(var i in keys){
 			var key = keys[i];
@@ -41,9 +40,25 @@ App.setupPlanGui = function(){
 				case App.COLORS.YELLOW: planMode.gfx.fillStyle = 'rgba(255,255,0,0.2)';break;
 			}planMode.gfx.fillRect(5+i*100,5,98,63);
 			App.InstCatalog.render(planMode.gfx,8,5+i*100,5,stream[4],48,key);
-			App.renderToken(planMode.gfx,55+i*100,5,''/*,stream[2][stream[3]]*/);
+			App.renderToken(planMode.gfx,55+i*100,5,''/*,stream[2][stream[3]]*/,48);
 			planMode.gfx.fillStyle = '#ffffff';
 			text(planMode.gfx,'gives '+stream[0],10+i*100,55,8,-1);
+		}
+
+		var keys = Object.keys(App.Game.outStreams);
+		for(var i in keys){
+			var key = keys[i];
+			var stream = App.Game.outStreams[key];
+			switch(stream[6]){
+				case App.COLORS.RED:    planMode.gfx.fillStyle = 'rgba(255,0,0,0.2)';break;
+				case App.COLORS.GREEN:  planMode.gfx.fillStyle = 'rgba(0,255,0,0.2)';break;
+				case App.COLORS.BLUE:   planMode.gfx.fillStyle = 'rgba(0,0,255,0.2)';break;
+				case App.COLORS.YELLOW: planMode.gfx.fillStyle = 'rgba(255,255,0,0.2)';break;
+			}planMode.gfx.fillRect(5+i*100,70,98,63);
+			App.InstCatalog.render(planMode.gfx,8,5+i*100,70,stream[6],48,key);
+			App.renderToken(planMode.gfx,55+i*100,70,''/*,stream[2][stream[3]]*/,48);
+			planMode.gfx.fillStyle = '#ffffff';
+			text(planMode.gfx,'accepts '+stream[0],10+i*100,120,8,-1);
 		}
 
 	// BOTTOM BAR --------------------------------------------------
@@ -94,6 +109,7 @@ App.setupPlanGui = function(){
 
 	planMode.registerKeyDownFunc('Space',function(){
 		App.ModeHandler.pushMode('simulation');
+		App.ModeHandler.modes['simulation'].renderStreams = true;
 	});
 
 	planMode.registerKeyDownFunc('W',function(){
@@ -137,8 +153,20 @@ App.setupPlanGui = function(){
 	});
 
 	planMode.registerKeyDownFunc('Delete',function(){
-		if(App.Game.currentPlanningLevel.currentSelection !== [])
+		if(App.Game.currentPlanningLevel.currentSelection !== []){
 			App.Game.currentPlanningLevel.delete(App.Game.currentPlanningLevel.currentSelection);
+			App.GameRenderer.requestStaticRenderUpdate = true;
+		}
+	});
+
+	planMode.registerKeyDownFunc('Z',function(){
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Ctrl']]){
+			if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Shift']]){
+				App.Game.currentPlanningLevel.redo();
+			}else{
+				App.Game.currentPlanningLevel.undo();
+			}
+		}App.GameRenderer.requestStaticRenderUpdate = true;
 	});
 
 	planMode.registerMouseMoveFunc(function(x,y){
@@ -167,7 +195,7 @@ App.setupPlanGui = function(){
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['J']] === true)insCode = 17;
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['K']] === true)insCode =  9;
 
-		if(insCode){
+		if(insCode !== undefined){
 			var ins = new App.PlanningInstruction(App.GameRenderer.mouseX,App.GameRenderer.mouseY,planMode.color,insCode);
 			App.Game.currentPlanningLevel.insert(ins);
 			App.GameRenderer.requestStaticRenderUpdate = true;
@@ -188,13 +216,15 @@ App.setupPlanGui = function(){
 
 	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){
 		if(planMode.moveStart !== undefined){
+			console.log("TEST");
 			var shiftX = App.GameRenderer.mouseX-planMode.moveStart[0];
 			var shiftY = App.GameRenderer.mouseY-planMode.moveStart[1];
 
 			if(App.InputHandler.keysDown['Ctrl'])
 				App.Game.currentPlanningLevel.copy(App.Game.currentPlanningLevel.currentSelection,shiftX,shiftY);
 			else
-				App.Game.currentPlanningLevel.copy(App.Game.currentPlanningLevel.currentSelection,shiftX,shiftY);
+				App.Game.currentPlanningLevel.move(App.Game.currentPlanningLevel.currentSelection,shiftX,shiftY);
+			App.GameRenderer.requestStaticRenderUpdate = true;
 
 			planMode.moveStart = undefined;
 		}

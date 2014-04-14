@@ -15,6 +15,8 @@ App.renderToken = function(gfx,x,y,num,size){
 	gfx.strokeStyle = '#404040';
 	gfx.lineWidth = (Math.round(Math.log(cs/3)/Math.log(2)+2)-5)*2;
 
+	if(num === undefined)return;
+
 	gfx.save();
 	var str = num.toString();
 	gfx.translate(x+Math.floor(17*cs/32-str.length*3*cs/32),y);
