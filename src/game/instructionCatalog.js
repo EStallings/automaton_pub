@@ -438,7 +438,6 @@ App.makeInstructionCatalog = function(){
 	}
 
 	ins.renderStream = function(gfx,x,y,c,cs,lw,type){
-		console.log(type);
 
 		// TODO: I NEED TO KNOW WHAT STREAM I AM FOR LETTERING AND IO
 		gfx.save();
