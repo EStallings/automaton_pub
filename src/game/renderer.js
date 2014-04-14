@@ -311,9 +311,9 @@ App.makeGameRenderer = function(){
 		game.bkgndGfx.strokeStyle = '#151515';
 		game.bkgndGfx.lineWidth = 5;
 		game.bkgndGfx.beginPath();
-		for(var i=1;i<App.Canvases.width+App.Canvases.height;i+=9){
-			game.bkgndGfx.moveTo(i,0);
-			game.bkgndGfx.lineTo(0,i);
+		for(var i=1;i<App.Canvases.width+App.Canvases.height+5;i+=9){
+			game.bkgndGfx.moveTo(i,-5);
+			game.bkgndGfx.lineTo(-5,i);
 		}game.bkgndGfx.stroke();
 	}
 
