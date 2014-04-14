@@ -450,15 +450,15 @@ App.makeInstructionCatalog = function(){
 				break;
 			case App.COLORS.GREEN:
 				gfx.fillStyle='rgba(0,255,0,0.2)';
-				gfx.fillRect(-cs+2,2,2*cs-4,2*cs-4);
+				gfx.fillRect(0,0,cs,cs);
 				break;
 			case App.COLORS.BLUE:
 				gfx.fillStyle='rgba(0,0,255,0.2)';
-				gfx.fillRect(2,-cs+2,2*cs-4,2*cs-4);
+				gfx.fillRect(0,0,cs,cs);
 				break;
 			case App.COLORS.YELLOW:
 				gfx.fillStyle='rgba(255,255,0,0.2)';
-				gfx.fillRect(-cs+2,-cs+2,2*cs-4,2*cs-4);
+				gfx.fillRect(0,0,cs,cs);
 				break;
 		}
 
