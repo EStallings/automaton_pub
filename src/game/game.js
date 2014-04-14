@@ -177,9 +177,11 @@ App.makeGame = function(){
 
 				if(Object.keys(game.outStreams).length > 0){
 					var success = false;
-					for(var i in game.outStreams)
-					if(game.outStreams[i][4] <= game.outStreams[i][3])
-						success = true;
+					for(var i in game.outStreams){
+						if(game.outStreams[i][4] == 0)break;
+						if(game.outStreams[i][4] <= game.outStreams[i][3])
+							success = true;
+					}
 					if(success)game.simulationSuccess();
 				}
 
