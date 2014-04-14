@@ -51,7 +51,9 @@ App.makeGame = function(){
 			if(lvl.height !== 0 && (y < 0 || y >= lvl.height))return undefined;
 			if(c < 0 || c >= 4)return undefined;
 			if(d !== undefined && game.streams[d])return undefined;
-			if(!lvl.insert(x,y,c,t,d))return undefined;
+		//	if(!lvl.insert(x,y,c,t,d))return undefined;
+			var ins = new App.PlanningInstruction(x,y,c,t,d);
+			if(!lvl.insert(ins))return undefined;
 			switch(t){ // TODO: MOVE THIS TO PLANNING LEVEL INSERT | ADD APPROPRIATE STUFF TO PLANNING LEVEL DELETE
 				case App.InstCatalog.TYPES['IN']:
 					var p = Parser.parse(data[i][5]);
@@ -225,12 +227,10 @@ App.makeGame = function(){
 	}
 
 	game.simulationError = function(errorMsg){
-		console.log("SIMULATION ERROR: "+errorMsg);
 		App.ModeHandler.pushMode('error');
 	}
 
 	game.simulationSuccess = function(){
-		console.log("SIMULATION SUCCESS");
 		App.ModeHandler.pushMode('success');
 	}
 

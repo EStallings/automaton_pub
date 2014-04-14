@@ -7,6 +7,9 @@ App.setupPlanGui = function(){
 	planMode.direction = App.DIRECTIONS.UP;
 	planMode.color = App.COLORS.RED;
 
+	planMode.selectStart = undefined;
+	planMode.moveStart = undefined;
+
 		// ---------------------------------------------
 
 	planMode.enterFunc = function(){
@@ -133,6 +136,11 @@ App.setupPlanGui = function(){
 		planMode.requestStaticRenderUpdate = true;
 	});
 
+	planMode.registerKeyDownFunc('Delete',function(){
+		if(App.Game.currentPlanningLevel.currentSelection !== [])
+			App.Game.currentPlanningLevel.delete(App.Game.currentPlanningLevel.currentSelection);
+	});
+
 	planMode.registerMouseMoveFunc(function(x,y){
 		App.GameRenderer.screenToGridCoords(x,y);
 		if(App.InputHandler.rmb)App.GameRenderer.pan(x,y);
@@ -160,13 +168,44 @@ App.setupPlanGui = function(){
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['K']] === true)insCode =  9;
 
 		if(insCode){
-			App.Game.currentPlanningLevel.insert(App.GameRenderer.mouseX,App.GameRenderer.mouseY,planMode.color,insCode);
+			var ins = new App.PlanningInstruction(App.GameRenderer.mouseX,App.GameRenderer.mouseY,planMode.color,insCode);
+			App.Game.currentPlanningLevel.insert(ins);
 			App.GameRenderer.requestStaticRenderUpdate = true;
 		}
+
+		if(App.Game.currentPlanningLevel.currentSelection.length !== 0)
+			planMode.moveStart = [App.GameRenderer.mouseX,App.GameRenderer.mouseY,App.GameRenderer.mouseC];
+	});
+
+	planMode.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.MIDDLE,function(x,y){
+		planMode.selectStart = [App.GameRenderer.mouseX,App.GameRenderer.mouseY,App.GameRenderer.mouseC];
+		App.Game.currentPlanningLevel.currentSelection = [];
 	});
 
 	planMode.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.RIGHT,function(x,y){
 		App.GameRenderer.beginPan(x,y);
+	});
+
+	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){
+		if(planMode.moveStart !== undefined){
+			var shiftX = App.GameRenderer.mouseX-planMode.moveStart[0];
+			var shiftY = App.GameRenderer.mouseY-planMode.moveStart[1];
+
+			if(App.InputHandler.keysDown['Ctrl'])
+				App.Game.currentPlanningLevel.copy(App.Game.currentPlanningLevel.currentSelection,shiftX,shiftY);
+			else
+				App.Game.currentPlanningLevel.copy(App.Game.currentPlanningLevel.currentSelection,shiftX,shiftY);
+
+			planMode.moveStart = undefined;
+		}
+	});
+
+	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.MIDDLE,function(x,y){
+		if(planMode.selectStart !== undefined){
+			App.Game.currentPlanningLevel.selectInstructions(planMode.selectStart[0],planMode.selectStart[1],planMode.selectStart[2],
+		                                                         App.GameRenderer.mouseX,App.GameRenderer.mouseY,App.GameRenderer.mouseC);
+			planMode.selectStart = undefined;
+		}
 	});
 
 	planMode.registerMouseWheelFunc(function(w){
