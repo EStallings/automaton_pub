@@ -3,7 +3,7 @@ App.setupPlanGui = function(){
 
 		// ---------------------------------------------
 
-	planMode.gfx = App.Canvases.addNewLayer(1).getContext('2d');
+	planMode.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	planMode.direction = App.DIRECTIONS.UP;
 	planMode.color = App.COLORS.RED;
 
@@ -15,6 +15,7 @@ App.setupPlanGui = function(){
 		planMode.exitFlag = false;
 
 		App.Game.setMode(App.Game.modes.PLANNING);
+		App.Shade.turnOff();
 	}
 
 	planMode.updateFunc = function(){

@@ -3,7 +3,7 @@ App.setupSettings = function(){
 
 		// ---------------------------------------------
 
-	settings.gfx = App.Canvases.addNewLayer(1).getContext('2d');
+	settings.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	settings.backButton = new App.Button('Back to Main Menu','#fff','#000','#ff0','#fff',settings.gfx,15,56+28*0,512,24,200,000);
 	settings.alpha = settings.goalAlpha = 0;
 
@@ -17,6 +17,8 @@ App.setupSettings = function(){
 
 		settings.backButton.enter();
 		settings.goalAlpha = 1;
+
+		App.Shade.turnOn();
 	}
 
 	settings.updateFunc = function(){

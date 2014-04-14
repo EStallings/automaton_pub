@@ -3,7 +3,7 @@ App.setupComingSoon = function(){
 
 		// ---------------------------------------------
 
-	comingSoon.gfx = App.Canvases.addNewLayer(1).getContext('2d');
+	comingSoon.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	comingSoon.backButton = new App.Button('Back','#fff','#000','#f00','#fff',comingSoon.gfx,15,56+28*0,512,24,200,000);
 	comingSoon.alpha = comingSoon.goalAlpha = 0;
 
@@ -17,6 +17,8 @@ App.setupComingSoon = function(){
 		App.GameRenderer.bestFit();
 		comingSoon.backButton.enter();
 		comingSoon.goalAlpha = 1;
+
+		App.Shade.turnOn();
 	}
 
 	comingSoon.updateFunc = function(){

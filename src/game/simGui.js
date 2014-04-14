@@ -3,7 +3,7 @@ App.setupSimGui = function(){
 
 		// ---------------------------------------------
 
-	simMode.gfx = App.Canvases.addNewLayer(1).getContext('2d');
+	simMode.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 
 		// ---------------------------------------------
 
@@ -13,6 +13,7 @@ App.setupSimGui = function(){
 		simMode.exitFlag = false;
 
 		App.Game.setMode(App.Game.modes.SIMULATION);
+		App.Shade.turnOff();
 	}
 
 	simMode.updateFunc = function(){

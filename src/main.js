@@ -4,6 +4,7 @@ window.onload = function(){
 	App.InputHandler = App.makeInputHandler();
 	App.ModeHandler  = App.makeModeHandler();
 	App.Engine       = App.makeEngine();
+	App.Shade        = App.makeShade();
 
 	App.Game         = App.makeGame();
 	App.GameRenderer = App.makeGameRenderer();

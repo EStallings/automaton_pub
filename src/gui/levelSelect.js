@@ -3,7 +3,7 @@ App.setupLevelSelect = function(){
 
 		// ---------------------------------------------
 
-	levelSelect.gfx = App.Canvases.addNewLayer(1).getContext('2d');
+	levelSelect.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	levelSelect.lvl1Button = new App.Button('Level 1','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*0,56+28*0,168,24,200,000);
 	levelSelect.lvl2Button = new App.Button('Level 2','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*1,56+28*0,168,24,230,030);
 	levelSelect.lvl3Button = new App.Button('Level 3','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*2,56+28*0,168,24,260,060);
@@ -35,6 +35,8 @@ App.setupLevelSelect = function(){
 		levelSelect.lvl9Button.enter();
 		levelSelect.backButton.enter();
 		levelSelect.goalAlpha = 1;
+
+		App.Shade.turnOn();
 	}
 
 	levelSelect.updateFunc = function(){

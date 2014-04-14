@@ -3,7 +3,7 @@ App.setupLibrary = function(){
 
 		// ---------------------------------------------
 
-	library.gfx = App.Canvases.addNewLayer(1).getContext('2d');
+	library.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	library.backButton = new App.Button('Back to Main Menu','#fff','#000','#0f0','#fff',library.gfx,15,56+28*0,512,24,200,000);
 	library.alpha = library.goalAlpha = 0;
 
@@ -17,6 +17,8 @@ App.setupLibrary = function(){
 
 		library.backButton.enter();
 		library.goalAlpha = 1;
+
+		App.Shade.turnOn();
 	}
 
 	library.updateFunc = function(){

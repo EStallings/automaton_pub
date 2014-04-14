@@ -24,6 +24,7 @@ App.makeEngine = function(){
 		App.Game.update();
 		App.GameRenderer.render();
 		App.ModeHandler.update();
+		App.Shade.staticRender();
 	};
 
 	return engine;

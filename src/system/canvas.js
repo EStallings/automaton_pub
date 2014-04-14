@@ -36,6 +36,7 @@ App.createCanvasArray = function(){
 		// TODO: everything needs to be re-rendered
 		App.GameRenderer.requestStaticRenderUpdate = true;
 		App.GameRenderer.requestUltraStaticRenderUpdate = true;
+		App.Shade.requestStaticRenderUpdate = true;
 		App.ModeHandler.callResizeFuncs();
 	}
 
