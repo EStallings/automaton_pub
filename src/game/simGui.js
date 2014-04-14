@@ -39,7 +39,15 @@ App.setupSimGui = function(){
 	});
 
 	simMode.registerKeyDownFunc('Space',function(){
-		App.ModeHandler.popMode();
+		App.Game.pause();
+	});
+
+	simMode.registerKeyDownFunc(']',function(){
+		App.Game.setSimulationSpeed(App.Game.simulationSpeed/2);
+	});
+
+	simMode.registerKeyDownFunc('[',function(){
+		App.Game.setSimulationSpeed(App.Game.simulationSpeed*2);
 	});
 
 	simMode.registerMouseMoveFunc(function(x,y){

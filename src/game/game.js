@@ -9,9 +9,8 @@ App.makeGame = function(){
 	game.currentSimulationLevel;
 
 	game.streams    = [];
-	game.inStreams  = []; // inStreams[variable] = [raw,parsed,[gives],stackPtr]
-	game.outStreams = []; // outStreams[variable] = [raw,parsed,[wants],stackPtr,quota,description]
-	game.totalOutStreams;
+	game.inStreams  = []; // inStreams[variable] = [raw,parsed,[gives],stackPtr,color]
+	game.outStreams = []; // outStreams[variable] = [raw,parsed,[wants],stackPtr,quota,description,color]
 	// variables must be in caps
 
 	game.createNewLevel = function(name,width,height){
@@ -38,7 +37,6 @@ App.makeGame = function(){
 		game.streams    = [];
 		game.inStreams  = [];
 		game.outStreams = [];
-		game.totalOutStreams = 0;
 		if(isNaN(lvl.dateCreated) || isNaN(lvl.width) || isNaN(lvl.height))return undefined;
 		if(lvl.width < 0 || lvl.height < 0)return undefined;
 		for(var i=1;i<data.length;++i){
@@ -54,18 +52,16 @@ App.makeGame = function(){
 			if(c < 0 || c >= 4)return undefined;
 			if(d !== undefined && game.streams[d])return undefined;
 			if(!lvl.insert(x,y,c,t,d))return undefined;
-			switch(t){
+			switch(t){ // TODO: MOVE THIS TO PLANNING LEVEL INSERT | ADD APPROPRIATE STUFF TO PLANNING LEVEL DELETE
 				case App.InstCatalog.TYPES['IN']:
 					var p = Parser.parse(data[i][5]);
 					if(p === undefined)return undefined;
-					game.inStreams[d]=[data[i][5],p,[],0];
-					game.inStreams.push(game.inStreams[d]);
+					game.inStreams[d]=[data[i][5],p,[],0,c];
 					break;
 				case App.InstCatalog.TYPES['OUT']:
-					++game.totalOutStreams;
 					var p = Parser.parse(data[i][5]);
 					if(p === undefined)return undefined;
-					game.outStreams[d]=[data[i][5],p,[],0,data[i][6],data[i][7]];
+					game.outStreams[d]=[data[i][5],p,[],0,data[i][6],data[i][7],c];
 					break;
 			}game.streams[d] = true;
 		}return lvl;
@@ -179,7 +175,7 @@ App.makeGame = function(){
 				++game.cycle;
 				game.currentSimulationLevel.update();
 
-				if(game.totalOutStreams > 0){
+				if(Object.keys(game.outStreams).length > 0){
 					var success = false;
 					for(var i in game.outStreams)
 					if(game.outStreams[i][4] <= game.outStreams[i][3])

@@ -8,6 +8,7 @@ App.setupMainMenu = function(){
 	mainMenu.libraryButton  = new App.Button('Library' ,'#fff','#000','#0f0','#fff',mainMenu.gfx,15,56+28*1,512,24,300,100);
 	mainMenu.sandboxButton  = new App.Button('Sandbox' ,'#fff','#000','#00f','#fff',mainMenu.gfx,15,56+28*2,512,24,400,200);
 	mainMenu.settingsButton = new App.Button('Settings','#fff','#000','#ff0','#fff',mainMenu.gfx,15,56+28*3,512,24,500,300); // width: App.Canvases.width-30
+	mainMenu.alpha = mainMenu.goalAlpha = 0;
 
 		// ---------------------------------------------
 
@@ -20,9 +21,7 @@ App.setupMainMenu = function(){
 		mainMenu.libraryButton.enter();
 		mainMenu.sandboxButton.enter();
 		mainMenu.settingsButton.enter();
-
-		App.Game.setMode(App.Game.modes.SIMULATION);
-		App.GameRenderer.bestFit();
+		mainMenu.goalAlpha = 1;
 	}
 
 	mainMenu.updateFunc = function(){
@@ -41,6 +40,11 @@ App.setupMainMenu = function(){
 		if(mainMenu.libraryButton.render())mainMenu.requestStaticRenderUpdate = true;
 		if(mainMenu.sandboxButton.render())mainMenu.requestStaticRenderUpdate = true;
 		if(mainMenu.settingsButton.render())mainMenu.requestStaticRenderUpdate = true;
+		if(mainMenu.alpha !== mainMenu.goalAlpha){
+			mainMenu.alpha += expInterp(mainMenu.alpha,mainMenu.goalAlpha,0.003,0.01);
+			mainMenu.gfx.globalAlpha = mainMenu.alpha;
+			mainMenu.requestStaticRenderUpdate = true;
+		}
 
 		if(mainMenu.exitFlag && mainMenu.requestStaticRenderUpdate === false){
 			mainMenu.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
@@ -56,6 +60,7 @@ App.setupMainMenu = function(){
 		mainMenu.libraryButton.exit();
 		mainMenu.sandboxButton.exit();
 		mainMenu.settingsButton.exit();
+		mainMenu.goalAlpha = 0;
 	}
 
 		// ---------------------------------------------

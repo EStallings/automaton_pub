@@ -5,6 +5,7 @@ App.setupLibrary = function(){
 
 	library.gfx = App.Canvases.addNewLayer(1).getContext('2d');
 	library.backButton = new App.Button('Back to Main Menu','#fff','#000','#0f0','#fff',library.gfx,15,56+28*0,512,24,200,000);
+	library.alpha = library.goalAlpha = 0;
 
 		// ---------------------------------------------
 
@@ -15,6 +16,7 @@ App.setupLibrary = function(){
 		App.GameRenderer.bestFit();
 
 		library.backButton.enter();
+		library.goalAlpha = 1;
 	}
 
 	library.updateFunc = function(){
@@ -30,6 +32,11 @@ App.setupLibrary = function(){
 		text(library.gfx,"Library",15,15,36,-3);
 
 		if(library.backButton.render())library.requestStaticRenderUpdate = true;
+		if(library.alpha !== library.goalAlpha){
+			library.alpha += expInterp(library.alpha,library.goalAlpha,0.003,0.01);
+			library.gfx.globalAlpha = library.alpha;
+			library.requestStaticRenderUpdate = true;
+		}
 
 		if(library.exitFlag && library.requestStaticRenderUpdate === false){
 			library.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
@@ -42,6 +49,7 @@ App.setupLibrary = function(){
 		library.exitFlag = true;
 
 		library.backButton.exit();
+		library.goalAlpha = 0;
 	}
 
 		// ---------------------------------------------

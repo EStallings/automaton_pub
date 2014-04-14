@@ -25,16 +25,21 @@ App.setupPlanGui = function(){
 
 	// TOP BAR -----------------------------------------------------
 
-		App.InstCatalog.render(planMode.gfx, 8,0,0,0,48,'I');
-		App.InstCatalog.render(planMode.gfx, 8,0,0,0,48,'O');
-		planMode.gfx.fillStyle = '#ffffff';
-		text(planMode.gfx,'wants',100,110,8,-1);
-
-		console.log(App.Game.inStreams.length);
-		for(var i=0;i<App.Game.inStreams.length;++i){
-			var stream = App.Game.inStreams[i];
-			App.InstCatalog.render(planMode.gfx,8,5+i*50,5,0,48);
-			text(planMode.gfx,'gives',100,100,8,-1);
+		// TODO: TRIGGER A STATIC RENDER UPDATE WHEN TOKEN CHANGES
+		var keys = Object.keys(App.Game.inStreams);
+		for(var i in keys){
+			var key = keys[i];
+			var stream = App.Game.inStreams[key];
+			switch(stream[4]){
+				case App.COLORS.RED:    planMode.gfx.fillStyle = 'rgba(255,0,0,0.2)';break;
+				case App.COLORS.GREEN:  planMode.gfx.fillStyle = 'rgba(0,255,0,0.2)';break;
+				case App.COLORS.BLUE:   planMode.gfx.fillStyle = 'rgba(0,0,255,0.2)';break;
+				case App.COLORS.YELLOW: planMode.gfx.fillStyle = 'rgba(255,255,0,0.2)';break;
+			}planMode.gfx.fillRect(5+i*100,5,98,63);
+			App.InstCatalog.render(planMode.gfx,8,5+i*100,5,stream[4],48,key);
+			App.renderToken(planMode.gfx,55+i*100,5,''/*,stream[2][stream[3]]*/);
+			planMode.gfx.fillStyle = '#ffffff';
+			text(planMode.gfx,'gives '+stream[0],10+i*100,55,8,-1);
 		}
 
 	// BOTTOM BAR --------------------------------------------------
@@ -130,6 +135,33 @@ App.setupPlanGui = function(){
 	planMode.registerMouseMoveFunc(function(x,y){
 		App.GameRenderer.screenToGridCoords(x,y);
 		if(App.InputHandler.rmb)App.GameRenderer.pan(x,y);
+	});
+
+	planMode.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){
+		var insCode = undefined;
+
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Q']] === true)insCode =  0+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['W']] === true)insCode =  4;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['E']] === true)insCode = 12;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['R']] === true)insCode = 15;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['T']] === true)insCode = 13;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Y']] === true)insCode = 18+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['U']] === true)insCode = 26+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['I']] === true)insCode =  8;
+
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['A']] === true)insCode =  7;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['S']] === true)insCode =  6;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['D']] === true)insCode =  5;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['F']] === true)insCode = 16;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['G']] === true)insCode = 14;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['H']] === true)insCode = 22+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['J']] === true)insCode = 17;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['K']] === true)insCode =  9;
+
+		if(insCode){
+			App.Game.currentPlanningLevel.insert(App.GameRenderer.mouseX,App.GameRenderer.mouseY,planMode.color,insCode);
+			App.GameRenderer.requestStaticRenderUpdate = true;
+		}
 	});
 
 	planMode.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.RIGHT,function(x,y){

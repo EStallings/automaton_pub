@@ -14,6 +14,7 @@ App.setupLevelSelect = function(){
 	levelSelect.lvl8Button = new App.Button('Level 8','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*1,56+28*2,168,24,430,230);
 	levelSelect.lvl9Button = new App.Button('Level 9','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*2,56+28*2,168,24,460,260);
 	levelSelect.backButton = new App.Button('Back to Main Menu','#fff','#000','#f00','#fff',levelSelect.gfx,15,56+28*3,512,24,500,300);
+	levelSelect.alpha = levelSelect.goalAlpha = 0;
 
 		// ---------------------------------------------
 
@@ -33,6 +34,7 @@ App.setupLevelSelect = function(){
 		levelSelect.lvl8Button.enter();
 		levelSelect.lvl9Button.enter();
 		levelSelect.backButton.enter();
+		levelSelect.goalAlpha = 1;
 	}
 
 	levelSelect.updateFunc = function(){
@@ -57,6 +59,11 @@ App.setupLevelSelect = function(){
 		if(levelSelect.lvl8Button.render())levelSelect.requestStaticRenderUpdate = true;
 		if(levelSelect.lvl9Button.render())levelSelect.requestStaticRenderUpdate = true;
 		if(levelSelect.backButton.render())levelSelect.requestStaticRenderUpdate = true;
+		if(levelSelect.alpha !== levelSelect.goalAlpha){
+			levelSelect.alpha += expInterp(levelSelect.alpha,levelSelect.goalAlpha,0.003,0.01);
+			levelSelect.gfx.globalAlpha = levelSelect.alpha;
+			levelSelect.requestStaticRenderUpdate = true;
+		}
 
 		if(levelSelect.exitFlag && levelSelect.requestStaticRenderUpdate === false){
 			levelSelect.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
@@ -78,6 +85,7 @@ App.setupLevelSelect = function(){
 		levelSelect.lvl8Button.exit();
 		levelSelect.lvl9Button.exit();
 		levelSelect.backButton.exit();
+		levelSelect.goalAlpha = 0;
 	}
 
 		// ---------------------------------------------
@@ -134,7 +142,10 @@ App.setupLevelSelect = function(){
 			App.ModeHandler.pushMode('planning');
 			levelSelect.requestStaticRenderUpdate = true;
 		}if(levelSelect.lvl4Button.collide(x,y)){
-			App.ModeHandler.pushMode('coming soon');
+			App.Game.setMode(App.Game.modes.PLANNING);
+			App.Game.currentPlanningLevel = App.Game.parseLevel("test`0`5`5~1`1`0`8`A`random(0,10)~1`2`0`8`B`random(0,10)~1`3`0`8`C`random(0,10)~3`1`0`9`X`A`10~3`2`0`9`Y`B`10~3`3`0`9`Z`C`10");
+			App.GameRenderer.bestFit();
+			App.ModeHandler.pushMode('planning');
 			levelSelect.requestStaticRenderUpdate = true;
 		}if(levelSelect.lvl5Button.collide(x,y)){
 			App.ModeHandler.pushMode('coming soon');

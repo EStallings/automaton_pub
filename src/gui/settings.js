@@ -5,6 +5,7 @@ App.setupSettings = function(){
 
 	settings.gfx = App.Canvases.addNewLayer(1).getContext('2d');
 	settings.backButton = new App.Button('Back to Main Menu','#fff','#000','#ff0','#fff',settings.gfx,15,56+28*0,512,24,200,000);
+	settings.alpha = settings.goalAlpha = 0;
 
 		// ---------------------------------------------
 
@@ -15,6 +16,7 @@ App.setupSettings = function(){
 		App.GameRenderer.bestFit();
 
 		settings.backButton.enter();
+		settings.goalAlpha = 1;
 	}
 
 	settings.updateFunc = function(){
@@ -30,6 +32,11 @@ App.setupSettings = function(){
 		text(settings.gfx,"Settings",15,15,36,-3);
 
 		if(settings.backButton.render())settings.requestStaticRenderUpdate = true;
+		if(settings.alpha !== settings.goalAlpha){
+			settings.alpha += expInterp(settings.alpha,settings.goalAlpha,0.003,0.01);
+			settings.gfx.globalAlpha = settings.alpha;
+			settings.requestStaticRenderUpdate = true;
+		}
 
 		if(settings.exitFlag && settings.requestStaticRenderUpdate === false){
 			settings.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
@@ -42,6 +49,7 @@ App.setupSettings = function(){
 		settings.exitFlag = true;
 
 		settings.backButton.exit();
+		settings.goalAlpha = 0;
 	}
 
 		// ---------------------------------------------
