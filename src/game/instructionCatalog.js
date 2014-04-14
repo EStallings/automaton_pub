@@ -443,21 +443,62 @@ App.makeInstructionCatalog = function(){
 		gfx.translate(x,y);
 
 		switch(c){
+			case App.COLORS.RED:
+				gfx.fillStyle='rgba(255,0,0,0.2)';
+				gfx.fillRect(0,0,cs,cs);
+				break;
+			case App.COLORS.GREEN:
+				gfx.fillStyle='rgba(0,255,0,0.2)';
+				gfx.fillRect(-cs+2,2,2*cs-4,2*cs-4);
+				break;
+			case App.COLORS.BLUE:
+				gfx.fillStyle='rgba(0,0,255,0.2)';
+				gfx.fillRect(2,-cs+2,2*cs-4,2*cs-4);
+				break;
+			case App.COLORS.YELLOW:
+				gfx.fillStyle='rgba(255,255,0,0.2)';
+				gfx.fillRect(-cs+2,-cs+2,2*cs-4,2*cs-4);
+				break;
+		}
+
+		switch(c){
 			case App.COLORS.RED:    gfx.strokeStyle='#ff0000';break;
 			case App.COLORS.GREEN:  gfx.strokeStyle='#00ff00';break;
 			case App.COLORS.BLUE:   gfx.strokeStyle='#0000ff';break;
 			case App.COLORS.YELLOW: gfx.strokeStyle='#ffff00';break;
-		}gfx.lineWidth = 2;
+		}gfx.lineWidth = lw;
 
-		gfx.beginPath();
-		gfx.moveTo(2,2);
-		gfx.lineTo(cs-2,cs-2);
-		gfx.moveTo(2,cs-2);
-		gfx.lineTo(cs-2,2);
-		gfx.stroke();
+		if(App.Game.mode === 'PLANNING'){
+			if(App.Game.currentPlanningLevel.grid[x][y][c].type === 8){
+				gfx.beginPath();
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,  cs/4);
+				gfx.moveTo(  cs/4,3*cs/4);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				gfx.moveTo(  cs/2,  cs/4);
+				gfx.lineTo(  cs/2,3*cs/4);
+				gfx.stroke();
+				gfx.restore();
+			}
+			else
+			{
 
+			}
 
-		gfx.restore();
+		}
+		else
+		{
+			gfx.beginPath();
+			gfx.moveTo(  cs/4,  cs/4);
+			gfx.lineTo(3*cs/4,  cs/4);
+			gfx.moveTo(  cs/4,3*cs/4);
+			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.moveTo(  cs/2,  cs/4);
+			gfx.lineTo(  cs/2,3*cs/4);
+			gfx.stroke();
+			gfx.restore();
+		}
+
 
 /*============================================================================*\
 
