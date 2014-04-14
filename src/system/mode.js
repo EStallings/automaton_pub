@@ -17,11 +17,14 @@ App.makeModeHandler = function(){
 		modeHandler.currentMode.enterFunc();
 	}
 
-	modeHandler.popMode = function(){
-		modeHandler.currentMode.exitFunc();
-		modeHandler.modeStack.pop();
-		modeHandler.currentMode = modeHandler.modeStack[modeHandler.modeStack.length-1];
-		modeHandler.currentMode.enterFunc();
+	modeHandler.popMode = function(num){
+		if(num === undefined)num = 1;
+		while(num --> 0){
+			modeHandler.currentMode.exitFunc();
+			modeHandler.modeStack.pop();
+			modeHandler.currentMode = modeHandler.modeStack[modeHandler.modeStack.length-1];
+			modeHandler.currentMode.enterFunc();
+		}
 	}
 
 	// ========================================================== //

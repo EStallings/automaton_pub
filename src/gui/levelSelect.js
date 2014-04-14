@@ -45,9 +45,6 @@ App.setupLevelSelect = function(){
 
 		levelSelect.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-//		levelSelect.gfx.fillStyle = 'rgba(0,0,0,0.5)';
-//		levelSelect.gfx.fillRect(0,0,App.Canvases.width,App.Canvases.height);
-
 		levelSelect.gfx.fillStyle = '#fff';
 		text(levelSelect.gfx,"Level Select",15,15,36,-3);
 

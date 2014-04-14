@@ -32,9 +32,6 @@ App.setupMainMenu = function(){
 
 		mainMenu.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-//		mainMenu.gfx.fillStyle = 'rgba(0,0,0,0.5)';
-//		mainMenu.gfx.fillRect(0,0,App.Canvases.width,App.Canvases.height);
-
 		mainMenu.gfx.fillStyle = '#fff';
 		text(mainMenu.gfx,"Automaton",15,15,36,-3);
 

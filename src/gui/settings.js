@@ -27,9 +27,6 @@ App.setupSettings = function(){
 
 		settings.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-//		settings.gfx.fillStyle = 'rgba(0,0,0,0.5)';
-//		settings.gfx.fillRect(0,0,App.Canvases.width,App.Canvases.height);
-
 		settings.gfx.fillStyle = '#fff';
 		text(settings.gfx,"Settings",15,15,36,-3);
 

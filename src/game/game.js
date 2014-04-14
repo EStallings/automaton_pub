@@ -226,22 +226,12 @@ App.makeGame = function(){
 
 	game.simulationError = function(errorMsg){
 		console.log("SIMULATION ERROR: "+errorMsg);
-		game.requestPause = true;
-		// TODO: stop simulation
-		// TODO: display error
-		// TODO: go back to planning mode
+		App.ModeHandler.pushMode('error');
 	}
 
 	game.simulationSuccess = function(){
 		console.log("SIMULATION SUCCESS");
-		game.requestPause = true;
-		// TODO: stop simulation
-		// TODO: display scores
-		//       instruction count
-		//       ticks elapsed
-		//       automaton count (fork?) (min max total)
-		//       cell usage
-		// TODO: exit/next level...
+		App.ModeHandler.pushMode('success');
 	}
 
 	// ========================================================== //

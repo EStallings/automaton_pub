@@ -27,9 +27,6 @@ App.setupComingSoon = function(){
 
 		comingSoon.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-//		comingSoon.gfx.fillStyle = 'rgba(0,0,0,0.5)';
-//		comingSoon.gfx.fillRect(0,0,App.Canvases.width,App.Canvases.height);
-
 		comingSoon.gfx.fillStyle = '#fff';
 		text(comingSoon.gfx,"Coming Soon",15,15,36,-3);
 

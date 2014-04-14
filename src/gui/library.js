@@ -27,9 +27,6 @@ App.setupLibrary = function(){
 
 		library.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-//		library.gfx.fillStyle = 'rgba(0,0,0,0.5)';
-//		library.gfx.fillRect(0,0,App.Canvases.width,App.Canvases.height);
-
 		library.gfx.fillStyle = '#fff';
 		text(library.gfx,"Library",15,15,36,-3);
 
