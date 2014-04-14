@@ -8,9 +8,8 @@ App.makeEngine = function(){
 		window.onresize();
 		engine.tick = new Date().getTime();
 		engine.elapsed = 1;
-	// DELETE ====================================================//
-		App.Game.currentPlanningLevel = App.Game.parseLevel(App.demoLevels[1]);
-	//============================================================//
+
+		App.loadDemo();
 		App.ModeHandler.pushMode('main menu');
 		requestAnimationFrame(engine.frame);
 	};

@@ -15,12 +15,14 @@ App.setupMainMenu = function(){
 		mainMenu.requestStaticRenderUpdate = true;
 		mainMenu.updatingActive = true;
 		mainMenu.exitFlag = false;
-		App.GameRenderer.bestFit();
 
 		mainMenu.playButton.enter();
 		mainMenu.libraryButton.enter();
 		mainMenu.sandboxButton.enter();
 		mainMenu.settingsButton.enter();
+
+		App.Game.setMode(App.Game.modes.SIMULATION);
+		App.GameRenderer.bestFit();
 	}
 
 	mainMenu.updateFunc = function(){
@@ -29,8 +31,8 @@ App.setupMainMenu = function(){
 
 		mainMenu.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-		mainMenu.gfx.fillStyle = 'rgba(0,0,0,0.5)';
-		mainMenu.gfx.fillRect(0,0,App.Canvases.width,App.Canvases.height);
+//		mainMenu.gfx.fillStyle = 'rgba(0,0,0,0.5)';
+//		mainMenu.gfx.fillRect(0,0,App.Canvases.width,App.Canvases.height);
 
 		mainMenu.gfx.fillStyle = '#fff';
 		text(mainMenu.gfx,"Automaton",15,15,36,-3);
@@ -80,6 +82,8 @@ App.setupMainMenu = function(){
 			App.ModeHandler.pushMode('library');
 			mainMenu.requestStaticRenderUpdate = true;
 		}if(mainMenu.sandboxButton.collide(x,y)){
+			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`11`11");
+			App.GameRenderer.bestFit();
 			App.ModeHandler.pushMode('planning'); // TODO: CHANGE THIS
 			mainMenu.requestStaticRenderUpdate = true;
 		}if(mainMenu.settingsButton.collide(x,y)){

@@ -11,6 +11,8 @@ App.setupSimGui = function(){
 		simMode.requestStaticRenderUpdate = true;
 		simMode.updatingActive = true;
 		simMode.exitFlag = false;
+
+		App.Game.setMode(App.Game.modes.SIMULATION);
 	}
 
 	simMode.updateFunc = function(){
@@ -32,9 +34,12 @@ App.setupSimGui = function(){
 
 		// ---------------------------------------------
 
+	simMode.registerKeyDownFunc('Esc',function(){
+		App.ModeHandler.popMode();
+	});
+
 	simMode.registerKeyDownFunc('Space',function(){
 		App.ModeHandler.popMode();
-		App.Game.toggleMode();
 	});
 
 	simMode.registerMouseMoveFunc(function(x,y){

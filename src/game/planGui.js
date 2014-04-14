@@ -13,6 +13,8 @@ App.setupPlanGui = function(){
 		planMode.requestStaticRenderUpdate = true;
 		planMode.updatingActive = true;
 		planMode.exitFlag = false;
+
+		App.Game.setMode(App.Game.modes.PLANNING);
 	}
 
 	planMode.updateFunc = function(){
@@ -21,25 +23,47 @@ App.setupPlanGui = function(){
 
 		planMode.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-		var x=0;
-		App.InstCatalog.render(planMode.gfx, 0+planMode.direction,10+x++*50,10,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx, 4,10+x++*50,10,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,12,10+x++*50,10,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,15,10+x++*50,10,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,13,10+x++*50,10,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,18+planMode.direction,10+x++*50,10,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,26+planMode.direction,10+x++*50,10,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx, 8,10+x++*50,10,planMode.color,48);
+	// TOP BAR -----------------------------------------------------
+
+		App.InstCatalog.render(planMode.gfx, 8,0,0,0,48,'I');
+		App.InstCatalog.render(planMode.gfx, 8,0,0,0,48,'O');
+		planMode.gfx.fillStyle = '#ffffff';
+		text(planMode.gfx,'wants',100,110,8,-1);
+
+		console.log(App.Game.inStreams.length);
+		for(var i=0;i<App.Game.inStreams.length;++i){
+			var stream = App.Game.inStreams[i];
+			App.InstCatalog.render(planMode.gfx,8,5+i*50,5,0,48);
+			text(planMode.gfx,'gives',100,100,8,-1);
+		}
+
+	// BOTTOM BAR --------------------------------------------------
+
+		var xOffset = Math.floor((App.Canvases.width-50*8)/2)+1;
+		var yOffset = App.Canvases.height-100-2-5;
+
+		planMode.gfx.fillStyle = 'rgba(0,0,0,0.8)';
+		planMode.gfx.fillRect(xOffset-5,yOffset-5,50*8-2+10,100-2+10);
 
 		var x=0;
-		App.InstCatalog.render(planMode.gfx, 7,10+x++*50,10+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx, 6,10+x++*50,10+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx, 5,10+x++*50,10+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,16,10+x++*50,10+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,14,10+x++*50,10+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,22+planMode.direction,10+x++*50,10+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,17,10+x++*50,10+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx, 9,10+x++*50,10+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx, 0+planMode.direction,xOffset+x++*50,yOffset,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx, 4,xOffset+x++*50,yOffset,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,12,xOffset+x++*50,yOffset,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,15,xOffset+x++*50,yOffset,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,13,xOffset+x++*50,yOffset,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,18+planMode.direction,xOffset+x++*50,yOffset,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,26+planMode.direction,xOffset+x++*50,yOffset,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx, 8,xOffset+x++*50,yOffset,planMode.color,48,'I');
+
+		var x=0;
+		App.InstCatalog.render(planMode.gfx, 7,xOffset+x++*50,yOffset+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx, 6,xOffset+x++*50,yOffset+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx, 5,xOffset+x++*50,yOffset+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,16,xOffset+x++*50,yOffset+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,14,xOffset+x++*50,yOffset+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,22+planMode.direction,xOffset+x++*50,yOffset+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx,17,xOffset+x++*50,yOffset+50,planMode.color,48);
+		App.InstCatalog.render(planMode.gfx, 9,xOffset+x++*50,yOffset+50,planMode.color,48,'O');
 
 		if(planMode.exitFlag && planMode.requestStaticRenderUpdate === false){
 			planMode.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
@@ -55,13 +79,12 @@ App.setupPlanGui = function(){
 		// ---------------------------------------------
 
 	planMode.registerKeyDownFunc('Esc',function(){
+		App.loadDemo();
 		App.ModeHandler.popMode();
-		App.GameRenderer.bestFit();
 	});
 
 	planMode.registerKeyDownFunc('Space',function(){
 		App.ModeHandler.pushMode('simulation');
-		App.Game.toggleMode();
 	});
 
 	planMode.registerKeyDownFunc('W',function(){

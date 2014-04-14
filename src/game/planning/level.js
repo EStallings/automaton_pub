@@ -4,23 +4,75 @@ App.PlanningInstruction = function(x,y,color,type,data){
 	this.color    = color;
 	this.type     = type;
 	this.data     = data;
-	this.selected = false;
+}
+
+//============================================================================//
+
+App.Operation = function(){
+
+	// contains information needed to undo or redo any of the group operations
+	this.groupOp = function(numInstructions){
+		this.numInstructions = numInstructions;
+		this.opId = 'group';
+	};
+
+	// contains the information needed to undo or redo an insert operation
+	this.insertOp = function(instruction){
+		this.instruction = instruction;
+		this.overWritten = null;
+		this.opId = 'insert';
+	};
+
+	// contains the information needed to undo or redo a delete operation
+	this.deleteOp = function(instruction){
+		this.instruction = instruction;
+		this.opId = 'delete';
+	};
+
+	// contains the information needed to undo or redo a move operation
+	this.moveOp = function(instruction, oldX, oldY, newX, newY){
+		this.instruction = instruction;
+		this.oldX = oldX; this.oldY = oldY;
+		this.newX = newX; this.newY = newY;
+		this.overWritten = null;
+		this.opId = 'move';
+	};
+
+	// contains the information needed to undo or redo a copy operation
+	this.copyOp = function(instruction, newX, newY){
+		this.instruction = instruction;
+		this.newX = newX; this.newY = newY;
+		this.overWritten = null;
+		this.opId = 'copy';
+	};
+
+	// contains the information needed to undo or redo a modify operation
+	this.modifyOp = function(instruction, parameter, newValue, oldValue){
+		this.instruction = instruction;
+		this.parameter = parameter;
+		this.newValue = newValue;
+		this.oldValue = oldValue;
+		this.overWritten = null;
+		this.opId = 'modify';
+	};
 }
 
 //============================================================================//
 
 App.PlanningLevel = function(){
+	var that = this;
+
 	this.name;
 	this.dateCreated;
 	this.width;
 	this.height;
 	this.grid = [];
+	this.currentSelection = [];
 	this.undoStack = [];
+	this.redoStack = [];
+	this.locks = [false, false, false, false]; // R,G,B,Y
 
-/*
-	this.undoStack[0] = [] of old state
-	this.undoStack[1] = [] of new state
-*/
+	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
 
 		// ---------------------------------------------
 
@@ -34,22 +86,6 @@ App.PlanningLevel = function(){
 		j[color] = new App.PlanningInstruction(x,y,color,type,data);
 		return true;
 	}
-
-	this.delete = function(x,y,color){
-
-	}
-
-		// ---------------------------------------------
-
-	this.undo = function(){}
-	this.redo = function(){}
-
-		// ---------------------------------------------
-
-	this.userInsert = function(x,y,color,type,data){}
-	this.userCopy = function(x0,y0,x1,x1){}
-	this.userMove = function(x0,y0,x1,x1){}
-	this.userDelete = function(){}
 
 		// ---------------------------------------------
 

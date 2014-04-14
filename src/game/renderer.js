@@ -119,6 +119,8 @@ App.makeGameRenderer = function(){
 	game.bestFit = function(){
 		var level = App.Game.currentPlanningLevel;
 		if(!level)return;
+		game.cellSizeFactor = 4; // TODO: MAKE THIS BETTER
+		game.goalCellSize = 3*Math.pow(2,game.cellSizeFactor);
 		game.goalRenderX = Math.round((App.Canvases.width-level.width*game.goalCellSize)/2);
 		game.goalRenderY = Math.round((App.Canvases.height-level.height*game.goalCellSize)/2);
 		game.requestStaticRenderUpdate = true;
@@ -197,8 +199,6 @@ App.makeGameRenderer = function(){
 			game.automGfx.restore();
 			game.tokenDGfx.restore();
 		}
-
-		game.renderDebug();
 	}
 
 	// ========================================================== //

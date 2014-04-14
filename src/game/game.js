@@ -35,6 +35,9 @@ App.makeGame = function(){
 		lvl.dateCreated = parseInt(data[0][1]);
 		lvl.width       = parseInt(data[0][2]);
 		lvl.height      = parseInt(data[0][3]);
+		game.streams    = [];
+		game.inStreams  = [];
+		game.outStreams = [];
 		game.totalOutStreams = 0;
 		if(isNaN(lvl.dateCreated) || isNaN(lvl.width) || isNaN(lvl.height))return undefined;
 		if(lvl.width < 0 || lvl.height < 0)return undefined;
@@ -56,6 +59,7 @@ App.makeGame = function(){
 					var p = Parser.parse(data[i][5]);
 					if(p === undefined)return undefined;
 					game.inStreams[d]=[data[i][5],p,[],0];
+					game.inStreams.push(game.inStreams[d]);
 					break;
 				case App.InstCatalog.TYPES['OUT']:
 					++game.totalOutStreams;
