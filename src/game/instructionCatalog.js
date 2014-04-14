@@ -34,8 +34,8 @@ App.makeInstructionCatalog = function(){
 		var lw = (Math.round(Math.log(cs/6)/Math.log(2)+2)-3)*2;
 
 		switch(type){ // branch off if special rendering required
-			case ins.TYPES['IN']:           ins.renderStream(gfx,x,y,c,cs,lw);      return;
-			case ins.TYPES['OUT']:          ins.renderStream(gfx,x,y,c,cs,lw);      return;
+			case ins.TYPES['IN']:           ins.renderStream(gfx,x,y,c,cs,lw,type);      return;
+			case ins.TYPES['OUT']:          ins.renderStream(gfx,x,y,c,cs,lw,type);      return;
 			case ins.TYPES['SYNC']:         ins.renderSync(gfx,x,y,c,cs,lw);        return;
 			case ins.TYPES['COLOR TOGGLE']: ins.renderColorToggle(gfx,x,y,c,cs,lw); return;
 		}
@@ -437,7 +437,9 @@ App.makeInstructionCatalog = function(){
 		}gfx.restore();
 	}
 
-	ins.renderStream = function(gfx,x,y,c,cs,lw){
+	ins.renderStream = function(gfx,x,y,c,cs,lw,type){
+		console.log(type);
+
 		// TODO: I NEED TO KNOW WHAT STREAM I AM FOR LETTERING AND IO
 		gfx.save();
 		gfx.translate(x,y);
@@ -468,26 +470,7 @@ App.makeInstructionCatalog = function(){
 			case App.COLORS.YELLOW: gfx.strokeStyle='#ffff00';break;
 		}gfx.lineWidth = lw;
 
-		if(App.Game.mode === 'PLANNING'){
-			if(App.Game.currentPlanningLevel.grid[x][y][c].type === 8){
-				gfx.beginPath();
-				gfx.moveTo(  cs/4,  cs/4);
-				gfx.lineTo(3*cs/4,  cs/4);
-				gfx.moveTo(  cs/4,3*cs/4);
-				gfx.lineTo(3*cs/4,3*cs/4);
-				gfx.moveTo(  cs/2,  cs/4);
-				gfx.lineTo(  cs/2,3*cs/4);
-				gfx.stroke();
-				gfx.restore();
-			}
-			else
-			{
-
-			}
-
-		}
-		else
-		{
+		if(type === 8){
 			gfx.beginPath();
 			gfx.moveTo(  cs/4,  cs/4);
 			gfx.lineTo(3*cs/4,  cs/4);
@@ -498,7 +481,13 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 			gfx.restore();
 		}
-
+		else
+		{
+			gfx.beginPath();
+			gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);
+			gfx.stroke();
+			gfx.restore();
+			}
 
 /*============================================================================*\
 
