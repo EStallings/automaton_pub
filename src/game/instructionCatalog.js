@@ -5,11 +5,11 @@ App.makeInstructionCatalog = function(){
 	// TODO: ALL SWITCHES NEED UP DOWN LEFT RIGHT
 	ins.TYPES = {
 	// --------------------------------------------- AUTOMATON SPAWN
-		'SPAWN UP'	: 0,		'SPAWN DOWN'	: 1,
-		'SPAWN LEFT'	: 2,		'SPAWN RIGHT'	: 3,
+		'SPAWN UP'	: 0,		'SPAWN RIGHT'	: 1,
+		'SPAWN DOWN'	: 2,		'SPAWN LEFT'	: 3,
 	// ------------------------------------------- DIRECTION CONTROL
-		'UP'		: 4,		'DOWN'		: 5,
-		'LEFT'		: 6,		'RIGHT'		: 7,
+		'UP'		: 4,		'RIGHT'		: 5,
+		'DOWN'		: 6,		'LEFT'		: 7,
 	// ---------------------------------------------------- TOKEN IO
 		'IN'		: 8,		'OUT'		: 9,
 	// ------------------------------------------ TOKEN MANIPULATION
@@ -20,22 +20,24 @@ App.makeInstructionCatalog = function(){
 		'SYNC'		: 15,		'COLOR TOGGLE'	: 16,
 		'PAUSE'		: 17,
 	// ----------------------------------------- CONDITIONAL CONTROL
-		'COND 0 U'	: 18,		'COND 0 D'	: 19,
-		'COND 0 L'	: 20,		'COND 0 R'	: 21,
-		'COND TOKEN U'	: 22,		'COND TOKEN D'	: 23,
-		'COND TOKEN L'	: 24,		'COND TOKEN R'	: 25,
-		'COND + U'	: 26,		'COND + D'	: 27,
-		'COND + L'	: 28,		'COND + R'	: 29,
+		'COND 0 U'	: 18,		'COND 0 R'	: 19,
+		'COND 0 D'	: 20,		'COND 0 L'	: 21,
+		'COND TOKEN U'	: 22,		'COND TOKEN R'	: 23,
+		'COND TOKEN D'	: 24,		'COND TOKEN L'	: 25,
+		'COND + U'	: 26,		'COND + R'	: 27,
+		'COND + D'	: 28,		'COND + L'	: 29,
 	};
 
-	ins.render = function(gfx,type,x,y,c,cs){
+	ins.render = function(gfx,type,x,y,c,cs,streamVar,streamBkg){
 		gfx.lineCap  = 'round';
 		gfx.lineJoin = 'round';
 		var lw = (Math.round(Math.log(cs/6)/Math.log(2)+2)-3)*2;
 
 		switch(type){ // branch off if special rendering required
-			case ins.TYPES['IN']:           ins.renderStream(gfx,x,y,c,cs,lw,type);      return;
-			case ins.TYPES['OUT']:          ins.renderStream(gfx,x,y,c,cs,lw,type);      return;
+
+			case ins.TYPES['IN']:           ins.renderStream(gfx,x,y,c,cs,lw,streamVar,streamBkg); return;
+			case ins.TYPES['OUT']:          ins.renderStream(gfx,x,y,c,cs,lw,streamVar,streamBkg); return;
+
 			case ins.TYPES['SYNC']:         ins.renderSync(gfx,x,y,c,cs,lw);        return;
 			case ins.TYPES['COLOR TOGGLE']: ins.renderColorToggle(gfx,x,y,c,cs,lw); return;
 		}
@@ -57,16 +59,14 @@ App.makeInstructionCatalog = function(){
 			case App.COLORS.YELLOW: gfx.strokeStyle='#808000';break;
 		}
 
-		if(cs>11){
-			gfx.lineWidth = 2;
-			gfx.beginPath();
-			gfx.moveTo(2,2);
-			gfx.lineTo(2,cs-2);
-			gfx.lineTo(cs-2,cs-2);
-			gfx.lineTo(cs-2,2);
-			gfx.lineTo(2,2);
-			gfx.stroke();
-		}
+		gfx.lineWidth = 2;
+		gfx.beginPath();
+		gfx.moveTo(2,2);
+		gfx.lineTo(2,cs-2);
+		gfx.lineTo(cs-2,cs-2);
+		gfx.lineTo(cs-2,2);
+		gfx.lineTo(2,2);
+		gfx.stroke();
 
 		if(cs>15){
 			gfx.lineWidth = lw;
@@ -184,7 +184,7 @@ App.makeInstructionCatalog = function(){
 
 		case ins.TYPES['RIGHT']:
 			gfx.beginPath();
-			/*			
+			/*
 			gfx.moveTo(  cs/4,  cs/4);
 			gfx.lineTo(3*cs/4,  cs/2);
 			gfx.lineTo(  cs/4,3*cs/4);
@@ -252,7 +252,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(cs/2-cs/8-cs/16,cs/2-cs/8);
 			gfx.lineTo(cs/2-cs/8-cs/16,cs/2+cs/8);
 			gfx.moveTo(cs/2+cs/8+cs/16,cs/2-cs/8);
-			gfx.lineTo(cs/2+cs/8+cs/16,cs/2+cs/8);	
+			gfx.lineTo(cs/2+cs/8+cs/16,cs/2+cs/8);
 			gfx.stroke();
 			break;
 
@@ -437,11 +437,31 @@ App.makeInstructionCatalog = function(){
 		}gfx.restore();
 	}
 
-	ins.renderStream = function(gfx,x,y,c,cs,lw,type){
+
+	ins.renderStream = function(gfx,x,y,c,cs,lw,streamVar,streamBkg){
 
 		// TODO: I NEED TO KNOW WHAT STREAM I AM FOR LETTERING AND IO
 		gfx.save();
 		gfx.translate(x,y);
+
+		if(streamBkg)switch(c){
+			case App.COLORS.RED:
+				gfx.fillStyle='rgba(255,0,0,0.2)';
+				gfx.fillRect(2,2,2*cs-4,2*cs-4);
+				break;
+			case App.COLORS.GREEN:
+				gfx.fillStyle='rgba(0,255,0,0.2)';
+				gfx.fillRect(-cs+2,2,2*cs-4,2*cs-4);
+				break;
+			case App.COLORS.BLUE:
+				gfx.fillStyle='rgba(0,0,255,0.2)';
+				gfx.fillRect(2,-cs+2,2*cs-4,2*cs-4);
+				break;
+			case App.COLORS.YELLOW:
+				gfx.fillStyle='rgba(255,255,0,0.2)';
+				gfx.fillRect(-cs+2,-cs+2,2*cs-4,2*cs-4);
+				break;
+		}
 
 		switch(c){
 			case App.COLORS.RED:
@@ -469,59 +489,199 @@ App.makeInstructionCatalog = function(){
 			case App.COLORS.YELLOW: gfx.strokeStyle='#ffff00';break;
 		}gfx.lineWidth = lw;
 
-		if(type === 8){
-			gfx.beginPath();
-			gfx.moveTo(  cs/4,  cs/4);
-			gfx.lineTo(3*cs/4,  cs/4);
-			gfx.moveTo(  cs/4,3*cs/4);
-			gfx.lineTo(3*cs/4,3*cs/4);
-			gfx.moveTo(  cs/2,  cs/4);
-			gfx.lineTo(  cs/2,3*cs/4);
-			gfx.stroke();
-			gfx.restore();
+
+		gfx.beginPath();
+
+		if(cs>15)switch(streamVar){
+			case 'A':
+				gfx.moveTo(  cs/4,3*cs/4);
+				gfx.lineTo(2*cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				gfx.moveTo(5*cs/16,5*cs/8);
+				gfx.lineTo(11*cs/16,5*cs/8);
+				break;
+			case 'B':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(5*cs/8,  cs/4);
+				gfx.arc(5*cs/8,3*cs/8,cs/8,-Math.PI/2,Math.PI/2);
+				gfx.arc(5*cs/8,5*cs/8,cs/8,-Math.PI/2,Math.PI/2);
+				gfx.lineTo(  cs/4,3*cs/4);
+				gfx.lineTo(  cs/4,  cs/4);
+				gfx.moveTo(  cs/4,  cs/2);
+				gfx.lineTo(5*cs/8,  cs/2);
+				break;
+			case 'C':
+				gfx.moveTo(3*cs/4,  cs/4);
+				gfx.arc(cs/2,cs/2,cs/4,-Math.PI/2,Math.PI/2,true);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				break;
+			case 'D':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(  cs/2,  cs/4);
+				gfx.arc(cs/2,cs/2,cs/4,-Math.PI/2,Math.PI/2);
+				gfx.lineTo(  cs/4,3*cs/4);
+				gfx.lineTo(  cs/4,  cs/4);
+				break;
+			case 'E':
+				gfx.moveTo(3*cs/4,  cs/4);
+				gfx.lineTo(  cs/4,  cs/4);
+				gfx.lineTo(  cs/4,3*cs/4);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				gfx.moveTo(  cs/4,  cs/2);
+				gfx.lineTo(  cs/2,  cs/2);
+				break;
+			case 'F':
+				gfx.moveTo(3*cs/4,  cs/4);
+				gfx.lineTo(  cs/4,  cs/4);
+				gfx.lineTo(  cs/4,3*cs/4);
+				gfx.moveTo(  cs/4,  cs/2);
+				gfx.lineTo(  cs/2,  cs/2);
+				break;
+			case 'G':
+				gfx.moveTo(3*cs/4,  cs/4);
+				gfx.arc(cs/2,cs/2,cs/4,-Math.PI/2,Math.PI/2,true);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				gfx.lineTo(3*cs/4,  cs/2);
+				gfx.lineTo(  cs/2,  cs/2);
+				break;
+			case 'H':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(  cs/4,3*cs/4);
+				gfx.moveTo(3*cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				gfx.moveTo(  cs/4,  cs/2);
+				gfx.lineTo(3*cs/4,  cs/2);
+				break;
+			case 'I':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,  cs/4);
+				gfx.moveTo(  cs/4,3*cs/4);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				gfx.moveTo(  cs/2,  cs/4);
+				gfx.lineTo(  cs/2,3*cs/4);
+				break;
+			case 'J':
+				gfx.moveTo(3*cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,  cs/2);
+				gfx.arc(cs/2,cs/2,cs/4,0,Math.PI);
+				break;
+			case 'K':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(  cs/4,3*cs/4);
+				gfx.moveTo(3*cs/4,  cs/4);
+				gfx.lineTo(  cs/2,  cs/2);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				gfx.moveTo(  cs/4,  cs/2);
+				gfx.lineTo(  cs/2,  cs/2);
+				break;
+			case 'L':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(  cs/4,3*cs/4);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				break;
+			case 'M':
+				gfx.moveTo(  cs/4,3*cs/4);
+				gfx.lineTo(  cs/4,  cs/4);
+				gfx.lineTo(  cs/2,  cs/2);
+				gfx.lineTo(3*cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				break;
+			case 'N':
+				gfx.moveTo(  cs/4,3*cs/4);
+				gfx.lineTo(  cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				gfx.lineTo(3*cs/4,  cs/4);
+				break;
+			case 'O':
+				gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);
+				break;
+			case 'P':
+				gfx.moveTo(  cs/4,3*cs/4);
+				gfx.lineTo(  cs/4,  cs/4);
+				gfx.lineTo(5*cs/8,  cs/4);
+				gfx.arc(5*cs/8,3*cs/8,cs/8,-Math.PI/2,Math.PI/2);
+				gfx.lineTo(  cs/4,  cs/2);
+				break;
+			case 'Q':
+				gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);
+				gfx.moveTo(5*cs/8,5*cs/8);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				break;
+			case 'R':
+				gfx.moveTo(  cs/4,3*cs/4);
+				gfx.lineTo(  cs/4,  cs/4);
+				gfx.lineTo(5*cs/8,  cs/4);
+				gfx.arc(5*cs/8,3*cs/8,cs/8,-Math.PI/2,Math.PI/2);
+				gfx.arc(5*cs/8,5*cs/8,cs/8,-Math.PI/2,0);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				gfx.moveTo(  cs/4,  cs/2);
+				gfx.lineTo(5*cs/8,  cs/2);
+				break;
+			case 'S':
+				gfx.moveTo(3*cs/4,  cs/4);
+				gfx.lineTo(3*cs/8,  cs/4);
+				gfx.arc(3*cs/8,3*cs/8,cs/8,-Math.PI/2,Math.PI/2,true);
+				gfx.lineTo(5*cs/8,  cs/2);
+				gfx.arc(5*cs/8,5*cs/8,cs/8,-Math.PI/2,Math.PI/2);
+				gfx.lineTo(  cs/4,3*cs/4);
+				break;
+			case 'T':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,  cs/4);
+				gfx.moveTo(  cs/2,  cs/4);
+				gfx.lineTo(  cs/2,3*cs/4);
+				break;
+			case 'U':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(  cs/4,  cs/2);
+				gfx.arc(cs/2,cs/2,cs/4,Math.PI,0,true);
+				gfx.lineTo(3*cs/4,  cs/4);
+				break;
+			case 'V':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(  cs/2,3*cs/4);
+				gfx.lineTo(3*cs/4,  cs/4);
+				break;
+			case 'W':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(3*cs/8,3*cs/4);
+				gfx.lineTo(  cs/2,9*cs/16);
+				gfx.lineTo(5*cs/8,3*cs/4);
+				gfx.lineTo(3*cs/4,  cs/4);
+				break;
+			case 'X':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				gfx.moveTo(3*cs/4,  cs/4);
+				gfx.lineTo(  cs/4,3*cs/4);
+				break;
+			case 'Y':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(  cs/2,  cs/2);
+				gfx.lineTo(3*cs/4,  cs/4);
+				gfx.moveTo(  cs/2,  cs/2);
+				gfx.lineTo(  cs/2,3*cs/4);
+				break;
+			case 'Z':
+				gfx.moveTo(  cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,  cs/4);
+				gfx.lineTo(  cs/4,3*cs/4);
+				gfx.lineTo(3*cs/4,3*cs/4);
+				break;
+			default:
+				gfx.moveTo(  cs/4,3*cs/8);
+				gfx.lineTo(  cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,  cs/4);
+				gfx.lineTo(3*cs/4,  cs/2);
+				gfx.lineTo(  cs/2,  cs/2);
+				gfx.lineTo(  cs/2,5*cs/8);
+				gfx.moveTo(15*cs/32,3*cs/4);
+				gfx.lineTo(17*cs/32,3*cs/4);
+				break;
 		}
-		else
-		{
-			gfx.beginPath();
-			gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);
-			gfx.stroke();
-			gfx.restore();
-			}
 
-/*============================================================================*\
-
-		case ins.TYPES['IN']:
-			gfx.beginPath();gfx.arc(cs/2,15*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
-			gfx.beginPath();
-			// TODO: optimize loop
-			gfx.moveTo(  cs/2,  cs/4);
-			gfx.lineTo(3*cs/4,  cs/4);
-			gfx.lineTo(3*cs/4,9*cs/16);
-			gfx.lineTo(  cs/2,3*cs/4);
-			gfx.lineTo(  cs/4,9*cs/16);
-			gfx.lineTo(  cs/4,  cs/4);
-			gfx.lineTo(  cs/2,  cs/4);
-			gfx.moveTo(  cs/4,3*cs/4);
-			gfx.lineTo(3*cs/4,3*cs/4);
-			gfx.stroke();
-			break;
-
-		case ins.TYPES['OUT']:
-			gfx.beginPath();gfx.arc(cs/2,17*cs/32,cs/8,-Math.PI,Math.PI);gfx.stroke();
-			gfx.beginPath();
-			// TODO: optimize loop
-			gfx.moveTo(  cs/2,3*cs/4);
-			gfx.lineTo(3*cs/4,3*cs/4);
-			gfx.lineTo(3*cs/4,7*cs/16);
-			gfx.lineTo(  cs/2,  cs/4);
-			gfx.lineTo(  cs/4,7*cs/16);
-			gfx.lineTo(  cs/4,3*cs/4);
-			gfx.lineTo(  cs/2,3*cs/4);
-			gfx.stroke();
-			break;
-
-\*============================================================================*/
-
+		gfx.stroke();
+		gfx.restore();
 	}
 
 	ins.renderSync = function(gfx,x,y,c,cs,lw){

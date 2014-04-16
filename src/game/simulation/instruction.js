@@ -1,29 +1,32 @@
-App.SimulationInstruction = function(level,x,y,color,type){
+App.SimulationInstruction = function(level,x,y,color,type,data){
 	// this assumes valid input from the planning level
 
 	level.instructions.push(this);
 	level.getCell(x,y).instructions[color] = this;
 
-	this.gfx = App.Game.instructionGfx;
+	this.gfx = App.GameRenderer.instructionGfx;
 	this.level = level;
 	this.cell = level.getCell(x,y);
 	this.x = x;
 	this.y = y;
 	this.color = color;
 	this.type = type;
+	this.data = data;
 
 	this.staticRender = function(){
 		this.gfx.save();
 
-		var rx,ry,size = App.Game.cellSize;
+		var rx,ry,cs = App.GameRenderer.cellSize;
 		switch(this.color){
-			case App.COLORS.RED:    rx=x*size;        ry=y*size;        break;
-			case App.COLORS.GREEN:  rx=x*size+size/2; ry=y*size;        break;
-			case App.COLORS.BLUE:   rx=x*size;        ry=y*size+size/2; break;
-			case App.COLORS.YELLOW: rx=x*size+size/2; ry=y*size+size/2; break;
+			case App.COLORS.RED:    rx=this.x*cs;      ry=this.y*cs;      break;
+			case App.COLORS.GREEN:  rx=this.x*cs+cs/2; ry=this.y*cs;      break;
+			case App.COLORS.BLUE:   rx=this.x*cs;      ry=this.y*cs+cs/2; break;
+			case App.COLORS.YELLOW: rx=this.x*cs+cs/2; ry=this.y*cs+cs/2; break;
 		}
 
-		App.InstCatalog.render(this.gfx,this.type,rx,ry,this.color,size/2);
+		var streamBkg = false;
+		if(this.type === App.InstCatalog.TYPES['IN'] || this.type === App.InstCatalog.TYPES['OUT'])streamBkg = true;
+		App.InstCatalog.render(this.gfx,this.type,rx,ry,this.color,cs/2,this.data,streamBkg);
 		this.gfx.restore();
 	}
 
@@ -86,7 +89,13 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)return;
-				a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,Math.floor(Math.random()*9+1));
+
+				var stackNum = App.Game.inStreams[this.data][3];
+				while(stackNum >= App.Game.inStreams[this.data][2].length-1)
+					App.Game.generateTokenWave();
+				var tokenNum = App.Game.inStreams[this.data][2][stackNum];
+				a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,tokenNum);
+				++App.Game.inStreams[this.data][3];
 			};break;
 
 		case App.InstCatalog.TYPES['OUT']:
@@ -94,7 +103,16 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				a.tokenHeld = undefined;
+
+				var stackNum = App.Game.outStreams[this.data][3];
+				while(stackNum >= App.Game.outStreams[this.data][2].length-1)
+					App.Game.generateTokenWave();
+				var tokenNum = App.Game.outStreams[this.data][2][stackNum];
+				if(a.tokenHeld.number !== tokenNum){
+					App.Game.simulationError(a.tokenHeld.number+" !== "+tokenNum);
+					return;
+				}a.tokenHeld = undefined;
+				++App.Game.outStreams[this.data][3];
 			};break;
 
 		case App.InstCatalog.TYPES['GRAB']:
@@ -103,7 +121,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined && this.cell.tokens.length !== 0){
 					a.tokenHeld = this.cell.tokens.pop();
-					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
+					App.GameRenderer.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
 			};break;
 
@@ -114,7 +132,7 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(a.tokenHeld !== undefined){
 					this.cell.tokens.push(a.tokenHeld);
 					a.tokenHeld = undefined;
-					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
+					App.GameRenderer.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
 			};break;
 
@@ -125,12 +143,12 @@ App.SimulationInstruction = function(level,x,y,color,type){
 				if(a.tokenHeld === undefined){
 					if(this.cell.tokens.length !== 0){
 						a.tokenHeld = this.cell.tokens.pop();
-						App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
+						App.GameRenderer.requestStaticRenderUpdate = true; // XXX: move this to token...?
 					}
 				}else{
 					this.cell.tokens.push(a.tokenHeld);
 					a.tokenHeld = undefined;
-					App.Game.requestStaticRenderUpdate = true; // XXX: move this to token...?
+					App.GameRenderer.requestStaticRenderUpdate = true; // XXX: move this to token...?
 				}
 			};break;
 
@@ -172,8 +190,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number === 0)
-					a.direction = App.DIRECTIONS.UP;
+				if(a.tokenHeld.number !== 0)return;
+				a.direction = App.DIRECTIONS.UP;
 					
 			};break;
 
@@ -182,8 +200,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number === 0)
-					a.direction = App.DIRECTIONS.DOWN;
+				if(a.tokenHeld.number !== 0)return;
+				a.direction = App.DIRECTIONS.DOWN;
 			};break;
 
 		case App.InstCatalog.TYPES['COND 0 L']:
@@ -191,8 +209,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number === 0)
-					a.direction = App.DIRECTIONS.LEFT;
+				if(a.tokenHeld.number !== 0)return;
+				a.direction = App.DIRECTIONS.LEFT;
 			};break;
 
 		case App.InstCatalog.TYPES['COND 0 R']:
@@ -200,8 +218,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number === 0)
-					a.direction = App.DIRECTIONS.RIGHT;
+				if(a.tokenHeld.number !== 0)return;
+				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 
 		case App.InstCatalog.TYPES['COND TOKEN U']:
@@ -241,8 +259,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number > 0)
-					a.direction = App.DIRECTIONS.UP;
+				if(a.tokenHeld.number <= 0)return;
+				a.direction = App.DIRECTIONS.UP;
 			};break;
 
 		case App.InstCatalog.TYPES['COND + D']:
@@ -250,8 +268,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number > 0)
-					a.direction = App.DIRECTIONS.DOWN;
+				if(a.tokenHeld.number <= 0)return;
+				a.direction = App.DIRECTIONS.DOWN;
 			};break;
 
 		case App.InstCatalog.TYPES['COND + L']:
@@ -259,8 +277,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number > 0)
-					a.direction = App.DIRECTIONS.LEFT;
+				if(a.tokenHeld.number <= 0)return;
+				a.direction = App.DIRECTIONS.LEFT;
 			};break;
 
 		case App.InstCatalog.TYPES['COND + R']:
@@ -268,8 +286,8 @@ App.SimulationInstruction = function(level,x,y,color,type){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number > 0)
-					a.direction = App.DIRECTIONS.RIGHT;
+				if(a.tokenHeld.number <= 0)return;
+				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 	}
 }

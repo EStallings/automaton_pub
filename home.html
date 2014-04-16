@@ -2,43 +2,51 @@
 	<title>Automaton</title>
 	<meta name="description" content="Automaton">
 	<meta charset="UTF-8">
-	<style>*{position:absolute;margin:0px;}</style>
+	<style>*{
+		position:              absolute;
+		margin:                0px;
+		-moz-user-select:      none;
+		-khtml-user-select:    none;
+		-webkit-user-select:   none;
+		-webkit-touch-callout: none;
+		-ms-user-select:       none;
+		user-select:           none;
+	}</style>
 
-	<!-- production version. Swap with dev version if you need it. Try to keep it minified when you push. -->
 	<script type="text/javascript" src="src/extern/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="src/extern/parser.js"></script>
-	<link rel="stylesheet" type="text/css" href="css.css"></script>
 
 	<script type="text/javascript" src="src/system/util.js"></script>        <!-- this must be first -->
 	<script type="text/javascript" src="src/system/application.js"></script> <!-- this must be second -->
 	<script type="text/javascript" src="src/system/canvas.js"></script>
-	<script type="text/javascript" src="src/system/engine.js"></script>
+	<script type="text/javascript" src="src/system/mode.js"></script>
 	<script type="text/javascript" src="src/system/input.js"></script>
-	<script type="text/javascript" src="src/system/gameinput.js"></script>
-	<script type="text/javascript" src="src/system/guiinput.js"></script>
+	<script type="text/javascript" src="src/system/engine.js"></script>
 	<script type="text/javascript" src="src/system/serverapi.js"></script>
 
-
-	<script type="text/javascript" src="src/gui/guiFrame.js"></script>
-	<script type="text/javascript" src="src/gui/guiButtons.js"></script>
-	<script type="text/javascript" src="src/gui/guiText.js"></script>
-	<script type="text/javascript" src="src/gui/guiDrag.js"></script>
-	<script type="text/javascript" src="src/gui/guiTable.js"></script>
-	<script type="text/javascript" src="src/gui/guiWidget.js"></script>
-	<script type="text/javascript" src="src/gui/guiSetup.js"></script>
-
 	<script type="text/javascript" src="src/game/game.js"></script>
+	<script type="text/javascript" src="src/game/renderer.js"></script>
+	<script type="text/javascript" src="src/game/planGui.js"></script>
+	<script type="text/javascript" src="src/game/simGui.js"></script>
+	<script type="text/javascript" src="src/game/error.js"></script>
+	<script type="text/javascript" src="src/game/success.js"></script>
+	<script type="text/javascript" src="src/game/demos.js"></script>
 	<script type="text/javascript" src="src/game/instructionCatalog.js"></script>
-	<script type="text/javascript" src="src/game/planning/instruction.js"></script>
-	<script type="text/javascript" src="src/game/planning/planningGraphics.js"></script>
+	<script type="text/javascript" src="src/game/token.js"></script>
 	<script type="text/javascript" src="src/game/planning/level.js"></script>
-	<script type="text/javascript" src="src/game/planning/controls.js"></script>
-	<script type="text/javascript" src="src/game/planning/operation.js"></script>
 	<script type="text/javascript" src="src/game/simulation/token.js"></script>
 	<script type="text/javascript" src="src/game/simulation/automaton.js"></script>
 	<script type="text/javascript" src="src/game/simulation/instruction.js"></script>
 	<script type="text/javascript" src="src/game/simulation/cell.js"></script>
 	<script type="text/javascript" src="src/game/simulation/level.js"></script>
+
+	<script type="text/javascript" src="src/gui/elements.js"></script>
+	<script type="text/javascript" src="src/gui/shade.js"></script>
+	<script type="text/javascript" src="src/gui/comingSoon.js"></script>
+	<script type="text/javascript" src="src/gui/mainMenu.js"></script>
+	<script type="text/javascript" src="src/gui/levelSelect.js"></script>
+	<script type="text/javascript" src="src/gui/library.js"></script>
+	<script type="text/javascript" src="src/gui/settings.js"></script>
 
 	<script type="text/javascript" src="src/main.js"></script>               <!-- this must be last -->
 
