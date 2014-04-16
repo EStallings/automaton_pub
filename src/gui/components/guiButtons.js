@@ -1,31 +1,3 @@
-/*
-Notes about doing the GUI:
-
-For now, just need:
-
-DRAW NOT DONE
-imageButton - small and large? -- doesn't need to be an ACTUAL image, just pictographic somehow
-
-DONE?
-textButton - small and large?
-
-DRAW NOT DONE
-dragButton - like an imageButton
-
-DONE?
-textBox -- static and user entry
-
-DONE
-guiPanel -- static and prevents click fallthrough
-
-NOT DONE
-guiSliderButton and guiSliderLine
-
-
-One TODO (potentially): abstract out button logic. Several of the objects
-in this file have some similar code. Less than you might think, though...
-*/
-
 
 //A relatively simple button. Click and release on top of it to fire a callback.
 //with 'continuous' as true, it will keep firing every frame.

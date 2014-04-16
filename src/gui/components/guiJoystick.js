@@ -3,11 +3,7 @@
 */
 App.GuiJoystick = function(x, y, panel){
 	this.guiCollider = new App.GuiCollisionCircle(x, y, 35);
-	if(panel) panel.addChild(this);
-	this.guiCollider.functional = true;
 
-	this.currentX = this.guiCollider.getx();
-	this.currentY = this.guiCollider.gety();
 	this.curPanX = 0;
 	this.curPanY = 0;
 	this.moveRate = 0.2;
@@ -47,8 +43,7 @@ App.GuiJoystick = function(x, y, panel){
 	}
 
 	this.update = function(){
-		if(!this.dragged)
-			return;
+
 
 		var mx = this.guiCollider.getx();
 		var my = this.guiCollider.gety();

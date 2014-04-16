@@ -36,7 +36,7 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 		this.dragged = true;
 	}
 
-	this.windowupdate = function(){
+	this.updatePosition = function(){
 		this.currentX = this.guiCollider.getx();
 		this.currentY = this.guiCollider.gety();
 	}
@@ -75,8 +75,8 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 
 App.GuiDragButton.registry = [];
 App.GuiDragButton.globalColor = 0;
-App.GuiDragButton.inactive = App.GuiColors.inactive[App.GuiDragButton.globalColor];
-App.GuiDragButton.active = App.GuiColors.active[App.GuiDragButton.globalColor];
+//App.GuiDragButton.inactive = App.GuiColors.inactive[App.GuiDragButton.globalColor];
+//App.GuiDragButton.active = App.GuiColors.active[App.GuiDragButton.globalColor];
 App.GuiDragButton.changeGlobalColor = function(color){
 	this.globalColor = color;
 	this.inactive = App.GuiColors.inactive[color];
