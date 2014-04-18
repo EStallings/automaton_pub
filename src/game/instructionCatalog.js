@@ -464,25 +464,6 @@ App.makeInstructionCatalog = function(){
 		}
 
 		switch(c){
-			case App.COLORS.RED:
-				gfx.fillStyle='rgba(255,0,0,0.2)';
-				gfx.fillRect(0,0,cs,cs);
-				break;
-			case App.COLORS.GREEN:
-				gfx.fillStyle='rgba(0,255,0,0.2)';
-				gfx.fillRect(0,0,cs,cs);
-				break;
-			case App.COLORS.BLUE:
-				gfx.fillStyle='rgba(0,0,255,0.2)';
-				gfx.fillRect(0,0,cs,cs);
-				break;
-			case App.COLORS.YELLOW:
-				gfx.fillStyle='rgba(255,255,0,0.2)';
-				gfx.fillRect(0,0,cs,cs);
-				break;
-		}
-
-		switch(c){
 			case App.COLORS.RED:    gfx.strokeStyle='#ff0000';break;
 			case App.COLORS.GREEN:  gfx.strokeStyle='#00ff00';break;
 			case App.COLORS.BLUE:   gfx.strokeStyle='#0000ff';break;
