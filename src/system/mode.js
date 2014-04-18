@@ -81,6 +81,13 @@ App.makeModeHandler = function(){
 		// ---------------------------------------------
 
 		modeHandler.modes[name] = mode;
+
+		//GUI ------------------------------------------
+
+		//XXX will this work? Only one gets drawn at any given time...?
+		mode.guigfx = App.Canvases.addNewLayer(5);
+		mode.gui = new App.guiFrame(mode.guigfx);
+
 		return mode;
 	}
 

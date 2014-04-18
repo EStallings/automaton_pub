@@ -1,4 +1,27 @@
+App.GuiSlider = function(x, y, length, min, max, panel){
+	App.GuiTools.CollisionRect.call(this, x, y, length, 25, panel);
+	this.min = min;
+	this.max = max;
+	this.value = this.min;
 
+	this.renderLayers.pop();
+	this.renderLayers.push(function(gfx){
+		gfx.fillStyle = '#f0f0f0';
+		gfx.fillRect(this.px, this.py, this.w, this.h);
+		gfx.fillStyle = this.textColor;
+		gfx.fillText(this.px, this.py, this.min);
+		gfx.fillText(this.px + this.w, this.py, this.max);
+	}
+
+	this.renderLayers.push(function(gfx){
+		gfx.fillStyle = this.color;
+		gfx.fillRect(this.x, this.y, 25, 25);
+		gfx.fillStyle = this.textColor;
+		gfx.fillText(this.x, this.y, this.value);
+	}
+
+
+}
 
 
 /* BIG NOTE

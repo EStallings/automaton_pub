@@ -1,62 +1,37 @@
-
-
-//TODO requires some special logic
-//note that the instruction dragging is the only drag and drop, so let's cut
-//out the middleman and just hardcode that part
-App.GuiDragButton = function(x, y, draw, instruction, panel){
-	this.guiCollider = new App.GuiCollisionRect(x, y, 24, 24);
+App.GuiInstDrag = function(x, y, draw, instruction, panel){
+	App.GuiTools.CollisionRect.call(this, x, y, 40, 40);
 	if(panel) panel.addChild(this);
-	this.guiCollider.functional = true;
+	this.functional = true;
 
-	this.currentX = this.guiCollider.getx();
-	this.currentY = this.guiCollider.gety();
-	this.activeColor = App.GuiDragButton.active;
-	this.inactiveColor = App.GuiDragButton.inactive;
-	this.dragged = false;
+	this.activeColor = App.GuiInstDrag.active;
+	this.inactiveColor = App.GuiInstDrag.inactive;
 	this.draw = draw;
 	this.instruction = instruction;
 
-	//Draws a simple box for now - once we have some vector draw functions,
-	//we'll be able to draw them on it!
-	this.render = function(gfx){
-		// gfx.fillStyle = (this.dragged)? this.activeColor : this.inactiveColor;
-		// gfx.fillRect(this.currentX, this.currentY, this.guiCollider.w, this.guiCollider.h);
+	this.renderLayers.pop(); //don't want the default
+	this.renderLayers.push(function(gfx){
 		gfx.lineWidth = 2;
 		App.InstCatalog.render(
 			gfx,
 			this.instruction,
-			this.currentX, this.currentY,
-			App.GuiDragButton.globalColor,
+			this.x, this.y,
+			this.color,
 			this.guiCollider.w);
-
-	}
-
-	//Initiating the dragging
-	this.clickStart = function(){
-		this.dragged = true;
-	}
-
-	this.updatePosition = function(){
-		this.currentX = this.guiCollider.getx();
-		this.currentY = this.guiCollider.gety();
-	}
+	});
 
 	//The drag part of 'drag and drop'
 	this.update = function(){
-		if(!this.dragged)
+		if(!this.active)
 			return;
-		this.currentX = App.InputHandler.mouseData.x - this.guiCollider.w/2;
-		this.currentY = App.InputHandler.mouseData.y - this.guiCollider.h/2;
+
+		this.x = App.InputHandler.mouseX - this.w/2;
+		this.x = App.InputHandler.mouseY - this.h/2;
 	}
 
 	//The button has been 'dropped'!
-	this.clickEnd = function(x, y){
-		this.dragged = false;
-		this.currentX = this.guiCollider.getx();
-		this.currentY = this.guiCollider.gety();
-
+	this.clickEnd = function(onGui){
 		//prevent dropping instructions behind gui elements
-		if(App.Gui.testCoordinates(x,y) !== null)
+		if(onGui)
 			return;
 
 		//place the instruction
@@ -64,28 +39,26 @@ App.GuiDragButton = function(x, y, draw, instruction, panel){
 		App.Game.screenToGridCoords(x, y);
 		var nx = App.Game.mouseX;
 		var ny = App.Game.mouseY;
-		var c = App.GuiDragButton.globalColor;
+		var c = App.GuiInstDrag.globalColor;
 		var t = this.instruction;
 		console.log('dragged to ' + nx + ',' + ny);
 		level.insert(new App.PlanningInstruction(nx,ny,c,t));
 	}
 
-	App.GuiDragButton.registry.push(this);
+	App.GuiInstDrag.registry.push(this);
 }
+App.GuiInstDrag.prototype = Object.create(App.GuiTools.CollisionRect);
+App.GuiInstDrag.prototype.constructor = App.GuiInstDrag;
 
-App.GuiDragButton.registry = [];
-App.GuiDragButton.globalColor = 0;
-//App.GuiDragButton.inactive = App.GuiColors.inactive[App.GuiDragButton.globalColor];
-//App.GuiDragButton.active = App.GuiColors.active[App.GuiDragButton.globalColor];
-App.GuiDragButton.changeGlobalColor = function(color){
+App.GuiInstDrag.registry = [];
+App.GuiInstDrag.globalColor = 0;
+App.GuiInstDrag.colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00'];
+App.GuiInstDrag.changeGlobalColor = function(color){
 	this.globalColor = color;
-	this.inactive = App.GuiColors.inactive[color];
-	this.active = App.GuiColors.active[color];
 	for(var i = 0; i < this.registry.length; i++){
-		this.registry[i].activeColor = this.active;
-		this.registry[i].inactiveColor = this.inactive;
+		this.registry[i].activeColor = this.colors[this.globalColor];
+		this.registry[i].inactiveColor = this.colors[this.globalColor];
 	}
 	App.Gui.drawStatic = true;
-
 }
 

@@ -1,12 +1,12 @@
 
 //A backgound panel. You can add things to these to organize your components for
 //relative positioning and rapid gui alterations.
-App.GuiPanel = function(guiCollider){
-	this.guiCollider = guiCollider;
+App.GuiPanel = function(x, y, w, h){
+	App.GuiTools.CollisionRect.call(this, x, y, w, h);
 	this.children = [];
 	this.xAlignment = 'left';
 	this.yAlignment = 'top';
-	this.color = App.GuiPanel.rgba;
+	this.color = 'rgba(0,0,0, 0.75)';
 
 	this.addChild = function(comp){
 		this.children.push(comp);
@@ -53,18 +53,6 @@ App.GuiPanel = function(guiCollider){
 			this.children[c].guiCollider.positionRelative(this);
 		}
 	}
-
-	this.render = function(gfx){
-		gfx.fillStyle = this.color;
-		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
-	}
-
 }
-App.GuiPanel.rgba = 'rgba(0,0,0, 0.75)';
-
-//Subclassing in JS is awful. Breaks everything. Use factories instead usually
-App.makeBlockingPanel = function(){
-	var p = new App.GuiPanel(new App.GuiCollisionRect(0,0,App.Canvases.width, App.Canvases.height));
-	p.color = 'rgba(0,0,0,0.50)';
-	return p;
-}
+App.GuiPanel.prototype = Object.create(App.GuiTools.CollisionRect);
+App.GuiPanel.prototype.constructor = App.GuiPanel;
