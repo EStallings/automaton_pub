@@ -75,10 +75,14 @@ App.guiFrame = function(gfx){
 		}
 	}
 
+	this.clear = function(){
+		this.gfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
+	}
+
 	this.render = function(){
 
 		if(this.drawStatic){
-			this.gfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
+			this.clear();
 
 			for(var c in this.frame){
 				if(this.frame[c].render){
