@@ -213,11 +213,11 @@ App.PlanningLevel = function(){
 
 		for(i in instructions){ // remove all from grid to prevent groups from overlapping themselves also update coordinates and bounds check
 			var instr = instructions[i];
+			if(that.width !== 0 && (instructions[i].x + shiftX < 0 || instructions[i].x + shiftX >= that.width)){ console.log('move out of bounds'); return; }
+			if(that.height !== 0 && (instructions[i].y + shiftY < 0 || instructions[i].y + shiftY >= that.height)){ console.log('move out of bounds'); return; }
 			that.grid[instr.x][instr.y][instr.color] = null;
 			instructions[i].x += shiftX;
 			instructions[i].y += shiftY;
-			//if(instructions[i].x < 0 || instructions[i].x >= that.width){ console.log('insert out of bounds'); return false; }////////////////////
-			//if(instructions[i].x < 0 || instructions[i].x >= that.width){ console.log('insert out of bounds'); return false; }////////////////////
 		}
 
 		// check that no overlap
