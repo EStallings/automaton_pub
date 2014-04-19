@@ -12,10 +12,15 @@ App.guiFrame = function(gfx){
 	//gets reset after one frame.
 	this.drawStatic = false;
 	this.guilock = false;
+	var that = this;
 
 	this.load = function(){
 		this.guilock = false;
 		this.drawStatic = true;
+	}
+
+	this.addComponent = function(comp){
+		this.frame.push(comp);
 	}
 
 	this.testCoordinates = function(x,y){
@@ -32,13 +37,10 @@ App.guiFrame = function(gfx){
 	}
 
 	//lmb must be true or false. if it's false, it will block input but not do anything
-	this.mouseDown = function(x, y, lmb){
-		var comps = this.testCoordinates(x, y);
+	this.mouseDown = function(x, y){
+		var comps = that.testCoordinates(x, y);
 		if(!comps.f && !comps.p)
 			return false;
-
-		if(!lmb)
-			return true;
 
 		for(var fn in comps.f){
 			if(comps.f[fn].locked) continue;
@@ -51,49 +53,45 @@ App.guiFrame = function(gfx){
 
 	//Only needs to be called when lmb is released. Returns nothing.
 	this.mouseUp = function(x, y){
-		var comps = this.testCoordinates(x, y);
+		var comps = that.testCoordinates(x, y);
 
 		for(var fn in comps.f){
 			if(comps.f[fn].locked) continue;
-			comps.f[fn]._clickEnd();
 			if(comps.f[fn].active)
 				comps.f[fn].clickEnd();
+			comps.f[fn]._clickEnd();
 		}
 	}
 
 	this.update = function(){
-		for(var c in this.frame)if(this.frame[c].update)
+		var flag = false;
+		for(var c in this.frame)if(this.frame[c].update){
+			if(this.frame[c]._update()) flag = true; //if we need to render
 			this.frame[c].update();
+		}
+		return flag;
 	}
 
 	this.windowResized = function(){
-		this.drawStatic = true;
+		that.drawStatic = true;
 
-		for(var c in this.frame) {
-			if(this.frame[c].updatePosition)
-				this.frame[c].updatePosition();
+		for(var c in that.frame) {
+			if(that.frame[c].updatePosition)
+				that.frame[c].updatePosition();
 		}
-	}
-
-	this.clear = function(){
-		this.gfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
 	}
 
 	this.render = function(){
+		var flag = false;
 
-		if(this.drawStatic){
-			this.clear();
+		for(var c in this.frame){
+			if(this.frame[c].render){
+				if(this.frame[c].render(this.gfx))
+					flag = true;
 
-			for(var c in this.frame){
-				if(this.frame[c].render){
-					this.gfx.font = App.Canvases.font;
-					this.frame[c].render(this.gfx);
-
-				}
 			}
-
-		 this.drawStatic = false;
 		}
+		return flag;
 	}
 }
 

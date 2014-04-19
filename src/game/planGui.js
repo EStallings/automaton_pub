@@ -4,6 +4,13 @@ App.setupPlanGui = function(){
 		// ---------------------------------------------
 
 	planMode.gfx = App.Canvases.addNewLayer(2).getContext('2d');
+	planMode.gui = new App.guiFrame(planMode.gfx);
+
+	planMode.joystick = new App.GuiJoystick(100, 500, 50, 100, null);
+
+	//joystick not ready. Need to get sleep.
+	//planMode.gui.addComponent(planMode.joystick);
+
 	planMode.direction = App.DIRECTIONS.UP;
 	planMode.color = App.COLORS.RED;
 
@@ -17,15 +24,23 @@ App.setupPlanGui = function(){
 		planMode.updatingActive = true;
 		planMode.exitFlag = false;
 
+		planMode.joystick.enter();
+
 		App.Game.setMode(App.Game.modes.PLANNING);
 		App.Shade.turnOff();
 	}
 
 	planMode.updateFunc = function(){
+		if(planMode.gui.update())
+			planMode.requestStaticRenderUpdate = true;
+
 		if(!planMode.requestStaticRenderUpdate)return;
 		planMode.requestStaticRenderUpdate = false;
 
 		planMode.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+
+		if(planMode.gui.render())
+			planMode.requestStaticRenderUpdate = true;
 
 	// TOP BAR -----------------------------------------------------
 

@@ -1,19 +1,21 @@
 /*
 	Moves the 'camera' around.
 */
-App.GuiJoystick = function(x, y, panel){
-	App.GuiTools.CollisionCircle.call(this, x, y, 35);
+App.GuiJoystick = function(x, y, enterDelay, exitDelay, panel){
+	App.GuiTools.CollisionCircle.call(this, x, y, 35, enterDelay, exitDelay, panel);
 	this.curPanX = 0;
 	this.curPanY = 0;
 	this.moveRate = 0.2;
 	this.functional = true;
+
+	var that = this;
 	this.renderLayers.push(function(gfx){
 		//Draw outside/bounds
-		gfx.fillStyle = this.color;
+		gfx.fillStyle = that.color;
 		gfx.strokeStyle = '#ffffff';
 		gfx.lineWidth = 2;
 		gfx.beginPath();
-		gfx.arc(this.px, this.py, this.r, 0, Math.PI*2, true);
+		gfx.arc(that.px, that.py, that.r, 0, Math.PI*2, true);
 		gfx.closePath();
 		gfx.stroke();
 
@@ -21,7 +23,7 @@ App.GuiJoystick = function(x, y, panel){
 		gfx.lineWidth = 1;
 		gfx.strokeStyle = '#d1d1d1';
 		gfx.beginPath();
-		gfx.arc(this.x, this.y, 15, 0, Math.PI*2, true);
+		gfx.arc(that.x, that.y, 15, 0, Math.PI*2, true);
 		gfx.closePath();
 		gfx.stroke();
 	});
@@ -31,6 +33,8 @@ App.GuiJoystick = function(x, y, panel){
 	}
 
 	this.update = function(){
+		if(!this.active)
+			return;
 		var x = App.InputHandler.mouseX - this.px;
 		var y = App.InputHandler.mouseY - this.py;
 
@@ -55,4 +59,4 @@ App.GuiJoystick = function(x, y, panel){
 	}
 }
 App.GuiJoystick.prototype = Object.create(App.GuiTools.CollisionCircle);
-App.GuiJoystick.prototype.constructor = App.GuiTools.CollisionCircle;
+App.GuiJoystick.prototype.constructor = App.GuiJoystick;

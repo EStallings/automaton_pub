@@ -44,12 +44,6 @@ App.makeInputHandler = function(){
 		input.mouseY = e.clientY;
 		var mode = App.ModeHandler.currentMode;
 		if(!mode)return;
-		/*if(mode.gui)
-			if(mode.gui.mouseDown(input.mouseX, input.mouseY, (e.button === 1)))
-			{
-				mode.gui.guilock = true;
-				return;
-			}*/
 		var f = mode.mouseDownFuncs[e.button];
 		if(f)f(input.mouseX,input.mouseY);
 	},false);
@@ -59,8 +53,6 @@ App.makeInputHandler = function(){
 		input.mouseY = e.clientY;
 		var mode = App.ModeHandler.currentMode;
 		if(!mode)return;
-		if(mode.gui && mode.gui.guilock)
-			return;
 		var f = mode.mouseMoveFunc;
 		if(f)f(input.mouseX,input.mouseY);
 	},false);
@@ -76,11 +68,6 @@ App.makeInputHandler = function(){
 		input.mouseY = e.clientY;
 		var mode = App.ModeHandler.currentMode;
 		if(!mode)return;
-		if(mode.gui && mode.gui.guilock){
-			mode.gui.mouseUp(input.mouseX, input.mouseY);
-			mode.gui.guilock = false;
-			return;
-		}
 		var f = mode.mouseUpFuncs[e.button];
 		if(f)f(input.mouseX,input.mouseY);
 	},false);
