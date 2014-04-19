@@ -138,15 +138,6 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/2,  cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
 			gfx.stroke();
-			/*
-			gfx.moveTo(cs/2,3*cs/4);
-			gfx.lineTo(cs/2,cs/4);
-			gfx.moveTo(cs/2-cs/4, cs/2);
-			gfx.lineTo(cs/2,cs/4);
-			gfx.moveTo(cs/2+cs/4, cs/2);
-			gfx.lineTo(cs/2,cs/4);
-			*/
-			gfx.stroke();
 			break;
 
 		case ins.TYPES['DOWN']:
@@ -154,14 +145,6 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(  cs/4,  cs/4);
 			gfx.lineTo(  cs/2,3*cs/4);
 			gfx.lineTo(3*cs/4,  cs/4);
-			/*
-			gfx.moveTo(cs/2,cs/4);
-			gfx.lineTo(cs/2,3*cs/4);
-			gfx.moveTo(cs/2-cs/4, cs/2);
-			gfx.lineTo(cs/2,3*cs/4);
-			gfx.moveTo(cs/2+cs/4, cs/2);
-			gfx.lineTo(cs/2,3*cs/4);
-			*/
 			gfx.stroke();
 			break;
 
@@ -170,14 +153,6 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(3*cs/4,  cs/4);
 			gfx.lineTo(  cs/4,  cs/2);
 			gfx.lineTo(3*cs/4,3*cs/4);
-			/*
-			gfx.moveTo(3*cs/4,cs/2);
-			gfx.lineTo(cs/4,cs/2);
-			gfx.moveTo(cs/2, cs/2-cs/4);
-			gfx.lineTo(cs/4, cs/2);
-			gfx.moveTo(cs/2, cs/2+cs/4);
-			gfx.lineTo(cs/4, cs/2);
-			*/
 			gfx.stroke();
 			break;
 
@@ -186,14 +161,6 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(  cs/4,  cs/4);
 			gfx.lineTo(3*cs/4,  cs/2);
 			gfx.lineTo(  cs/4,3*cs/4);
-			/*
-			gfx.moveTo(3*cs/4,cs/2);
-			gfx.lineTo(cs/4,cs/2);
-			gfx.moveTo(cs/2, cs/2-cs/4);
-			gfx.lineTo(3*cs/4, cs/2);
-			gfx.moveTo(cs/2, cs/2+cs/4);
-			gfx.lineTo(3*cs/4, cs/2);
-			*/
 			gfx.stroke();
 			break;
 
@@ -206,15 +173,6 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(3*cs/8,3*cs/8);
 			gfx.lineTo(cs/2,cs/4);
 			gfx.lineTo(5*cs/8,3*cs/8);
-			/*
-			gfx.moveTo(3*cs/8,cs/2);
-			gfx.lineTo(5*cs/8,cs/2);
-			gfx.moveTo(cs/2,cs/4);
-			gfx.lineTo(cs/2,cs/2);
-			gfx.moveTo(3*cs/8,3*cs/8);
-			gfx.lineTo(cs/2,cs/4);
-			gfx.lineTo(5*cs/8,3*cs/8);
-			*/
 			gfx.stroke();
 			break;
 
@@ -227,15 +185,6 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(3*cs/8,5*cs/8);
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.lineTo(5*cs/8,5*cs/8);
-			/*
-			gfx.moveTo(3*cs/8,cs/2);
-			gfx.lineTo(5*cs/8,cs/2);
-			gfx.moveTo(cs/2,cs/2);
-			gfx.lineTo(cs/2,3*cs/4);
-			gfx.moveTo(3*cs/8,5*cs/8);
-			gfx.lineTo(cs/2,3*cs/4);
-			gfx.lineTo(5*cs/8,5*cs/8);
-			*/
 			gfx.stroke();
 			break;
 
@@ -251,18 +200,6 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(3*cs/8,5*cs/8);
 			gfx.lineTo(cs/2,3*cs/4);
 			gfx.lineTo(5*cs/8,5*cs/8);
-			/*
-			gfx.moveTo(3*cs/8,cs/2);
-			gfx.lineTo(5*cs/8,cs/2);
-			gfx.moveTo(cs/2,cs/4);
-			gfx.lineTo(cs/2,3*cs/4);
-			gfx.moveTo(3*cs/8,3*cs/8);
-			gfx.lineTo(cs/2,cs/4);
-			gfx.lineTo(5*cs/8,3*cs/8);
-			gfx.moveTo(3*cs/8,5*cs/8);
-			gfx.lineTo(cs/2,3*cs/4);
-			gfx.lineTo(5*cs/8,5*cs/8);
-			*/
 			gfx.stroke();
 			break;
 
@@ -272,16 +209,6 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(3*cs/4,cs/2);
 			gfx.moveTo(cs/2,cs/4);
 			gfx.lineTo(cs/2,3*cs/4);
-			/*
-			gfx.moveTo(cs/4-cs/16,cs/2);
-			gfx.lineTo(cs/2-cs/16,cs/2);
-			gfx.moveTo(3*cs/4+cs/16,cs/2);
-			gfx.lineTo(cs/2+cs/16,cs/2);
-			gfx.moveTo(cs/2-cs/8-cs/16,cs/2-cs/8);
-			gfx.lineTo(cs/2-cs/8-cs/16,cs/2+cs/8);
-			gfx.moveTo(cs/2+cs/8+cs/16,cs/2-cs/8);
-			gfx.lineTo(cs/2+cs/8+cs/16,cs/2+cs/8);
-			*/
 			gfx.stroke();
 			break;
 
@@ -289,12 +216,6 @@ App.makeInstructionCatalog = function(){
 			gfx.beginPath();
 			gfx.moveTo(cs/4,cs/2);
 			gfx.lineTo(3*cs/4,cs/2);
-			/*
-			gfx.moveTo(cs/4-cs/16,cs/2);
-			gfx.lineTo(cs/2-cs/16,cs/2);
-			gfx.moveTo(cs/2+cs/16,cs/2);
-			gfx.lineTo(3*cs/4+cs/16,cs/2);
-			*/
 			gfx.stroke();
 			break;
 

@@ -2,7 +2,7 @@
 //A backgound panel. You can add things to these to organize your components for
 //relative positioning and rapid gui alterations.
 App.GuiPanel = function(x, y, w, h){
-	App.GuiTools.CollisionRect.call(this, x, y, w, h);
+	App.GuiTools.Component.call(this, x, y, w, h);
 	this.children = [];
 	this.xAlignment = 'left';
 	this.yAlignment = 'top';
@@ -54,5 +54,5 @@ App.GuiPanel = function(x, y, w, h){
 		}
 	}
 }
-App.GuiPanel.prototype = Object.create(App.GuiTools.CollisionRect);
+App.GuiPanel.prototype = Object.create(App.GuiTools.Component);
 App.GuiPanel.prototype.constructor = App.GuiPanel;
