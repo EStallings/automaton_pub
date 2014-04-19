@@ -18,7 +18,7 @@ App.setupMainMenu = function(){
 		}, false, null);
 
 	mainMenu.sandboxButton 		= new App.GuiTextButton(15, 56+28*2, 400, 200, 'Sandbox', 	function(){
-			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`11`11");
+			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
 			App.GameRenderer.bestFit();
 			App.ModeHandler.pushMode('planning'); // TODO: CHANGE THIS
 			mainMenu.requestStaticRenderUpdate = true;
