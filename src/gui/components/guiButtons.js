@@ -6,10 +6,10 @@ App.GuiTextButton = function(x, y, enterDelay, exitDelay, txt, callback, continu
 	this.txt = txt;
 	var that = this;
 	//Draws a box and the text! Nothing fancy. Could use some work maybe.
-	this.renderLayers.push (function(gfx){
+	this.renderLayers["Button"] = function(gfx){
 		gfx.fillStyle = that.textColor;
-		text(gfx,that.txt,that.getx()+2,that.gety()+3,that.geth()-6,-2);
-	});
+		text(gfx,that.txt,that.x+2,that.y+3,that.h-6,-2);
+	};
 }
 App.GuiTextButton.prototype = Object.create(App.GuiTools.Button);
 App.GuiTextButton.prototype.constructor = App.GuiTextButton;

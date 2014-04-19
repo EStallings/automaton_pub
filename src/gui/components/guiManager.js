@@ -6,7 +6,6 @@
 */
 App.guiFrame = function(gfx){
 	this.gfx = gfx;
-
 	this.frame = [];
 
 	//gets reset after one frame.
@@ -47,7 +46,6 @@ App.guiFrame = function(gfx){
 			comps.f[fn]._clickStart();
 			comps.f[fn].clickStart();
 		}
-
 		return true;
 	}
 
@@ -57,10 +55,11 @@ App.guiFrame = function(gfx){
 
 		for(var fn in comps.f){
 			if(comps.f[fn].locked) continue;
-			if(comps.f[fn].active)
-				comps.f[fn].clickEnd();
-			comps.f[fn]._clickEnd();
+			comps.f[fn].clickEnd();
+			
 		}
+		for(var f in that.frame)
+			that.frame[f]._clickEnd();
 	}
 
 	this.update = function(){
@@ -91,6 +90,7 @@ App.guiFrame = function(gfx){
 
 			}
 		}
+
 		return flag;
 	}
 }

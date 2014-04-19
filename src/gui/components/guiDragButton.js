@@ -1,5 +1,5 @@
 App.GuiInstDrag = function(x, y, draw, instruction, panel){
-	App.GuiTools.CollisionRect.call(this, x, y, 40, 40);
+	App.GuiTools.Component.call(this, x, y, 40, 40);
 	if(panel) panel.addChild(this);
 	this.functional = true;
 
@@ -47,7 +47,7 @@ App.GuiInstDrag = function(x, y, draw, instruction, panel){
 
 	App.GuiInstDrag.registry.push(this);
 }
-App.GuiInstDrag.prototype = Object.create(App.GuiTools.CollisionRect);
+App.GuiInstDrag.prototype = Object.create(App.GuiTools.Component);
 App.GuiInstDrag.prototype.constructor = App.GuiInstDrag;
 
 App.GuiInstDrag.registry = [];

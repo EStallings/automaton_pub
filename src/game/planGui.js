@@ -8,8 +8,7 @@ App.setupPlanGui = function(){
 
 	planMode.joystick = new App.GuiJoystick(100, 500, 50, 100, null);
 
-	//joystick not ready. Need to get sleep.
-	//planMode.gui.addComponent(planMode.joystick);
+	planMode.gui.addComponent(planMode.joystick);
 
 	planMode.direction = App.DIRECTIONS.UP;
 	planMode.color = App.COLORS.RED;
@@ -190,6 +189,8 @@ App.setupPlanGui = function(){
 	});
 
 	planMode.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){
+		planMode.gui.mouseDown(x, y);
+
 		var insCode = undefined;
 
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Q']] === true)insCode =  0+planMode.direction;
@@ -230,6 +231,8 @@ App.setupPlanGui = function(){
 	});
 
 	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){
+		planMode.gui.mouseUp(x, y);
+
 		if(planMode.moveStart !== undefined){
 			console.log("TEST");
 			var shiftX = App.GameRenderer.mouseX-planMode.moveStart[0];
