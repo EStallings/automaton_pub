@@ -149,18 +149,6 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, panel){
 	}
 }
 
-//Abstracts out some logic for coordinates and collision, relative positioning
-g.CollisionRect = function(x, y, w, h, en, ex, panel){
-	g.Component.call(this, x, y, en, ex, panel);
-	
-	console.log(w + ", " + h);
-
-	
-}
-g.CollisionRect.prototype = Object.create(g.Component);
-g.CollisionRect.prototype.constructor = g.CollisionRect;
-
-
 //To be used for text buttons or image buttons...
 g.Button = function(x, y, w, h, en, ex, callback, continuous, panel){
 	g.Component.call(this, x, y, w, h, en, ex, panel);
@@ -186,4 +174,56 @@ g.Button = function(x, y, w, h, en, ex, callback, continuous, panel){
 
 }
 g.Button.prototype = Object.create(g.Component);
-g.Button.prototype.constructor = g.Buton;
+g.Button.prototype.constructor = g.Button;
+
+g.Drag = function(x, y, w, h, en, ex, panel){
+	g.Component.call(this, x, y, w, h, en, ex, panel);
+
+	var that = this;
+
+	this.functional = true;
+	this.sticky = false;
+	this.mx = this.x;
+	this.my = this.y;
+
+	delete(this.renderLayers['Rect']);
+	this.renderLayers['Drag'] = function(gfx){
+		gfx.fillStyle = that.color;
+		gfx.fillRect(that.x - that.w/2, that.y - that.h/2, that.w, that.h);
+	}
+
+	this.collides = function(x, y){
+		return ((x > (this.x - this.w/2)) && (x < ((this.x - this.w/2) + this.w)) &&
+			   	(y > (this.y - this.h/2)) && (y < ((this.y - this.h/2) + this.h)));
+	}
+
+	this.clickStart = function(){
+		this.sticky = true;
+		this.subClickStart();
+	}
+
+	this.update = function(){
+		if(!this.sticky)
+			return;
+
+		this.x = App.InputHandler.mouseX;
+		this.y = App.InputHandler.mouseY;
+
+		this.changed = true;
+
+		if(!App.InputHandler.lmb){
+			this.subClickEnd();
+			this.sticky = false;
+			this.resetPosition();
+		}
+		this.subUpdate();
+	}
+
+	this.clickEnd = function(){
+	}
+	
+
+}
+g.Drag.prototype = Object.create(g.Component);
+g.Drag.prototype.constructor = g.Drag;
+

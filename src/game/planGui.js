@@ -7,7 +7,9 @@ App.setupPlanGui = function(){
 	planMode.gui = new App.guiFrame(planMode.gfx);
 
 	planMode.joystick = new App.GuiJoystick(100, 500, 50, 100, null);
-
+	planMode.dragButton = new App.GuiInstDrag(60, 200, 10, null);
+	
+	planMode.gui.addComponent(planMode.dragButton);
 	planMode.gui.addComponent(planMode.joystick);
 
 	planMode.direction = App.DIRECTIONS.UP;
