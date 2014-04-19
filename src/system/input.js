@@ -44,12 +44,12 @@ App.makeInputHandler = function(){
 		input.mouseY = e.clientY;
 		var mode = App.ModeHandler.currentMode;
 		if(!mode)return;
-		if(mode.gui)
+		/*if(mode.gui)
 			if(mode.gui.mouseDown(input.mouseX, input.mouseY, (e.button === 1)))
 			{
 				mode.gui.guilock = true;
 				return;
-			}
+			}*/
 		var f = mode.mouseDownFuncs[e.button];
 		if(f)f(input.mouseX,input.mouseY);
 	},false);
