@@ -161,29 +161,23 @@ App.PlanningLevel = function(){
 	this.insert = function(instructions){
 		instructions = that.toList(instructions);
 
-		for(var i in instructions){
+		for(var i in instructions){ // check that the insert can complete succesfully
 
 			if(instructions[i].x < 0 || instructions[i].x >= that.width){ console.log('insert out of bounds'); return false; }
 			if(instructions[i].y < 0 || instructions[i].y >= that.height){ console.log('insert out of bounds'); return false; }
-			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return false; }
+			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return; }
+			if(that.getInstruction(instructions[i].x, instructions[i].y, instructions[i].c))
+			{
+				if(that.userOverlapSetting === 0){ return; } // if there is a conflict in any space and overwrite is disabled, reject
 
-			if(that.getInstruction(instructions[i].x,instructions[i].y,instructions[i].color) !== null){ // space occupied
-				// TODO overwrite
-				if(that.userOverlapSetting == 1){ // overwrite
-					console.log('insert blocked');
-
-					return false; // this probably causes things to break
-				}
-				else{ // reject
-					console.log('insert blocked');
-					return false; // this probably causes things to break
-				}
-
-			}else{ // free space
-				if(!that.grid[instructions[i].x]){ that.grid[instructions[i].x] = []; }
-				if(!that.grid[instructions[i].x][instructions[i].y]){ that.grid[instructions[i].x][instructions[i].y] = []; }
-				that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = instructions[i];
+				// TODO store overwrite info
 			}
+		}
+
+		for(var i in instructions){
+			if(!that.grid[instructions[i].x]){ that.grid[instructions[i].x] = []; }
+			if(!that.grid[instructions[i].x][instructions[i].y]){ that.grid[instructions[i].x][instructions[i].y] = []; }
+			that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = instructions[i];
 		}
 
 		that.undoStack.push(new that.operation('ins', instructions, null, null, null, null));
