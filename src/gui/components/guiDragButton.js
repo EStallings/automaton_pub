@@ -1,7 +1,7 @@
 App.GuiInstDrag = function(x, y, instruction, panel){
 	App.GuiTools.Drag.call(this, x, y, 40, 40, 200, 200, panel);
 	this.functional = true;
-	
+
 	this.instruction = instruction;
 
 	var that = this;
@@ -12,7 +12,7 @@ App.GuiInstDrag = function(x, y, instruction, panel){
 		App.InstCatalog.render(
 			gfx,
 			that.instruction,
-			that.x-that.w/2, that.y-that.h/2,
+			that.getx()-that.w/2, that.gety()-that.h/2,
 			App.GuiInstDrag.globalColor,
 			that.w);
 	}
@@ -35,7 +35,7 @@ App.GuiInstDrag = function(x, y, instruction, panel){
 			return;
 
 		//place the instruction
-		App.GameRenderer.screenToGridCoords(this.x, this.y);
+		App.GameRenderer.screenToGridCoords(this.getx(), this.gety());
 		App.GameRenderer.requestStaticRenderUpdate = true;
 		var nx = App.GameRenderer.mouseX;
 		var ny = App.GameRenderer.mouseY;

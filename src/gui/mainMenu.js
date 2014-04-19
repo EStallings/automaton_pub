@@ -10,33 +10,33 @@ App.setupMainMenu = function(){
 	mainMenu.playButton 			= new App.GuiTextButton(15, 56+28*0, 200, 000, 'Play', 			function(){
 			App.ModeHandler.pushMode('level select');
 			mainMenu.requestStaticRenderUpdate = true;
-		}, false, null);
+		}, false, null, null);
 
 	mainMenu.libraryButton 		= new App.GuiTextButton(15, 56+28*1, 300, 100, 'Library', function(){
 			App.ModeHandler.pushMode('library');
 			mainMenu.requestStaticRenderUpdate = true;
-		}, false, null);
+		}, false, null, null);
 
 	mainMenu.sandboxButton 		= new App.GuiTextButton(15, 56+28*2, 400, 200, 'Sandbox', 	function(){
 			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`11`11");
 			App.GameRenderer.bestFit();
 			App.ModeHandler.pushMode('planning'); // TODO: CHANGE THIS
 			mainMenu.requestStaticRenderUpdate = true;
-		}, false, null);
+		}, false, null, null);
 
 	mainMenu.settingsButton 	= new App.GuiTextButton(15, 56+28*3, 500, 300, 'Settings', 	function(){
 			App.ModeHandler.pushMode('settings');
 			mainMenu.requestStaticRenderUpdate = true;
-		}, false, null);
+		}, false, null, null);
 
 
-	
+
 	mainMenu.gui.addComponent(mainMenu.playButton);
 	mainMenu.gui.addComponent(mainMenu.libraryButton);
 	mainMenu.gui.addComponent(mainMenu.sandboxButton);
 	mainMenu.gui.addComponent(mainMenu.settingsButton);
-	
-	
+
+
 
 	mainMenu.alpha = mainMenu.goalAlpha = 0;
 

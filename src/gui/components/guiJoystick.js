@@ -9,18 +9,18 @@ App.GuiJoystick = function(x, y, enterDelay, exitDelay, panel){
 	this.curPanY = 0;
 
 	this.subClickStart = function(){
-		App.GameRenderer.beginPan(this.x, this.y);
-		this.curPanX = this.x;
-		this.curPanY = this.y;
+		App.GameRenderer.beginPan(this.getx(), this.gety());
+		this.curPanX = this.getx();
+		this.curPanY = this.gety();
 	}
 
 	this.subUpdate = function(){
-		this.curPanX -= (this.x - this.px) * this.moveRate;
-		this.curPanY -= (this.y - this.py) * this.moveRate;
+		this.curPanX -= (this.getx() - this.px) * this.moveRate;
+		this.curPanY -= (this.gety() - this.py) * this.moveRate;
 
 		App.GameRenderer.pan(this.curPanX, this.curPanY);
 	}
-	
+
 	this.subClickEnd = function(){}
 }
 App.GuiJoystick.prototype = Object.create(App.GuiTools.Drag);

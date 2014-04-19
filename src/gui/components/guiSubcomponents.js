@@ -1,38 +1,40 @@
 App.GuiTools = {};
 var g = App.GuiTools;
 
-g.Component = function(x, y, w, h, enterDelay, exitDelay, panel){
+g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 	if(!x && x !== 0 || (!y && y !== 0))
 		throw "x or y invalid";
-	if(panel) panel.addChild(this);
 
 	//current x and y
-	this.x  = x;
-	this.y  = y;
-	this.w  = w;
-	this.h  = h;
+	this.x               = x;
+	this.y               = y;
+	this.w               = w;
+	this.h               = h;
 
 	//relatively positioned x and y
-	this.px = x;
-	this.py = y;
+	this.px              = x;
+	this.py              = y;
 
 	//base x and y: never changes
-	this.baseX = x;
-	this.baseY = y;
+	this.baseX           = x;
+	this.baseY           = y;
+
+	this.xorigin         = xorigin;
+	this.yorigin         = yorigin;
 
 	//for drawing the interpolation
-	this.left  = x;
-	this.right = x;
+	this.left            = x;
+	this.right           = x;
 
 	this.enterDelay      = enterDelay;
 	this.exitDelay       = exitDelay;
 	this.interpLeftTick  = 0;
 	this.interpRightTick = 0;
 
-	this.functional = false;
-	this.active     = false;
-	this.locked     = false;
-	this.changed    = false;
+	this.functional      = false;
+	this.active          = false;
+	this.locked          = false;
+	this.changed         = false;
 
 	this.baseColor       = '#ffffff';
 	this.hoverColor      = '#a0a0a0';
@@ -41,10 +43,11 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, panel){
 	this.baseTextColor   = '#000000';
 	this.lockedColor     = '#d2d2d2';
 
-	this.color        = this.baseColor;
-	this.textColor    = this.baseTextColor;
-	
-	this.renderLayers = [];
+	this.color           = this.baseColor;
+	this.textColor       = this.baseTextColor;
+
+	this.renderLayers    = [];
+
 	var that = this;
 
 	//From the box class
@@ -82,13 +85,45 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, panel){
 
 	this.renderLayers["Rect"] = function(gfx){
 		gfx.fillStyle = that.color;
-		gfx.fillRect(that.left, that.y, that.right - that.left, that.h);
+		gfx.fillRect(that.getleft(), that.gety(), that.getright() - that.getleft(), that.h);
 	};
 
 	//Tests if a point is inside of the rectangle
 	this.collides = function(x, y){
-		return ((x > this.x) && (x < (this.x + this.w)) &&
-			   	(y > this.y) && (y < (this.y + this.h)));
+		return ((x > this.getx()) && (x < (this.getx() + this.w)) &&
+			   	(y > this.gety()) && (y < (this.gety() + this.h)));
+	}
+
+	this.getx = function(){
+		if(this.xorigin == 'right')
+			return this.x + App.Canvases.width - this.w;
+		if(this.xorigin == 'center')
+			return this.x + App.Canvases.width/2 - this.w;
+		return this.x;
+	}
+
+	this.gety = function(){
+		if(this.yorigin == 'bottom')
+			return this.y + App.Canvases.height - this.h;
+		if(this.yorigin == 'center')
+			return this.y + App.Canvases.height/2 - this.h;
+		return this.y
+	}
+
+	this.getleft = function(){
+		if(this.xorigin == 'right')
+			return this.left + App.Canvases.width - this.w;
+		if(this.xorigin == 'center')
+			return this.left + App.Canvases.width/2 - this.w;
+		return this.left;
+	}
+
+	this.getright = function(){
+		if(this.xorigin == 'right')
+			return this.right + App.Canvases.width - this.w;
+		if(this.xorigin == 'center')
+			return this.right + App.Canvases.width/2 - this.w;
+		return this.right;
 	}
 
 
@@ -109,7 +144,7 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, panel){
 	this.resetPosition = function(){
 		this.x = this.px;
 		this.y = this.py;
-		this.left = this.x;
+		this.left = this.getx();
 		this.right = this.w + this.x;
 	}
 
@@ -150,8 +185,8 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, panel){
 }
 
 //To be used for text buttons or image buttons...
-g.Button = function(x, y, w, h, en, ex, callback, continuous, panel){
-	g.Component.call(this, x, y, w, h, en, ex, panel);
+g.Button = function(x, y, w, h, en, ex, callback, continuous, xorigin, yorigin){
+	g.Component.call(this, x, y, w, h, en, ex, xorigin, yorigin);
 	this.functional = true;
 	this.clicked = false;
 	this.continuous = continuous;
@@ -164,10 +199,12 @@ g.Button = function(x, y, w, h, en, ex, callback, continuous, panel){
 	}
 
 	this.clickStart = function(){
+
 	}
 
 	//If the click was successful, fire the callback
 	this.clickEnd = function(){
+		console.log(this.left + " " + this.getleft() + " VS " + this.x + " " + this.getx());
 		if(this.callback)
 			this.callback();
 	}
@@ -176,8 +213,8 @@ g.Button = function(x, y, w, h, en, ex, callback, continuous, panel){
 g.Button.prototype = Object.create(g.Component);
 g.Button.prototype.constructor = g.Button;
 
-g.Drag = function(x, y, w, h, en, ex, panel){
-	g.Component.call(this, x, y, w, h, en, ex, panel);
+g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
+	g.Component.call(this, x, y, w, h, en, ex, xorigin, yorigin);
 
 	var that = this;
 
@@ -189,12 +226,12 @@ g.Drag = function(x, y, w, h, en, ex, panel){
 	delete(this.renderLayers['Rect']);
 	this.renderLayers['Drag'] = function(gfx){
 		gfx.fillStyle = that.color;
-		gfx.fillRect(that.x - that.w/2, that.y - that.h/2, that.w, that.h);
+		gfx.fillRect(that.getx() - that.w/2, that.gety() - that.h/2, that.w, that.h);
 	}
 
 	this.collides = function(x, y){
-		return ((x > (this.x - this.w/2)) && (x < ((this.x - this.w/2) + this.w)) &&
-			   	(y > (this.y - this.h/2)) && (y < ((this.y - this.h/2) + this.h)));
+		return ((x > (this.getx() - this.w/2)) && (x < ((this.getx() - this.w/2) + this.w)) &&
+			   	(y > (this.gety() - this.h/2)) && (y < ((this.gety() - this.h/2) + this.h)));
 	}
 
 	this.clickStart = function(){
@@ -221,8 +258,6 @@ g.Drag = function(x, y, w, h, en, ex, panel){
 
 	this.clickEnd = function(){
 	}
-	
-
 }
 g.Drag.prototype = Object.create(g.Component);
 g.Drag.prototype.constructor = g.Drag;
