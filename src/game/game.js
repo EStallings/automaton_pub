@@ -117,7 +117,6 @@ App.makeGame = function(){
 			game.mode = game.modes.PLANNING;
 			game.currentSimulationLevel = undefined;
 			game.paused = true;
-			// XXX XXX: WHY ARE THESE BEING CLEARED HERE
 			App.GameRenderer.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			App.GameRenderer.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			App.GameRenderer.tokenDGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);

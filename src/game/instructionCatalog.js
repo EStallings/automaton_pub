@@ -1,42 +1,48 @@
 App.makeInstructionCatalog = function(){
 	var ins = {};
 
-	// Instruction type id's
-	// TODO: ALL SWITCHES NEED UP DOWN LEFT RIGHT
 	ins.TYPES = {
 	// --------------------------------------------- AUTOMATON SPAWN
-		'SPAWN UP'	: 0,		'SPAWN RIGHT'	: 1,
-		'SPAWN DOWN'	: 2,		'SPAWN LEFT'	: 3,
+		'SPAWN UP'      : 0,            'SPAWN RIGHT'    : 1,
+		'SPAWN DOWN'    : 2,            'SPAWN LEFT'     : 3,
 	// ------------------------------------------- DIRECTION CONTROL
-		'UP'		: 4,		'RIGHT'		: 5,
-		'DOWN'		: 6,		'LEFT'		: 7,
+		'UP'            : 4,            'RIGHT'          : 5,
+		'DOWN'          : 6,            'LEFT'           : 7,
 	// ---------------------------------------------------- TOKEN IO
-		'IN'		: 8,		'OUT'		: 9,
+		'IN'            : 8,            'OUT'            : 9,
 	// ------------------------------------------ TOKEN MANIPULATION
-		'GRAB'		: 10,		'DROP'		: 11,
-		'GRAB/DROP'	: 12,		'INC'		: 13,
-		'DEC'		: 14,
+		'GRAB'          : 10,           'DROP'          : 11,
+		'GRAB/DROP'     : 12,           'INC'           : 13,
+		'DEC'           : 14,           'SET'           : 15,
 	// -------------------------------------------------------- MISC
-		'SYNC'		: 15,		'COLOR TOGGLE'	: 16,
-		'PAUSE'		: 17,
+		'SYNC'          : 16,           'COLOR TOGGLE'  : 17,
+		'PAUSE'         : 18,
 	// ----------------------------------------- CONDITIONAL CONTROL
-		'COND 0 U'	: 18,		'COND 0 R'	: 19,
-		'COND 0 D'	: 20,		'COND 0 L'	: 21,
-		'COND TOKEN U'	: 22,		'COND TOKEN R'	: 23,
-		'COND TOKEN D'	: 24,		'COND TOKEN L'	: 25,
-		'COND + U'	: 26,		'COND + R'	: 27,
-		'COND + D'	: 28,		'COND + L'	: 29,
+		'COND TOKEN U'  : 19,           'COND TOKEN R'  : 20,
+		'COND TOKEN D'  : 21,           'COND TOKEN L'  : 22,
+		'COND EQUAL U'  : 23,           'COND EQUAL R'  : 24,
+		'COND EQUAL D'  : 25,           'COND EQUAL L'  : 26,
+		'COND + U'      : 27,           'COND + R'      : 28,
+		'COND + D'      : 29,           'COND + L'      : 30,
+		'FLIP FLOP U'   : 31,           'FLIP FLOP R'   : 32,
+		'FLIP FLOP D'   : 33,           'FLIP FLOP L'   : 34,
 	};
 
-	ins.render = function(gfx,type,x,y,c,cs,streamVar,streamBkg){
+	ins.render = function(gfx,type,x,y,c,cs,dataA,dataB){
 		gfx.lineCap  = 'round';
 		gfx.lineJoin = 'round';
 		var lw = (Math.round(Math.log(cs/6)/Math.log(2)+2)-3)*2;
 
 		switch(type){ // branch off if special rendering required
+			case ins.TYPES['FLIP FLOP U']:
+			case ins.TYPES['FLIP FLOP D']:
+			case ins.TYPES['FLIP FLOP L']:
+			case ins.TYPES['FLIP FLOP R']:
+				ins.renderFlipFlop(gfx,type,x,y,c,cs,dataA); return;
 
-			case ins.TYPES['IN']:           ins.renderStream(gfx,x,y,c,cs,lw,streamVar,streamBkg); return;
-			case ins.TYPES['OUT']:          ins.renderStream(gfx,x,y,c,cs,lw,streamVar,streamBkg); return;
+			case ins.TYPES['IN']:
+			case ins.TYPES['OUT']:
+				ins.renderStream(gfx,x,y,c,cs,lw,dataA,dataB); return;
 
 			case ins.TYPES['SYNC']:         ins.renderSync(gfx,x,y,c,cs,lw);        return;
 			case ins.TYPES['COLOR TOGGLE']: ins.renderColorToggle(gfx,x,y,c,cs,lw); return;
@@ -219,6 +225,15 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 			break;
 
+		case ins.TYPES['SET']:
+			gfx.beginPath();
+			gfx.moveTo(  cs/3,  cs/3);
+			gfx.lineTo(2*cs/3,  cs/3);
+			gfx.moveTo(  cs/3,2*cs/3);
+			gfx.lineTo(2*cs/3,2*cs/3);
+			gfx.stroke();
+			break;
+
 		case ins.TYPES['PAUSE']:
 			gfx.beginPath();gfx.arc(cs/2,cs/2,cs/4,-Math.PI,Math.PI);gfx.stroke();
 			gfx.beginPath();
@@ -226,66 +241,6 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(cs/2-cs/16,cs/2+cs/16);
 			gfx.moveTo(cs/2+cs/16,cs/2-cs/16);
 			gfx.lineTo(cs/2+cs/16,cs/2+cs/16);
-			gfx.stroke();
-			break;
-
-		case ins.TYPES['COND 0 U']:
-			gfx.beginPath();
-			gfx.moveTo(3*cs/8,3*cs/8);
-			gfx.lineTo(  cs/2,  cs/4);
-			gfx.lineTo(5*cs/8,3*cs/8);
-
-			gfx.moveTo(3*cs/8,4*cs/8);
-			gfx.lineTo(3*cs/8,6*cs/8);
-			gfx.lineTo(5*cs/8,6*cs/8);
-			gfx.lineTo(5*cs/8,4*cs/8);
-			gfx.lineTo(3*cs/8,4*cs/8);
-			gfx.lineTo(5*cs/8,6*cs/8);
-			gfx.stroke();
-			break;
-
-		case ins.TYPES['COND 0 D']:
-			gfx.beginPath();
-			gfx.moveTo(3*cs/8,5*cs/8);
-			gfx.lineTo(  cs/2,3*cs/4);
-			gfx.lineTo(5*cs/8,5*cs/8);
-
-			gfx.moveTo(3*cs/8,2*cs/8);
-			gfx.lineTo(3*cs/8,4*cs/8);
-			gfx.lineTo(5*cs/8,4*cs/8);
-			gfx.lineTo(5*cs/8,2*cs/8);
-			gfx.lineTo(3*cs/8,2*cs/8);
-			gfx.lineTo(5*cs/8,4*cs/8);
-			gfx.stroke();
-			break;
-
-		case ins.TYPES['COND 0 L']:
-			gfx.beginPath();
-			gfx.moveTo(3*cs/8,3*cs/8);
-			gfx.lineTo(  cs/4,  cs/2);
-			gfx.lineTo(3*cs/8,5*cs/8);
-
-			gfx.moveTo(4*cs/8,3*cs/8);
-			gfx.lineTo(4*cs/8,5*cs/8);
-			gfx.lineTo(6*cs/8,5*cs/8);
-			gfx.lineTo(6*cs/8,3*cs/8);
-			gfx.lineTo(4*cs/8,3*cs/8);
-			gfx.lineTo(6*cs/8,5*cs/8);
-			gfx.stroke();
-			break;
-
-		case ins.TYPES['COND 0 R']:
-			gfx.beginPath();
-			gfx.moveTo(5*cs/8,3*cs/8);
-			gfx.lineTo(3*cs/4,  cs/2);
-			gfx.lineTo(5*cs/8,5*cs/8);
-
-			gfx.moveTo(2*cs/8,3*cs/8);
-			gfx.lineTo(2*cs/8,5*cs/8);
-			gfx.lineTo(4*cs/8,5*cs/8);
-			gfx.lineTo(4*cs/8,3*cs/8);
-			gfx.lineTo(2*cs/8,3*cs/8);
-			gfx.lineTo(4*cs/8,5*cs/8);
 			gfx.stroke();
 			break;
 
@@ -327,6 +282,66 @@ App.makeInstructionCatalog = function(){
 			gfx.stroke();
 
 			gfx.beginPath();gfx.arc(3*cs/8,cs/2,cs/8,-Math.PI,Math.PI);gfx.stroke();
+			break;
+
+		case ins.TYPES['COND EQUAL U']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,3*cs/8);
+			gfx.lineTo(  cs/2,  cs/4);
+			gfx.lineTo(5*cs/8,3*cs/8);
+
+			gfx.moveTo(3*cs/8,4*cs/8);
+			gfx.lineTo(3*cs/8,6*cs/8);
+			gfx.lineTo(5*cs/8,6*cs/8);
+			gfx.lineTo(5*cs/8,4*cs/8);
+			gfx.lineTo(3*cs/8,4*cs/8);
+			gfx.lineTo(5*cs/8,6*cs/8);
+			gfx.stroke();
+			break;
+
+		case ins.TYPES['COND EQUAL D']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,5*cs/8);
+			gfx.lineTo(  cs/2,3*cs/4);
+			gfx.lineTo(5*cs/8,5*cs/8);
+
+			gfx.moveTo(3*cs/8,2*cs/8);
+			gfx.lineTo(3*cs/8,4*cs/8);
+			gfx.lineTo(5*cs/8,4*cs/8);
+			gfx.lineTo(5*cs/8,2*cs/8);
+			gfx.lineTo(3*cs/8,2*cs/8);
+			gfx.lineTo(5*cs/8,4*cs/8);
+			gfx.stroke();
+			break;
+
+		case ins.TYPES['COND EQUAL L']:
+			gfx.beginPath();
+			gfx.moveTo(3*cs/8,3*cs/8);
+			gfx.lineTo(  cs/4,  cs/2);
+			gfx.lineTo(3*cs/8,5*cs/8);
+
+			gfx.moveTo(4*cs/8,3*cs/8);
+			gfx.lineTo(4*cs/8,5*cs/8);
+			gfx.lineTo(6*cs/8,5*cs/8);
+			gfx.lineTo(6*cs/8,3*cs/8);
+			gfx.lineTo(4*cs/8,3*cs/8);
+			gfx.lineTo(6*cs/8,5*cs/8);
+			gfx.stroke();
+			break;
+
+		case ins.TYPES['COND EQUAL R']:
+			gfx.beginPath();
+			gfx.moveTo(5*cs/8,3*cs/8);
+			gfx.lineTo(3*cs/4,  cs/2);
+			gfx.lineTo(5*cs/8,5*cs/8);
+
+			gfx.moveTo(2*cs/8,3*cs/8);
+			gfx.lineTo(2*cs/8,5*cs/8);
+			gfx.lineTo(4*cs/8,5*cs/8);
+			gfx.lineTo(4*cs/8,3*cs/8);
+			gfx.lineTo(2*cs/8,3*cs/8);
+			gfx.lineTo(4*cs/8,5*cs/8);
+			gfx.stroke();
 			break;
 
 		case ins.TYPES['COND + U']:
@@ -612,6 +627,13 @@ App.makeInstructionCatalog = function(){
 		}
 
 		gfx.stroke();
+		gfx.restore();
+	}
+
+	ins.renderFlipFlop = function(gfx,type,x,y,c,cs,lw,state){
+		gfx.save();
+		gfx.translate(x,y);
+
 		gfx.restore();
 	}
 
