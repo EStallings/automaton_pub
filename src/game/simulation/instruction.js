@@ -157,6 +157,7 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)a.tokenHeld.increment();
+				// TODO: IMPLEMENT NEW FEATURE
 			};break;
 
 		case App.InstCatalog.TYPES['DEC']:
@@ -164,6 +165,14 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)a.tokenHeld.decrement();
+				// TODO: IMPLEMENT NEW FEATURE
+			};break;
+
+		case App.InstCatalog.TYPES['SET']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				// TODO: IMPLEMENT NEW FEATURE
 			};break;
 
 		case App.InstCatalog.TYPES['SYNC']:
@@ -183,43 +192,6 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				App.Game.requestPause = true;
-			};break;
-
-		case App.InstCatalog.TYPES['COND 0 U']:
-
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
-				a.direction = App.DIRECTIONS.UP;
-					
-			};break;
-
-		case App.InstCatalog.TYPES['COND 0 D']:
-
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
-				a.direction = App.DIRECTIONS.DOWN;
-			};break;
-
-		case App.InstCatalog.TYPES['COND 0 L']:
-
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
-				a.direction = App.DIRECTIONS.LEFT;
-			};break;
-
-		case App.InstCatalog.TYPES['COND 0 R']:
-
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
-				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 
 		case App.InstCatalog.TYPES['COND TOKEN U']:
@@ -252,6 +224,46 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
 				a.direction = App.DIRECTIONS.RIGHT;
+			};break;
+
+		case App.InstCatalog.TYPES['COND EQUAL U']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number !== 0)return;
+				a.direction = App.DIRECTIONS.UP;
+				// TODO: IMPLEMENT NEW FEATURE
+			};break;
+
+		case App.InstCatalog.TYPES['COND EQUAL D']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number !== 0)return;
+				a.direction = App.DIRECTIONS.DOWN;
+				// TODO: IMPLEMENT NEW FEATURE
+			};break;
+
+		case App.InstCatalog.TYPES['COND EQUAL L']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number !== 0)return;
+				a.direction = App.DIRECTIONS.LEFT;
+				// TODO: IMPLEMENT NEW FEATURE
+			};break;
+
+		case App.InstCatalog.TYPES['COND EQUAL R']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(a.tokenHeld.number !== 0)return;
+				a.direction = App.DIRECTIONS.RIGHT;
+				// TODO: IMPLEMENT NEW FEATURE
 			};break;
 
 		case App.InstCatalog.TYPES['COND + U']:
@@ -288,6 +300,34 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 				if(a.tokenHeld === undefined)return;
 				if(a.tokenHeld.number <= 0)return;
 				a.direction = App.DIRECTIONS.RIGHT;
+			};break;
+
+		case App.InstCatalog.TYPES['FLIP FLOP U']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				// TODO: IMPLEMENT NEW FEATURE
+			};break;
+
+		case App.InstCatalog.TYPES['FLIP FLOP D']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				// TODO: IMPLEMENT NEW FEATURE
+			};break;
+
+		case App.InstCatalog.TYPES['FLIP FLOP L']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				// TODO: IMPLEMENT NEW FEATURE
+			};break;
+
+		case App.InstCatalog.TYPES['FLIP FLOP R']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				// TODO: IMPLEMENT NEW FEATURE
 			};break;
 	}
 }
