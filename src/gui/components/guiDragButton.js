@@ -1,8 +1,11 @@
-App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, gui, pos){
+App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, gui, pos, data){
 	App.GuiTools.Drag.call(this, x, y, 48, 48, delay, delay, xorigin, yorigin);
 	this.functional = true;
 	this.gui = gui;
 	this.pos = pos;
+
+	//for streams and flipflops
+	this.data = data;
 
 	//if this is direction-sensitive
 	this.dirsens = dirsens;

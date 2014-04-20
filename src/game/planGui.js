@@ -9,27 +9,36 @@ App.setupPlanGui = function(){
 	planMode.joystick = new App.GuiJoystick(100, 500, 50, 100, null);
 
 	planMode.topRow = [];
-	planMode.topRow[0] = new App.GuiInstDrag(48*-3+2, -038, 400,  0, true , 'center', 'bottom', planMode.gui, -4);
-	planMode.topRow[1] = new App.GuiInstDrag(48*-2+2, -038, 300,  4, false, 'center', 'bottom', planMode.gui, -3);
-	planMode.topRow[2] = new App.GuiInstDrag(48*-1+2, -038, 200, 12, false, 'center', 'bottom', planMode.gui, -2);
-	planMode.topRow[3] = new App.GuiInstDrag(48* 0+2, -038, 100, 27, true , 'center', 'bottom', planMode.gui, -1);
-	planMode.topRow[4] = new App.GuiInstDrag(48* 1+2, -038, 000, 31, true , 'center', 'bottom', planMode.gui,  0);
-	planMode.topRow[5] = new App.GuiInstDrag(48* 2+2, -038, 100, 16, false, 'center', 'bottom', planMode.gui,  1);
-	planMode.topRow[6] = new App.GuiInstDrag(48* 3+2, -038, 200, 13, false, 'center', 'bottom', planMode.gui,  2);
-	planMode.topRow[7] = new App.GuiInstDrag(48* 4+2, -038, 300, 15, false, 'center', 'bottom', planMode.gui,  3);
-	planMode.topRow[8] = new App.GuiInstDrag(48* 5+2, -038, 400,  8, false, 'center', 'bottom', planMode.gui,  4);
+
+	planMode.topRow[0]  = new App.GuiLockButton(48*-7+2, -038, 800,  0,        'center', 'bottom',               -8);
+	planMode.topRow[1]  = new App.GuiLockButton(48*-6+2, -038, 700,  1,        'center', 'bottom',               -7);
+	planMode.topRow[2]  = new App.GuiLockButton(48*-5+2, -038, 600,  2,        'center', 'bottom',               -6);
+	planMode.topRow[3]  = new App.GuiLockButton(48*-4+2, -038, 500,  3,        'center', 'bottom',               -5);
+	planMode.topRow[4]  = new App.GuiInstDrag  (48*-3+2, -038, 400,  0, true , 'center', 'bottom', planMode.gui, -4);
+	planMode.topRow[5]  = new App.GuiInstDrag  (48*-2+2, -038, 300,  4, false, 'center', 'bottom', planMode.gui, -3);
+	planMode.topRow[6]  = new App.GuiInstDrag  (48*-1+2, -038, 200, 12, false, 'center', 'bottom', planMode.gui, -2);
+	planMode.topRow[7]  = new App.GuiInstDrag  (48* 0+2, -038, 100, 27, true , 'center', 'bottom', planMode.gui, -1);
+	planMode.topRow[8]  = new App.GuiInstDrag  (48* 1+2, -038, 000, 31, true , 'center', 'bottom', planMode.gui,  0);
+	planMode.topRow[9]  = new App.GuiInstDrag  (48* 2+2, -038, 100, 16, false, 'center', 'bottom', planMode.gui,  1);
+	planMode.topRow[10] = new App.GuiInstDrag  (48* 3+2, -038, 200, 13, false, 'center', 'bottom', planMode.gui,  2);
+	planMode.topRow[11] = new App.GuiInstDrag  (48* 4+2, -038, 300, 15, false, 'center', 'bottom', planMode.gui,  3);
+	planMode.topRow[12] = new App.GuiInstDrag  (48* 5+2, -038, 400,  8, false, 'center', 'bottom', planMode.gui,  4);
 
 
 	planMode.botRow = [];
-	planMode.botRow[0] = new App.GuiInstDrag(48*-3+2, 016, 450,  7, false, 'center', 'bottom', planMode.gui, -4);
-	planMode.botRow[1] = new App.GuiInstDrag(48*-2+2, 016, 350,  6, false, 'center', 'bottom', planMode.gui, -3);
-	planMode.botRow[2] = new App.GuiInstDrag(48*-1+2, 016, 250,  5, false, 'center', 'bottom', planMode.gui, -2);
-	planMode.botRow[3] = new App.GuiInstDrag(48* 0+2, 016, 150, 23, true , 'center', 'bottom', planMode.gui, -1);
-	planMode.botRow[4] = new App.GuiInstDrag(48* 1+2, 016, 050, 19, true , 'center', 'bottom', planMode.gui,  0);
-	planMode.botRow[5] = new App.GuiInstDrag(48* 2+2, 016, 150, 17, false, 'center', 'bottom', planMode.gui,  1);
-	planMode.botRow[6] = new App.GuiInstDrag(48* 3+2, 016, 250, 14, false, 'center', 'bottom', planMode.gui,  2);
-	planMode.botRow[7] = new App.GuiInstDrag(48* 4+2, 016, 350, 18, false, 'center', 'bottom', planMode.gui,  3);
-	planMode.botRow[8] = new App.GuiInstDrag(48* 5+2, 016, 450,  9, false, 'center', 'bottom', planMode.gui,  4);
+	planMode.botRow[0]  = new App.GuiToggButton(48*-7+2, 016, 800,  0,        'center', 'bottom',               -8);
+	planMode.botRow[1]  = new App.GuiToggButton(48*-6+2, 016, 700,  1,        'center', 'bottom',               -7);
+	planMode.botRow[2]  = new App.GuiToggButton(48*-5+2, 016, 600,  2,        'center', 'bottom',               -6);
+	planMode.botRow[3]  = new App.GuiToggButton(48*-4+2, 016, 500,  3,        'center', 'bottom',               -5);
+	planMode.botRow[4]  = new App.GuiInstDrag  (48*-3+2, 016, 450,  7, false, 'center', 'bottom', planMode.gui, -4);
+	planMode.botRow[5]  = new App.GuiInstDrag  (48*-2+2, 016, 350,  6, false, 'center', 'bottom', planMode.gui, -3);
+	planMode.botRow[6]  = new App.GuiInstDrag  (48*-1+2, 016, 250,  5, false, 'center', 'bottom', planMode.gui, -2);
+	planMode.botRow[7]  = new App.GuiInstDrag  (48* 0+2, 016, 150, 23, true , 'center', 'bottom', planMode.gui, -1);
+	planMode.botRow[8]  = new App.GuiInstDrag  (48* 1+2, 016, 050, 19, true , 'center', 'bottom', planMode.gui,  0);
+	planMode.botRow[9]  = new App.GuiInstDrag  (48* 2+2, 016, 150, 17, false, 'center', 'bottom', planMode.gui,  1);
+	planMode.botRow[10] = new App.GuiInstDrag  (48* 3+2, 016, 250, 14, false, 'center', 'bottom', planMode.gui,  2);
+	planMode.botRow[11] = new App.GuiInstDrag  (48* 4+2, 016, 350, 18, false, 'center', 'bottom', planMode.gui,  3);
+	planMode.botRow[12] = new App.GuiInstDrag  (48* 5+2, 016, 450,  9, false, 'center', 'bottom', planMode.gui,  4);
 
 	planMode.instPanel = new App.GuiTools.Component(0,0,500,116,0,0,null,'bottom');
 	planMode.instPanel.render = function(gfx){
@@ -198,21 +207,25 @@ App.setupPlanGui = function(){
 
 	planMode.registerKeyDownFunc('1',function(){
 		planMode.color = App.COLORS.RED;
+		App.GuiInstDrag.changeGlobalColor(App.COLORS.RED);
 		planMode.requestStaticRenderUpdate = true;
 	});
 
 	planMode.registerKeyDownFunc('2',function(){
 		planMode.color = App.COLORS.GREEN;
+		App.GuiInstDrag.changeGlobalColor(App.COLORS.GREEN);
 		planMode.requestStaticRenderUpdate = true;
 	});
 
 	planMode.registerKeyDownFunc('3',function(){
 		planMode.color = App.COLORS.BLUE;
+		App.GuiInstDrag.changeGlobalColor(App.COLORS.BLUE);
 		planMode.requestStaticRenderUpdate = true;
 	});
 
 	planMode.registerKeyDownFunc('4',function(){
 		planMode.color = App.COLORS.YELLOW;
+		App.GuiInstDrag.changeGlobalColor(App.COLORS.YELLOW);
 		planMode.requestStaticRenderUpdate = true;
 	});
 

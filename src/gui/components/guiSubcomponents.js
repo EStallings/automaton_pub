@@ -219,7 +219,6 @@ g.Button = function(x, y, w, h, en, ex, callback, continuous, xorigin, yorigin){
 
 	//If the click was successful, fire the callback
 	this.clickEnd = function(){
-		console.log(this.left + " " + this.getleft() + " VS " + this.x + " " + this.getx());
 		if(this.callback)
 			this.callback();
 	}
