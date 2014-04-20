@@ -31,10 +31,11 @@ App.setupPlanGui = function(){
 	planMode.botRow[7] = new App.GuiInstDrag(48* 4+2, 016, 350, 18, 'center', 'bottom', planMode.gui,  3);
 	planMode.botRow[8] = new App.GuiInstDrag(48* 5+2, 016, 450,  9, 'center', 'bottom', planMode.gui,  4);
 
-	planMode.instPanel = new App.GuiTools.Component(250,-8,500,104,0,0,'center','bottom');
-	planMode.instPanel.dointerp = false;
-	planMode.instPanel.baseColor = 'rgba(0,0,0,0.8)';
-	planMode.instPanel.color = planMode.instPanel.baseColor;
+	planMode.instPanel = new App.GuiTools.Component(0,0,500,116,0,0,null,'bottom');
+	planMode.instPanel.render = function(gfx){
+		gfx.fillStyle = 'rgba(0,0,0,0.8)';
+		gfx.fillRect(planMode.instPanel.getx(), planMode.instPanel.gety(), App.Canvases.width, planMode.instPanel.h);
+	}
 
 
 
