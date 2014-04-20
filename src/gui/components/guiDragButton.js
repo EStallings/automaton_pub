@@ -1,10 +1,14 @@
-App.GuiInstDrag = function(x, y, delay, instruction, xorigin, yorigin, gui, pos){
+App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, gui, pos){
 	App.GuiTools.Drag.call(this, x, y, 48, 48, delay, delay, xorigin, yorigin);
 	this.functional = true;
 	this.gui = gui;
 	this.pos = pos;
 
-	this.instruction = instruction;
+	//if this is direction-sensitive
+	this.dirsens = dirsens;
+
+	this.instruction     = instruction;
+	this.baseInstruction = instruction;
 
 	var that = this;
 
@@ -82,6 +86,14 @@ App.GuiInstDrag.changeGlobalColor = function(color){
 	for(var i = 0; i < this.registry.length; i++){
 		this.registry[i].activeColor = this.colors[this.globalColor];
 		this.registry[i].inactiveColor = this.colors[this.globalColor];
+	}
+}
+
+App.GuiInstDrag.changeDirection = function(dir){
+	this.direction = dir;
+	for(var i = 0; i < this.registry.length; i++){
+		if(this.registry[i].dirsens)
+			this.registry[i].instruction = this.registry[i].baseInstruction + dir;
 	}
 }
 

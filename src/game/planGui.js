@@ -63,6 +63,7 @@ App.setupPlanGui = function(){
 		planMode.gui.enter();
 
 		App.Game.setMode(App.Game.modes.PLANNING);
+		App.GuiInstDrag.changeDirection(App.DIRECTIONS.UP);
 		App.Shade.turnOff();
 	}
 
@@ -173,21 +174,25 @@ App.setupPlanGui = function(){
 
 	planMode.registerKeyDownFunc('W',function(){
 		planMode.direction = App.DIRECTIONS.UP;
+		App.GuiInstDrag.changeDirection(App.DIRECTIONS.UP);
 		planMode.requestStaticRenderUpdate = true;
 	});
 
 	planMode.registerKeyDownFunc('S',function(){
 		planMode.direction = App.DIRECTIONS.DOWN;
+		App.GuiInstDrag.changeDirection(App.DIRECTIONS.DOWN);
 		planMode.requestStaticRenderUpdate = true;
 	});
 
 	planMode.registerKeyDownFunc('A',function(){
 		planMode.direction = App.DIRECTIONS.LEFT;
+		App.GuiInstDrag.changeDirection(App.DIRECTIONS.LEFT);
 		planMode.requestStaticRenderUpdate = true;
 	});
 
 	planMode.registerKeyDownFunc('D',function(){
 		planMode.direction = App.DIRECTIONS.RIGHT;
+		App.GuiInstDrag.changeDirection(App.DIRECTIONS.RIGHT);
 		planMode.requestStaticRenderUpdate = true;
 	});
 
