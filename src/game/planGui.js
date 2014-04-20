@@ -12,11 +12,11 @@ App.setupPlanGui = function(){
 	planMode.topRow[0] = new App.GuiInstDrag(48*-3+2, -038, 400,  0, 'center', 'bottom', planMode.gui, -4);
 	planMode.topRow[1] = new App.GuiInstDrag(48*-2+2, -038, 300,  4, 'center', 'bottom', planMode.gui, -3);
 	planMode.topRow[2] = new App.GuiInstDrag(48*-1+2, -038, 200, 12, 'center', 'bottom', planMode.gui, -2);
-	planMode.topRow[3] = new App.GuiInstDrag(48* 0+2, -038, 100, 15, 'center', 'bottom', planMode.gui, -1);
-	planMode.topRow[4] = new App.GuiInstDrag(48* 1+2, -038, 000, 13, 'center', 'bottom', planMode.gui,  0);
-	planMode.topRow[5] = new App.GuiInstDrag(48* 2+2, -038, 100, 18, 'center', 'bottom', planMode.gui,  1);
-	planMode.topRow[6] = new App.GuiInstDrag(48* 3+2, -038, 200, 26, 'center', 'bottom', planMode.gui,  2);
-	planMode.topRow[7] = new App.GuiInstDrag(48* 4+2, -038, 300,  8, 'center', 'bottom', planMode.gui,  3);
+	planMode.topRow[3] = new App.GuiInstDrag(48* 0+2, -038, 100, 27, 'center', 'bottom', planMode.gui, -1);
+	planMode.topRow[4] = new App.GuiInstDrag(48* 1+2, -038, 000, 31, 'center', 'bottom', planMode.gui,  0);
+	planMode.topRow[5] = new App.GuiInstDrag(48* 2+2, -038, 100, 16, 'center', 'bottom', planMode.gui,  1);
+	planMode.topRow[6] = new App.GuiInstDrag(48* 3+2, -038, 200, 13, 'center', 'bottom', planMode.gui,  2);
+	planMode.topRow[7] = new App.GuiInstDrag(48* 4+2, -038, 300, 15, 'center', 'bottom', planMode.gui,  3);
 	planMode.topRow[8] = new App.GuiInstDrag(48* 5+2, -038, 400,  8, 'center', 'bottom', planMode.gui,  4);
 
 
@@ -24,11 +24,11 @@ App.setupPlanGui = function(){
 	planMode.botRow[0] = new App.GuiInstDrag(48*-3+2, 016, 450,  7, 'center', 'bottom', planMode.gui, -4);
 	planMode.botRow[1] = new App.GuiInstDrag(48*-2+2, 016, 350,  6, 'center', 'bottom', planMode.gui, -3);
 	planMode.botRow[2] = new App.GuiInstDrag(48*-1+2, 016, 250,  5, 'center', 'bottom', planMode.gui, -2);
-	planMode.botRow[3] = new App.GuiInstDrag(48* 0+2, 016, 150, 16, 'center', 'bottom', planMode.gui, -1);
-	planMode.botRow[4] = new App.GuiInstDrag(48* 1+2, 016, 050, 14, 'center', 'bottom', planMode.gui,  0);
-	planMode.botRow[5] = new App.GuiInstDrag(48* 2+2, 016, 150, 22, 'center', 'bottom', planMode.gui,  1);
-	planMode.botRow[6] = new App.GuiInstDrag(48* 3+2, 016, 250, 17, 'center', 'bottom', planMode.gui,  2);
-	planMode.botRow[7] = new App.GuiInstDrag(48* 4+2, 016, 350,  9, 'center', 'bottom', planMode.gui,  3);
+	planMode.botRow[3] = new App.GuiInstDrag(48* 0+2, 016, 150, 23, 'center', 'bottom', planMode.gui, -1);
+	planMode.botRow[4] = new App.GuiInstDrag(48* 1+2, 016, 050, 19, 'center', 'bottom', planMode.gui,  0);
+	planMode.botRow[5] = new App.GuiInstDrag(48* 2+2, 016, 150, 17, 'center', 'bottom', planMode.gui,  1);
+	planMode.botRow[6] = new App.GuiInstDrag(48* 3+2, 016, 250, 14, 'center', 'bottom', planMode.gui,  2);
+	planMode.botRow[7] = new App.GuiInstDrag(48* 4+2, 016, 350, 18, 'center', 'bottom', planMode.gui,  3);
 	planMode.botRow[8] = new App.GuiInstDrag(48* 5+2, 016, 450,  9, 'center', 'bottom', planMode.gui,  4);
 
 	planMode.instPanel = new App.GuiTools.Component(0,0,500,116,0,0,null,'bottom');
