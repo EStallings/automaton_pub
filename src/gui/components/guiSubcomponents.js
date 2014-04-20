@@ -35,6 +35,8 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 	this.active          = false;
 	this.locked          = false;
 	this.changed         = false;
+	this.overridepos     = false;
+	this.dointerp        = true;
 
 	this.baseColor       = '#ffffff';
 	this.hoverColor      = '#a0a0a0';
@@ -48,6 +50,8 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 
 	this.renderLayers    = [];
 
+	this.interpmode = 'none';
+
 	var that = this;
 
 	//From the box class
@@ -55,24 +59,31 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 		this.left  = this.goalLeft  = this.x;
 		this.right = this.goalRight = this.x;
 		this.goalRight = this.x+this.w;
+		this.interpmode = 'enter';
 		this.interpRightTick = App.Engine.tick+this.enterDelay;
 	}
 
 	this.exit = function(){
+		this.interpmode = 'exit';
 		this.goalLeft = this.x+this.w;
 		this.interpLeftTick = App.Engine.tick+this.exitDelay;
 	}
 
 	this.render = function(gfx){
 		var updating = false;
-
-		//update interpolation
-		if(this.left != this.goalLeft){
-			updating = true;
-			if(App.Engine.tick >= this.interpLeftTick)this.left += expInterp(this.left,this.goalLeft,0.005,1);
-		}if(this.right != this.goalRight){
-			updating = true;
-			if(App.Engine.tick >= this.interpRightTick)this.right += expInterp(this.right,this.goalRight,0.005,1);
+		if(this.dointerp){
+			//update interpolation
+			if(this.left != this.goalLeft){
+				updating = true;
+				if(App.Engine.tick >= this.interpLeftTick)this.left += expInterp(this.left,this.goalLeft,0.005,0.1);
+			}if(this.right != this.goalRight){
+				updating = true;
+				if(App.Engine.tick >= this.interpRightTick)this.right += expInterp(this.right,this.goalRight,0.005,0.1);
+			}
+		}
+		else{
+			this.left = this.x;
+			this.right = this.x + this.w;
 		}
 
 		//Do the actual rendering as defined by our child class
@@ -95,6 +106,8 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 	}
 
 	this.getx = function(){
+		if(this.overridepos)
+			return this.x
 		if(this.xorigin == 'right')
 			return this.x + App.Canvases.width - this.w;
 		if(this.xorigin == 'center')
@@ -103,6 +116,8 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 	}
 
 	this.gety = function(){
+		if(this.overridepos)
+			return this.y
 		if(this.yorigin == 'bottom')
 			return this.y + App.Canvases.height - this.h;
 		if(this.yorigin == 'center')
@@ -236,6 +251,7 @@ g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
 
 	this.clickStart = function(){
 		this.sticky = true;
+		this.overridepos = true;
 		this.subClickStart();
 	}
 
@@ -251,6 +267,8 @@ g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
 		if(!App.InputHandler.lmb){
 			this.subClickEnd();
 			this.sticky = false;
+			this.overridepos = false;
+			this._clickEnd();
 			this.resetPosition();
 		}
 		this.subUpdate();

@@ -75,8 +75,6 @@ App.makeInputHandler = function(){
 	input.canvas.addEventListener('mouseout',function(e){
 		var mode = App.ModeHandler.currentMode;
 		if(mode){
-			if(mode.gui)
-				mode.gui.guilock = false;
 			for(var i in mode.keysDown)if(mode.keysDown[i]){
 				var f = mode.keyUpFuncs[i];
 				if(f)f();

@@ -46,11 +46,7 @@ App.setupMainMenu = function(){
 		mainMenu.requestStaticRenderUpdate = true;
 		mainMenu.updatingActive = true;
 		mainMenu.exitFlag = false;
-
-		mainMenu.playButton.enter();
-		mainMenu.libraryButton.enter();
-		mainMenu.sandboxButton.enter();
-		mainMenu.settingsButton.enter();
+		mainMenu.gui.enter();
 		mainMenu.goalAlpha = 1;
 
 		App.Shade.turnOn();
@@ -87,10 +83,7 @@ App.setupMainMenu = function(){
 		mainMenu.requestStaticRenderUpdate = true;
 		mainMenu.exitFlag = true;
 
-		mainMenu.playButton.exit();
-		mainMenu.libraryButton.exit();
-		mainMenu.sandboxButton.exit();
-		mainMenu.settingsButton.exit();
+		mainMenu.gui.exit();
 		mainMenu.goalAlpha = 0;
 	}
 

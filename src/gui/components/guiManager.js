@@ -9,13 +9,19 @@ App.guiFrame = function(gfx){
 	this.frame = [];
 
 	//gets reset after one frame.
-	this.drawStatic = false;
-	this.guilock = false;
 	var that = this;
 
-	this.load = function(){
-		this.guilock = false;
-		this.drawStatic = true;
+
+	this.enter = function(){
+		for(var c in this.frame){
+			this.frame[c].enter();
+		}
+	}
+
+	this.exit = function(){
+		for(var c in this.frame){
+			this.frame[c].exit();
+		}
 	}
 
 	this.addComponent = function(comp){
@@ -56,7 +62,6 @@ App.guiFrame = function(gfx){
 		for(var fn in comps.f){
 			if(comps.f[fn].locked) continue;
 			comps.f[fn].clickEnd();
-			
 		}
 		for(var f in that.frame)
 			that.frame[f]._clickEnd();

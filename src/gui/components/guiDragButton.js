@@ -1,6 +1,8 @@
-App.GuiInstDrag = function(x, y, instruction, panel){
-	App.GuiTools.Drag.call(this, x, y, 40, 40, 200, 200, panel);
+App.GuiInstDrag = function(x, y, delay, instruction, xorigin, yorigin, gui, pos){
+	App.GuiTools.Drag.call(this, x, y, 48, 48, delay, delay, xorigin, yorigin);
 	this.functional = true;
+	this.gui = gui;
+	this.pos = pos;
 
 	this.instruction = instruction;
 
@@ -9,10 +11,19 @@ App.GuiInstDrag = function(x, y, instruction, panel){
 	delete(this.renderLayers['Drag']);
 	this.renderLayers['Inst'] = function(gfx){
 		gfx.lineWidth = 2;
+
+		var interp = (that.interpmode === 'exit') ?
+		that.w - (that.getleft() - that.getx()) :
+		that.getright() - that.getx();
+
+		var dx = (interp * that.pos + (that.getx() - that.x) +that.w/2);
+		if(that.overridepos)
+			dx = that.getx() - that.w/2;
+
 		App.InstCatalog.render(
 			gfx,
 			that.instruction,
-			that.getx()-that.w/2, that.gety()-that.h/2,
+			dx, that.gety()-that.h/2,
 			App.GuiInstDrag.globalColor,
 			that.w);
 	}
@@ -29,10 +40,20 @@ App.GuiInstDrag = function(x, y, instruction, panel){
 	}
 
 	//The button has been 'dropped'!
-	this.subClickEnd = function(onGui){
+	this.subClickEnd = function(){
 		//prevent dropping instructions behind gui elements
-		if(onGui)
-			return;
+		//check upper left
+		var c = this.gui.testCoordinates(this.getx()-this.w/2, this.gety()-this.h/2);
+		if(c.f.length > 0 || c.p.length > 0) return;
+		//bottom left
+		c = this.gui.testCoordinates(this.getx()-this.w/2, this.gety()+this.h/2);
+		if(c.f.length > 0 || c.p.length > 0) return;
+		//upper right
+		c = this.gui.testCoordinates(this.getx()+this.w/2, this.gety()-this.h/2);
+		if(c.f.length > 0 || c.p.length > 0) return;
+		//lower right
+		c = this.gui.testCoordinates(this.getx()+this.w/2, this.gety()+this.h/2);
+		if(c.f.length > 0 || c.p.length > 0) return;
 
 		//place the instruction
 		App.GameRenderer.screenToGridCoords(this.getx(), this.gety());
