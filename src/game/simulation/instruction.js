@@ -1,6 +1,4 @@
 App.SimulationInstruction = function(level,x,y,color,type,data){
-	// this assumes valid input from the planning level
-
 	level.instructions.push(this);
 	level.getCell(x,y).instructions[color] = this;
 
@@ -156,23 +154,31 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld !== undefined)a.tokenHeld.increment();
-				// TODO: IMPLEMENT NEW FEATURE
+				if(a.tokenHeld !== undefined){
+					if(this.cell.tokens.length !== 0)
+						a.tokenHeld.add(this.cell.tokens[this.cell.tokens.length-1].number);
+					else a.tokenHeld.add(1);
+				}
 			};break;
 
 		case App.InstCatalog.TYPES['DEC']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld !== undefined)a.tokenHeld.decrement();
-				// TODO: IMPLEMENT NEW FEATURE
+				if(a.tokenHeld !== undefined){
+					if(this.cell.tokens.length !== 0)
+						a.tokenHeld.sub(this.cell.tokens[this.cell.tokens.length-1].number);
+					else a.tokenHeld.sub(1);
+				}
 			};break;
 
 		case App.InstCatalog.TYPES['SET']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				// TODO: IMPLEMENT NEW FEATURE
+				if(a.tokenHeld !== undefined && this.cell.tokens.length !== 0){
+					a.tokenHeld.number = this.cell.tokens[this.cell.tokens.length-1].number;
+				}
 			};break;
 
 		case App.InstCatalog.TYPES['SYNC']:

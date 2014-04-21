@@ -3,8 +3,8 @@ App.SimulationToken = function(level,x,y,number){
 
 	this.number = number;
 
-	this.increment = function(){if(++this.number>127)this.number=-128;}
-	this.decrement = function(){if(--this.number<-128)this.number=127;}
+	this.add = function(num){this.number+=num;while(this.number> 127)this.number-=256;}
+	this.sub = function(num){this.number-=num;while(this.number<-128)this.number+=256;}
 
 	this.rFunc = function(x,y,gfx){
 		App.renderToken(gfx,x,y,this.number);
