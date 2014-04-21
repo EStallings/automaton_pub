@@ -38,7 +38,7 @@ App.makeInstructionCatalog = function(){
 			case ins.TYPES['FLIP FLOP D']:
 			case ins.TYPES['FLIP FLOP L']:
 			case ins.TYPES['FLIP FLOP R']:
-				ins.renderFlipFlop(gfx,type,x,y,c,cs,dataA); return;
+				ins.renderFlipFlop(gfx,type,x,y,c,cs,lw,dataA); return;
 
 			case ins.TYPES['IN']:
 			case ins.TYPES['OUT']:
@@ -53,8 +53,8 @@ App.makeInstructionCatalog = function(){
 
 		gfx.fillStyle = App.FILL_COLOR[c];
 		gfx.fillRect(2,2,cs-4,cs-4);
-		gfx.strokeStyle = App.STROKE_COLOR[c];
 
+		gfx.strokeStyle = App.STROKE_COLOR[c];
 		gfx.lineWidth = 2;
 		gfx.beginPath();
 		gfx.moveTo(2,2);
@@ -606,6 +606,76 @@ App.makeInstructionCatalog = function(){
 	ins.renderFlipFlop = function(gfx,type,x,y,c,cs,lw,state){
 		gfx.save();
 		gfx.translate(x,y);
+
+		switch(state){
+			case 0:
+				gfx.fillStyle = App.TRANS_COLOR[c];
+				gfx.strokeStyle = App.FILL_COLOR[c];
+				break;
+			default:
+				gfx.fillStyle = App.FILL_COLOR[c];
+				gfx.strokeStyle = App.STROKE_COLOR[c];
+				break;
+		}gfx.fillRect(2,2,cs-4,cs-4);
+
+		gfx.lineWidth = lw;
+		gfx.beginPath();
+		switch(type){
+			case ins.TYPES['FLIP FLOP U']:
+				gfx.moveTo(3*cs/8,3*cs/8);
+				gfx.lineTo(  cs/2,  cs/4);
+				gfx.lineTo(5*cs/8,3*cs/8);
+
+				gfx.moveTo(5*cs/8,4*cs/8);
+				gfx.lineTo(3*cs/8,4*cs/8);
+				gfx.lineTo(3*cs/8,6*cs/8);
+				gfx.moveTo(3*cs/8,5*cs/8);
+				gfx.lineTo(4*cs/8,5*cs/8);
+				break;
+			case ins.TYPES['FLIP FLOP D']:
+				gfx.moveTo(3*cs/8,5*cs/8);
+				gfx.lineTo(  cs/2,3*cs/4);
+				gfx.lineTo(5*cs/8,5*cs/8);
+
+				gfx.moveTo(5*cs/8,2*cs/8);
+				gfx.lineTo(3*cs/8,2*cs/8);
+				gfx.lineTo(3*cs/8,4*cs/8);
+				gfx.moveTo(3*cs/8,3*cs/8);
+				gfx.lineTo(4*cs/8,3*cs/8);
+				break;
+			case ins.TYPES['FLIP FLOP L']:
+				gfx.moveTo(3*cs/8,3*cs/8);
+				gfx.lineTo(  cs/4,  cs/2);
+				gfx.lineTo(3*cs/8,5*cs/8);
+
+				gfx.moveTo(6*cs/8,3*cs/8);
+				gfx.lineTo(4*cs/8,3*cs/8);
+				gfx.lineTo(4*cs/8,5*cs/8);
+				gfx.moveTo(4*cs/8,4*cs/8);
+				gfx.lineTo(5*cs/8,4*cs/8);
+				break;
+			case ins.TYPES['FLIP FLOP R']:
+				gfx.moveTo(5*cs/8,3*cs/8);
+				gfx.lineTo(3*cs/4,  cs/2);
+				gfx.lineTo(5*cs/8,5*cs/8);
+
+				gfx.moveTo(4*cs/8,3*cs/8);
+				gfx.lineTo(2*cs/8,3*cs/8);
+				gfx.lineTo(2*cs/8,5*cs/8);
+				gfx.moveTo(2*cs/8,4*cs/8);
+				gfx.lineTo(3*cs/8,4*cs/8);
+				break;
+		}gfx.stroke();
+
+		gfx.strokeStyle = App.STROKE_COLOR[c];
+		gfx.lineWidth = 2;
+		gfx.beginPath();
+		gfx.moveTo(2,2);
+		gfx.lineTo(2,cs-2);
+		gfx.lineTo(cs-2,cs-2);
+		gfx.lineTo(cs-2,2);
+		gfx.lineTo(2,2);
+		gfx.stroke();
 
 		gfx.restore();
 	}
