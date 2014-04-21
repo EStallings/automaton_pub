@@ -612,7 +612,7 @@ App.makeInstructionCatalog = function(){
 		gfx.translate(x,y);
 
 		switch(state){
-			case 0:
+			case false:
 				gfx.fillStyle = App.TRANS_COLOR[c];
 				gfx.strokeStyle = App.FILL_COLOR[c];
 				break;
