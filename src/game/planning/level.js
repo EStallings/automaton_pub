@@ -123,7 +123,7 @@ App.PlanningLevel = function(){
 			if(that.grid[x]) for(var y in that.grid[x]){
 				if(that.grid[x][y]) for(var c in that.grid[x][y]){
 					if(that.grid[x][y][c] && (('' + that.grid[x][y][c].x !== x) || ('' + that.grid[x][y][c].y !== y))){
-						console.log(x + ' ' + y + ' ' + c + ' : ' + that.grid[x][y][c].x + ' ' + that.grid[x][y][c].y);
+						/* console.log(x + ' ' + y + ' ' + c + ' : ' + that.grid[x][y][c].x + ' ' + that.grid[x][y][c].y); */
 					}
 				}
 			}
@@ -165,15 +165,15 @@ App.PlanningLevel = function(){
 
 		for(var i in instructions){ // check that the insert can complete succesfully
 
-			if(that.width !== 0 && (instructions[i].x < 0 || instructions[i].x >= that.width)){ console.log('insert out of bounds'); return false; }
-			if(that.height !== 0 && (instructions[i].y < 0 || instructions[i].y >= that.height)){ console.log('insert out of bounds'); return false; }
-			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return; }
+			if(that.width !== 0 && (instructions[i].x < 0 || instructions[i].x >= that.width)){ /* console.log('insert out of bounds'); */ return false; }
+			if(that.height !== 0 && (instructions[i].y < 0 || instructions[i].y >= that.height)){ /* console.log('insert out of bounds'); */ return false; }
+			if(that.isLocked(instructions[i].color)){ /* console.log('layer locked'); */ return; }
 			if(that.getInstruction(instructions[i].x, instructions[i].y, instructions[i].color))
 			{
-				if(that.userOverlapSetting === 0){ console.log('tile blocked'); return; } // if there is a conflict in any space and overwrite is disabled, reject
+				if(that.userOverlapSetting === 0){ /* console.log('tile blocked'); */ return; } // if there is a conflict in any space and overwrite is disabled, reject
 
 				// store overwrite info
-				console.log('overwrite');
+				/* console.log('overwrite'); */
 				overwriteList.push(that.getInstruction(instructions[i].x,instructions[i].y,instructions[i].color));
 			}
 		}
@@ -195,7 +195,7 @@ App.PlanningLevel = function(){
 		if(that.currentSelection === []){ return; }
 		instructions = that.toList(instructions);
 		for(i in instructions){
-			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return; }
+			if(that.isLocked(instructions[i].color)){ /* console.log('layer locked'); */ return; }
 			that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = null;
 		}
 		that.undoStack.push(new that.operation('del', instructions, null, null, null, null));
@@ -213,8 +213,8 @@ App.PlanningLevel = function(){
 
 		for(i in instructions){ // remove all from grid to prevent groups from overlapping themselves also update coordinates and bounds check
 			var instr = instructions[i];
-			if(that.width !== 0 && (instructions[i].x + shiftX < 0 || instructions[i].x + shiftX >= that.width)){ console.log('move out of bounds'); return; }
-			if(that.height !== 0 && (instructions[i].y + shiftY < 0 || instructions[i].y + shiftY >= that.height)){ console.log('move out of bounds'); return; }
+			if(that.width !== 0 && (instructions[i].x + shiftX < 0 || instructions[i].x + shiftX >= that.width)){ /* console.log('move out of bounds'); */ return; }
+			if(that.height !== 0 && (instructions[i].y + shiftY < 0 || instructions[i].y + shiftY >= that.height)){ /* console.log('move out of bounds'); */ return; }
 			that.grid[instr.x][instr.y][instr.color] = null;
 			instructions[i].x += shiftX;
 			instructions[i].y += shiftY;
@@ -402,8 +402,8 @@ App.PlanningLevel = function(){
 		that.validateGrid();
 	}
 
-	this.killUndo = function(str){ that.undoStack = []; console.log(str); }
-	this.killRedo = function(str){ that.redoStack = []; console.log(str); }
+	this.killUndo = function(str){ that.undoStack = []; /* console.log(str); */ }
+	this.killRedo = function(str){ that.redoStack = []; /* console.log(str); */ }
 
 
 
