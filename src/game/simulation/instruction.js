@@ -88,12 +88,16 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)return;
 
-				var stackNum = App.Game.inStreams[this.data][3];
-				while(stackNum >= App.Game.inStreams[this.data][2].length-1)
-					App.Game.generateTokenWave();
-				var tokenNum = App.Game.inStreams[this.data][2][stackNum];
-				a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,tokenNum);
-				++App.Game.inStreams[this.data][3];
+				if(this.data){
+					var stackNum = App.Game.inStreams[this.data][3];
+					while(stackNum >= App.Game.inStreams[this.data][2].length-1)
+						App.Game.generateTokenWave();
+					var tokenNum = App.Game.inStreams[this.data][2][stackNum];
+					a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,tokenNum);
+					++App.Game.inStreams[this.data][3];
+				}else{
+					a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,Math.floor(Math.random()*10));
+				}
 			};break;
 
 		case App.InstCatalog.TYPES['OUT']:
@@ -102,15 +106,19 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
 
-				var stackNum = App.Game.outStreams[this.data][3];
-				while(stackNum >= App.Game.outStreams[this.data][2].length-1)
-					App.Game.generateTokenWave();
-				var tokenNum = App.Game.outStreams[this.data][2][stackNum];
-				if(a.tokenHeld.number !== tokenNum){
-					App.Game.simulationError(a.tokenHeld.number+" !== "+tokenNum);
-					return;
-				}a.tokenHeld = undefined;
-				++App.Game.outStreams[this.data][3];
+				if(this.data){
+					var stackNum = App.Game.outStreams[this.data][3];
+					while(stackNum >= App.Game.outStreams[this.data][2].length-1)
+						App.Game.generateTokenWave();
+					var tokenNum = App.Game.outStreams[this.data][2][stackNum];
+					if(a.tokenHeld.number !== tokenNum){
+						App.Game.simulationError(a.tokenHeld.number+" !== "+tokenNum);
+						return;
+					}a.tokenHeld = undefined;
+					++App.Game.outStreams[this.data][3];
+				}else{
+					a.tokenHeld = undefined;
+				}
 			};break;
 
 		case App.InstCatalog.TYPES['GRAB']:
