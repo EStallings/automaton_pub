@@ -21,6 +21,13 @@ App.STROKE_COLOR = {
 	3 : '#808000',
 };
 
+App.TRANS_COLOR = {
+	0 : '#rgba(255,0,0,0.2)',
+	1 : '#rgba(0,255,0,0.2)',
+	2 : '#rgba(0,0,255,0.2)',
+	3 : '#rgba(255,255,0,0.2)',
+};
+
 App.DIRECTIONS = {
 	UP    : 0,
 	RIGHT : 1,

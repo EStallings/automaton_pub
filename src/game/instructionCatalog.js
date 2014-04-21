@@ -51,19 +51,9 @@ App.makeInstructionCatalog = function(){
 		gfx.save();
 		gfx.translate(x,y);
 
-		switch(c){
-			case App.COLORS.RED:    gfx.fillStyle='#ff0000';break;
-			case App.COLORS.GREEN:  gfx.fillStyle='#00ff00';break;
-			case App.COLORS.BLUE:   gfx.fillStyle='#0000ff';break;
-			case App.COLORS.YELLOW: gfx.fillStyle='#ffff00';break;
-		}gfx.fillRect(2,2,cs-4,cs-4);
-
-		switch(c){
-			case App.COLORS.RED:    gfx.strokeStyle='#800000';break;
-			case App.COLORS.GREEN:  gfx.strokeStyle='#008000';break;
-			case App.COLORS.BLUE:   gfx.strokeStyle='#000080';break;
-			case App.COLORS.YELLOW: gfx.strokeStyle='#808000';break;
-		}
+		gfx.fillStyle = App.FILL_COLOR[c];
+		gfx.fillRect(2,2,cs-4,cs-4);
+		gfx.strokeStyle = App.STROKE_COLOR[c];
 
 		gfx.lineWidth = 2;
 		gfx.beginPath();
@@ -290,12 +280,10 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/2,  cs/4);
 			gfx.lineTo(5*cs/8,3*cs/8);
 
-			gfx.moveTo(3*cs/8,4*cs/8);
-			gfx.lineTo(3*cs/8,6*cs/8);
-			gfx.lineTo(5*cs/8,6*cs/8);
-			gfx.lineTo(5*cs/8,4*cs/8);
-			gfx.lineTo(3*cs/8,4*cs/8);
-			gfx.lineTo(5*cs/8,6*cs/8);
+			gfx.moveTo(3*cs/8, 9*cs/16);
+			gfx.lineTo(5*cs/8, 9*cs/16);
+			gfx.moveTo(3*cs/8,11*cs/16);
+			gfx.lineTo(5*cs/8,11*cs/16);
 			gfx.stroke();
 			break;
 
@@ -305,12 +293,10 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/2,3*cs/4);
 			gfx.lineTo(5*cs/8,5*cs/8);
 
-			gfx.moveTo(3*cs/8,2*cs/8);
-			gfx.lineTo(3*cs/8,4*cs/8);
-			gfx.lineTo(5*cs/8,4*cs/8);
-			gfx.lineTo(5*cs/8,2*cs/8);
-			gfx.lineTo(3*cs/8,2*cs/8);
-			gfx.lineTo(5*cs/8,4*cs/8);
+			gfx.moveTo(3*cs/8, 5*cs/16);
+			gfx.lineTo(5*cs/8, 5*cs/16);
+			gfx.moveTo(3*cs/8, 7*cs/16);
+			gfx.lineTo(5*cs/8, 7*cs/16);
 			gfx.stroke();
 			break;
 
@@ -320,12 +306,10 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/4,  cs/2);
 			gfx.lineTo(3*cs/8,5*cs/8);
 
-			gfx.moveTo(4*cs/8,3*cs/8);
-			gfx.lineTo(4*cs/8,5*cs/8);
-			gfx.lineTo(6*cs/8,5*cs/8);
-			gfx.lineTo(6*cs/8,3*cs/8);
-			gfx.lineTo(4*cs/8,3*cs/8);
-			gfx.lineTo(6*cs/8,5*cs/8);
+			gfx.moveTo(4*cs/8, 7*cs/16);
+			gfx.lineTo(6*cs/8, 7*cs/16);
+			gfx.moveTo(4*cs/8, 9*cs/16);
+			gfx.lineTo(6*cs/8, 9*cs/16);
 			gfx.stroke();
 			break;
 
@@ -335,12 +319,10 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(3*cs/4,  cs/2);
 			gfx.lineTo(5*cs/8,5*cs/8);
 
-			gfx.moveTo(2*cs/8,3*cs/8);
-			gfx.lineTo(2*cs/8,5*cs/8);
-			gfx.lineTo(4*cs/8,5*cs/8);
-			gfx.lineTo(4*cs/8,3*cs/8);
-			gfx.lineTo(2*cs/8,3*cs/8);
-			gfx.lineTo(4*cs/8,5*cs/8);
+			gfx.moveTo(2*cs/8, 7*cs/16);
+			gfx.lineTo(4*cs/8, 7*cs/16);
+			gfx.moveTo(2*cs/8, 9*cs/16);
+			gfx.lineTo(4*cs/8, 9*cs/16);
 			gfx.stroke();
 			break;
 
@@ -350,10 +332,10 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/2,  cs/4);
 			gfx.lineTo(5*cs/8,3*cs/8);
 
-			gfx.moveTo( 8*cs/16, 7*cs/16);
-			gfx.lineTo( 8*cs/16,11*cs/16);
-			gfx.moveTo( 6*cs/16, 9*cs/16);
-			gfx.lineTo(10*cs/16, 9*cs/16);
+			gfx.moveTo( 4*cs/8, 4*cs/8);
+			gfx.lineTo( 4*cs/8, 6*cs/8);
+			gfx.moveTo( 3*cs/8, 5*cs/8);
+			gfx.lineTo( 5*cs/8, 5*cs/8);
 			gfx.stroke();
 			break;
 
@@ -363,10 +345,10 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/2,3*cs/4);
 			gfx.lineTo(5*cs/8,5*cs/8);
 
-			gfx.moveTo( 8*cs/16, 5*cs/16);
-			gfx.lineTo( 8*cs/16, 9*cs/16);
-			gfx.moveTo( 6*cs/16, 7*cs/16);
-			gfx.lineTo(10*cs/16, 7*cs/16);
+			gfx.moveTo( 4*cs/8, 2*cs/8);
+			gfx.lineTo( 4*cs/8, 4*cs/8);
+			gfx.moveTo( 3*cs/8, 3*cs/8);
+			gfx.lineTo( 5*cs/8, 3*cs/8);
 			gfx.stroke();
 			break;
 
@@ -376,10 +358,10 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(  cs/4,  cs/2);
 			gfx.lineTo(3*cs/8,5*cs/8);
 
-			gfx.moveTo( 9*cs/16, 6*cs/16);
-			gfx.lineTo( 9*cs/16,10*cs/16);
-			gfx.moveTo( 7*cs/16, 8*cs/16);
-			gfx.lineTo(11*cs/16, 8*cs/16);
+			gfx.moveTo( 5*cs/8, 3*cs/8);
+			gfx.lineTo( 5*cs/8, 5*cs/8);
+			gfx.moveTo( 4*cs/8, 4*cs/8);
+			gfx.lineTo( 6*cs/8, 4*cs/8);
 			gfx.stroke();
 			break;
 
@@ -389,10 +371,10 @@ App.makeInstructionCatalog = function(){
 			gfx.lineTo(3*cs/4,  cs/2);
 			gfx.lineTo(5*cs/8,5*cs/8);
 
-			gfx.moveTo( 7*cs/16, 6*cs/16);
-			gfx.lineTo( 7*cs/16,10*cs/16);
-			gfx.moveTo( 5*cs/16, 8*cs/16);
-			gfx.lineTo( 9*cs/16, 8*cs/16);
+			gfx.moveTo( 3*cs/8, 3*cs/8);
+			gfx.lineTo( 3*cs/8, 5*cs/8);
+			gfx.moveTo( 2*cs/8, 4*cs/8);
+			gfx.lineTo( 4*cs/8, 4*cs/8);
 			gfx.stroke();
 			break;
 	}
