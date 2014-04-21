@@ -80,6 +80,8 @@ App.PlanningLevel = function(){
 		}
 	}
 
+	this.setLock = function(color, state){ that.locks[color] = state; }
+
 	// returns the states of the specified layer lock
 	this.isLocked = function(color){ return that.locks[color]; }
 
