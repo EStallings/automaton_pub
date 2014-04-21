@@ -11,8 +11,9 @@ App.PlanningLevel = function(){
 	this.redoStack = [];
 	this.locks = [false, false, false, false]; // R,G,B,Y
 	this.userOverlapSetting = 1; // 0 - reject operation, 1 - overwrite
+	this.graphics = new App.PlanningGraphics();
 
-		// ---------------------------------------------
+	// ---------------------------------------------
 
 	this.operation = function(opId, instructions, shiftX, shiftY, param, newVal, oldVal, overWrite){
 		this.opId = opId;
@@ -457,5 +458,5 @@ App.PlanningLevel = function(){
 		}
 	}
 
-	this.dynamicRender = function(){}
+	this.dynamicRender = function(){ that.graphics.dynamicRender(App.GameRenderer.tempGfx); }
 }
