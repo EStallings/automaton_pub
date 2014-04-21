@@ -155,8 +155,8 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined){
-					if(this.cell.tokens.length !== 0)
-						a.tokenHeld.add(this.cell.tokens[this.cell.tokens.length-1].number);
+					if(this.cell.topToken() !== undefined)
+						a.tokenHeld.add(this.cell.topToken());
 					else a.tokenHeld.add(1);
 				}
 			};break;
@@ -166,8 +166,8 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined){
-					if(this.cell.tokens.length !== 0)
-						a.tokenHeld.sub(this.cell.tokens[this.cell.tokens.length-1].number);
+					if(this.cell.topToken() !== undefined)
+						a.tokenHeld.sub(this.cell.topToken());
 					else a.tokenHeld.sub(1);
 				}
 			};break;
@@ -176,9 +176,8 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld !== undefined && this.cell.tokens.length !== 0){
-					a.tokenHeld.number = this.cell.tokens[this.cell.tokens.length-1].number;
-				}
+				if(a.tokenHeld !== undefined && this.cell.topToken() !== undefined)
+					a.tokenHeld.number = this.cell.topToken();
 			};break;
 
 		case App.InstCatalog.TYPES['SYNC']:
@@ -237,9 +236,10 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
+				if(this.cell.topToken() !== undefined){
+					if(this.cell.topToken() !== a.tokenHeld.number)return;
+				}else if(a.tokenHeld.number !== 0)return;
 				a.direction = App.DIRECTIONS.UP;
-				// TODO: IMPLEMENT NEW FEATURE
 			};break;
 
 		case App.InstCatalog.TYPES['COND EQUAL D']:
@@ -247,9 +247,10 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
+				if(this.cell.topToken() !== undefined){
+					if(this.cell.topToken() !== a.tokenHeld.number)return;
+				}else if(a.tokenHeld.number !== 0)return;
 				a.direction = App.DIRECTIONS.DOWN;
-				// TODO: IMPLEMENT NEW FEATURE
 			};break;
 
 		case App.InstCatalog.TYPES['COND EQUAL L']:
@@ -257,9 +258,10 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
+				if(this.cell.topToken() !== undefined){
+					if(this.cell.topToken() !== a.tokenHeld.number)return;
+				}else if(a.tokenHeld.number !== 0)return;
 				a.direction = App.DIRECTIONS.LEFT;
-				// TODO: IMPLEMENT NEW FEATURE
 			};break;
 
 		case App.InstCatalog.TYPES['COND EQUAL R']:
@@ -267,9 +269,10 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
+				if(this.cell.topToken() !== undefined){
+					if(this.cell.topToken() !== a.tokenHeld.number)return;
+				}else if(a.tokenHeld.number !== 0)return;
 				a.direction = App.DIRECTIONS.RIGHT;
-				// TODO: IMPLEMENT NEW FEATURE
 			};break;
 
 		case App.InstCatalog.TYPES['COND + U']:
