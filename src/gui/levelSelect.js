@@ -7,7 +7,7 @@ App.setupLevelSelect = function(){
 	levelSelect.lvl1Button = new App.Button('Move','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*0,56+28*0,168,24,200,000);
 	levelSelect.lvl2Button = new App.Button('Increment','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*1,56+28*0,168,24,230,030);
 	levelSelect.lvl3Button = new App.Button('Mod 2','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*2,56+28*0,168,24,260,060);
-	levelSelect.lvl4Button = new App.Button('Level 4','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*0,56+28*1,168,24,300,100);
+	levelSelect.lvl4Button = new App.Button('Instruction Set','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*0,56+28*1,168,24,300,100);
 	levelSelect.lvl5Button = new App.Button('Level 5','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*1,56+28*1,168,24,330,130);
 	levelSelect.lvl6Button = new App.Button('Level 6','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*2,56+28*1,168,24,360,160);
 	levelSelect.lvl7Button = new App.Button('Level 7','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*0,56+28*2,168,24,400,200);
@@ -162,7 +162,10 @@ App.setupLevelSelect = function(){
 			App.ModeHandler.pushMode('planning');
 			levelSelect.requestStaticRenderUpdate = true;
 		}if(levelSelect.lvl4Button.collide(x,y)){
-			App.ModeHandler.pushMode('coming soon');
+			App.Game.setMode(App.Game.modes.PLANNING);
+			App.Game.currentPlanningLevel = App.Game.parseLevel("AllInstructions`0`10`13~1`1`0`0~2`1`0`1~3`1`0`2~4`1`0`3~1`2`0`4~2`2`0`5~3`2`0`6~4`2`0`7~1`3`0`19~2`3`0`20~3`3`0`21~4`3`0`22~1`4`0`23~2`4`0`24~3`4`0`25~4`4`0`26~1`5`0`27~2`5`0`28~3`5`0`29~4`5`0`30~1`6`0`31~2`6`0`32~3`6`0`33~4`6`0`34~6`1`0`10~7`1`0`11~8`1`0`12~6`2`0`13~7`2`0`14~8`2`0`15~6`3`0`18~6`5`0`16~6`5`1`16~6`5`2`16~6`5`3`16~7`5`0`17~7`5`1`17~7`5`2`17~7`5`3`17~1`8`0`8`A`0~2`8`0`8`B`0~3`8`0`8`C`0~4`8`0`8`D`0~5`8`0`8`E`0~6`8`0`8`F`0~7`8`0`8`G`0~8`8`0`8`H`0~1`9`1`8`I`0~2`9`1`8`J`0~3`9`1`8`K`0~4`9`1`8`L`0~5`9`1`8`M`0~6`9`1`8`N`0~7`9`1`8`O`0~8`9`1`8`P`0~1`10`2`8`Q`0~2`10`2`8`R`0~3`10`2`8`S`0~4`10`2`8`T`0~5`10`2`8`U`0~6`10`2`8`V`0~7`10`2`8`W`0~8`10`2`8`X`0~4`11`3`8`Y`0~5`11`3`8`Z`0");
+			App.GameRenderer.bestFit();
+			App.ModeHandler.pushMode('planning');
 			levelSelect.requestStaticRenderUpdate = true;
 		}if(levelSelect.lvl5Button.collide(x,y)){
 			App.ModeHandler.pushMode('coming soon');
