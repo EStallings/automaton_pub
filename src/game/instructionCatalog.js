@@ -133,6 +133,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(  cs/4,3*cs/4);
 			gfx.lineTo(  cs/2,  cs/4);
 			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.lineTo(  cs/4,3*cs/4);
 			gfx.stroke();
 			break;
 
@@ -141,6 +142,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(  cs/4,  cs/4);
 			gfx.lineTo(  cs/2,3*cs/4);
 			gfx.lineTo(3*cs/4,  cs/4);
+			gfx.lineTo(  cs/4,  cs/4);
 			gfx.stroke();
 			break;
 
@@ -149,6 +151,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(3*cs/4,  cs/4);
 			gfx.lineTo(  cs/4,  cs/2);
 			gfx.lineTo(3*cs/4,3*cs/4);
+			gfx.lineTo(3*cs/4,  cs/4);
 			gfx.stroke();
 			break;
 
@@ -157,6 +160,7 @@ App.makeInstructionCatalog = function(){
 			gfx.moveTo(  cs/4,  cs/4);
 			gfx.lineTo(3*cs/4,  cs/2);
 			gfx.lineTo(  cs/4,3*cs/4);
+			gfx.lineTo(  cs/4,  cs/4);
 			gfx.stroke();
 			break;
 
