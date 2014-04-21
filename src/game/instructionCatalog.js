@@ -391,23 +391,14 @@ App.makeInstructionCatalog = function(){
 		gfx.save();
 		gfx.translate(x,y);
 
-		if(streamBkg)switch(c){
-			case App.COLORS.RED:
-				gfx.fillStyle='rgba(255,0,0,0.2)';
-				gfx.fillRect(2,2,2*cs-4,2*cs-4);
-				break;
-			case App.COLORS.GREEN:
-				gfx.fillStyle='rgba(0,255,0,0.2)';
-				gfx.fillRect(-cs+2,2,2*cs-4,2*cs-4);
-				break;
-			case App.COLORS.BLUE:
-				gfx.fillStyle='rgba(0,0,255,0.2)';
-				gfx.fillRect(2,-cs+2,2*cs-4,2*cs-4);
-				break;
-			case App.COLORS.YELLOW:
-				gfx.fillStyle='rgba(255,255,0,0.2)';
-				gfx.fillRect(-cs+2,-cs+2,2*cs-4,2*cs-4);
-				break;
+		if(streamBkg){
+			gfx.fillStyle = App.TRANS_COLOR[c];
+			switch(c){
+				case App.COLORS.RED:    gfx.fillRect(    2,    2,2*cs-4,2*cs-4);break;
+				case App.COLORS.GREEN:  gfx.fillRect(-cs+2,    2,2*cs-4,2*cs-4);break;
+				case App.COLORS.BLUE:   gfx.fillRect(    2,-cs+2,2*cs-4,2*cs-4);break;
+				case App.COLORS.YELLOW: gfx.fillRect(-cs+2,-cs+2,2*cs-4,2*cs-4);break;
+			}
 		}
 
 		switch(c){
@@ -625,9 +616,10 @@ App.makeInstructionCatalog = function(){
 
 		gfx.lineWidth = 2;
 		gfx.beginPath();
+		gfx.fillStyle = App.FILL_COLOR[c];
+		gfx.strokeStyle = App.STROKE_COLOR[c];
 		switch(c){
 			case App.COLORS.RED:
-				gfx.fillStyle='#ff0000';gfx.strokeStyle='#800000';
 				gfx.moveTo(2,2);
 				gfx.lineTo(cs-2,2);
 				gfx.lineTo(cs-2,cs/2);
@@ -637,7 +629,6 @@ App.makeInstructionCatalog = function(){
 				gfx.lineTo(2,2);
 				break;
 			case App.COLORS.GREEN:
-				gfx.fillStyle='#00ff00';gfx.strokeStyle='#008000';
 				gfx.moveTo(cs-2,2);
 				gfx.lineTo(2,2);
 				gfx.lineTo(2,cs/2);
@@ -647,7 +638,6 @@ App.makeInstructionCatalog = function(){
 				gfx.lineTo(cs-2,2);
 				break;
 			case App.COLORS.BLUE:
-				gfx.fillStyle='#0000ff';gfx.strokeStyle='#000080';
 				gfx.moveTo(2,cs-2);
 				gfx.lineTo(cs-2,cs-2);
 				gfx.lineTo(cs-2,cs/2);
@@ -657,7 +647,6 @@ App.makeInstructionCatalog = function(){
 				gfx.lineTo(2,cs-2);
 				break;
 			case App.COLORS.YELLOW:
-				gfx.fillStyle='#ffff00';gfx.strokeStyle='#808000';
 				gfx.moveTo(cs-2,cs-2);
 				gfx.lineTo(2,cs-2);
 				gfx.lineTo(2,cs/2);
@@ -677,30 +666,28 @@ App.makeInstructionCatalog = function(){
 
 		gfx.lineWidth = 2;
 		gfx.beginPath();
+		gfx.fillStyle = App.FILL_COLOR[c];
+		gfx.strokeStyle = App.STROKE_COLOR[c];
 		switch(c){
 			case App.COLORS.RED:
-				gfx.fillStyle='#ff0000';gfx.strokeStyle='#800000';
 				gfx.moveTo(cs-2,cs-2);
 				gfx.lineTo(2,cs-2);
 				gfx.lineTo(cs-2,2);
 				gfx.lineTo(cs-2,cs-2);
 				break;
 			case App.COLORS.GREEN:
-				gfx.fillStyle='#00ff00';gfx.strokeStyle='#008000';
 				gfx.moveTo(2,cs-2);
 				gfx.lineTo(2,2);
 				gfx.lineTo(cs-2,cs-2);
 				gfx.lineTo(2,cs-2);
 				break;
 			case App.COLORS.BLUE:
-				gfx.fillStyle='#0000ff';gfx.strokeStyle='#000080';
 				gfx.moveTo(cs-2,2);
 				gfx.lineTo(2,2);
 				gfx.lineTo(cs-2,cs-2);
 				gfx.lineTo(cs-2,2);
 				break;
 			case App.COLORS.YELLOW:
-				gfx.fillStyle='#ffff00';gfx.strokeStyle='#808000';
 				gfx.moveTo(2,2);
 				gfx.lineTo(2,cs-2);
 				gfx.lineTo(cs-2,2);
