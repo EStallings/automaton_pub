@@ -3,13 +3,13 @@ App.makeInstructionCatalog = function(){
 
 	ins.TYPES = {
 	// --------------------------------------------- AUTOMATON SPAWN
-		'SPAWN UP'      : 0,            'SPAWN RIGHT'    : 1,
-		'SPAWN DOWN'    : 2,            'SPAWN LEFT'     : 3,
+		'SPAWN UP'      : 0,            'SPAWN RIGHT'   : 1,
+		'SPAWN DOWN'    : 2,            'SPAWN LEFT'    : 3,
 	// ------------------------------------------- DIRECTION CONTROL
-		'UP'            : 4,            'RIGHT'          : 5,
-		'DOWN'          : 6,            'LEFT'           : 7,
+		'UP'            : 4,            'RIGHT'         : 5,
+		'DOWN'          : 6,            'LEFT'          : 7,
 	// ---------------------------------------------------- TOKEN IO
-		'IN'            : 8,            'OUT'            : 9,
+		'IN'            : 8,            'OUT'           : 9,
 	// ------------------------------------------ TOKEN MANIPULATION
 		'GRAB'          : 10,           'DROP'          : 11,
 		'GRAB/DROP'     : 12,           'INC'           : 13,
