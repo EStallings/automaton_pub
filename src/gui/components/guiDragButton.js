@@ -35,7 +35,10 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 			that.w);
 	}
 
-	this.subClickStart = function(){};
+	this.subClickStart = function(){
+		if(this.instruction >=4 && this.instruction <= 7)
+			App.GuiInstDrag.changeDirection(this.instruction-4);
+	};
 
 	//The drag part of 'drag and drop'
 	this.subUpdate = function(){

@@ -7,6 +7,7 @@
 App.guiFrame = function(gfx){
 	this.gfx = gfx;
 	this.frame = [];
+	this.lastActive = null;
 
 	//gets reset after one frame.
 	var that = this;
@@ -26,6 +27,7 @@ App.guiFrame = function(gfx){
 
 	this.addComponent = function(comp){
 		this.frame.push(comp);
+		comp.gui = this;
 	}
 
 	this.testCoordinates = function(x,y){
@@ -43,6 +45,7 @@ App.guiFrame = function(gfx){
 
 	//lmb must be true or false. if it's false, it will block input but not do anything
 	this.mouseDown = function(x, y){
+		that.lastActive = null;
 		var comps = that.testCoordinates(x, y);
 		if(!comps.f && !comps.p)
 			return false;
@@ -71,7 +74,7 @@ App.guiFrame = function(gfx){
 		var flag = false;
 		for(var c in this.frame)if(this.frame[c].update){
 			if(this.frame[c]._update()) flag = true; //if we need to render
-			this.frame[c].update();
+			if(this.frame[c].update()) flag = true;
 		}
 		return flag;
 	}
