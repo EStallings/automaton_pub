@@ -1,180 +1,127 @@
 
-//Simple text display. Has a background, some text. Nothing fancy.
-App.GuiTextBox = function (guiCollider, text, panel) {
-	this.guiCollider = guiCollider;
-	this.text = text;
-	if (panel) panel.addChild(this);
-	this.color = App.GuiColors.gray[6];
-
-	var textX = this.guiCollider.getx() + 2;// (this.guiCollider.w / 2); // for centering text
-	var textY = this.guiCollider.gety() + (this.guiCollider.h / 2); // for centering text
-
-	//Draw our text
-	this.render = function (gfx) {
-		gfx.fillStyle = this.color;
-		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
-		gfx.fillStyle = App.GuiColors.gray[0];
-		gfx.fillText(this.text, textX, textY);
-	}
-}
-
 //NOT a simple text display.
-App.GuiEditableTextBox = function(guiCollider, defaultText, panel){
-	this.guiCollider = guiCollider;
-	this.text = defaultText;
-	this.lastText = defaultText;
-	this.defaultText = defaultText;
-	if(panel) panel.addChild(this);
-	this.activeColor = App.GuiColors.gray[4];
-	this.inactiveColor = App.GuiColors.gray[6];
-	this.color = this.inactiveColor;
-	this.clicked = false;
-	this.editmode = false;
-	this.guiCollider.functional = true;
-	this.cursorPosition = 0;
-	this.cursorTime = 0;
-	this.cursorTimeout = 15;
-	this.next = null;
-	this.password = false;
+App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
+	App.GuiTools.Component.call(this, x, y, w, h, en, ex, xorigin, yorigin);
 
-	this.resetText = function(){
-		this.text = this.defaultText;
-	}
+	this.activeColor = this.baseColor;
+	this.activeTextColor = this.textColor;
+	this.hoverColor = this.baseColor;
 
-	//Draw the text box, including cursor
-	this.render = function(gfx){
-		gfx.fillStyle = this.color;
-		gfx.fillRect(this.guiCollider.getx(), this.guiCollider.gety(), this.guiCollider.w, this.guiCollider.h);
-		gfx.fillStyle = App.GuiColors.gray[0];
-		//if set font, set font here.
-		var textX = this.guiCollider.getx() + 2;// (this.guiCollider.w / 2); // for centering text
-		var textY = this.guiCollider.gety() + 5 + (this.guiCollider.h / 2); // for centering text
-		var metrics = gfx.measureText(this.text.substring(0, this.cursorPosition));
-		if(metrics.width + textX > this.guiCollider.getx() + this.guiCollider.w)
-			this.text = this.text.substring(0, this.text.length - 1);
-		if(!this.password || this.text === this.defaultText)
-			gfx.fillText(this.text, textX, textY);
-		else
-		{
-			var str = "";
-			for(var k in this.text){
-				str += '*';
-			}
-			gfx.fillText(str, textX, textY);
-		}
+	this.txt = defaultText;
+	this.spacing = -2;
 
-		if(this.cursorTime > 0){
-			gfx.fillRect(textX + metrics.width, textY - 10, 1, 10);
-		}
+	this.cursorSpos = null;
+	this.cursorSx = -1;
+	this.cursorSw = -1;
 
-		if(this.editmode)
-			gfx.fillText('Press Enter to save, Esc to cancel.', textX, textY - 15);
-	}
+	this.cursorEpos = null;
+	this.cursorEx = -1;
+	this.cursorEw = -1;
 
-	//Update cursor
-	this.update = function(){
-		if(!this.editmode)
-			return;
+	this.cursortime = 0;
+	this.cursormax = 30;
 
-		this.cursorTime ++;
-		if(this.cursorTime > this.cursorTimeout){
-			this.cursorTime = -1 * this.cursorTimeout;
-		}
-		App.Gui.activeComponent = this;
-	}
+	this.editing = false;
+	this.functional = true;
 
-	//begin a click - this is just for the button-like functionality
-	this.clickStart = function(){
-		if(this.editmode)
-			return;
-		this.clicked = true;
-	}
-
-	//For button-like functionality. Tests if the user moves their mouse off the button
-	this.clickDrag = function(x, y){
-		if(this.editmode)
-			return;
-		if(!this.guiCollider.collides(x,y)){
-			this.clicked = false;
-		}
-	}
-
-	//For button-like functionality. Enters edit mode if the click is successful
-	this.clickEnd = function(x, y){
-		if(this.editmode)
-			return;
-		if(!this.guiCollider.collides(x,y))
-			return;
-		if(this.clicked)
-			this.enterEditMode();
-		this.clicked = false;
-	}
-
-
-
-	//Ohh, javascript
 	var that = this;
 
-	//Enters the edit mode: steals input from the inputhandler
-	this.enterEditMode = function(){
-		App.InputHandler.hijackInput(that.listenKeyStroke);
-		this.editmode = true;
-		this.lastText = this.text;
-		this.text = (this.text === this.defaultText)? '' : this.text;
-		this.cursorPosition = this.text.length;
+	this.renderLayers['Text'] = function(gfx){
+		gfx.fillStyle = that.textColor;
+		var col = that.textColor;
+		if((that.cursortime > 0) && that.editing){
+			gfx.fillRect(that.cursorSx + that.getx(), that.gety()+3, (that.cursorEx - that.cursorSx) + that.cursorEw, that.h -6);
+			col = '#ffffff';
+		}
+
+		text(gfx,that.txt,that.getx()+2,that.gety()+3,that.h-6,that.spacing, that.textColor, that.cursorSpos, that.cursorEpos, col);
+	};
+
+	this.update = function(){
+		if(!(this.gui.lastActive === this))
+		{
+			this.editing = false;
+			App.InputHandler.releaseKeys();
+			this.cursorSpos = null;
+			this.cursorSx = -1;
+			this.cursorSw = -1;
+			this.cursorEpos = null;
+			this.cursorEx = -1;
+			this.cursorEw = -1;
+
+			this.cursortime = 0;
+
+			return;
+		}
+		this.cursortime = (this.cursortime-1 > -(this.cursormax -1))? this.cursortime-1 : this.cursormax;
+
+		if(App.InputHandler.lmb)
+			this.clickEnd();
+
+		return true;
 	}
 
-	//restores input control to the inputhandler, exits edit mode.
-	this.exitEditMode = function(proceed){
-		App.InputHandler.deHijackInput();
-		this.editmode = false;
-		this.cursorTime = 0;
-		this.cursorPosition = 0;
-		if(this.next && proceed)
-			this.next.enterEditMode();
+	this.clickStart = function(){
+		this.editing = true;
+		App.InputHandler.seizeKeys(that.keyHandler);
+		this.gui.lastActive = this;
+
+		var c = this.getTextCoords();
+
+		if(this.cursorSpos === null) this.cursortime = this.cursormax;
+		this.cursorSpos = c.i;
+		this.cursorEpos = c.i + 1;
+
+		this.cursorSw = c.cw;
+		this.cursorSx = c.x - this.cursorSw - this.spacing;
+		this.cursorEw = c.cw;
+		this.cursorEx = this.cursorSx;
+
+
+		//TODO find position in text
 	}
 
-	//Helper function to insert a keystroke at the cursor position
-	this.insertKey = function(key){
-		if(this.text.length === 0)
-			this.text = key;
-		else
-			this.text = this.text.substring(0, this.cursorPosition) + key + this.text.substring(this.cursorPosition, this.text.length);
+	this.getTextCoords = function(){
+		var xcoord = App.InputHandler.mouseX - this.getx();
+		var gfx = App.Canvases.layers[0].getContext('2d');
+
+		gfx.textBaseline = "alphabetic";
+		gfx.font = "800 "+(this.h-6)*1.37+"px arial";
+		var x = 2, i = -1;
+		do{
+			i++;
+			var cw = gfx.measureText(this.txt.charAt(i)).width+this.spacing;
+			x += cw;
+
+		}while(i<this.txt.length && (x < xcoord));
+
+		return {i:i, x:x, cw:cw};
 	}
 
+	this.clickEnd = function(){
+		var c = this.getTextCoords();
 
-	//Could use some cleanup; callback that receives the redirected input during edit mode
-	this.listenKeyStroke = function(key, shift){
+		this.cursorEpos = c.i;
 
-		if(key.length <= 1){
-			that.insertKey((shift)? key : key.toLowerCase());
-			that.cursorPosition ++;
-		}
-		if(key === 'Space'){
-			that.insertKey(' ');
-			that.cursorPosition ++;
-		}
-		if(key === 'Backspace'){
-			that.text = that.text.substring(0, that.cursorPosition-1) + that.text.substring(that.cursorPosition, that.text.length);
-			that.cursorPosition --;
-		}
-		if(key === 'Left'){
-			that.cursorPosition --;
-		}
-		if(key === 'Right'){
-			that.cursorPosition ++;
-		}
-		if(that.cursorPosition > that.text.length)
-			that.cursorPosition = that.text.length;
-		else if(that.cursorPosition < 0)
-			that.cursorPosition = 0;
+		this.cursorEw = c.cw;
+		this.cursorEx = c.x - this.cursorEw - this.spacing;
+	}
 
-		//Having a way to exit edit mode is VITAL
-		if(key === 'Enter')
-			that.exitEditMode(true);
-		if(key === 'Esc') {
-			that.text = that.lastText;
-			that.exitEditMode(false);
+	this.keyHandler = function(key){
+		console.log(key);
+		var k = App.InputHandler.keyCodeToChar[key].toLowerCase();
+		console.log(App.InputHandler.keysDown);
+		if(App.InputHandler.checkKey("Shift")){
+			console.log("Shift held down!");
+			k = k.toUpperCase();
+		}
+
+		if(App.InputHandler.alphaNumeric(key)){
+			that.txt = that.txt.substring(0,that.cursorSpos+1) + k + that.txt.substring(that.cursorEpos, that.txt.length);
+			that.cursorEpos = that.cursorSpos = that.cursorSpos+1;
 		}
 	}
+
 }
+App.GuiTextBox.prototype = Object.create(g.Component);
+App.GuiTextBox.prototype.constructor = App.GuiTextBox;

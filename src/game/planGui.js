@@ -249,6 +249,7 @@ App.setupPlanGui = function(){
 	planMode.registerMouseMoveFunc(function(x,y){
 		App.GameRenderer.screenToGridCoords(x,y);
 		if(App.InputHandler.rmb)App.GameRenderer.pan(x,y);
+		App.Game.currentPlanningLevel.graphics.mouseMove(App.GameRenderer.mouseX,App.GameRenderer.mouseY);
 	});
 
 	planMode.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){
@@ -282,15 +283,19 @@ App.setupPlanGui = function(){
 
 		if(App.Game.currentPlanningLevel.currentSelection.length !== 0)
 			planMode.moveStart = [App.GameRenderer.mouseX,App.GameRenderer.mouseY,App.GameRenderer.mouseC];
+
+		App.Game.currentPlanningLevel.graphics.mouseDown('lmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);
 	});
 
 	planMode.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.MIDDLE,function(x,y){
 		planMode.selectStart = [App.GameRenderer.mouseX,App.GameRenderer.mouseY,App.GameRenderer.mouseC];
 		App.Game.currentPlanningLevel.currentSelection = [];
+		App.Game.currentPlanningLevel.graphics.mouseDown('mmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);
 	});
 
 	planMode.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.RIGHT,function(x,y){
 		App.GameRenderer.beginPan(x,y);
+		App.Game.currentPlanningLevel.graphics.mouseDown('rmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);
 	});
 
 	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){
@@ -309,6 +314,8 @@ App.setupPlanGui = function(){
 
 			planMode.moveStart = undefined;
 		}
+
+		App.Game.currentPlanningLevel.graphics.mouseUp('lmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);
 	});
 
 	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.MIDDLE,function(x,y){
@@ -317,6 +324,11 @@ App.setupPlanGui = function(){
 		                                                         App.GameRenderer.mouseX,App.GameRenderer.mouseY,App.GameRenderer.mouseC);
 			planMode.selectStart = undefined;
 		}
+		App.Game.currentPlanningLevel.graphics.mouseUp('mmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);
+	});
+
+	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.RIGHT,function(x,y){
+		App.Game.currentPlanningLevel.graphics.mouseUp('rmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);
 	});
 
 	planMode.registerMouseWheelFunc(function(w){

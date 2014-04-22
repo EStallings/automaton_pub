@@ -29,13 +29,13 @@ App.setupMainMenu = function(){
 			mainMenu.requestStaticRenderUpdate = true;
 		}, false, null, null);
 
-
+	mainMenu.textthing = new App.GuiTextBox(200, 300, 200, 25, "Hello", 100, 100, null, null);
 
 	mainMenu.gui.addComponent(mainMenu.playButton);
 	mainMenu.gui.addComponent(mainMenu.libraryButton);
 	mainMenu.gui.addComponent(mainMenu.sandboxButton);
 	mainMenu.gui.addComponent(mainMenu.settingsButton);
-
+	mainMenu.gui.addComponent(mainMenu.textthing);
 
 
 	mainMenu.alpha = mainMenu.goalAlpha = 0;

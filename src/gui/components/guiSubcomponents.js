@@ -51,6 +51,7 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 	this.renderLayers    = [];
 
 	this.interpmode = 'none';
+	this.gui = null;
 
 	var that = this;
 
@@ -214,7 +215,7 @@ g.Button = function(x, y, w, h, en, ex, callback, continuous, xorigin, yorigin){
 	}
 
 	this.clickStart = function(){
-
+		this.gui.lastActive = this;
 	}
 
 	//If the click was successful, fire the callback
@@ -252,6 +253,7 @@ g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
 		this.sticky = true;
 		this.overridepos = true;
 		this.subClickStart();
+		this.gui.lastActive = this;
 	}
 
 	this.update = function(){

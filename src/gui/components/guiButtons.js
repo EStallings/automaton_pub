@@ -40,7 +40,7 @@ App.GuiToolbarButton.prototype.constructor = App.GuiToolbarButton;
 
 
 App.GuiLockButton = function(x, y, delay, color, xorigin, yorigin, pos){
-	App.GuiToolbarButton.call(this, x, y, delay, color, xorigin, yorigin, pos, function(){ /* TODO lock */});
+	App.GuiToolbarButton.call(this, x, y, delay, color, xorigin, yorigin, pos, function(){App.Game.currentPlanningLevel.toggleLock(color)});
 }
 App.GuiLockButton.prototype = Object.create(App.GuiToolbarButton);
 App.GuiLockButton.prototype.constructor = App.GuiLockButton;

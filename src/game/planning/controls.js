@@ -16,7 +16,7 @@ App.PlanningControls = function(){
 	this.mouseMove = function(scrnX, scrnY, cellX, cellY, cellC){
 		this.scrnX = scrnX; this.scrnY = scrnY;
 		this.cellX = cellX; this.cellY = cellY; this.cellC = cellC;
-		//console.log(cellX + ' ' + cellY + ' ' + cellC);
+		console.log(cellX + ' ' + cellY + ' ' + cellC);
 		if(that.lmb[0] === 'down' && (that.lmb[1] !== scrnX || that.lmb[2] !== scrnY)){ that.lmbDrag = true; } else { that.lmbDrag = false; }
 		if(that.mmb[0] === 'down' && (that.mmb[1] !== scrnX || that.mmb[2] !== scrnY)){ that.mmbDrag = true; } else { that.mmbDrag = false; }
 		if(that.rmb[0] === 'down' && (that.rmb[1] !== scrnX || that.rmb[2] !== scrnY)){ that.rmbDrag = true; } else { that.rmbDrag = false; }
@@ -57,57 +57,6 @@ App.PlanningControls = function(){
 				that.moveStart = [-1,-1,-1];
 			}
 			else{ // single click
-				// normal arrows
-				if(App.InputHandler.keysDown['A']){
-					if(App.Game.currentPlanningLevel.insertDir === 'Left'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,6)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Right'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,7)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Up'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,4)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Down'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,5)); }
-				}
-
-				// streams
-				if(App.InputHandler.keysDown['I']){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,8));	}
-				if(App.InputHandler.keysDown['O']){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,9));	}
-
-				// spawn
-				if(App.InputHandler.keysDown['S']){
-					if(App.Game.currentPlanningLevel.insertDir === 'Left'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,2)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Right'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,3)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Up'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,0)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Down'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,1)); }
-				}
-
-				// cond 0
-				if(App.InputHandler.keysDown['C']){
-					if(App.Game.currentPlanningLevel.insertDir === 'Left'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,20)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Right'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,21)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Up'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,18)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Down'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,19)); }
-				}
-
-				// cond token
-				if(App.InputHandler.keysDown['V']){
-					if(App.Game.currentPlanningLevel.insertDir === 'Left'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,24)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Right'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,25)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Up'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,22)); }
-					if(App.Game.currentPlanningLevel.insertDir === 'Down'){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,23)); }
-				}
-
-				// increment
-				if(App.InputHandler.keysDown['Z']){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,13)); }
-
-				// decrement
-				if(App.InputHandler.keysDown['X']){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,14)); }
-
-				// toggle color
-				if(App.InputHandler.keysDown['T']){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,16)); }
-
-				// pause
-				if(App.InputHandler.keysDown['P']){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,17)); }
-
-				// sync
-				if(App.InputHandler.keysDown['Q']){ App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(cellX,cellY,cellC,15)); }
-
 			}
 		}
 		
@@ -121,11 +70,5 @@ App.PlanningControls = function(){
 		console.log('mmb: ' + that.mmb);
 		console.log('rmb: ' + that.rmb);
 		console.log('');*/
-	}
-
-	this.delKey = function(){
-		if(App.Game.currentPlanningLevel.currentSelection !== []){
-			App.Game.currentPlanningLevel.delete(App.Game.currentPlanningLevel.currentSelection);
-		}
 	}
 }
