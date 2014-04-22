@@ -22,9 +22,15 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			case App.COLORS.YELLOW: rx=this.x*cs+cs/2; ry=this.y*cs+cs/2; break;
 		}
 
+		var data = this.data;
 		var streamBkg = false;
 		if(this.type === App.InstCatalog.TYPES['IN'] || this.type === App.InstCatalog.TYPES['OUT'])streamBkg = true;
-		App.InstCatalog.render(this.gfx,this.type,rx,ry,this.color,cs/2,this.data,streamBkg);
+		if(this.type === App.InstCatalog.TYPES['FLIP FLOP U']
+		|| this.type === App.InstCatalog.TYPES['FLIP FLOP D']
+		|| this.type === App.InstCatalog.TYPES['FLIP FLOP L']
+		|| this.type === App.InstCatalog.TYPES['FLIP FLOP R'])
+			data = App.Game.flipFlop[this.color];
+		App.InstCatalog.render(this.gfx,this.type,rx,ry,this.color,cs/2,data,streamBkg);
 		this.gfx.restore();
 	}
 
@@ -323,28 +329,40 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				// TODO: IMPLEMENT NEW FEATURE
+				App.Game.flipFlop[this.color] = !App.Game.flipFlop[this.color];
+				App.GameRenderer.requestStaticRenderUpdate = true;
+				if(App.Game.flipFlop[this.color] === true)return;
+				a.direction = App.DIRECTIONS.UP;
 			};break;
 
 		case App.InstCatalog.TYPES['FLIP FLOP D']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				// TODO: IMPLEMENT NEW FEATURE
+				App.Game.flipFlop[this.color] = !App.Game.flipFlop[this.color];
+				App.GameRenderer.requestStaticRenderUpdate = true;
+				if(App.Game.flipFlop[this.color] === true)return;
+				a.direction = App.DIRECTIONS.DOWN;
 			};break;
 
 		case App.InstCatalog.TYPES['FLIP FLOP L']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				// TODO: IMPLEMENT NEW FEATURE
+				App.Game.flipFlop[this.color] = !App.Game.flipFlop[this.color];
+				App.GameRenderer.requestStaticRenderUpdate = true;
+				if(App.Game.flipFlop[this.color] === true)return;
+				a.direction = App.DIRECTIONS.LEFT;
 			};break;
 
 		case App.InstCatalog.TYPES['FLIP FLOP R']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				// TODO: IMPLEMENT NEW FEATURE
+				App.Game.flipFlop[this.color] = !App.Game.flipFlop[this.color];
+				App.GameRenderer.requestStaticRenderUpdate = true;
+				if(App.Game.flipFlop[this.color] === true)return;
+				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 	}
 }
