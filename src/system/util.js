@@ -20,15 +20,12 @@ function expInterp(val,goal,speed,threshold){
 }
 
 //draws a special subsection a certain color if specified
-function text(gfx,string,x,y,size,spacing, baseColor, specialIndexA,  specialIndexB, specialColor){
+function text(gfx,string,x,y,size,spacing){
 	gfx.textBaseline = "alphabetic";
 	gfx.font = "800 "+size*1.37+"px arial";
 	for(var i=0;i<string.length;++i){
-		if(i >= specialIndexA && i < specialIndexB)
-			gfx.fillStyle = specialColor;
 
 		gfx.fillText(string.charAt(i),x,y+size);
 		x += gfx.measureText(string.charAt(i)).width+spacing;
-		if(baseColor) gfx.fillStyle = baseColor;
 	}
 }

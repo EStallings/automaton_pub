@@ -11,12 +11,7 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	this.spacing = -2;
 
 	this.cursorSpos = null;
-	this.cursorSx = -1;
-	this.cursorSw = -1;
-
 	this.cursorEpos = null;
-	this.cursorEx = -1;
-	this.cursorEw = -1;
 
 	this.cursortime = 0;
 	this.cursormax = 30;
@@ -28,13 +23,25 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 
 	this.renderLayers['Text'] = function(gfx){
 		gfx.fillStyle = that.textColor;
-		var col = that.textColor;
-		if((that.cursortime > 0) && that.editing){
-			gfx.fillRect(that.cursorSx + that.getx(), that.gety()+3, (that.cursorEx - that.cursorSx), that.h -6);
-			col = '#ffffff';
+
+		var split = that.splitText();
+
+		beforeWidth = App.GuiTextBox.textMeasure.measureText(split.beforeStart).width     + (split.beforeStart.length * that.spacing);
+		middleWidth = App.GuiTextBox.textMeasure.measureText(split.betweenStartEnd).width + (split.betweenStartEnd.length * that.spacing);
+		afterWidth  = App.GuiTextBox.textMeasure.measureText(split.afterEnd).width        + (split.afterEnd.length * that.spacing);
+		beforeStart = that.getx()+2;
+		middleStart = beforeStart+beforeWidth;
+
+		text(gfx,that.txt,that.getx()+2,that.gety()+3,that.h-6,that.spacing);
+		if(that.cursorEpos){
+			gfx.fillRect(middleStart-(that.spacing/2), that.gety()+3, middleWidth, that.h -6);
+			gfx.fillStyle = '#ffffff';
+			text(gfx,split.betweenStartEnd,middleStart,that.gety()+3,that.h-6,that.spacing);
+		}
+		else if(that.cursortime > 0){
+			gfx.fillRect(middleStart-(that.spacing/2), that.gety()+1, 1, that.h-2);
 		}
 
-		text(gfx,that.txt,that.getx()+2,that.gety()+3,that.h-6,that.spacing, that.textColor, that.cursorSpos, that.cursorEpos, col);
 	};
 
 	this.update = function(){
@@ -43,11 +50,7 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 			this.editing = false;
 			App.InputHandler.releaseKeys();
 			this.cursorSpos = null;
-			this.cursorSx = -1;
-			this.cursorSw = -1;
 			this.cursorEpos = null;
-			this.cursorEx = -1;
-			this.cursorEw = -1;
 
 			this.cursortime = 0;
 
@@ -58,6 +61,7 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		if(App.InputHandler.lmb)
 			this.clickEnd();
 
+
 		return true;
 	}
 
@@ -66,24 +70,20 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		App.InputHandler.seizeKeys(that.keyHandler);
 		this.gui.lastActive = this;
 
-		var c = this.getTextCoords();
+		var i = this.getTextCoord();
 
 		if(this.cursorSpos === null) this.cursortime = this.cursormax;
-		this.cursorSpos = c.i;
-		this.cursorEpos = c.i + 1;
+		this.cursorSpos = i;
 
-		this.cursorSw = c.cw;
-		this.cursorSx = c.x - this.cursorSw - this.spacing;
-		this.cursorEw = c.cw + 1;
-		this.cursorEx = this.cursorSx;
+		console.log(this.cursorSpos);
 	}
 
-	this.getTextCoords = function(){
+	this.getTextCoord = function(){
 		var xcoord = App.InputHandler.mouseX - this.getx();
-		var gfx = App.Canvases.layers[0].getContext('2d');
-
+		var gfx = App.GuiTextBox.textMeasure;
 		gfx.textBaseline = "alphabetic";
 		gfx.font = "800 "+(this.h-6)*1.37+"px arial";
+
 		var x = 2, i = -1;
 		do{
 			i++;
@@ -92,25 +92,34 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 
 		}while(i<this.txt.length && (x < xcoord));
 
-		return {i:i, x:x, cw:cw};
+		return i;
 	}
 
 	this.clickEnd = function(){
-		var c = this.getTextCoords();
+		var i = this.getTextCoord();
 
-		if(c.i < this.cursorSpos){
-			this.cursorEpos = this.cursorSpos;
-			this.cursorEw = this.cursorSw;
-			this.cursorEx = this.cursorSx;
-			this.cursorSpos = c.i;
-			this.cursorSw = c.cw;
-			this.cursorSx = c.x - this.cursorEw - this.spacing;
+		//No-move
+		if(i == this.cursorSpos){
+			//this.cursorEpos = null;
 			return;
 		}
 
-		this.cursorEpos = c.i;
-		this.cursorEw = c.cw;
-		this.cursorEx = c.x - this.cursorEw - this.spacing;
+		//dragged from right to left; swap
+		if(i < this.cursorSpos){
+			this.cursorEpos = this.cursorSpos;
+			this.cursorSpos = i;
+			return;
+		}
+
+		//dragged from left to right
+		this.cursorEpos = i;
+	}
+
+	//returns the text split into an array of 3 parts: the text before the first index, the text between indices, and the text after
+	this.splitText = function(){
+		return {beforeStart:this.txt.substring(0, this.cursorSpos),
+			betweenStartEnd:(this.cursorEpos)?this.txt.substring(this.cursorSpos, this.cursorEpos):"",
+			afterEnd:(this.cursorEpos)?this.txt.substring(this.cursorEpos,this.txt.length):this.txt.substring(this.cursorSpos, this.txt.length)};
 	}
 
 	this.keyHandler = function(key){
@@ -123,20 +132,32 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 			console.log("Shift held down!");
 			k = k.toUpperCase();
 		}
+		var split = that.splitText();
 
 		if(App.InputHandler.alphaNumeric(key)){
-			that.txt = that.txt.substring(0,that.cursorSpos+1) + k + that.txt.substring(that.cursorEpos, that.txt.length);
-			that.cursorEpos = that.cursorSpos = that.cursorSpos+1;
+			that.txt = split.beforeStart + k + split.afterEnd;
+			that.cursorEpos = null;
+			that.cursorSpos ++;
 		}
 		else if(k === 'backspace'){
-			that.txt = that.txt.substring(0, that.cursorSpos)  + that.txt.substring(that.cursorEpos, that.txt.length);
-			that.cursorEpos = that.cursorSpos;
+			if(that.cursorEpos)
+				that.txt = split.beforeStart + split.afterEnd;
+			else
+				that.txt = split.beforeStart.substring(0, split.beforeStart.length-1) + split.afterEnd;
+
+			that.cursorEpos = null;
+			that.cursorSpos --;
 			ret = true; //let the input handler know to block the default action: don't want to go back a page
 		}
 
 		return ret;
 	}
+	if(!App.GuiTextBox.textMeasure){
+		App.GuiTextBox.textMeasure = App.Canvases.addNewLayer('textMeasure').getContext('2d');
+
+	}
 
 }
+App.GuiTextBox.textMeasure;
 App.GuiTextBox.prototype = Object.create(g.Component);
 App.GuiTextBox.prototype.constructor = App.GuiTextBox;
