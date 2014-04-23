@@ -176,7 +176,7 @@ App.setupLevelSelect = function(){
 			levelSelect.requestStaticRenderUpdate = true;
 		}if(levelSelect.lvl6Button.collide(x,y)){
 			App.Game.setMode(App.Game.modes.PLANNING);
-			App.Game.currentPlanningLevel = App.Game.parseLevel("add`0`11`11~2`2`0`8`A`random(0,10)~2`8`1`8`B`random(0,10)~8`5`2`9`O`A*B`10");
+			App.Game.currentPlanningLevel = App.Game.parseLevel("multiply`0`0`0~2`5`3`8`Z`0~5`2`0`8`A`random(0,10)~5`8`1`8`B`random(0,10)~8`5`2`9`O`A*B`10");
 			App.GameRenderer.bestFit();
 			App.ModeHandler.pushMode('planning');
 			levelSelect.requestStaticRenderUpdate = true;
