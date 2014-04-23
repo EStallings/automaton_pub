@@ -32,10 +32,9 @@ App.makeInputHandler = function(){
 		input.keysDown[e.keyCode] = true;
 		if(input.keyOverride !== null)
 		{
-			if(input.currentKey !== null)
-				return;
 			input.currentKey = e.keyCode;
-			if(input.keyOverride(e.keyCode)){
+			input.keyOverride(e.keyCode);
+			if(e.keyCode === 8){
 				console.log("Stopping default");
 				e.preventDefault();
 

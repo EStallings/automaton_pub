@@ -1,4 +1,3 @@
-
 //NOT a simple text display.
 App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	App.GuiTools.Component.call(this, x, y, w, h, en, ex, xorigin, yorigin);
@@ -13,6 +12,9 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	this.cursorSpos = null;
 	this.cursorEpos = null;
 
+	this.originalStart = null;
+	this.originalEnd = null;
+
 	this.cursortime = 0;
 	this.cursormax = 30;
 
@@ -21,6 +23,7 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 
 	var that = this;
 
+	//TODO password style rendering
 	this.renderLayers['Text'] = function(gfx){
 		gfx.fillStyle = that.textColor;
 
@@ -53,6 +56,8 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 			this.cursorEpos = null;
 
 			this.cursortime = 0;
+			this.originalStart = null;
+			this.originalEnd = null;
 
 			return;
 		}
@@ -74,6 +79,7 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 
 		if(this.cursorSpos === null) this.cursortime = this.cursormax;
 		this.cursorSpos = i;
+		this.originalStart = i; //doesn't get changed until the mouse click ends
 
 		console.log(this.cursorSpos);
 	}
@@ -97,22 +103,23 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 
 	this.clickEnd = function(){
 		var i = this.getTextCoord();
-
+		this.originalEnd = i;
 		//No-move
-		if(i == this.cursorSpos){
-			//this.cursorEpos = null;
+		if(i == this.originalStart){
+			this.cursorEpos = null;
 			return;
 		}
 
 		//dragged from right to left; swap
-		if(i < this.cursorSpos){
-			this.cursorEpos = this.cursorSpos;
+		if(i < this.originalStart){
+			this.cursorEpos = this.originalStart;
 			this.cursorSpos = i;
 			return;
 		}
 
 		//dragged from left to right
 		this.cursorEpos = i;
+		this.cursorSpos = this.originalStart;
 	}
 
 	//returns the text split into an array of 3 parts: the text before the first index, the text between indices, and the text after
@@ -125,16 +132,59 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	this.keyHandler = function(key){
 		console.log(key);
 		var k = App.InputHandler.keyCodeToChar[key].toLowerCase();
-		var ret = false;
 
-		console.log(App.InputHandler.keysDown);
 		if(App.InputHandler.checkKey("Shift")){
 			console.log("Shift held down!");
-			k = k.toUpperCase();
+
+			switch (k){
+				case ';' : k = ':'; break;
+				case "'" : k = '"'; break;
+				case ',' : k = '<'; break;
+				case '.' : k = '>'; break;
+				case '/' : k = '?'; break;
+				case '1' : k = '!'; break;
+				case '2' : k = '@'; break;
+				case '3' : k = '#'; break;
+				case '4' : k = '$'; break;
+				case '5' : k = '%'; break;
+				case '6' : k = '^'; break;
+				case '7' : k = '&'; break;
+				case '8' : k = '*'; break;
+				case '9' : k = '('; break;
+				case '0' : k = ')'; break;
+				case '-' : k = '_'; break;
+				case '=' : k = '+'; break;
+				case '`' : k = '~'; break;
+				case '\\': k = '|'; break;
+				case '[' : k = '{'; break;
+				case ']' : k = '}'; break;
+				case 'left':
+					if(!that.cursorEpos)
+						that.cursorEpos = that.cursorSpos;
+					that.cursorSpos--;
+					if(that.cursorSpos < 0)
+						that.cursorSpos = 0;
+					return;
+				break;
+				case 'right':
+					if(!that.cursorEpos)
+						that.cursorEpos = that.cursorSpos;
+					that.cursorEpos++;
+					if(that.cursorEpos > that.txt.length)
+						that.cursorEpos = that.txt.length;
+					return;
+				break;
+				default  : k = k.toUpperCase(); break;
+			}
+
 		}
+		if(k === 'space' || k === 'SPACE'){
+			k = ' ';
+		}
+		console.log("k= " + k + "!");
 		var split = that.splitText();
 
-		if(App.InputHandler.alphaNumeric(key)){
+		if(App.InputHandler.alphaNumeric(key) || k === ' '){
 			that.txt = split.beforeStart + k + split.afterEnd;
 			that.cursorEpos = null;
 			that.cursorSpos ++;
@@ -147,10 +197,46 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 
 			that.cursorEpos = null;
 			that.cursorSpos --;
-			ret = true; //let the input handler know to block the default action: don't want to go back a page
 		}
+		else if(k === 'right'){
+			if(that.cursorEpos)
+				that.cursorSpos = that.cursorEpos-1;
+			that.cursorEpos = null;
+			that.cursorSpos++;
+		}
+		else if (k === 'left'){
+			if(that.cursorEpos)
+				that.cursorSpos++;
+			that.cursorEpos = null;
+			that.cursorSpos --;
+		}
+		else if (k === 'delete'){
+			if(that.cursorEpos)
+				that.txt = split.beforeStart + split.afterEnd;
+			else
+				that.txt = split.beforeStart + split.afterEnd.substring(1, split.afterEnd.length);
 
-		return ret;
+			that.cursorEpos = null;
+		}
+		else if(k === 'enter'){
+			console.log('enter');
+		}
+		else if (k === 'tab'){
+			console.log('tab');
+		}
+		console.log(that.txt);
+
+		//enter key: "submit"
+		//tab key: "next"
+		if(that.cursorEpos > that.txt.length)
+			that.cursorEpos = that.txt.length;
+		if(that.cursorSpos > that.txt.length)
+			that.cursorSpos = that.txt.length;
+		if(that.cursorEpos < 0)
+			that.cursorEpos = 0;
+		if(that.cursorSpos < 0)
+			that.cursorSpos = 0;
+
 	}
 	if(!App.GuiTextBox.textMeasure){
 		App.GuiTextBox.textMeasure = App.Canvases.addNewLayer('textMeasure').getContext('2d');
