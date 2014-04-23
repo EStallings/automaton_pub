@@ -24,6 +24,7 @@ App.makeInputHandler = function(){
 
 	input.releaseKeys = function(){
 		input.keyOverride = null;
+		console.log('released');
 	}
 
 	// ========================================================== //

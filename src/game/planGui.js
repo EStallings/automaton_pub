@@ -45,9 +45,12 @@ App.setupPlanGui = function(){
 		gfx.fillStyle = 'rgba(0,0,0,0.8)';
 		gfx.fillRect(planMode.instPanel.getx(), planMode.instPanel.gety(), App.Canvases.width, planMode.instPanel.h);
 	}
+	planMode.submitButton = new App.GuiTextButton(15, 56+28*0, 200, 000, 'Submit', 			function(){
+			planMode.gui.setOverlay(planMode.submitOverlay);
+		}, false, null, null);
 
 
-
+	planMode.gui.addComponent(planMode.submitButton);
 	planMode.gui.addComponent(planMode.instPanel);
 	for(var c in planMode.topRow) planMode.gui.addComponent(planMode.topRow[c]);
 	for(var c in planMode.botRow) planMode.gui.addComponent(planMode.botRow[c]);
@@ -60,6 +63,41 @@ App.setupPlanGui = function(){
 	planMode.selectStart = undefined;
 	planMode.moveStart = undefined;
 	planMode.alpha = planMode.goalAlpha = 0;
+
+	planMode.submitOverlay = [];
+	planMode.submitOverlay[0] = new App.GuiTools.BlockingPanel();
+	planMode.submitOverlay[1] = new App.GuiTextButton(200, 100, 200, 000, 'Cancel', 			function(){
+		planMode.gui.removeOverlay();
+	}, false, null, null);
+	planMode.submitOverlay[2] = new App.GuiTextButton(200, 140, 200, 000, 'Confirm', function(){
+		App.Server.putLevel(App.Game.currentPlanningLevel.generateParseString(),
+			planMode.submitOverlay[3].txt,
+			planMode.submitOverlay[4].txt,
+			planMode.submitOverlay[7].txt,
+			planMode.submitOverlay[5].txt,
+			planMode.submitOverlay[6].txt,
+			App.Server.testPostCallback);
+		planMode.gui.removeOverlay();
+		planMode.submitOverlay[3].txt = "Username";
+		planMode.submitOverlay[4].txt = "Password";
+		planMode.submitOverlay[5].txt = "Level Name";
+		planMode.submitOverlay[6].txt = "Description";
+		planMode.submitOverlay[7].txt = "Easy";
+	}, false, null, null);
+	planMode.submitOverlay[3] = new App.GuiTextBox(200, 300, 200, 25, "Username", 100, 100, null, null);
+	planMode.submitOverlay[4] = new App.GuiTextBox(200, 340, 200, 25, "Password", 100, 100, null, null);
+	planMode.submitOverlay[5] = new App.GuiTextBox(200, 380, 200, 25, "Level Name", 100, 100, null, null);
+	planMode.submitOverlay[6] = new App.GuiTextBox(200, 420, 200, 25, "Description", 100, 100, null, null);
+	planMode.submitOverlay[7] = new App.GuiTextButton(200, 460, 200, 000, 'Easy', function(){
+		if(planMode.submitOverlay[7].txt === 'Easy')   planMode.submitOverlay[7].txt = 'Medium';
+		if(planMode.submitOverlay[7].txt === 'Medium') planMode.submitOverlay[7].txt = 'Hard';
+		if(planMode.submitOverlay[7].txt === 'Hard')   planMode.submitOverlay[7].txt = 'Easy';
+
+	}, false, null, null);
+
+	for(var c in planMode.submitOverlay) planMode.submitOverlay[c].dointerp = false;
+
+
 
 		// ---------------------------------------------
 

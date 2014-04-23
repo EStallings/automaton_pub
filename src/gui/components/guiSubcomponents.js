@@ -281,3 +281,15 @@ g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
 g.Drag.prototype = Object.create(g.Component);
 g.Drag.prototype.constructor = g.Drag;
 
+
+g.BlockingPanel = function(){
+	g.Component.call(this, 0, 0, App.Canvases.width, App.Canvases.height, 0, 0, null, null);
+	this.baseColor = this.color = 'rgba(0,0,0,0.2)';
+
+	this.updatePosition = function(){
+		this.w = App.Canvases.width;
+		this.h = App.Canvases.height;
+	}
+}
+g.BlockingPanel.prototype = Object.create(g.Component);
+g.BlockingPanel.prototype.constructor = g.BlockingPanel;

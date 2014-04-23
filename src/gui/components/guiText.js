@@ -52,7 +52,8 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		if(!(this.gui.lastActive === this))
 		{
 			this.editing = false;
-			App.InputHandler.releaseKeys();
+			if(App.InputHandler.keyOverride === this.keyHandler)
+				App.InputHandler.releaseKeys();
 			this.cursorSpos = null;
 			this.cursorEpos = null;
 
@@ -82,7 +83,6 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		this.cursorSpos = i;
 		this.originalStart = i; //doesn't get changed until the mouse click ends
 
-		console.log(this.cursorSpos);
 	}
 
 	this.getTextCoord = function(){
@@ -138,7 +138,6 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		var oldEpos = that.cursorEpos;
 
 		if(App.InputHandler.checkKey("Shift")){
-			console.log("Shift held down!");
 
 			switch (k){
 				case ';' : k = ':'; break;
