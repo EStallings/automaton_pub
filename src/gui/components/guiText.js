@@ -47,6 +47,7 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 
 	};
 
+
 	this.update = function(){
 		if(!(this.gui.lastActive === this))
 		{
@@ -132,6 +133,9 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	this.keyHandler = function(key){
 		console.log(key);
 		var k = App.InputHandler.keyCodeToChar[key].toLowerCase();
+		var oldText = that.txt; //holds the next text we make by inserting a character
+		var oldSpos = that.cursorSpos;
+		var oldEpos = that.cursorEpos;
 
 		if(App.InputHandler.checkKey("Shift")){
 			console.log("Shift held down!");
@@ -159,17 +163,31 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 				case '[' : k = '{'; break;
 				case ']' : k = '}'; break;
 				case 'left':
+					var i = 1;
+					if(App.InputHandler.checkKey("Ctrl")){
+						for(var k = that.cursorSpos-2; k >= 0; k--){
+							if(that.txt[k] === ' ') break;
+							i++;
+						}
+					}
 					if(!that.cursorEpos)
 						that.cursorEpos = that.cursorSpos;
-					that.cursorSpos--;
+					that.cursorSpos-=i;
 					if(that.cursorSpos < 0)
 						that.cursorSpos = 0;
 					return;
 				break;
 				case 'right':
+					var i = 1;
+					if(App.InputHandler.checkKey("Ctrl")){
+						for(var k = that.cursorSpos+1; k < that.txt.length; k++){
+							if(that.txt[k] === ' ') break;
+							i++;
+						}
+					}
 					if(!that.cursorEpos)
 						that.cursorEpos = that.cursorSpos;
-					that.cursorEpos++;
+					that.cursorEpos+=i;
 					if(that.cursorEpos > that.txt.length)
 						that.cursorEpos = that.txt.length;
 					return;
@@ -181,7 +199,6 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		if(k === 'space' || k === 'SPACE'){
 			k = ' ';
 		}
-		console.log("k= " + k + "!");
 		var split = that.splitText();
 
 		if(App.InputHandler.alphaNumeric(key) || k === ' '){
@@ -199,16 +216,32 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 			that.cursorSpos --;
 		}
 		else if(k === 'right'){
+			var i = 1;
+			if(App.InputHandler.checkKey("Ctrl")){
+				for(var k = that.cursorSpos+1; k < that.txt.length; k++){
+					if(that.txt[k] === ' ') break;
+					i++;
+				}
+			}
+
 			if(that.cursorEpos)
 				that.cursorSpos = that.cursorEpos-1;
 			that.cursorEpos = null;
-			that.cursorSpos++;
+			that.cursorSpos+=i;
 		}
 		else if (k === 'left'){
+			var i = 1;
+			if(App.InputHandler.checkKey("Ctrl")){
+				for(var k = that.cursorSpos-2; k >= 0; k--){
+					if(that.txt[k] === ' ') break;
+					i++;
+				}
+			}
+
 			if(that.cursorEpos)
 				that.cursorSpos++;
 			that.cursorEpos = null;
-			that.cursorSpos --;
+			that.cursorSpos -=i;
 		}
 		else if (k === 'delete'){
 			if(that.cursorEpos)
@@ -224,7 +257,6 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		else if (k === 'tab'){
 			console.log('tab');
 		}
-		console.log(that.txt);
 
 		//enter key: "submit"
 		//tab key: "next"
@@ -236,6 +268,13 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 			that.cursorEpos = 0;
 		if(that.cursorSpos < 0)
 			that.cursorSpos = 0;
+
+		var width = App.GuiTextBox.textMeasure.measureText(that.txt).width + (that.txt.length * that.spacing);
+		if(width > that.w - 4){
+			that.cursorSpos = oldSpos;
+			that.cursorEpos = oldEpos;
+			that.txt = oldText;
+		}
 
 	}
 	if(!App.GuiTextBox.textMeasure){
