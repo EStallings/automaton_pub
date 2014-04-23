@@ -30,7 +30,7 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		gfx.fillStyle = that.textColor;
 		var col = that.textColor;
 		if((that.cursortime > 0) && that.editing){
-			gfx.fillRect(that.cursorSx + that.getx(), that.gety()+3, (that.cursorEx - that.cursorSx) + that.cursorEw, that.h -6);
+			gfx.fillRect(that.cursorSx + that.getx(), that.gety()+3, (that.cursorEx - that.cursorSx), that.h -6);
 			col = '#ffffff';
 		}
 
@@ -74,11 +74,8 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 
 		this.cursorSw = c.cw;
 		this.cursorSx = c.x - this.cursorSw - this.spacing;
-		this.cursorEw = c.cw;
+		this.cursorEw = c.cw + 1;
 		this.cursorEx = this.cursorSx;
-
-
-		//TODO find position in text
 	}
 
 	this.getTextCoords = function(){
@@ -101,8 +98,17 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	this.clickEnd = function(){
 		var c = this.getTextCoords();
 
-		this.cursorEpos = c.i;
+		if(c.i < this.cursorSpos){
+			this.cursorEpos = this.cursorSpos;
+			this.cursorEw = this.cursorSw;
+			this.cursorEx = this.cursorSx;
+			this.cursorSpos = c.i;
+			this.cursorSw = c.cw;
+			this.cursorSx = c.x - this.cursorEw - this.spacing;
+			return;
+		}
 
+		this.cursorEpos = c.i;
 		this.cursorEw = c.cw;
 		this.cursorEx = c.x - this.cursorEw - this.spacing;
 	}
@@ -110,6 +116,8 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	this.keyHandler = function(key){
 		console.log(key);
 		var k = App.InputHandler.keyCodeToChar[key].toLowerCase();
+		var ret = false;
+
 		console.log(App.InputHandler.keysDown);
 		if(App.InputHandler.checkKey("Shift")){
 			console.log("Shift held down!");
@@ -120,6 +128,13 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 			that.txt = that.txt.substring(0,that.cursorSpos+1) + k + that.txt.substring(that.cursorEpos, that.txt.length);
 			that.cursorEpos = that.cursorSpos = that.cursorSpos+1;
 		}
+		else if(k === 'backspace'){
+			that.txt = that.txt.substring(0, that.cursorSpos)  + that.txt.substring(that.cursorEpos, that.txt.length);
+			that.cursorEpos = that.cursorSpos;
+			ret = true; //let the input handler know to block the default action: don't want to go back a page
+		}
+
+		return ret;
 	}
 
 }

@@ -35,7 +35,12 @@ App.makeInputHandler = function(){
 			if(input.currentKey !== null)
 				return;
 			input.currentKey = e.keyCode;
-			input.keyOverride(e.keyCode);
+			if(input.keyOverride(e.keyCode)){
+				console.log("Stopping default");
+				e.preventDefault();
+
+
+			}
 			return;
 		}
 		var mode = App.ModeHandler.currentMode;
