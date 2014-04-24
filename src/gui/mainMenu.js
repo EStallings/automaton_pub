@@ -12,6 +12,7 @@ App.setupMainMenu = function(){
 			mainMenu.requestStaticRenderUpdate = true;
 		}, false, null, null);
 
+
 	mainMenu.libraryButton 		= new App.GuiTextButton(15, 56+28*1, 300, 100, 'Library', function(){
 			App.ModeHandler.pushMode('library');
 			mainMenu.requestStaticRenderUpdate = true;
@@ -28,6 +29,10 @@ App.setupMainMenu = function(){
 			App.ModeHandler.pushMode('settings');
 			mainMenu.requestStaticRenderUpdate = true;
 		}, false, null, null);
+	mainMenu.playButton.hoverColor    = '#af1010';
+	mainMenu.libraryButton.hoverColor = '#10af10';
+	mainMenu.sandboxButton.hoverColor = '#1010af';
+	mainMenu.settingsButton.hoverColor= '#afaf10';
 
 	mainMenu.textthing = new App.GuiTextBox(200, 300, 200, 25, "Hello", 100, 100, null, null);
 	mainMenu.textthing2 = new App.GuiTextBox(200,330, 200, 25, "Lolol", 100, 100, null, null);
@@ -40,6 +45,7 @@ App.setupMainMenu = function(){
 	mainMenu.gui.addComponent(mainMenu.settingsButton);
 	mainMenu.gui.addComponent(mainMenu.textthing);
 	mainMenu.gui.addComponent(mainMenu.textthing2);
+
 
 
 	mainMenu.alpha = mainMenu.goalAlpha = 0;
