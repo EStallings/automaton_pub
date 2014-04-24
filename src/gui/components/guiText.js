@@ -6,6 +6,7 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	this.activeTextColor = this.textColor;
 	this.hoverColor = this.baseColor;
 
+	this.defaultText = defaultText;
 	this.txt = defaultText;
 	this.spacing = -2;
 
@@ -20,6 +21,11 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 
 	this.editing = false;
 	this.functional = true;
+	this.allowEmpty = true;
+	this.passwordMode = true;
+	this.clearIfDefault = true;
+
+	this.passwordString = "";
 
 	var that = this;
 
@@ -27,7 +33,9 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	this.renderLayers['Text'] = function(gfx){
 		gfx.fillStyle = that.textColor;
 
-		var split = that.splitText();
+		var split = that.splitText(that.txt);
+		if(that.passwordMode)
+			split = that.splitText(that.passwordString);
 
 		beforeWidth = App.GuiTextBox.textMeasure.measureText(split.beforeStart).width     + (split.beforeStart.length * that.spacing);
 		middleWidth = App.GuiTextBox.textMeasure.measureText(split.betweenStartEnd).width + (split.betweenStartEnd.length * that.spacing);
@@ -60,6 +68,9 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 			this.cursortime = 0;
 			this.originalStart = null;
 			this.originalEnd = null;
+			if(this.clearIfDefault && this.txt.length == 0){
+				this.txt = this.defaultText;
+			}
 
 			return;
 		}
@@ -76,10 +87,14 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		this.editing = true;
 		App.InputHandler.seizeKeys(that.keyHandler);
 		this.gui.lastActive = this;
-
 		var i = this.getTextCoord();
 
-		if(this.cursorSpos === null) this.cursortime = this.cursormax;
+		if(this.txt === this.defaultText && this.clearIfDefault){
+			this.txt = "";
+			i = 0;
+
+		}
+
 		this.cursorSpos = i;
 		this.originalStart = i; //doesn't get changed until the mouse click ends
 
@@ -92,12 +107,12 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		gfx.font = "800 "+(this.h-6)*1.37+"px arial";
 
 		var x = 2, i = -1;
-		do{
+		do {
 			i++;
 			var cw = gfx.measureText(this.txt.charAt(i)).width+this.spacing;
 			x += cw;
-
-		}while(i<this.txt.length && (x < xcoord));
+		}
+		while(i<this.txt.length && (x < xcoord));
 
 		return i;
 	}
@@ -124,16 +139,17 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	}
 
 	//returns the text split into an array of 3 parts: the text before the first index, the text between indices, and the text after
-	this.splitText = function(){
-		return {beforeStart:this.txt.substring(0, this.cursorSpos),
-			betweenStartEnd:(this.cursorEpos)?this.txt.substring(this.cursorSpos, this.cursorEpos):"",
-			afterEnd:(this.cursorEpos)?this.txt.substring(this.cursorEpos,this.txt.length):this.txt.substring(this.cursorSpos, this.txt.length)};
+	this.splitText = function(txt){
+		return {beforeStart:txt.substring(0, this.cursorSpos),
+			betweenStartEnd:(this.cursorEpos)?txt.substring(this.cursorSpos, this.cursorEpos):"",
+			afterEnd:(this.cursorEpos)?txt.substring(this.cursorEpos,txt.length):txt.substring(this.cursorSpos, txt.length)};
 	}
 
 	this.keyHandler = function(key){
 		console.log(key);
 		var k = App.InputHandler.keyCodeToChar[key].toLowerCase();
 		var oldText = that.txt; //holds the next text we make by inserting a character
+		var oldpw = that.passwordString;
 		var oldSpos = that.cursorSpos;
 		var oldEpos = that.cursorEpos;
 
@@ -198,18 +214,29 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		if(k === 'space' || k === 'SPACE'){
 			k = ' ';
 		}
-		var split = that.splitText();
+
+		var split   = that.splitText(that.txt);
+		var pwsplit = that.splitText(that.passwordString)
+
 
 		if(App.InputHandler.alphaNumeric(key) || k === ' '){
+			if(that.passwordMode){
+				that.passwordString = pwsplit.beforeStart + k + pwsplit.afterEnd;
+				k = '*';
+			}
 			that.txt = split.beforeStart + k + split.afterEnd;
 			that.cursorEpos = null;
 			that.cursorSpos ++;
 		}
 		else if(k === 'backspace'){
-			if(that.cursorEpos)
+			if(that.cursorEpos){
 				that.txt = split.beforeStart + split.afterEnd;
-			else
+				that.passwordString = pwsplit.beforeStart + pwsplit.afterEnd;
+			}
+			else{
 				that.txt = split.beforeStart.substring(0, split.beforeStart.length-1) + split.afterEnd;
+				that.passwordString = pwsplit.beforeStart.substring(0, pwsplit.beforeStart.length-1) + pwsplit.afterEnd;
+			}
 
 			that.cursorEpos = null;
 			that.cursorSpos --;
@@ -243,10 +270,14 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 			that.cursorSpos -=i;
 		}
 		else if (k === 'delete'){
-			if(that.cursorEpos)
+			if(that.cursorEpos){
 				that.txt = split.beforeStart + split.afterEnd;
-			else
+				that.passwordString = pwsplit.beforeStart + pwsplit.afterEnd;
+			}
+			else{
 				that.txt = split.beforeStart + split.afterEnd.substring(1, split.afterEnd.length);
+				that.passwordString = pwsplit.beforeStart + pwsplit.afterEnd.substring(1, pwsplit.afterEnd.length);
+			}
 
 			that.cursorEpos = null;
 		}
@@ -269,10 +300,12 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 			that.cursorSpos = 0;
 
 		var width = App.GuiTextBox.textMeasure.measureText(that.txt).width + (that.txt.length * that.spacing);
+
 		if(width > that.w - 4){
 			that.cursorSpos = oldSpos;
 			that.cursorEpos = oldEpos;
-			that.txt = oldText;
+			that.txt 						= oldText;
+			that.passwordString = oldpw;
 		}
 
 	}
