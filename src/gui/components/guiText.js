@@ -34,8 +34,6 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		gfx.fillStyle = that.textColor;
 
 		var split = that.splitText(that.txt);
-		if(that.passwordMode)
-			split = that.splitText(that.passwordString);
 
 		beforeWidth = App.GuiTextBox.textMeasure.measureText(split.beforeStart).width     + (split.beforeStart.length * that.spacing);
 		middleWidth = App.GuiTextBox.textMeasure.measureText(split.betweenStartEnd).width + (split.betweenStartEnd.length * that.spacing);
