@@ -45,17 +45,18 @@ App.setupPlanGui = function(){
 		gfx.fillStyle = 'rgba(0,0,0,0.8)';
 		gfx.fillRect(planMode.instPanel.getx(), planMode.instPanel.gety(), App.Canvases.width, planMode.instPanel.h);
 	}
+
 	planMode.submitButton = new App.GuiTextButton(15, 56+28*0, 200, 000, 'Submit', 			function(){
 			planMode.gui.setOverlay(planMode.submitOverlay);
 		}, false, null, null);
 
 
-	planMode.gui.addComponent(planMode.submitButton);
+//	planMode.gui.addComponent(planMode.submitButton);
 	planMode.gui.addComponent(planMode.instPanel);
 	for(var c in planMode.topRow) planMode.gui.addComponent(planMode.topRow[c]);
 	for(var c in planMode.botRow) planMode.gui.addComponent(planMode.botRow[c]);
 
-	planMode.gui.addComponent(planMode.joystick);
+//	planMode.gui.addComponent(planMode.joystick);
 
 	planMode.direction = App.DIRECTIONS.UP;
 	planMode.color = App.COLORS.RED;
@@ -64,6 +65,7 @@ App.setupPlanGui = function(){
 	planMode.moveStart = undefined;
 	planMode.alpha = planMode.goalAlpha = 0;
 
+/*
 	planMode.submitOverlay = [];
 	planMode.submitOverlay[0] = new App.GuiTools.BlockingPanel();
 	planMode.submitOverlay[1] = new App.GuiTextButton(200, 100, 200, 000, 'Cancel', 			function(){
@@ -96,7 +98,7 @@ App.setupPlanGui = function(){
 	}, false, null, null);
 
 	for(var c in planMode.submitOverlay) planMode.submitOverlay[c].dointerp = false;
-
+*/
 
 
 		// ---------------------------------------------

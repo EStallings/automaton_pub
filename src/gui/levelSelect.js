@@ -8,8 +8,8 @@ App.setupLevelSelect = function(){
 	levelSelect.lvl2Button = new App.Button('Increment','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*1,56+28*0,168,24,230,030);
 	levelSelect.lvl3Button = new App.Button('Mod 2','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*2,56+28*0,168,24,260,060);
 	levelSelect.lvl4Button = new App.Button('Instruction Set','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*0,56+28*1,168,24,300,100);
-	levelSelect.lvl5Button = new App.Button('Level 5','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*1,56+28*1,168,24,330,130);
-	levelSelect.lvl6Button = new App.Button('Level 6','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*2,56+28*1,168,24,360,160);
+	levelSelect.lvl5Button = new App.Button('Add','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*1,56+28*1,168,24,330,130);
+	levelSelect.lvl6Button = new App.Button('Multiply','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*2,56+28*1,168,24,360,160);
 	levelSelect.lvl7Button = new App.Button('Level 7','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*0,56+28*2,168,24,400,200);
 	levelSelect.lvl8Button = new App.Button('Level 8','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*1,56+28*2,168,24,430,230);
 	levelSelect.lvl9Button = new App.Button('Level 9','#fff','#000','#f00','#fff',levelSelect.gfx,15+172*2,56+28*2,168,24,460,260);
@@ -168,10 +168,17 @@ App.setupLevelSelect = function(){
 			App.ModeHandler.pushMode('planning');
 			levelSelect.requestStaticRenderUpdate = true;
 		}if(levelSelect.lvl5Button.collide(x,y)){
-			App.ModeHandler.pushMode('coming soon');
+			App.Game.setMode(App.Game.modes.PLANNING);
+			App.Game.currentPlanningLevel = App.Game.parseLevel("add`0`11`11~2`2`0`8`A`random(0,10)~2`8`1`8`B`random(0,10)~8`5`2`9`O`A+B`10");
+			// SOLUTION: "add`0`11`11~2`1`0`2~2`1`2`17~2`2`0`8~2`2`2`6~2`5`0`12~2`5`1`13~2`5`2`5~2`8`1`8~2`8`2`4~2`9`1`0~2`9`2`17~8`2`2`7~8`5`0`4~8`5`1`6~8`5`2`9~8`8`2`7"
+			App.GameRenderer.bestFit();
+			App.ModeHandler.pushMode('planning');
 			levelSelect.requestStaticRenderUpdate = true;
 		}if(levelSelect.lvl6Button.collide(x,y)){
-			App.ModeHandler.pushMode('coming soon');
+			App.Game.setMode(App.Game.modes.PLANNING);
+			App.Game.currentPlanningLevel = App.Game.parseLevel("multiply`0`0`0~2`5`3`8`Z`0~5`2`0`8`A`random(0,10)~5`8`1`8`B`random(0,10)~8`5`2`9`O`A*B`10");
+			App.GameRenderer.bestFit();
+			App.ModeHandler.pushMode('planning');
 			levelSelect.requestStaticRenderUpdate = true;
 		}if(levelSelect.lvl7Button.collide(x,y)){
 			App.ModeHandler.pushMode('coming soon');

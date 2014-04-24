@@ -427,7 +427,7 @@ App.PlanningLevel = function(){
 		for(var j in this.grid[i])
 		for(var c in this.grid[i][j])
 		if(this.grid[i][j][c])
-			str.push(i+'`'+j+'`'+c+'`'+this.grid[i][j][c]);
+			str.push(i+'`'+j+'`'+c+'`'+this.grid[i][j][c].type);
 		return str.join('~');
 	};
 
