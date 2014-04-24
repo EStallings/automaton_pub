@@ -4,7 +4,15 @@ App.setupLibrary = function(){
 		// ---------------------------------------------
 
 	library.gfx = App.Canvases.addNewLayer(2).getContext('2d');
-	library.backButton = new App.Button('Back to Main Menu','#fff','#000','#0f0','#fff',library.gfx,15,56+28*0,512,24,200,000);
+	library.gui = new App.guiFrame(library.gfx);
+
+	library.backButton = new App.GuiTextButton(15,56+28*0,200,000,'Back to Main Menu',function(){
+		library.requestStaticRenderUpdate = true;
+		App.ModeHandler.popMode();
+	},false,null,null);
+	library.backButton.hoverColor = '#10af10';
+
+	library.gui.addComponent(library.backButton);
 	library.alpha = library.goalAlpha = 0;
 
 		// ---------------------------------------------
@@ -15,13 +23,16 @@ App.setupLibrary = function(){
 		library.exitFlag = false;
 		App.GameRenderer.bestFit();
 
-		library.backButton.enter();
+		library.gui.enter();
 		library.goalAlpha = 1;
 
 		App.Shade.turnOn();
 	}
 
 	library.updateFunc = function(){
+		if(library.gui.update())
+			library.requestStaticRenderUpdate = true;
+
 		if(!library.requestStaticRenderUpdate)return;
 		library.requestStaticRenderUpdate = false;
 
@@ -30,7 +41,9 @@ App.setupLibrary = function(){
 		library.gfx.fillStyle = '#fff';
 		text(library.gfx,"Library",15,15,36,-3);
 
-		if(library.backButton.render())library.requestStaticRenderUpdate = true;
+		if(library.gui.render())
+			library.requestStaticRenderUpdate = true;
+
 		if(library.alpha !== library.goalAlpha){
 			library.alpha += expInterp(library.alpha,library.goalAlpha,0.003,0.01);
 			library.gfx.globalAlpha = library.alpha;
@@ -47,23 +60,14 @@ App.setupLibrary = function(){
 		library.requestStaticRenderUpdate = true;
 		library.exitFlag = true;
 
-		library.backButton.exit();
+		library.gui.exit();
 		library.goalAlpha = 0;
 	}
 
 		// ---------------------------------------------
 
-	library.registerMouseMoveFunc(function(x,y){
-		if(library.backButton.collide(x,y) && !library.backButton.oldHover)library.requestStaticRenderUpdate = true;
-		if(library.backButton.oldHover !== library.backButton.hover)library.requestStaticRenderUpdate = true;
-	});
-
-	library.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){
-		if(library.backButton.collide(x,y)){
-			App.ModeHandler.popMode();
-			library.requestStaticRenderUpdate = true;
-		}
-	});
+	library.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT, library.gui.mouseDown);
+	library.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT, library.gui.mouseUp);
 
 	library.registerKeyDownFunc('Esc',function(){
 		library.requestStaticRenderUpdate = true;
