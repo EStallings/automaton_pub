@@ -2,29 +2,36 @@
 For displaying leaderboards and level select.
 */
 
-App.GuiTable = function(x, y, ppanel){
+
+App.GuiTable = function(x, y, maxRows, descrip){
+	App.GuiTools.Component.call(this, x, y, descrip.length * 132 + 2, 26*maxRows+2, 100, 100, null, null);
 	this.json = null;
-	this.table = []; //to be filled with GuiTableRow objects
-	this.buttons = []; //to be filled with column button objects
 
+	this.table = [];
+	for(var k in descrip){
+		this.table[k] = [];
+	}
 
+	this.color = this.baseColor = '#000000';
+	this.descrip = descrip;
+	this.emptyMessage = 'No levels found; try another search?';
 
-	this.rowHeight = 20;
-	this.colWidth  = 100;
-	this.x = x;
-	this.y = y;
+	this.rowHeight       = 24;
+	this.colWidth        = 130;
+	this.x               = x;
+	this.y               = y;
+	this.border          = 2;
 
-	this.lastSortedCol = null;
-	this.lastSortedSign = 1;
+	this.lastSortedCol   = null;
+	this.lastSortedSign  = 1;
 
-	this.activeRow = -1; //-1 for none
-	this.testActiveRow = -1;
+	this.activeRow       = -1; //-1 for none
+	this.testActiveRow   = -1;
 
-	this.oddColor = '#f0f0f0';
-	this.evenColor = '#c0c0c0';
-
-
-	this.activeColor = '#707070';
+	this.buttonColor     = '#ffffff';
+	this.oddColor        = '#f0f0f0';
+	this.evenColor       = '#c0c0c0';
+	this.activeColor     = '#707070';
 	this.testActiveColor = '#101010';
 
 	this.update = function(){
@@ -47,9 +54,30 @@ App.GuiTable = function(x, y, ppanel){
 		App.Gui.drawStatic = true;
 	}
 
+	var that = this;
 	this.renderLayers['Table'] = function(gfx){
-		//Render background
+		var x = that.getx()+that.border;
+		var y = that.gety()+that.border;
+		var i = 0;
+
+		if(!that.json){
+			gfx.textBaseline = "alphabetic";
+			gfx.font = "800 "+(this.h-6)*1.37+"px arial";
+
+			var tw = gfx.measureText(that.emptyMessage).width + (that.emptyMessage.length) * -2;
+			gfx.fillStyle = that.buttonColor;
+			text(gfx, that.emptyMessage,that.getx() + that.w/2 - 3*tw/13, that.gety() + (that.h/2), that.rowHeight-6, -2 );
+			console.log(tw/2);
+		}
+		for(var k in that.table){
+			gfx.fillStyle = that.buttonColor;
+			gfx.fillRect(x, y, that.colWidth, that.rowHeight);
+			gfx.fillStyle = that.textColor;
+			if(i == 0) text(gfx, that.descrip[k].name, x+2, y+3, that.rowHeight-6, -2);
+			x += that.border + that.colWidth
+		}
 		//render buttons
+
 		//render table
 
 	}
@@ -61,19 +89,14 @@ App.GuiTable = function(x, y, ppanel){
 		var x = App.InputHandler.mouseData.x;
 		var y = App.InputHandler.mouseData.y;
 
-		//check for a click on a button
-		for(var b in this.bbuttons){
-			this.buttons[b].clickStart(x, y);
-		}
+
 
 		//determine row, if any
-		y = Math.floor((y - this.gety()-30)/this.rowHeight);
+		y = Math.floor((y - this.gety())/this.rowHeight);
+		//determine column
+		x = Math.floor((x - this.getx())/this.colWidth);
+		console.log("x, y  " + x + " , " + y);
 
-		this.testActiveRow = -1;
-		this.activeRow = -1;
-
-		if(this.table[y])
-			this.testActiveRow = y;
 	}
 
 	this.clickEnd = function(){
@@ -117,3 +140,5 @@ App.GuiTable = function(x, y, ppanel){
 	}
 
 }
+App.GuiTable.prototype = Object.create(g.Component);
+App.GuiTable.prototype.constructor = App.GuiTable;

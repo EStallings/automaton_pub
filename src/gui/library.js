@@ -12,8 +12,10 @@ App.setupLibrary = function(){
 	},false,null,null);
 	library.backButton.hoverColor = '#10af10';
 
-	//library.table = new App.GuiTable();
+	library.table = new App.GuiTable(100, 100, 20, [{id:'title', name:"Title"},{id:'description', name:"Description"},{id:'difficulty', name:"Difficulty"},{id:'author_id', name:"Author"},{id:'created', name:"Created"}]);
+	TABLE = library.table;
 
+	library.gui.addComponent(library.table);
 	library.gui.addComponent(library.backButton);
 	library.alpha = library.goalAlpha = 0;
 
