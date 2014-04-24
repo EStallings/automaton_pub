@@ -12,6 +12,8 @@ App.setupLibrary = function(){
 	},false,null,null);
 	library.backButton.hoverColor = '#10af10';
 
+	//library.table = new App.GuiTable();
+
 	library.gui.addComponent(library.backButton);
 	library.alpha = library.goalAlpha = 0;
 
