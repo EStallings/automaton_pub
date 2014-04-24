@@ -24,7 +24,6 @@ App.makeInputHandler = function(){
 
 	input.releaseKeys = function(){
 		input.keyOverride = null;
-		console.log('released');
 	}
 
 	// ========================================================== //
@@ -35,12 +34,8 @@ App.makeInputHandler = function(){
 		{
 			input.currentKey = e.keyCode;
 			input.keyOverride(e.keyCode);
-			if(e.keyCode === 8){
-				console.log("Stopping default");
+			if(e.keyCode === 8 || e.keyCode === 9) //backspace or tab
 				e.preventDefault();
-
-
-			}
 			return;
 		}
 		var mode = App.ModeHandler.currentMode;

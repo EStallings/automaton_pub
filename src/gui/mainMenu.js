@@ -30,12 +30,16 @@ App.setupMainMenu = function(){
 		}, false, null, null);
 
 	mainMenu.textthing = new App.GuiTextBox(200, 300, 200, 25, "Hello", 100, 100, null, null);
+	mainMenu.textthing2 = new App.GuiTextBox(200,330, 200, 25, "Lolol", 100, 100, null, null);
+	mainMenu.textthing2.passwordMode = true;
+	mainMenu.textthing.next = mainMenu.textthing2;
 
 	mainMenu.gui.addComponent(mainMenu.playButton);
 	mainMenu.gui.addComponent(mainMenu.libraryButton);
 	mainMenu.gui.addComponent(mainMenu.sandboxButton);
 	mainMenu.gui.addComponent(mainMenu.settingsButton);
 	mainMenu.gui.addComponent(mainMenu.textthing);
+	mainMenu.gui.addComponent(mainMenu.textthing2);
 
 
 	mainMenu.alpha = mainMenu.goalAlpha = 0;

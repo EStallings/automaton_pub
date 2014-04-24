@@ -22,8 +22,10 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	this.editing = false;
 	this.functional = true;
 	this.allowEmpty = true;
-	this.passwordMode = true;
+	this.passwordMode = false;
 	this.clearIfDefault = true;
+	this.next = null;
+	this.submitFunc = null; //gets called on enter key press
 
 	this.passwordString = "";
 
@@ -81,21 +83,19 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 		return true;
 	}
 
-	this.clickStart = function(){
+	this.clickStart = function(override){
 		this.editing = true;
 		App.InputHandler.seizeKeys(that.keyHandler);
 		this.gui.lastActive = this;
-		var i = this.getTextCoord();
-
-		if(this.txt === this.defaultText && this.clearIfDefault){
+		if(!override)
+			var i = this.getTextCoord();
+		if(override || (this.txt === this.defaultText && this.clearIfDefault)){
 			this.txt = "";
 			i = 0;
-
 		}
 
 		this.cursorSpos = i;
 		this.originalStart = i; //doesn't get changed until the mouse click ends
-
 	}
 
 	this.getTextCoord = function(){
@@ -144,7 +144,6 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 	}
 
 	this.keyHandler = function(key){
-		console.log(key);
 		var k = App.InputHandler.keyCodeToChar[key].toLowerCase();
 		var oldText = that.txt; //holds the next text we make by inserting a character
 		var oldpw = that.passwordString;
@@ -280,10 +279,16 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 			that.cursorEpos = null;
 		}
 		else if(k === 'enter'){
-			console.log('enter');
+			that.gui.lastActive = null;
+
+			if(that.submitFunc)
+				that.submitFunc();
 		}
 		else if (k === 'tab'){
-			console.log('tab');
+			if(that.next){
+				that.gui.lastActive = that.next;
+				that.next.clickStart(true);
+			}
 		}
 
 		//enter key: "submit"
