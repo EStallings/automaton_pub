@@ -6,6 +6,12 @@ App.setupPlanGui = function(){
 	planMode.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	planMode.gui = new App.guiFrame(planMode.gfx);
 
+	planMode.backButton = new App.GuiTextButton(15,56+28*0,200,000,'Back to Main Menu',function(){
+		//TODO confirm dialog if changed level?
+		planMode.requestStaticRenderUpdate = true;
+		App.ModeHandler.popMode();
+	},false,null,null);
+
 	planMode.joystick = new App.GuiJoystick(100, 500, 50, 100, null);
 
 	planMode.topRow = [];
@@ -54,6 +60,7 @@ App.setupPlanGui = function(){
 
 //	planMode.gui.addComponent(planMode.submitButton);
 	planMode.gui.addComponent(planMode.instPanel);
+	planMode.gui.addComponent(planMode.backButton);
 	for(var c in planMode.topRow) planMode.gui.addComponent(planMode.topRow[c]);
 	for(var c in planMode.botRow) planMode.gui.addComponent(planMode.botRow[c]);
 
