@@ -147,6 +147,13 @@ App.GuiTable = function(x, y, maxRows, descrip){
 		return {x:x, y:y};
 	}
 
+	this.getSelectedEntry = function(){
+		if(this.selectedRow !== null && this.json){
+			return this.json[this.selectedRow-1];
+		}
+		return null;
+	}
+
 	var that = this;
 	this.setData = function(json){
 		that.selectedRow = null;

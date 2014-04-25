@@ -12,7 +12,32 @@ App.setupLibrary = function(){
 	},false,null,null);
 	library.backButton.hoverColor = '#10af10';
 
+	var go = function(){
+		var type = library.typeButton.txt;
+		var query;
+		if(type === 'User') {
+			type = 'user';
+			query = library.queryBox.txt;
+		}
+		else {
+			type = 'diff';
+			query = library.diffButton.txt;
+		}
+		library.table.loading = true;
+		App.Server.getLevels(type, query, library.table.setData);
+	}
+
+	var loadLevel = function(){
+		var e = library.table.getSelectedEntry();
+		App.Game.currentPlanningLevel = App.Game.parseLevel(e.level_str);
+		App.GameRenderer.bestFit();
+		App.ModeHandler.pushMode('planning');
+		library.requestStaticRenderUpdate = true;
+	}
+
 	library.queryBox = new App.GuiTextBox(15+128+10, 56+28*2, 300, 25, "Enter search term here", 100, 100, null, null);
+	library.queryBox.submitFunc = go;
+
 	library.diffButton = new App.GuiTextButton(15+128+10, 56+28*2,200, 200, 'Easy', function(){
 		if(library.diffButton.txt === 'Easy')
 			library.diffButton.txt = 'Medium';
@@ -38,32 +63,21 @@ App.setupLibrary = function(){
 	}, false, null, null);
 	library.typeButton.w = 128;
 
-	library.goButton = new App.GuiTextButton(15 + 128 + 20 + 300, 56+28*2, 200, 000, 'Search!', function(){
-		var type = library.typeButton.txt;
-		var query;
-		if(type === 'User') {
-			type = 'user';
-			query = library.queryBox.txt;
-		}
-		else {
-			type = 'diff';
-			query = library.diffButton.txt;
-		}
+	library.goButton = new App.GuiTextButton(15 + 128 + 20 + 300, 56+28*2, 200, 000, 'Search!', go, false, null, null);
+	library.goButton.w = 128;
+	library.table = new App.GuiTable(15, 150, 20, [{id:'title', name:"Title"},{id:'description', name:"Description"},{id:'difficulty', name:"Difficulty"},{id:'author_id', name:"Author"},{id:'created', name:"Created"}]);
+
+	library.loadButton = new App.GuiTextButton(library.table.w + 30, 152, 200, 000, 'Load Level', loadLevel, false, null, null);
+	library.loadButton.w = 128;
 
 
 
-		library.table.loading = true;
-		App.Server.getLevels(type, query, library.table.setData);
-	}, false, null, null);
-	library.typeButton.w = 128;
 
 
-
-	library.table = new App.GuiTable(100, 150, 20, [{id:'title', name:"Title"},{id:'description', name:"Description"},{id:'difficulty', name:"Difficulty"},{id:'author_id', name:"Author"},{id:'created', name:"Created"}]);
-	TABLE = library.table;
 
 	library.gui.addComponent(library.table);
 	library.gui.addComponent(library.typeButton);
+	library.gui.addComponent(library.loadButton);
 	library.gui.addComponent(library.queryBox);
 	library.gui.addComponent(library.backButton);
 	library.gui.addComponent(library.goButton);
@@ -127,4 +141,6 @@ App.setupLibrary = function(){
 		library.requestStaticRenderUpdate = true;
 		App.ModeHandler.popMode();
 	});
+
+	library.registerKeyDownFunc('Enter', function(){if(!library.table.json) go(); else loadLevel();} );
 }

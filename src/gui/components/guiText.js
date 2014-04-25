@@ -33,6 +33,8 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 
 	//TODO password style rendering
 	this.renderLayers['Text'] = function(gfx){
+		gfx.fillStyle = '#a0a0a0';
+		gfx.fillRect(that.getx()+2, that.gety()+2,that.w-4, that.h-4);
 		gfx.fillStyle = that.textColor;
 
 		var split = that.splitText(that.txt);
@@ -72,7 +74,7 @@ App.GuiTextBox = function(x, y, w, h, defaultText, en, ex, xorigin, yorigin){
 				this.txt = this.defaultText;
 			}
 
-			return;
+			return true;
 		}
 		this.cursortime = (this.cursortime-1 > -(this.cursormax -1))? this.cursortime-1 : this.cursormax;
 
