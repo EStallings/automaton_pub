@@ -34,17 +34,10 @@ App.setupMainMenu = function(){
 	mainMenu.sandboxButton.hoverColor = '#1010af';
 	mainMenu.settingsButton.hoverColor= '#afaf10';
 
-	mainMenu.textthing = new App.GuiTextBox(200, 300, 200, 25, "Hello", 100, 100, null, null);
-	mainMenu.textthing2 = new App.GuiTextBox(200,330, 200, 25, "Lolol", 100, 100, null, null);
-	mainMenu.textthing2.passwordMode = true;
-	mainMenu.textthing.next = mainMenu.textthing2;
-
 	mainMenu.gui.addComponent(mainMenu.playButton);
 	mainMenu.gui.addComponent(mainMenu.libraryButton);
 	mainMenu.gui.addComponent(mainMenu.sandboxButton);
 	mainMenu.gui.addComponent(mainMenu.settingsButton);
-	mainMenu.gui.addComponent(mainMenu.textthing);
-	mainMenu.gui.addComponent(mainMenu.textthing2);
 
 
 
@@ -99,7 +92,6 @@ App.setupMainMenu = function(){
 
 	mainMenu.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT, mainMenu.gui.mouseDown);
 	mainMenu.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT, mainMenu.gui.mouseUp);
-
 
 	mainMenu.registerResizeFunc(function(){
 		App.GameRenderer.bestFit();

@@ -122,6 +122,10 @@ App.setupLevelSelect = function(){
 	}
 
 		// ---------------------------------------------
+	levelSelect.registerKeyDownFunc('Esc',function(){
+		levelSelect.requestStaticRenderUpdate = true;
+		App.ModeHandler.popMode();
+	});
 
 	levelSelect.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT, levelSelect.gui.mouseDown);
 	levelSelect.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT, levelSelect.gui.mouseUp);

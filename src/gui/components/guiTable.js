@@ -117,7 +117,6 @@ App.GuiTable = function(x, y, maxRows, descrip){
 		var x = c.x;
 		var y = c.y;
 
-		console.log(x + " " + y);
 		if(y === 0){
 			this.butClick = x;
 		}
@@ -130,9 +129,9 @@ App.GuiTable = function(x, y, maxRows, descrip){
 	this.clickEnd = function(){
 		var c = this.getLocalCoords();
 		var x = c.x;
-
-		if(y === 0 && x === this.butClick){
-			console.log("clicked button " + this.descript[x].name);
+		var y = c.y;
+		if(y == 0 && x == this.butClick){
+			this.sortBy(this.descrip[x].id);
 		}
 	}
 
@@ -169,16 +168,15 @@ App.GuiTable = function(x, y, maxRows, descrip){
 
 	//takes a column and whether or not to sort alphabetically
 	this.sortBy = function(col){
+		if(!this.json)
+			return;
 		var sign = (this.lastSortedCol === col)? this.lastSortedSign * -1 : 1;
 		this.lastSortedCol = col;
 		this.lastSortedSign = sign;
 
 		this.json.sort(function(a, b){
-			var res = 0;
-			return (a.entries[col] < b.entries[col]) ? (-1 * sign) : (1 * sign);
-
+			return (a[col].toLowerCase() < b[col].toLowerCase()) ? (-1 * sign) : (1 * sign);
 		});
-		App.Gui.drawStatic = true;
 	}
 }
 App.GuiTable.prototype = Object.create(g.Component);
