@@ -9,6 +9,7 @@ App.setupCreateAccount = function(){
 	var returnFunc = function(){
 		create.requestStaticRenderUpdate = true;
 		App.ModeHandler.popMode();
+		endServerStatus();
 	}
 
 	create.cancelButton = new App.GuiTextButton(15,100,200,000,'Cancel', returnFunc,false,null,null);
@@ -24,6 +25,20 @@ App.setupCreateAccount = function(){
 	create.password.passwordMode = true;
 	create.username.next = create.password;
 
+	var endServerStatus = function(){
+		for(var b in create.entrybox){
+			create.gui.addComponent(create.entrybox[b]);
+		}
+		create.gui.removeComponent(create.serverstatus);
+		create.serverstatus.reset();
+		create.password.passwordString = '';
+		create.password.txt = create.password.defaultText;
+		create.username.txt = create.username.defaultText;
+	}
+
+	create.serverstatus = new App.GuiServerStatus(55, 200,returnFunc, endServerStatus);
+	create.entrybox = [create.username, create.password, create.createButton, create.cancelButton];
+
 
 	create.gui.addComponent(create.cancelButton);
 	create.gui.addComponent(create.createButton);
@@ -31,18 +46,23 @@ App.setupCreateAccount = function(){
 	create.gui.addComponent(create.password);
 
 	var createRequest = function(){
-		App.Server.createAccount(create.username.txt, create.password.txt, createCallback);
+		for(var b in create.entrybox){
+			create.gui.removeComponent(create.entrybox[b]);
+		}
+		create.gui.addComponent(create.serverstatus);
+
+		App.Server.createAccount(create.username.txt, create.password.passwordString, createCallback);
 	}
+
+
 
 	var createCallback = function(data){
 		var d = data.split(':')[1];
 
 		d = d.substring(1, d.indexOf('}')-1);
-
-		//TODO make this something other than an alert
-		alert(d);
-		if(d.indexOf('created') !== -1)
-			returnFunc();
+		var success = (d.indexOf('created') !== -1);
+		var message = d;
+		create.serverstatus.callback(success, message);
 	}
 
 	create.alpha = create.goalAlpha = 0;
@@ -55,6 +75,9 @@ App.setupCreateAccount = function(){
 		create.exitFlag = false;
 		create.gui.enter();
 		create.goalAlpha = 1;
+		create.username.txt = create.username.defaultText;
+		create.password.txt = create.password.defaultText;
+		create.password.passwordString = '';
 
 		App.Shade.turnOn();
 	}

@@ -10,6 +10,10 @@ App.setupSubmitLevel = function(){
 	var returnFunc = function(){
 		submit.requestStaticRenderUpdate = true;
 		App.ModeHandler.popMode();
+		endServerStatus();
+		submit.levelname.txt = submit.levelname.defaultText;
+		submit.leveldesc.txt = submit.leveldesc.defaultText;
+		submit.diffButton.txt = 'Easy';
 	}
 
 	submit.cancelButton = new App.GuiTextButton(15,100,200,000,'Cancel', returnFunc,false,null,null);
@@ -42,6 +46,21 @@ App.setupSubmitLevel = function(){
 	submit.levelname.next = submit.leveldesc;
 	submit.leveldesc.next = submit.username;
 
+	submit.entrybox = [submit.cancelButton, submit.submitButton, submit.levelname, submit.leveldesc, submit.diffButton, submit.username, submit.password, submit.accountButton];
+
+	var endServerStatus = function(){
+		for(var b in submit.entrybox){
+			submit.gui.addComponent(submit.entrybox[b]);
+		}
+		submit.serverstatus.reset();
+		submit.gui.removeComponent(submit.serverstatus);
+		submit.password.passwordString = '';
+		submit.password.txt = submit.password.defaultText;
+		submit.username.txt = submit.username.defaultText;
+	}
+
+	submit.serverstatus = new App.GuiServerStatus(50, 200, returnFunc, endServerStatus);
+
 	submit.gui.addComponent(submit.cancelButton);
 	submit.gui.addComponent(submit.submitButton);
 	submit.gui.addComponent(submit.diffButton);
@@ -52,6 +71,11 @@ App.setupSubmitLevel = function(){
 	submit.gui.addComponent(submit.accountButton);
 
 	var submitLevel = function(){
+		for(var b in submit.entrybox){
+			submit.gui.removeComponent(submit.entrybox[b]);
+		}
+		submit.gui.addComponent(submit.serverstatus);
+
 		App.Server.putLevel(App.Game.currentPlanningLevel.generateParseString(),
 			submit.username.txt,
 			submit.password.passwordString,
@@ -65,10 +89,9 @@ App.setupSubmitLevel = function(){
 		var d = data.split(':')[1];
 
 		d = d.substring(1, d.indexOf('}')-1);
-		//TODO make this something other than an alert
-		alert(d);
-		if(d === 'level saved')
-			returnFunc();
+		var success = (d == 'level saved');
+		var message = d;
+		submit.serverstatus.callback(success, message);
 	}
 
 	submit.alpha = submit.goalAlpha = 0;
@@ -81,6 +104,9 @@ App.setupSubmitLevel = function(){
 		submit.exitFlag = false;
 		submit.gui.enter();
 		submit.goalAlpha = 1;
+		submit.username.txt = submit.username.defaultText;
+		submit.password.txt = submit.password.defaultText;
+		submit.password.passwordString = '';
 
 		App.Shade.turnOn();
 	}
