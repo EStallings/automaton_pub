@@ -30,12 +30,15 @@ App.makeInputHandler = function(){
 
 	document.addEventListener('keydown',function(e){
 		input.keysDown[e.keyCode] = true;
+
+		if(e.keyCode === 8 || e.keyCode === 9) //backspace or tab
+				e.preventDefault();
+
 		if(input.keyOverride !== null)
 		{
 			input.currentKey = e.keyCode;
 			input.keyOverride(e.keyCode);
-			if(e.keyCode === 8 || e.keyCode === 9) //backspace or tab
-				e.preventDefault();
+
 			return;
 		}
 		var mode = App.ModeHandler.currentMode;

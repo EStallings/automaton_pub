@@ -12,11 +12,61 @@ App.setupLibrary = function(){
 	},false,null,null);
 	library.backButton.hoverColor = '#10af10';
 
-	library.table = new App.GuiTable(100, 100, 20, [{id:'title', name:"Title"},{id:'description', name:"Description"},{id:'difficulty', name:"Difficulty"},{id:'author_id', name:"Author"},{id:'created', name:"Created"}]);
+	library.queryBox = new App.GuiTextBox(15+128+10, 56+28*2, 300, 25, "Enter search term here", 100, 100, null, null);
+	library.diffButton = new App.GuiTextButton(15+128+10, 56+28*2,200, 200, 'Easy', function(){
+		if(library.diffButton.txt === 'Easy')
+			library.diffButton.txt = 'Medium';
+		else if(library.diffButton.txt === 'Medium')
+			library.diffButton.txt = 'Hard';
+		else if(library.diffButton.txt === 'Hard')
+			library.diffButton.txt = 'Easy';
+	});
+	library.diffButton.w = 300;
+	library.diffButton.dointerp = false;
+
+	library.typeButton = new App.GuiTextButton(15, 56+28*2, 200, 000, 'User', function(){
+		if(library.typeButton.txt === 'User'){
+			library.typeButton.txt = 'Difficulty';
+			library.gui.removeComponent(library.queryBox);
+			library.gui.addComponent(library.diffButton);
+		}
+		else{
+			library.typeButton.txt = 'User';
+			library.gui.removeComponent(library.diffButton);
+			library.gui.addComponent(library.queryBox);
+		}
+	}, false, null, null);
+	library.typeButton.w = 128;
+
+	library.goButton = new App.GuiTextButton(15 + 128 + 20 + 300, 56+28*2, 200, 000, 'Search!', function(){
+		var type = library.typeButton.txt;
+		var query;
+		if(type === 'User') {
+			type = 'user';
+			query = library.queryBox.txt;
+		}
+		else {
+			type = 'diff';
+			query = library.diffButton.txt;
+		}
+
+
+
+		library.table.loading = true;
+		App.Server.getLevels(type, query, library.table.setData);
+	}, false, null, null);
+	library.typeButton.w = 128;
+
+
+
+	library.table = new App.GuiTable(100, 150, 20, [{id:'title', name:"Title"},{id:'description', name:"Description"},{id:'difficulty', name:"Difficulty"},{id:'author_id', name:"Author"},{id:'created', name:"Created"}]);
 	TABLE = library.table;
 
 	library.gui.addComponent(library.table);
+	library.gui.addComponent(library.typeButton);
+	library.gui.addComponent(library.queryBox);
 	library.gui.addComponent(library.backButton);
+	library.gui.addComponent(library.goButton);
 	library.alpha = library.goalAlpha = 0;
 
 		// ---------------------------------------------

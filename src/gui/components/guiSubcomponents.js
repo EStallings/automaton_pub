@@ -58,7 +58,7 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 	//From the box class
 	this.enter = function(){
 		this.left  = this.goalLeft  = this.x;
-		this.right = this.goalRight = this.x;
+		this.right = this.goalRight = this.x
 		this.goalRight = this.x+this.w;
 		this.interpmode = 'enter';
 		this.interpRightTick = App.Engine.tick+this.enterDelay;

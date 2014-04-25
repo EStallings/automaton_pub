@@ -29,6 +29,13 @@ App.guiFrame = function(gfx){
 		comp.gui = this;
 	}
 
+	this.removeComponent = function(comp){
+		var index = this.frame.indexOf(comp);
+		if (index > -1) {
+			this.frame.splice(index, 1);
+		}
+	}
+
 	this.testCoordinates = function(x,y){
 		var ret = {f:[],p:[]};
 		for(var c in this.frame){

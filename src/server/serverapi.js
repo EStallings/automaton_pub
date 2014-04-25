@@ -10,9 +10,7 @@ App.Server.getLevels = function(type, subtype, callback){
 }
 
 App.Server.testGetCallback = function(json){
-	for(var x in json){
-		console.log(json[x]);
-	}
+	console.log(json);
 }
 
 App.Server.testBreakdown = function(json){
