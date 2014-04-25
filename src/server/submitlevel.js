@@ -4,27 +4,33 @@ App.setupSubmitLevel = function(){
 		// ---------------------------------------------
 
 
-	submit.gfx = App.Canvases.addNewLayer(50).getContext('2d');
+	submit.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	submit.gui = new App.guiFrame(submit.gfx);
 
-	submit.cancelButton = new App.GuiTextButton(15,100,200,000,'Cancel',function(){
+	var returnFunc = function(){
 		submit.requestStaticRenderUpdate = true;
 		App.ModeHandler.popMode();
-	},false,null,null);
+	}
+
+	submit.cancelButton = new App.GuiTextButton(15,100,200,000,'Cancel', returnFunc,false,null,null);
 	submit.cancelButton.hoverColor = '#af1010';
 
-	submit.submitButton = new App.GuiTextButton(15,100,200,000,'Submit',function(){
-		submit.requestStaticRenderUpdate = true;
-		App.ModeHandler.popMode();
+	submit.submitButton = new App.GuiTextButton(15,130,200,000,'Submit',function(){
+		submitLevel();
 	},false,null,null);
 	submit.submitButton.hoverColor = '#10af10';
 
-	submit.diffButton = new App.GuiTextButton(15,100,200,000,'Easy',function(){
+	submit.diffButton = new App.GuiTextButton(15,260,200,000,'Easy',function(){
 		if(submit.diffButton.txt === 'Easy') submit.diffButton.txt = 'Medium';
-		if(submit.diffButton.txt === 'Medium') submit.diffButton.txt = 'Hard';
-		if(submit.diffButton.txt === 'Hard') submit.diffButton.txt = 'Easy';
+		else if(submit.diffButton.txt === 'Medium') submit.diffButton.txt = 'Hard';
+		else if(submit.diffButton.txt === 'Hard') submit.diffButton.txt = 'Easy';
 	},false,null,null);
-	submit.diffButton.hoverColor = '#1010af';
+	submit.diffButton.w = 128;
+
+	submit.accountButton = new App.GuiTextButton(15, 400, 200, 000, 'Create Account', function(){
+		App.ModeHandler.pushMode('create account');
+	}, false, null, null);
+
 
 	submit.username = new App.GuiTextBox(15, 300, 200, 25, "Username", 100, 100, null, null);
 	submit.password = new App.GuiTextBox(15,330, 200, 25, "Password", 100, 100, null, null);
@@ -43,8 +49,27 @@ App.setupSubmitLevel = function(){
 	submit.gui.addComponent(submit.password);
 	submit.gui.addComponent(submit.levelname);
 	submit.gui.addComponent(submit.leveldesc);
+	submit.gui.addComponent(submit.accountButton);
 
+	var submitLevel = function(){
+		App.Server.putLevel(App.Game.currentPlanningLevel.generateParseString(),
+			submit.username.txt,
+			submit.password.passwordString,
+			submit.diffButton.txt,
+			submit.levelname.txt,
+			submit.leveldesc.txt,
+			submitCallback);
+	}
 
+	var submitCallback = function(data){
+		var d = data.split(':')[1];
+
+		d = d.substring(1, d.indexOf('}')-1);
+		//TODO make this something other than an alert
+		alert(d);
+		if(d === 'level saved')
+			returnFunc();
+	}
 
 	submit.alpha = submit.goalAlpha = 0;
 
@@ -98,6 +123,8 @@ App.setupSubmitLevel = function(){
 	submit.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT, submit.gui.mouseDown);
 	submit.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT, submit.gui.mouseUp);
 
+	submit.registerKeyDownFunc('Enter', submitLevel);
+	submit.registerKeyDownFunc('Esc', returnFunc);
 
 	submit.registerResizeFunc(function(){
 		App.GameRenderer.bestFit();

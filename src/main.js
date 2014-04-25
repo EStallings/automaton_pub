@@ -19,6 +19,8 @@ window.onload = function(){
 	App.setupSimGui();
 	App.setupErrorGui();
 	App.setupSuccessGui();
+	App.setupSubmitLevel();
+	App.setupCreateAccount();
 
 	App.Engine.run();
 }

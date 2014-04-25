@@ -26,19 +26,20 @@ App.setupPlanGui = function(){
 
 
 	planMode.botRow = [];
-	planMode.botRow[0]  = new App.GuiToggButton(48*-7+2, 16, 800,  0,        'center', 'bottom',               -8);
-	planMode.botRow[1]  = new App.GuiToggButton(48*-6+2, 16, 700,  1,        'center', 'bottom',               -7);
-	planMode.botRow[2]  = new App.GuiToggButton(48*-5+2, 16, 600,  2,        'center', 'bottom',               -6);
-	planMode.botRow[3]  = new App.GuiToggButton(48*-4+2, 16, 500,  3,        'center', 'bottom',               -5);
-	planMode.botRow[4]  = new App.GuiInstDrag  (48*-3+2, 16, 450,  7, false, 'center', 'bottom', planMode.gui, -4);
-	planMode.botRow[5]  = new App.GuiInstDrag  (48*-2+2, 16, 350,  6, false, 'center', 'bottom', planMode.gui, -3);
-	planMode.botRow[6]  = new App.GuiInstDrag  (48*-1+2, 16, 250,  5, false, 'center', 'bottom', planMode.gui, -2);
-	planMode.botRow[7]  = new App.GuiInstDrag  (48* 0+2, 16, 150, 23, true , 'center', 'bottom', planMode.gui, -1);
-	planMode.botRow[8]  = new App.GuiInstDrag  (48* 1+2, 16, 050, 19, true , 'center', 'bottom', planMode.gui,  0);
-	planMode.botRow[9]  = new App.GuiInstDrag  (48* 2+2, 16, 150, 17, false, 'center', 'bottom', planMode.gui,  1);
-	planMode.botRow[10] = new App.GuiInstDrag  (48* 3+2, 16, 250, 14, false, 'center', 'bottom', planMode.gui,  2);
-	planMode.botRow[11] = new App.GuiInstDrag  (48* 4+2, 16, 350, 18, false, 'center', 'bottom', planMode.gui,  3);
-	planMode.botRow[12] = new App.GuiInstDrag  (48* 5+2, 16, 450,  9, false, 'center', 'bottom', planMode.gui,  4);
+	planMode.botRow[0]  = new App.GuiToolbarButton(48*-8+2, 16, 900, 0,      'center', 'bottom',               -9, function(){App.ModeHandler.pushMode('submit level');});
+	planMode.botRow[1]  = new App.GuiToggButton(48*-7+2, 16, 800,  0,        'center', 'bottom',               -8);
+	planMode.botRow[2]  = new App.GuiToggButton(48*-6+2, 16, 700,  1,        'center', 'bottom',               -7);
+	planMode.botRow[3]  = new App.GuiToggButton(48*-5+2, 16, 600,  2,        'center', 'bottom',               -6);
+	planMode.botRow[4]  = new App.GuiToggButton(48*-4+2, 16, 500,  3,        'center', 'bottom',               -5);
+	planMode.botRow[5]  = new App.GuiInstDrag  (48*-3+2, 16, 450,  7, false, 'center', 'bottom', planMode.gui, -4);
+	planMode.botRow[6]  = new App.GuiInstDrag  (48*-2+2, 16, 350,  6, false, 'center', 'bottom', planMode.gui, -3);
+	planMode.botRow[7]  = new App.GuiInstDrag  (48*-1+2, 16, 250,  5, false, 'center', 'bottom', planMode.gui, -2);
+	planMode.botRow[8]  = new App.GuiInstDrag  (48* 0+2, 16, 150, 23, true , 'center', 'bottom', planMode.gui, -1);
+	planMode.botRow[9]  = new App.GuiInstDrag  (48* 1+2, 16, 050, 19, true , 'center', 'bottom', planMode.gui,  0);
+	planMode.botRow[10]  = new App.GuiInstDrag  (48* 2+2, 16, 150, 17, false, 'center', 'bottom', planMode.gui,  1);
+	planMode.botRow[11] = new App.GuiInstDrag  (48* 3+2, 16, 250, 14, false, 'center', 'bottom', planMode.gui,  2);
+	planMode.botRow[12] = new App.GuiInstDrag  (48* 4+2, 16, 350, 18, false, 'center', 'bottom', planMode.gui,  3);
+	planMode.botRow[13] = new App.GuiInstDrag  (48* 5+2, 16, 450,  9, false, 'center', 'bottom', planMode.gui,  4);
 
 	planMode.instPanel = new App.GuiTools.Component(0,0,500,116,0,0,null,'bottom');
 	planMode.instPanel.render = function(gfx){
