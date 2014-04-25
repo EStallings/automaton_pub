@@ -317,7 +317,7 @@ App.makeGameRenderer = function(){
 		//Luke: I changed this to fix the browser compatibility issue where it
 		//shows up as super bright background (and hard to see anything)
 		//in some browsers (mine)
-		game.bkgndGfx.fillStyle = '#808080';
+		game.bkgndGfx.fillStyle = '#404040';
 		game.bkgndGfx.fillRect(0,0,App.Canvases.width, App.Canvases.height)
 		game.bkgndGfx.strokeStyle = '#000000';
 		game.bkgndGfx.lineWidth = 5;
