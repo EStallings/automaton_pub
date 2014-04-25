@@ -314,7 +314,12 @@ App.makeGameRenderer = function(){
 	}
 
 	game.renderBackground = function(){ // TODO: OPTIMIZE THIS
-		game.bkgndGfx.strokeStyle = '#151515';
+		//Luke: I changed this to fix the browser compatibility issue where it
+		//shows up as super bright background (and hard to see anything)
+		//in some browsers (mine)
+		game.bkgndGfx.fillStyle = '#808080';
+		game.bkgndGfx.fillRect(0,0,App.Canvases.width, App.Canvases.height)
+		game.bkgndGfx.strokeStyle = '#000000';
 		game.bkgndGfx.lineWidth = 5;
 		game.bkgndGfx.beginPath();
 		for(var i=1;i<App.Canvases.width+App.Canvases.height+5;i+=9){

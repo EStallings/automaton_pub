@@ -29,6 +29,8 @@ App.setupLibrary = function(){
 
 	var loadLevel = function(){
 		var e = library.table.getSelectedEntry();
+		if(e == null)
+			return;
 		App.Game.currentPlanningLevel = App.Game.parseLevel(e.level_str);
 		App.GameRenderer.bestFit();
 		App.ModeHandler.pushMode('planning');
