@@ -39,11 +39,13 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 	this.dointerp        = true;
 
 	this.baseColor       = '#ffffff';
-	this.hoverColor      = '#a0a0a0';
+	this.baseTextColor   = '#000000';
+	this.hoverColor      = '#ff0000';
+	this.hoverTextColor  = '#ffffff';
 	this.activeColor     = '#000000';
 	this.activeTextColor = '#ffffff';
-	this.baseTextColor   = '#000000';
 	this.lockedColor     = '#d2d2d2';
+	this.lockedTextColor = '#ffffff';
 
 	this.color           = this.baseColor;
 	this.textColor       = this.baseTextColor;
@@ -145,8 +147,13 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 
 	this.setLock = function(lock){
 		this.locked = lock;
-		if(lock) this.color = this.lockedColor;
-		else this.color = this.baseColor;
+		if(lock){
+			this.color = this.lockedColor;
+			this.textColor = this.lockedTextColor;
+		}else{
+			this.color = this.baseColor;
+			this.textcolor = this.baseTextColor;
+		}
 	}
 
 	this.positionRelative = function(c) {
@@ -166,35 +173,38 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 
 	this._clickStart = function(){
 		this.active = true;
-		this.textColor = this.activeTextColor;
 		this.color = this.activeColor;
+		this.textColor = this.activeTextColor;
 		this.changed = true;
 	}
 
 	this._clickEnd = function(){
 		this.active = false;
-		this.textColor = this.baseTextColor;
 		this.color = this.baseColor;
+		this.textColor = this.baseTextColor;
 		this.changed = true;
 	}
 
 	this._update = function(){
 		if(!this.functional) return;
 		var oc = this.color;
+		var otc = this.textColor;
 		var x = App.InputHandler.mouseX;
 		var y = App.InputHandler.mouseY;
 
-		if(!this.active && this.collides(x, y))
+		if(!this.active && this.collides(x, y)){
 			this.color = this.hoverColor;
-		else if(!this.active)
+			this.textColor = this.hoverTextColor;
+		}else if(!this.active){
 			this.color = this.baseColor;
-		else if(!this.collides(x, y))
+			this.textColor = this.baseTextColor;
+		}else if(!this.collides(x, y))
 			this._clickEnd();
 		if(this.changed){
 			this.changed = false;
 			return true;
 		}
-		if(this.color === oc)
+		if(this.color === oc && this.textColor === otc)
 			return false;
 		return true;
 	}

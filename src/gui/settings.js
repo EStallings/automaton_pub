@@ -10,7 +10,10 @@ App.setupSettings = function(){
 		settings.requestStaticRenderUpdate = true;
 		App.ModeHandler.popMode();
 	},false,null,null);
-	settings.backButton.hoverColor = '#afaf10';
+
+	settings.backButton.hoverColor      = '#ffff00';
+	settings.backButton.activeColor     = '#808000';
+	settings.backButton.activeTextColor = '#ffff00';
 
 	settings.gui.addComponent(settings.backButton);
 	settings.alpha = settings.goalAlpha = 0;
@@ -38,7 +41,7 @@ App.setupSettings = function(){
 
 		settings.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
-		settings.gfx.fillStyle = '#fff';
+		settings.gfx.fillStyle = '#ffffff';
 		text(settings.gfx,"Settings",15,15,36,-3);
 
 		if(settings.gui.render())
