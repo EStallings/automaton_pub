@@ -10,6 +10,7 @@ App.PlanningLevel = function(){
 	this.undoStack = [];
 	this.redoStack = [];
 	this.locks = [false, false, false, false]; // R,G,B,Y
+	this.instructionLock = false;
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
 	this.graphics = new App.PlanningGraphics();
 
@@ -80,6 +81,9 @@ App.PlanningLevel = function(){
 			}
 		}
 	}
+
+	this.lockInstructions = function(){ that.instructionLock = true; }
+	this.unlockInstructions = function(){ that.instructionLock = false; }
 
 	this.setLock = function(color, state){ that.locks[color] = state; }
 
@@ -171,6 +175,7 @@ App.PlanningLevel = function(){
 			if(that.width !== 0 && (instructions[i].x < 0 || instructions[i].x >= that.width)){ /* console.log('insert out of bounds'); */ return false; }
 			if(that.height !== 0 && (instructions[i].y < 0 || instructions[i].y >= that.height)){ /* console.log('insert out of bounds'); */ return false; }
 			if(that.isLocked(instructions[i].color)){ /* console.log('layer locked'); */ return; }
+			if(that.instructionLock === true && instructions[i].locked){ return; }
 			if(that.getInstruction(instructions[i].x, instructions[i].y, instructions[i].color))
 			{
 				if(that.userOverlapSetting === 0){ /* console.log('tile blocked'); */ return; } // if there is a conflict in any space and overwrite is disabled, reject
@@ -199,6 +204,7 @@ App.PlanningLevel = function(){
 		instructions = that.toList(instructions);
 		for(i in instructions){
 			if(that.isLocked(instructions[i].color)){ /* console.log('layer locked'); */ return; }
+			if(that.instructionLock === true && instructions[i].locked){ return; }
 			that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = null;
 		}
 		that.undoStack.push(new that.operation('del', instructions, null, null, null, null));
@@ -218,6 +224,7 @@ App.PlanningLevel = function(){
 			var instr = instructions[i];
 			if(that.width !== 0 && (instructions[i].x + shiftX < 0 || instructions[i].x + shiftX >= that.width)){ /* console.log('move out of bounds'); */ return; }
 			if(that.height !== 0 && (instructions[i].y + shiftY < 0 || instructions[i].y + shiftY >= that.height)){ /* console.log('move out of bounds'); */ return; }
+			if(that.instructionLock === true && instructions[i].locked){ return; }
 			that.grid[instr.x][instr.y][instr.color] = null;
 			instructions[i].x += shiftX;
 			instructions[i].y += shiftY;
@@ -266,6 +273,7 @@ App.PlanningLevel = function(){
 		var newInstr = [];
 		for(i in instructions){
 			var instr = instructions[i];
+			if(that.instructionLock === true && instructions[i].locked){ return; }
 			newInstr[i] = new App.PlanningInstruction(instr.x+shiftX, instr.y+shiftY, instr.color, instr.type);
 		}
 
