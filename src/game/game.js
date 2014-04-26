@@ -114,6 +114,9 @@ App.makeGame = function(){
 				game.outStreams[i][3] = 0;
 			}game.generateTokenWave();
 			game.flipFlop = [true,true,true,true];
+
+			App.Game.currentPlanningLevel.currentSelection = [];
+			App.GameRenderer.tempGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 		}else{
 			game.mode = game.modes.PLANNING;
 			game.currentSimulationLevel = undefined;
