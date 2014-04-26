@@ -3,20 +3,44 @@ App.makeInputHandler = function(){
 
 	input.MOUSEBUTTON = {LEFT:0,MIDDLE:1,RIGHT:2};
 
-	input.canvas = App.Canvases.addNewLayer(100);
+	input.canvas   = App.Canvases.addNewLayer(100);
 	input.context  = input.canvas.getContext('2d');
 
 	input.keysDown = [];
-	input.mouseX = -1;
-	input.mouseY = -1;
-	input.lmb    = false;
-	input.mmb    = false;
-	input.rmb    = false;
+	input.mouseX   = -1;
+	input.mouseY   = -1;
+	input.lmb      = false;
+	input.mmb      = false;
+	input.rmb      = false;
+
+
+	//when set to a non-null value, key presses are sent to the keyOverride function
+	input.keyOverride = null;
+	input.currentKey = null; //used for keyoverride
+
+	input.seizeKeys = function(obj){
+		input.keyOverride = obj;
+	}
+
+	input.releaseKeys = function(){
+		input.keyOverride = null;
+	}
 
 	// ========================================================== //
 
 	document.addEventListener('keydown',function(e){
 		input.keysDown[e.keyCode] = true;
+
+		if(e.keyCode === 8 || e.keyCode === 9) //backspace or tab
+				e.preventDefault();
+
+		if(input.keyOverride !== null)
+		{
+			input.currentKey = e.keyCode;
+			input.keyOverride(e.keyCode);
+
+			return;
+		}
 		var mode = App.ModeHandler.currentMode;
 		if(!mode)return;
 		var f = mode.keyDownFuncs[e.keyCode];
@@ -25,6 +49,11 @@ App.makeInputHandler = function(){
 
 	document.addEventListener('keyup',function(e){
 		input.keysDown[e.keyCode] = undefined;
+		if(input.keyOverride !== null)
+		{
+			input.currentKey = null;
+			return;
+		}
 		var mode = App.ModeHandler.currentMode;
 		if(!mode)return;
 		var f = mode.keyUpFuncs[e.keyCode];
@@ -44,12 +73,6 @@ App.makeInputHandler = function(){
 		input.mouseY = e.clientY;
 		var mode = App.ModeHandler.currentMode;
 		if(!mode)return;
-		/*if(mode.gui)
-			if(mode.gui.mouseDown(input.mouseX, input.mouseY, (e.button === 1)))
-			{
-				mode.gui.guilock = true;
-				return;
-			}*/
 		var f = mode.mouseDownFuncs[e.button];
 		if(f)f(input.mouseX,input.mouseY);
 	},false);
@@ -59,8 +82,6 @@ App.makeInputHandler = function(){
 		input.mouseY = e.clientY;
 		var mode = App.ModeHandler.currentMode;
 		if(!mode)return;
-		if(mode.gui && mode.gui.guilock)
-			return;
 		var f = mode.mouseMoveFunc;
 		if(f)f(input.mouseX,input.mouseY);
 	},false);
@@ -76,11 +97,6 @@ App.makeInputHandler = function(){
 		input.mouseY = e.clientY;
 		var mode = App.ModeHandler.currentMode;
 		if(!mode)return;
-		if(mode.gui && mode.gui.guilock){
-			mode.gui.mouseUp(input.mouseX, input.mouseY);
-			mode.gui.guilock = false;
-			return;
-		}
 		var f = mode.mouseUpFuncs[e.button];
 		if(f)f(input.mouseX,input.mouseY);
 	},false);
@@ -88,8 +104,6 @@ App.makeInputHandler = function(){
 	input.canvas.addEventListener('mouseout',function(e){
 		var mode = App.ModeHandler.currentMode;
 		if(mode){
-			if(mode.gui)
-				mode.gui.guilock = false;
 			for(var i in mode.keysDown)if(mode.keysDown[i]){
 				var f = mode.keyUpFuncs[i];
 				if(f)f();
@@ -158,6 +172,15 @@ App.makeInputHandler = function(){
 		123:"F12",144:"Num Lock",145:"Scroll Lock",182:"My Computer",
 		183:"My Calculator",186:";",187:"=",188:",",189:"-",190:".",
 		191:"/",192:"`",219:"[",220:"\\",221:"]",222:"'"};
+
+
+	input.alphaNumeric = function(key){
+		return ((key >= 48 && key <= 90) || (key >= 96 && key <= 111) || (key >= 186));
+	}
+
+	input.checkKey = function(str){
+		return !!this.keysDown[this.keyCharToCode[str]];
+	}
 
 	return input;
 }

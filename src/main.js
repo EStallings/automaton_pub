@@ -14,11 +14,14 @@ window.onload = function(){
 	App.setupLevelSelect();
 	App.setupLibrary();
 	App.setupSettings();
+	App.setupSubmitLevel();
+	App.setupCreateAccount();
 	// TODO: split below into normal and sandbox versions?
 	App.setupPlanGui();
 	App.setupSimGui();
 	App.setupErrorGui();
 	App.setupSuccessGui();
+
 
 	App.Engine.run();
 }

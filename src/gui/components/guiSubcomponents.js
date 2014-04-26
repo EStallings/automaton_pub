@@ -1,46 +1,152 @@
 App.GuiTools = {};
 var g = App.GuiTools;
 
-g.Component = function(x, y, panel){
+g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 	if(!x && x !== 0 || (!y && y !== 0))
 		throw "x or y invalid";
-	if(panel) panel.addChild(this);
 
 	//current x and y
-	this.x = x;
-	this.y = y;
+	this.x               = x;
+	this.y               = y;
+	this.w               = w;
+	this.h               = h;
 
 	//relatively positioned x and y
-	this.px = x;
-	this.py = y;
+	this.px              = x;
+	this.py              = y;
 
 	//base x and y: never changes
-	this.baseX = x;
-	this.baseY = y;
+	this.baseX           = x;
+	this.baseY           = y;
 
-	this.functional = false;
-	this.active = false;
-	this.locked = false;
+	this.xorigin         = xorigin;
+	this.yorigin         = yorigin;
 
-	this.baseColor = '#1d1d1d';
-	this.hoverColor = '#4d4d4d';
-	this.activeColor = '#2d2d2d';
-	this.textColor = '#ffffff';
-	this.lockedColor = '#d2d2d2';
+	//for drawing the interpolation
+	this.left            = x;
+	this.right           = x;
 
-	this.color = this.baseColor;
-	this.renderLayers = [];
+	this.enterDelay      = enterDelay;
+	this.exitDelay       = exitDelay;
+	this.interpLeftTick  = 0;
+	this.interpRightTick = 0;
+
+	this.functional      = false;
+	this.active          = false;
+	this.locked          = false;
+	this.changed         = false;
+	this.overridepos     = false;
+	this.dointerp        = true;
+
+	this.baseColor       = '#ffffff';
+	this.hoverColor      = '#a0a0a0';
+	this.activeColor     = '#000000';
+	this.activeTextColor = '#ffffff';
+	this.baseTextColor   = '#000000';
+	this.lockedColor     = '#d2d2d2';
+
+	this.color           = this.baseColor;
+	this.textColor       = this.baseTextColor;
+
+	this.renderLayers    = [];
+
+	this.interpmode = 'none';
+	this.gui = null;
+
+	var that = this;
+
+	//From the box class
+	this.enter = function(){
+		this.left  = this.goalLeft  = this.x;
+		this.right = this.goalRight = this.x
+		this.goalRight = this.x+this.w;
+		this.interpmode = 'enter';
+		this.interpRightTick = App.Engine.tick+this.enterDelay;
+	}
+
+	this.exit = function(){
+		this.interpmode = 'exit';
+		this.goalLeft = this.x+this.w;
+		this.interpLeftTick = App.Engine.tick+this.exitDelay;
+	}
+
+	this.render = function(gfx){
+		var updating = false;
+		if(this.dointerp){
+			//update interpolation
+			if(this.left != this.goalLeft){
+				updating = true;
+				if(App.Engine.tick >= this.interpLeftTick)this.left += expInterp(this.left,this.goalLeft,0.005,0.1);
+			}if(this.right != this.goalRight){
+				updating = true;
+				if(App.Engine.tick >= this.interpRightTick)this.right += expInterp(this.right,this.goalRight,0.005,0.1);
+			}
+		}
+		else{
+			this.left = this.x;
+			this.right = this.x + this.w;
+		}
+
+		//Do the actual rendering as defined by our child class
+		for(var r in this.renderLayers){
+			this.renderLayers[r](gfx);
+		}
+
+		return updating;
+	}
+
+	this.renderLayers["Rect"] = function(gfx){
+		gfx.fillStyle = that.color;
+		gfx.fillRect(that.getleft(), that.gety(), that.getright() - that.getleft(), that.h);
+	};
+
+	//Tests if a point is inside of the rectangle
+	this.collides = function(x, y){
+		return ((x > this.getx()) && (x < (this.getx() + this.w)) &&
+			   	(y > this.gety()) && (y < (this.gety() + this.h)));
+	}
+
+	this.getx = function(){
+		if(this.overridepos)
+			return this.x
+		if(this.xorigin == 'right')
+			return this.x + App.Canvases.width - this.w;
+		if(this.xorigin == 'center')
+			return this.x + App.Canvases.width/2 - this.w;
+		return this.x;
+	}
+
+	this.gety = function(){
+		if(this.overridepos)
+			return this.y
+		if(this.yorigin == 'bottom')
+			return this.y + App.Canvases.height - this.h;
+		if(this.yorigin == 'center')
+			return this.y + App.Canvases.height/2 - this.h;
+		return this.y
+	}
+
+	this.getleft = function(){
+		if(this.xorigin == 'right')
+			return this.left + App.Canvases.width - this.w;
+		if(this.xorigin == 'center')
+			return this.left + App.Canvases.width/2 - this.w;
+		return this.left;
+	}
+
+	this.getright = function(){
+		if(this.xorigin == 'right')
+			return this.right + App.Canvases.width - this.w;
+		if(this.xorigin == 'center')
+			return this.right + App.Canvases.width/2 - this.w;
+		return this.right;
+	}
+
 
 	this.setLock = function(lock){
 		this.locked = lock;
 		if(lock) this.color = this.lockedColor;
 		else this.color = this.baseColor;
-	}
-
-	this.render = function(gfx){
-		for(var r in this.renderLayers){
-			this.renderLayers[r](gfx);
-		}
 	}
 
 	this.positionRelative = function(c) {
@@ -54,29 +160,29 @@ g.Component = function(x, y, panel){
 	this.resetPosition = function(){
 		this.x = this.px;
 		this.y = this.py;
-	}
-
-	this.getx = function(){
-		return this.x;
-	}
-
-	this.gety = function(){
-		return this.y;
+		this.left = this.getx();
+		this.right = this.w + this.x;
 	}
 
 	this._clickStart = function(){
 		this.active = true;
+		this.textColor = this.activeTextColor;
 		this.color = this.activeColor;
+		this.changed = true;
 	}
 
 	this._clickEnd = function(){
 		this.active = false;
+		this.textColor = this.baseTextColor;
 		this.color = this.baseColor;
-		this.resetPosition();
+		this.changed = true;
 	}
 
-	this._update = function(x, y){
+	this._update = function(){
 		if(!this.functional) return;
+		var oc = this.color;
+		var x = App.InputHandler.mouseX;
+		var y = App.InputHandler.mouseY;
 
 		if(!this.active && this.collides(x, y))
 			this.color = this.hoverColor;
@@ -84,85 +190,106 @@ g.Component = function(x, y, panel){
 			this.color = this.baseColor;
 		else if(!this.collides(x, y))
 			this._clickEnd();
+		if(this.changed){
+			this.changed = false;
+			return true;
+		}
+		if(this.color === oc)
+			return false;
+		return true;
 	}
 }
-
-g.CollisionCircle = function(x, y, r, panel){
-	g.Component.call(this, x, y, panel);
-	this.r = r;
-
-	this.renderLayers.push(function(gfx){
-		gfx.fillStyle = this.color;
-		gfx.beginPath();
-		gfx.arc(this.x, this.y, this.r, 0, g.CollisionCircle.p2, true);
-		gfx.closePath();
-		gfx.fill();
-	});
-
-	this.getr = function(){
-		return this.r;
-	}
-
-	this.collides = function(x, y){
-		return (x - this.x) * (x - this.x) + (y - this.y) * (y - this.y) <= this.r * this.r;
-	}
-}
-g.CollisionCircle.p2 = Math.PI*2;
-g.CollisionCircle.prototype = Object.create(g.Component);
-g.CollisionCircle.prototype.constructor = g.CollisionCircle;
-
-//Abstracts out some logic for coordinates and collision, relative positioning
-g.CollisionRect = function(x, y, w, h, panel){
-	g.Component.call(this, x, y, panel);
-	this.w = w;
-	this.h = h;
-
-	this.renderLayers.push(function(gfx){
-		gfx.fillStyle = this.color;
-		gfx.fillRect(this.x, this.y, this.w, this.h);
-	});
-
-	this.geth = function(){
-		return this.h;
-	}
-
-	this.getw = function(){
-		return this.w;
-	}
-	//Tests if a point is inside of the rectangle
-	this.collides = function(x, y){
-		return ((x > this.x) && (x < (this.x + this.w)) &&
-			   	(y > this.y) && (y < (this.y + this.h)));
-	}
-}
-g.CollisionRect.prototype = Object.create(g.Component);
-g.CollisionRect.prototype.constructor = g.CollisionRect;
-
 
 //To be used for text buttons or image buttons...
-g.Button = function(x, y, w, h, callback, continuous, panel){
-	g.CollisionRect.call(this, x, y, w, h, panel);
+g.Button = function(x, y, w, h, en, ex, callback, continuous, xorigin, yorigin){
+	g.Component.call(this, x, y, w, h, en, ex, xorigin, yorigin);
 	this.functional = true;
 	this.clicked = false;
 	this.continuous = continuous;
+	this.callback = callback;
 
 	//For continuous callbacks
 	this.update = function(){
-		if(this.clicked && this.continuous)
+		if(this.active && this.continuous)
 			this.callback();
 	}
 
 	this.clickStart = function(){
-		this.clicked = true;
+		this.gui.lastActive = this;
 	}
 
 	//If the click was successful, fire the callback
 	this.clickEnd = function(){
-		if(this.callback && this.clicked)
+		if(this.callback)
 			this.callback();
-		this.clicked = false;
 	}
 
 }
-g.Button.prototype = Object.create(g.CollisionRect);
-g.Button.prototype.constructor = g.CollisionRect;
+g.Button.prototype = Object.create(g.Component);
+g.Button.prototype.constructor = g.Button;
+
+g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
+	g.Component.call(this, x, y, w, h, en, ex, xorigin, yorigin);
+
+	var that = this;
+
+	this.functional = true;
+	this.sticky = false;
+	this.mx = this.x;
+	this.my = this.y;
+
+	delete(this.renderLayers['Rect']);
+	this.renderLayers['Drag'] = function(gfx){
+		gfx.fillStyle = that.color;
+		gfx.fillRect(that.getx() - that.w/2, that.gety() - that.h/2, that.w, that.h);
+	}
+
+	this.collides = function(x, y){
+		return ((x > (this.getx() - this.w/2)) && (x < ((this.getx() - this.w/2) + this.w)) &&
+			   	(y > (this.gety() - this.h/2)) && (y < ((this.gety() - this.h/2) + this.h)));
+	}
+
+	this.clickStart = function(){
+		this.sticky = true;
+		this.overridepos = true;
+		this.subClickStart();
+		this.gui.lastActive = this;
+	}
+
+	this.update = function(){
+		if(!this.sticky)
+			return;
+
+		this.x = App.InputHandler.mouseX;
+		this.y = App.InputHandler.mouseY;
+
+		this.changed = true;
+
+		if(!App.InputHandler.lmb){
+			this.subClickEnd();
+			this.sticky = false;
+			this.overridepos = false;
+			this._clickEnd();
+			this.resetPosition();
+		}
+		this.subUpdate();
+	}
+
+	this.clickEnd = function(){
+	}
+}
+g.Drag.prototype = Object.create(g.Component);
+g.Drag.prototype.constructor = g.Drag;
+
+
+g.BlockingPanel = function(){
+	g.Component.call(this, 0, 0, App.Canvases.width, App.Canvases.height, 0, 0, null, null);
+	this.baseColor = this.color = 'rgba(0,0,0,0.2)';
+
+	this.updatePosition = function(){
+		this.w = App.Canvases.width;
+		this.h = App.Canvases.height;
+	}
+}
+g.BlockingPanel.prototype = Object.create(g.Component);
+g.BlockingPanel.prototype.constructor = g.BlockingPanel;

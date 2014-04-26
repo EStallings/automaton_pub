@@ -11,7 +11,7 @@ App.makeModeHandler = function(){
 		var mode = modeHandler.modes[name];
 		if(!mode)return;
 
-		if(modeHandler.currentMode)modeHandler.currentMode.exitFunc();
+		if(modeHandler.currentMode) modeHandler.currentMode.exitFunc();
 		modeHandler.modeStack.push(mode);
 		modeHandler.currentMode = mode;
 		modeHandler.currentMode.enterFunc();
@@ -85,8 +85,7 @@ App.makeModeHandler = function(){
 		//GUI ------------------------------------------
 
 		//XXX will this work? Only one gets drawn at any given time...?
-		mode.guigfx = App.Canvases.addNewLayer(5);
-		mode.gui = new App.guiFrame(mode.guigfx);
+
 
 		return mode;
 	}
@@ -97,6 +96,8 @@ App.makeModeHandler = function(){
 		for(var i in modeHandler.modes)
 		if(modeHandler.modes[i].updatingActive)
 			modeHandler.modes[i].updateFunc();
+		if(modeHandler.modes[i].gui)
+			modeHandler.modes[i].gui.render();
 	}
 
 	modeHandler.callResizeFuncs = function(){

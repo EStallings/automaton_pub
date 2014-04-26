@@ -58,22 +58,22 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 		// render automaton outline
 		this.gfx.lineWidth = (Math.round(Math.log(c/3)/Math.log(2)+2)-5)*2+4;
 		if(this.colorFlags[App.COLORS.RED]){
-			this.gfx.strokeStyle = '#880000';
+			this.gfx.strokeStyle = App.STROKE_COLOR[App.COLORS.RED];
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,-Math.PI,-Math.PI/2);
 			this.gfx.stroke();
 		}if(this.colorFlags[App.COLORS.GREEN]){
-			this.gfx.strokeStyle = '#008800';
+			this.gfx.strokeStyle = App.STROKE_COLOR[App.COLORS.GREEN];
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,-Math.PI/2,0);
 			this.gfx.stroke();
 		}if(this.colorFlags[App.COLORS.BLUE]){
-			this.gfx.strokeStyle = '#000088';
+			this.gfx.strokeStyle = App.STROKE_COLOR[App.COLORS.BLUE];
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,Math.PI/2,Math.PI);
 			this.gfx.stroke();
 		}if(this.colorFlags[App.COLORS.YELLOW]){
-			this.gfx.strokeStyle = '#888800';
+			this.gfx.strokeStyle = App.STROKE_COLOR[App.COLORS.YELLOW];
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,0,Math.PI/2);
 			this.gfx.stroke();
@@ -82,22 +82,22 @@ App.SimulationAutomaton = function(level,x,y,direction,color){
 		// render automaton
 		this.gfx.lineWidth = (Math.round(Math.log(c/3)/Math.log(2)+2)-5)*2;
 		if(this.colorFlags[App.COLORS.RED]){
-			this.gfx.strokeStyle = '#ff0000';
+			this.gfx.strokeStyle = App.FILL_COLOR[App.COLORS.RED];
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,-Math.PI,-Math.PI/2);
 			this.gfx.stroke();
 		}if(this.colorFlags[App.COLORS.GREEN]){
-			this.gfx.strokeStyle = '#00ff00';
+			this.gfx.strokeStyle = App.FILL_COLOR[App.COLORS.GREEN];
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,-Math.PI/2,0);
 			this.gfx.stroke();
 		}if(this.colorFlags[App.COLORS.BLUE]){
-			this.gfx.strokeStyle = '#0000ff';
+			this.gfx.strokeStyle = App.FILL_COLOR[App.COLORS.BLUE];
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,Math.PI/2,Math.PI);
 			this.gfx.stroke();
 		}if(this.colorFlags[App.COLORS.YELLOW]){
-			this.gfx.strokeStyle = '#ffff00';
+			this.gfx.strokeStyle = App.FILL_COLOR[App.COLORS.YELLOW];
 			this.gfx.beginPath();
 			this.gfx.arc(x*c+h,y*c+h,h,0,Math.PI/2);
 			this.gfx.stroke();

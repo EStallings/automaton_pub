@@ -227,7 +227,12 @@ App.makeGameRenderer = function(){
 
 		// lighter overlay
 		game.gridGfx.fillStyle = 'rgba(0,0,0,0.55)';
-		game.gridGfx.fillRect(game.renderX,game.renderY,gw*cs,gh*cs);
+		if(gw === 0)
+			if(gh === 0)game.gridGfx.fillRect(0,0,App.Canvases.width,App.Canvases.height);
+			else game.gridGfx.fillRect(0,game.renderY,App.Canvases.width,gh*cs);
+		else
+			if(gh === 0)game.gridGfx.fillRect(game.renderX,0,gw*cs,App.Canvases.height);
+			else game.gridGfx.fillRect(game.renderX,game.renderY,gw*cs,gh*cs);
 
 		// grid outline | if block below is modified, reflect changes here
 		game.gridGfx.lineWidth = 6;
@@ -309,7 +314,12 @@ App.makeGameRenderer = function(){
 	}
 
 	game.renderBackground = function(){ // TODO: OPTIMIZE THIS
-		game.bkgndGfx.strokeStyle = '#151515';
+		//Luke: I changed this to fix the browser compatibility issue where it
+		//shows up as super bright background (and hard to see anything)
+		//in some browsers (mine)
+		game.bkgndGfx.fillStyle = '#404040';
+		game.bkgndGfx.fillRect(0,0,App.Canvases.width, App.Canvases.height)
+		game.bkgndGfx.strokeStyle = '#000000';
 		game.bkgndGfx.lineWidth = 5;
 		game.bkgndGfx.beginPath();
 		for(var i=1;i<App.Canvases.width+App.Canvases.height+5;i+=9){

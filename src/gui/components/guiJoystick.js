@@ -1,58 +1,27 @@
 /*
 	Moves the 'camera' around.
 */
-App.GuiJoystick = function(x, y, panel){
-	App.GuiTools.CollisionCircle.call(this, x, y, 35);
+App.GuiJoystick = function(x, y, enterDelay, exitDelay, panel){
+	App.GuiTools.Drag.call(this, x, y, 50, 50, enterDelay, exitDelay, panel);
+
+	this.moveRate = 0.1;
 	this.curPanX = 0;
 	this.curPanY = 0;
-	this.moveRate = 0.2;
-	this.functional = true;
-	this.renderLayers.push(function(gfx){
-		//Draw outside/bounds
-		gfx.fillStyle = this.color;
-		gfx.strokeStyle = '#ffffff';
-		gfx.lineWidth = 2;
-		gfx.beginPath();
-		gfx.arc(this.px, this.py, this.r, 0, Math.PI*2, true);
-		gfx.closePath();
-		gfx.stroke();
 
-		//Draw inside/current joystick location
-		gfx.lineWidth = 1;
-		gfx.strokeStyle = '#d1d1d1';
-		gfx.beginPath();
-		gfx.arc(this.x, this.y, 15, 0, Math.PI*2, true);
-		gfx.closePath();
-		gfx.stroke();
-	});
-
-	this.clickStart = function(){
-		App.Game.beginPan(this.x, this.y);
+	this.subClickStart = function(){
+		App.GameRenderer.beginPan(this.getx(), this.gety());
+		this.curPanX = this.getx();
+		this.curPanY = this.gety();
 	}
 
-	this.update = function(){
-		var x = App.InputHandler.mouseX - this.px;
-		var y = App.InputHandler.mouseY - this.py;
+	this.subUpdate = function(){
+		this.curPanX -= (this.getx() - this.px) * this.moveRate;
+		this.curPanY -= (this.gety() - this.py) * this.moveRate;
 
-		var a = Math.atan2(x, y);
-		var d = Math.sqrt(x * x + y * y);
-
-		d = (d > this.r)? this.r : d;
-		y = (d * Math.cos(a));
-		x = (d * Math.sin(a));
-
-		this.curPanX -= x * this.moveRate;
-		this.curPanY -= y * this.moveRate;
-
-		this.x = x + this.px;
-		this.y = y + this.py;
-
-		App.Game.pan(this.curPanX, this.curPanY);
+		App.GameRenderer.pan(this.curPanX, this.curPanY);
 	}
 
-	this.clickEnd = function(){
-		App.Game.endPan();
-	}
+	this.subClickEnd = function(){}
 }
-App.GuiJoystick.prototype = Object.create(App.GuiTools.CollisionCircle);
-App.GuiJoystick.prototype.constructor = App.GuiTools.CollisionCircle;
+App.GuiJoystick.prototype = Object.create(App.GuiTools.Drag);
+App.GuiJoystick.prototype.constructor = App.GuiJoystick;

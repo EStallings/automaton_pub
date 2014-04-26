@@ -4,7 +4,15 @@ App.setupSettings = function(){
 		// ---------------------------------------------
 
 	settings.gfx = App.Canvases.addNewLayer(2).getContext('2d');
-	settings.backButton = new App.Button('Back to Main Menu','#fff','#000','#ff0','#fff',settings.gfx,15,56+28*0,512,24,200,000);
+	settings.gui = new App.guiFrame(settings.gfx);
+
+	settings.backButton = new App.GuiTextButton(15,56+28*0,200,000,'Back to Main Menu',function(){
+		settings.requestStaticRenderUpdate = true;
+		App.ModeHandler.popMode();
+	},false,null,null);
+	settings.backButton.hoverColor = '#afaf10';
+
+	settings.gui.addComponent(settings.backButton);
 	settings.alpha = settings.goalAlpha = 0;
 
 		// ---------------------------------------------
@@ -15,13 +23,16 @@ App.setupSettings = function(){
 		settings.exitFlag = false;
 		App.GameRenderer.bestFit();
 
-		settings.backButton.enter();
+		settings.gui.enter();
 		settings.goalAlpha = 1;
 
 		App.Shade.turnOn();
 	}
 
 	settings.updateFunc = function(){
+		if(settings.gui.update())
+			settings.requestStaticRenderUpdate = true;
+
 		if(!settings.requestStaticRenderUpdate)return;
 		settings.requestStaticRenderUpdate = false;
 
@@ -30,7 +41,9 @@ App.setupSettings = function(){
 		settings.gfx.fillStyle = '#fff';
 		text(settings.gfx,"Settings",15,15,36,-3);
 
-		if(settings.backButton.render())settings.requestStaticRenderUpdate = true;
+		if(settings.gui.render())
+			settings.requestStaticRenderUpdate = true;
+
 		if(settings.alpha !== settings.goalAlpha){
 			settings.alpha += expInterp(settings.alpha,settings.goalAlpha,0.003,0.01);
 			settings.gfx.globalAlpha = settings.alpha;
@@ -47,23 +60,14 @@ App.setupSettings = function(){
 		settings.requestStaticRenderUpdate = true;
 		settings.exitFlag = true;
 
-		settings.backButton.exit();
+		settings.gui.exit();
 		settings.goalAlpha = 0;
 	}
 
 		// ---------------------------------------------
 
-	settings.registerMouseMoveFunc(function(x,y){
-		if(settings.backButton.collide(x,y) && !settings.backButton.oldHover)settings.requestStaticRenderUpdate = true;
-		if(settings.backButton.oldHover !== settings.backButton.hover)settings.requestStaticRenderUpdate = true;
-	});
-
-	settings.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){
-		if(settings.backButton.collide(x,y)){
-			App.ModeHandler.popMode();
-			settings.requestStaticRenderUpdate = true;
-		}
-	});
+	settings.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT, settings.gui.mouseDown);
+	settings.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT, settings.gui.mouseUp);
 
 	settings.registerKeyDownFunc('Esc',function(){
 		settings.requestStaticRenderUpdate = true;

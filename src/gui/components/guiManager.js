@@ -6,90 +6,108 @@
 */
 App.guiFrame = function(gfx){
 	this.gfx = gfx;
-
 	this.frame = [];
+	this.lastActive = null;
 
 	//gets reset after one frame.
-	this.drawStatic = false;
-	this.guilock = false;
+	var that = this;
 
-	this.load = function(){
-		this.guilock = false;
-		this.drawStatic = true;
+	this.enter = function(){
+		for(var c in this.frame){
+			this.frame[c].enter();
+		}
+	}
+
+	this.exit = function(){
+		for(var c in this.frame){
+			this.frame[c].exit();
+		}
+	}
+
+	this.addComponent = function(comp){
+		this.frame.push(comp);
+		comp.gui = this;
+	}
+
+	this.removeComponent = function(comp){
+		var index = this.frame.indexOf(comp);
+		if (index > -1) {
+			this.frame.splice(index, 1);
+		}
 	}
 
 	this.testCoordinates = function(x,y){
-
 		var ret = {f:[],p:[]};
 		for(var c in this.frame){
 			if(this.frame[c].collides(x, y)){
 					if(this.frame[c].functional)
 						ret.f.push(this.frame[c]);
-					ret.p.push(this.frame[c]);
+					else
+						ret.p.push(this.frame[c]);
 			}
 		}
 		return ret;
 	}
 
 	//lmb must be true or false. if it's false, it will block input but not do anything
-	this.mouseDown = function(x, y, lmb){
-		var comps = this.testCoordinates(x, y);
+	this.mouseDown = function(x, y){
+		that.lastActive = null;
+		var comps = that.testCoordinates(x, y);
 		if(!comps.f && !comps.p)
 			return false;
-
-		if(!lmb)
-			return true;
 
 		for(var fn in comps.f){
 			if(comps.f[fn].locked) continue;
 			comps.f[fn]._clickStart();
 			comps.f[fn].clickStart();
 		}
-
 		return true;
 	}
 
 	//Only needs to be called when lmb is released. Returns nothing.
 	this.mouseUp = function(x, y){
-		var comps = this.testCoordinates(x, y);
+		var comps = that.testCoordinates(x, y);
 
 		for(var fn in comps.f){
 			if(comps.f[fn].locked) continue;
-			comps.f[fn]._clickEnd();
-			if(comps.f[fn].active)
-				comps.f[fn].clickEnd();
+			comps.f[fn].clickEnd();
 		}
+		for(var f in that.frame)
+			that.frame[f]._clickEnd();
+		for(var f in that.overlay)
+			that.overlay[f]._clickEnd();
 	}
 
 	this.update = function(){
-		for(var c in this.frame)if(this.frame[c].update)
-			this.frame[c].update();
+		var flag = false;
+		for(var c in this.frame)if(this.frame[c].update){
+			if(this.frame[c]._update()) flag = true; //if we need to render
+			if(this.frame[c].update()) flag = true;
+		}
+		return flag;
 	}
 
 	this.windowResized = function(){
-		this.drawStatic = true;
+		that.drawStatic = true;
 
-		for(var c in this.frame) {
-			if(this.frame[c].updatePosition)
-				this.frame[c].updatePosition();
+		for(var c in that.frame) {
+			if(that.frame[c].updatePosition)
+				that.frame[c].updatePosition();
 		}
 	}
 
 	this.render = function(){
+		var flag = false;
 
-		if(this.drawStatic){
-			this.gfx.clearRect(0,0,App.Canvases.width, App.Canvases.height);
+		for(var c in this.frame){
+			if(this.frame[c].render){
+				if(this.frame[c].render(this.gfx))
+					flag = true;
 
-			for(var c in this.frame){
-				if(this.frame[c].render){
-					this.gfx.font = App.Canvases.font;
-					this.frame[c].render(this.gfx);
-
-				}
 			}
-
-		 this.drawStatic = false;
 		}
+
+		return flag;
 	}
 }
 

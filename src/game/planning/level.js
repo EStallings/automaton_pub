@@ -1,64 +1,3 @@
-App.PlanningInstruction = function(x,y,color,type,data){
-	this.x        = x;
-	this.y        = y;
-	this.color    = color;
-	this.type     = type;
-	this.data     = data;
-}
-
-//============================================================================//
-
-App.Operation = function(){
-
-	// contains information needed to undo or redo any of the group operations
-	this.groupOp = function(numInstructions){
-		this.numInstructions = numInstructions;
-		this.opId = 'group';
-	};
-
-	// contains the information needed to undo or redo an insert operation
-	this.insertOp = function(instruction){
-		this.instruction = instruction;
-		this.overWritten = null;
-		this.opId = 'insert';
-	};
-
-	// contains the information needed to undo or redo a delete operation
-	this.deleteOp = function(instruction){
-		this.instruction = instruction;
-		this.opId = 'delete';
-	};
-
-	// contains the information needed to undo or redo a move operation
-	this.moveOp = function(instruction, oldX, oldY, newX, newY){
-		this.instruction = instruction;
-		this.oldX = oldX; this.oldY = oldY;
-		this.newX = newX; this.newY = newY;
-		this.overWritten = null;
-		this.opId = 'move';
-	};
-
-	// contains the information needed to undo or redo a copy operation
-	this.copyOp = function(instruction, newX, newY){
-		this.instruction = instruction;
-		this.newX = newX; this.newY = newY;
-		this.overWritten = null;
-		this.opId = 'copy';
-	};
-
-	// contains the information needed to undo or redo a modify operation
-	this.modifyOp = function(instruction, parameter, newValue, oldValue){
-		this.instruction = instruction;
-		this.parameter = parameter;
-		this.newValue = newValue;
-		this.oldValue = oldValue;
-		this.overWritten = null;
-		this.opId = 'modify';
-	};
-}
-
-//============================================================================//
-
 App.PlanningLevel = function(){
 	var that = this;
 
@@ -71,17 +10,20 @@ App.PlanningLevel = function(){
 	this.undoStack = [];
 	this.redoStack = [];
 	this.locks = [false, false, false, false]; // R,G,B,Y
+	this.instructionLock = false;
 	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
+	this.graphics = new App.PlanningGraphics();
 
-		// ---------------------------------------------
+	// ---------------------------------------------
 
-	this.operation = function(opId, instructions, shiftX, shiftY, param, newVal, oldVal){
+	this.operation = function(opId, instructions, shiftX, shiftY, param, newVal, oldVal, overWrite){
 		this.opId = opId;
 		this.instructions = instructions;
 		this.shiftX = shiftX; this.shiftY = shiftY;
 		this.param = param;
 		this.newVal = newVal;
 		this.oldVal = oldVal;
+		this.overwriteInfo = overWrite;
 	}
 
 	// returns an array that can have up to four instruction for the tile at x,y
@@ -140,6 +82,11 @@ App.PlanningLevel = function(){
 		}
 	}
 
+	this.lockInstructions = function(){ that.instructionLock = true; }
+	this.unlockInstructions = function(){ that.instructionLock = false; }
+
+	this.setLock = function(color, state){ that.locks[color] = state; }
+
 	// returns the states of the specified layer lock
 	this.isLocked = function(color){ return that.locks[color]; }
 
@@ -183,7 +130,7 @@ App.PlanningLevel = function(){
 			if(that.grid[x]) for(var y in that.grid[x]){
 				if(that.grid[x][y]) for(var c in that.grid[x][y]){
 					if(that.grid[x][y][c] && (('' + that.grid[x][y][c].x !== x) || ('' + that.grid[x][y][c].y !== y))){
-						console.log(x + ' ' + y + ' ' + c + ' : ' + that.grid[x][y][c].x + ' ' + that.grid[x][y][c].y);
+						/* console.log(x + ' ' + y + ' ' + c + ' : ' + that.grid[x][y][c].x + ' ' + that.grid[x][y][c].y); */
 					}
 				}
 			}
@@ -221,33 +168,31 @@ App.PlanningLevel = function(){
 	// this function takes a list of PlanningInstructions and inserts them into the grid
 	this.insert = function(instructions){
 		instructions = that.toList(instructions);
+		overwriteList = [];
 
-		for(var i in instructions){
+		for(var i in instructions){ // check that the insert can complete succesfully
 
-			if(instructions[i].x < 0 || instructions[i].x >= that.width){ console.log('insert out of bounds'); return false; }
-			if(instructions[i].y < 0 || instructions[i].y >= that.height){ console.log('insert out of bounds'); return false; }
-			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return false; }
+			if(that.width !== 0 && (instructions[i].x < 0 || instructions[i].x >= that.width)){ /* console.log('insert out of bounds'); */ return false; }
+			if(that.height !== 0 && (instructions[i].y < 0 || instructions[i].y >= that.height)){ /* console.log('insert out of bounds'); */ return false; }
+			if(that.isLocked(instructions[i].color)){ /* console.log('layer locked'); */ return; }
+			if(that.instructionLock === true && instructions[i].locked){ return; }
+			if(that.getInstruction(instructions[i].x, instructions[i].y, instructions[i].color))
+			{
+				if(that.userOverlapSetting === 0){ /* console.log('tile blocked'); */ return; } // if there is a conflict in any space and overwrite is disabled, reject
 
-			if(that.getInstruction(instructions[i].x,instructions[i].y,instructions[i].color) !== null){ // space occupied
-				// TODO overwrite
-				if(that.userOverlapSetting == 1){ // overwrite
-					console.log('insert blocked');
-
-					return false; // this probably causes things to break
-				}
-				else{ // reject
-					console.log('insert blocked');
-					return false; // this probably causes things to break
-				}
-
-			}else{ // free space
-				if(!that.grid[instructions[i].x]){ that.grid[instructions[i].x] = []; }
-				if(!that.grid[instructions[i].x][instructions[i].y]){ that.grid[instructions[i].x][instructions[i].y] = []; }
-				that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = instructions[i];
+				// store overwrite info
+				/* console.log('overwrite'); */
+				overwriteList.push(that.getInstruction(instructions[i].x,instructions[i].y,instructions[i].color));
 			}
 		}
 
-		that.undoStack.push(new that.operation('ins', instructions, null, null, null, null));
+		for(var i in instructions){
+			if(!that.grid[instructions[i].x]){ that.grid[instructions[i].x] = []; }
+			if(!that.grid[instructions[i].x][instructions[i].y]){ that.grid[instructions[i].x][instructions[i].y] = []; }
+			that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = instructions[i];
+		}
+
+		that.undoStack.push(new that.operation('ins', instructions, null, null, null, null, null, overwriteList));
 		that.killRedo('kill redo: insert');
 		that.validateGrid();
 		return true;
@@ -258,7 +203,8 @@ App.PlanningLevel = function(){
 		if(that.currentSelection === []){ return; }
 		instructions = that.toList(instructions);
 		for(i in instructions){
-			if(that.isLocked(instructions[i].color)){ console.log('layer locked'); return; }
+			if(that.isLocked(instructions[i].color)){ /* console.log('layer locked'); */ return; }
+			if(that.instructionLock === true && instructions[i].locked){ return; }
 			that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = null;
 		}
 		that.undoStack.push(new that.operation('del', instructions, null, null, null, null));
@@ -274,8 +220,11 @@ App.PlanningLevel = function(){
 
 		instructions = that.toList(instructions);
 
-		for(i in instructions){ // remove all from grid to prevent groups from overlapping themselves also update coordinates
+		for(i in instructions){ // remove all from grid to prevent groups from overlapping themselves also update coordinates and bounds check
 			var instr = instructions[i];
+			if(that.width !== 0 && (instructions[i].x + shiftX < 0 || instructions[i].x + shiftX >= that.width)){ /* console.log('move out of bounds'); */ return; }
+			if(that.height !== 0 && (instructions[i].y + shiftY < 0 || instructions[i].y + shiftY >= that.height)){ /* console.log('move out of bounds'); */ return; }
+			if(that.instructionLock === true && instructions[i].locked){ return; }
 			that.grid[instr.x][instr.y][instr.color] = null;
 			instructions[i].x += shiftX;
 			instructions[i].y += shiftY;
@@ -324,6 +273,7 @@ App.PlanningLevel = function(){
 		var newInstr = [];
 		for(i in instructions){
 			var instr = instructions[i];
+			if(that.instructionLock === true && instructions[i].locked){ return; }
 			newInstr[i] = new App.PlanningInstruction(instr.x+shiftX, instr.y+shiftY, instr.color, instr.type);
 		}
 
@@ -367,8 +317,14 @@ App.PlanningLevel = function(){
 				var y = op.instructions[i].y;
 				var c = op.instructions[i].color;
 
-				that.grid[x][y][c] = null;
-				that.redoStack.push(op);
+				if(op.overwriteInfo[i] === undefined || op.overwriteInfo[i] === null){
+					that.grid[x][y][c] = null;
+				}
+				else{
+					that.grid[x][y][c] = op.overwriteInfo[i];
+				}
+
+				that.redoStack.push(op); /////////////////////////////////////////////////// should be outside the loop?
 			}
 		}
 		else if(op.opId === 'del'){
@@ -457,8 +413,8 @@ App.PlanningLevel = function(){
 		that.validateGrid();
 	}
 
-	this.killUndo = function(str){ that.undoStack = []; console.log(str); }
-	this.killRedo = function(str){ that.redoStack = []; console.log(str); }
+	this.killUndo = function(str){ that.undoStack = []; /* console.log(str); */ }
+	this.killRedo = function(str){ that.redoStack = []; /* console.log(str); */ }
 
 
 
@@ -479,7 +435,7 @@ App.PlanningLevel = function(){
 		for(var j in this.grid[i])
 		for(var c in this.grid[i][j])
 		if(this.grid[i][j][c])
-			str.push(i+'`'+j+'`'+c+'`'+this.grid[i][j][c]);
+			str.push(i+'`'+j+'`'+c+'`'+this.grid[i][j][c].type);
 		return str.join('~');
 	};
 
@@ -510,5 +466,5 @@ App.PlanningLevel = function(){
 		}
 	}
 
-	this.dynamicRender = function(){}
+	this.dynamicRender = function(){ that.graphics.dynamicRender(App.GameRenderer.tempGfx); }
 }

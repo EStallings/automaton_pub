@@ -23,6 +23,10 @@ App.SimulationCell = function(level,x,y){
 		}
 	}
 
+	this.topToken = function(){
+		return this.tokens.length !== 0?this.tokens[this.tokens.length-1].number:undefined;
+	}
+
 	this.staticRender = function(){
 		for(var i in this.instructions)this.instructions[i].staticRender();
 		// TODO: stack graphic for overlapping tokens

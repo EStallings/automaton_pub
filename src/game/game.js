@@ -11,7 +11,7 @@ App.makeGame = function(){
 	game.streams    = [];
 	game.inStreams  = []; // inStreams[variable] = [raw,parsed,[gives],stackPtr,color]
 	game.outStreams = []; // outStreams[variable] = [raw,parsed,[wants],stackPtr,quota,description,color]
-	// variables must be in caps
+	game.flipFlop   = [true,true,true,true];
 
 	game.createNewLevel = function(name,width,height){
 		var lvl = new App.PlanningLevel();
@@ -113,11 +113,11 @@ App.makeGame = function(){
 				game.outStreams[i][2] = [];
 				game.outStreams[i][3] = 0;
 			}game.generateTokenWave();
+			game.flipFlop = [true,true,true,true];
 		}else{
 			game.mode = game.modes.PLANNING;
 			game.currentSimulationLevel = undefined;
 			game.paused = true;
-			// XXX XXX: WHY ARE THESE BEING CLEARED HERE
 			App.GameRenderer.automGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			App.GameRenderer.tokenSGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			App.GameRenderer.tokenDGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);

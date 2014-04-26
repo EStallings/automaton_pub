@@ -3,11 +3,44 @@ App.setupMainMenu = function(){
 
 		// ---------------------------------------------
 
+
 	mainMenu.gfx = App.Canvases.addNewLayer(2).getContext('2d');
-	mainMenu.playButton     = new App.Button('Play'    ,'#fff','#000','#f00','#fff',mainMenu.gfx,15,56+28*0,512,24,200,000);
-	mainMenu.libraryButton  = new App.Button('Library' ,'#fff','#000','#0f0','#fff',mainMenu.gfx,15,56+28*1,512,24,300,100);
-	mainMenu.sandboxButton  = new App.Button('Sandbox' ,'#fff','#000','#00f','#fff',mainMenu.gfx,15,56+28*2,512,24,400,200);
-	mainMenu.settingsButton = new App.Button('Settings','#fff','#000','#ff0','#fff',mainMenu.gfx,15,56+28*3,512,24,500,300); // width: App.Canvases.width-30
+	mainMenu.gui = new App.guiFrame(mainMenu.gfx);
+
+	mainMenu.playButton 			= new App.GuiTextButton(15, 56+28*0, 200, 000, 'Play', 			function(){
+			App.ModeHandler.pushMode('level select');
+			mainMenu.requestStaticRenderUpdate = true;
+		}, false, null, null);
+
+
+	mainMenu.libraryButton 		= new App.GuiTextButton(15, 56+28*1, 300, 100, 'Library', function(){
+			App.ModeHandler.pushMode('library');
+			mainMenu.requestStaticRenderUpdate = true;
+		}, false, null, null);
+
+	mainMenu.sandboxButton 		= new App.GuiTextButton(15, 56+28*2, 400, 200, 'Sandbox', 	function(){
+			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
+			App.GameRenderer.bestFit();
+			App.ModeHandler.pushMode('planning'); // TODO: CHANGE THIS
+			mainMenu.requestStaticRenderUpdate = true;
+		}, false, null, null);
+
+	mainMenu.settingsButton 	= new App.GuiTextButton(15, 56+28*3, 500, 300, 'Settings', 	function(){
+			App.ModeHandler.pushMode('settings');
+			mainMenu.requestStaticRenderUpdate = true;
+		}, false, null, null);
+	mainMenu.playButton.hoverColor    = '#af1010';
+	mainMenu.libraryButton.hoverColor = '#10af10';
+	mainMenu.sandboxButton.hoverColor = '#1010af';
+	mainMenu.settingsButton.hoverColor= '#afaf10';
+
+	mainMenu.gui.addComponent(mainMenu.playButton);
+	mainMenu.gui.addComponent(mainMenu.libraryButton);
+	mainMenu.gui.addComponent(mainMenu.sandboxButton);
+	mainMenu.gui.addComponent(mainMenu.settingsButton);
+
+
+
 	mainMenu.alpha = mainMenu.goalAlpha = 0;
 
 		// ---------------------------------------------
@@ -16,17 +49,16 @@ App.setupMainMenu = function(){
 		mainMenu.requestStaticRenderUpdate = true;
 		mainMenu.updatingActive = true;
 		mainMenu.exitFlag = false;
-
-		mainMenu.playButton.enter();
-		mainMenu.libraryButton.enter();
-		mainMenu.sandboxButton.enter();
-		mainMenu.settingsButton.enter();
+		mainMenu.gui.enter();
 		mainMenu.goalAlpha = 1;
 
 		App.Shade.turnOn();
 	}
 
 	mainMenu.updateFunc = function(){
+		if(mainMenu.gui.update())
+			mainMenu.requestStaticRenderUpdate = true;
+
 		if(!mainMenu.requestStaticRenderUpdate)return;
 		mainMenu.requestStaticRenderUpdate = false;
 
@@ -35,10 +67,9 @@ App.setupMainMenu = function(){
 		mainMenu.gfx.fillStyle = '#fff';
 		text(mainMenu.gfx,"Automaton",15,15,36,-3);
 
-		if(mainMenu.playButton.render())mainMenu.requestStaticRenderUpdate = true;
-		if(mainMenu.libraryButton.render())mainMenu.requestStaticRenderUpdate = true;
-		if(mainMenu.sandboxButton.render())mainMenu.requestStaticRenderUpdate = true;
-		if(mainMenu.settingsButton.render())mainMenu.requestStaticRenderUpdate = true;
+		if(mainMenu.gui.render())
+			mainMenu.requestStaticRenderUpdate = true;
+
 		if(mainMenu.alpha !== mainMenu.goalAlpha){
 			mainMenu.alpha += expInterp(mainMenu.alpha,mainMenu.goalAlpha,0.003,0.01);
 			mainMenu.gfx.globalAlpha = mainMenu.alpha;
@@ -55,46 +86,12 @@ App.setupMainMenu = function(){
 		mainMenu.requestStaticRenderUpdate = true;
 		mainMenu.exitFlag = true;
 
-		mainMenu.playButton.exit();
-		mainMenu.libraryButton.exit();
-		mainMenu.sandboxButton.exit();
-		mainMenu.settingsButton.exit();
+		mainMenu.gui.exit();
 		mainMenu.goalAlpha = 0;
 	}
 
-		// ---------------------------------------------
-
-	mainMenu.registerMouseMoveFunc(function(x,y){
-		if(mainMenu.playButton.collide(x,y) && !mainMenu.playButton.oldHover)mainMenu.requestStaticRenderUpdate = true;
-		if(mainMenu.playButton.oldHover !== mainMenu.playButton.hover)mainMenu.requestStaticRenderUpdate = true;
-
-		if(mainMenu.libraryButton.collide(x,y) && !mainMenu.libraryButton.oldHover)mainMenu.requestStaticRenderUpdate = true;
-		if(mainMenu.libraryButton.oldHover !== mainMenu.libraryButton.hover)mainMenu.requestStaticRenderUpdate = true;
-
-		if(mainMenu.sandboxButton.collide(x,y) && !mainMenu.sandboxButton.oldHover)mainMenu.requestStaticRenderUpdate = true;
-		if(mainMenu.sandboxButton.oldHover !== mainMenu.sandboxButton.hover)mainMenu.requestStaticRenderUpdate = true;
-
-		if(mainMenu.settingsButton.collide(x,y) && !mainMenu.settingsButton.oldHover)mainMenu.requestStaticRenderUpdate = true;
-		if(mainMenu.settingsButton.oldHover !== mainMenu.settingsButton.hover)mainMenu.requestStaticRenderUpdate = true;
-	});
-
-	mainMenu.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){
-		if(mainMenu.playButton.collide(x,y)){
-			App.ModeHandler.pushMode('level select');
-			mainMenu.requestStaticRenderUpdate = true;
-		}if(mainMenu.libraryButton.collide(x,y)){
-			App.ModeHandler.pushMode('library');
-			mainMenu.requestStaticRenderUpdate = true;
-		}if(mainMenu.sandboxButton.collide(x,y)){
-			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`11`11");
-			App.GameRenderer.bestFit();
-			App.ModeHandler.pushMode('planning'); // TODO: CHANGE THIS
-			mainMenu.requestStaticRenderUpdate = true;
-		}if(mainMenu.settingsButton.collide(x,y)){
-			App.ModeHandler.pushMode('settings');
-			mainMenu.requestStaticRenderUpdate = true;
-		}
-	});
+	mainMenu.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT, mainMenu.gui.mouseDown);
+	mainMenu.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT, mainMenu.gui.mouseUp);
 
 	mainMenu.registerResizeFunc(function(){
 		App.GameRenderer.bestFit();

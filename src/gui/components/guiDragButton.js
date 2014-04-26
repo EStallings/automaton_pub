@@ -1,26 +1,47 @@
-App.GuiInstDrag = function(x, y, draw, instruction, panel){
-	App.GuiTools.CollisionRect.call(this, x, y, 40, 40);
-	if(panel) panel.addChild(this);
+App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, gui, pos, data){
+	App.GuiTools.Drag.call(this, x, y, 48, 48, delay, delay, xorigin, yorigin);
 	this.functional = true;
+	this.gui = gui;
+	this.pos = pos;
 
-	this.activeColor = App.GuiInstDrag.active;
-	this.inactiveColor = App.GuiInstDrag.inactive;
-	this.draw = draw;
-	this.instruction = instruction;
+	//for streams and flipflops
+	this.data = data;
 
-	this.renderLayers.pop(); //don't want the default
-	this.renderLayers.push(function(gfx){
+	//if this is direction-sensitive
+	this.dirsens = dirsens;
+
+	this.instruction     = instruction;
+	this.baseInstruction = instruction;
+
+	var that = this;
+
+	delete(this.renderLayers['Drag']);
+	this.renderLayers['Inst'] = function(gfx){
 		gfx.lineWidth = 2;
+
+		var interp = (that.interpmode === 'exit') ?
+		that.w - (that.getleft() - that.getx()) :
+		that.getright() - that.getx();
+
+		var dx = (interp * that.pos + (that.getx() - that.x) +that.w/2);
+		if(that.overridepos)
+			dx = that.getx() - that.w/2;
+
 		App.InstCatalog.render(
 			gfx,
-			this.instruction,
-			this.x, this.y,
-			this.color,
-			this.guiCollider.w);
-	});
+			that.instruction,
+			dx, that.gety()-that.h/2,
+			App.GuiInstDrag.globalColor,
+			that.w);
+	}
+
+	this.subClickStart = function(){
+		if(this.instruction >=4 && this.instruction <= 7)
+			App.GuiInstDrag.changeDirection(this.instruction-4);
+	};
 
 	//The drag part of 'drag and drop'
-	this.update = function(){
+	this.subUpdate = function(){
 		if(!this.active)
 			return;
 
@@ -29,36 +50,56 @@ App.GuiInstDrag = function(x, y, draw, instruction, panel){
 	}
 
 	//The button has been 'dropped'!
-	this.clickEnd = function(onGui){
+	this.subClickEnd = function(){
 		//prevent dropping instructions behind gui elements
-		if(onGui)
-			return;
+		//check upper left
+		var c = this.gui.testCoordinates(this.getx()-this.w/2, this.gety()-this.h/2);
+		if(c.f.length > 0 || c.p.length > 0) return;
+		//bottom left
+		c = this.gui.testCoordinates(this.getx()-this.w/2, this.gety()+this.h/2);
+		if(c.f.length > 0 || c.p.length > 0) return;
+		//upper right
+		c = this.gui.testCoordinates(this.getx()+this.w/2, this.gety()-this.h/2);
+		if(c.f.length > 0 || c.p.length > 0) return;
+		//lower right
+		c = this.gui.testCoordinates(this.getx()+this.w/2, this.gety()+this.h/2);
+		if(c.f.length > 0 || c.p.length > 0) return;
 
 		//place the instruction
-		var level =	App.Game.currentPlanningLevel;
-		App.Game.screenToGridCoords(x, y);
-		var nx = App.Game.mouseX;
-		var ny = App.Game.mouseY;
+		App.GameRenderer.screenToGridCoords(this.getx(), this.gety());
+		App.GameRenderer.requestStaticRenderUpdate = true;
+		var nx = App.GameRenderer.mouseX;
+		var ny = App.GameRenderer.mouseY;
 		var c = App.GuiInstDrag.globalColor;
+
+		//TODO make instructino update based on direction if applicable
 		var t = this.instruction;
 		console.log('dragged to ' + nx + ',' + ny);
-		level.insert(new App.PlanningInstruction(nx,ny,c,t));
+		App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(nx,ny,c,t));
 	}
 
 	App.GuiInstDrag.registry.push(this);
 }
-App.GuiInstDrag.prototype = Object.create(App.GuiTools.CollisionRect);
+App.GuiInstDrag.prototype = Object.create(App.GuiTools.Drag);
 App.GuiInstDrag.prototype.constructor = App.GuiInstDrag;
 
 App.GuiInstDrag.registry = [];
 App.GuiInstDrag.globalColor = 0;
 App.GuiInstDrag.colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00'];
+App.GuiInstDrag.direction = 0;
 App.GuiInstDrag.changeGlobalColor = function(color){
 	this.globalColor = color;
 	for(var i = 0; i < this.registry.length; i++){
 		this.registry[i].activeColor = this.colors[this.globalColor];
 		this.registry[i].inactiveColor = this.colors[this.globalColor];
 	}
-	App.Gui.drawStatic = true;
+}
+
+App.GuiInstDrag.changeDirection = function(dir){
+	this.direction = dir;
+	for(var i = 0; i < this.registry.length; i++){
+		if(this.registry[i].dirsens)
+			this.registry[i].instruction = this.registry[i].baseInstruction + dir;
+	}
 }
 

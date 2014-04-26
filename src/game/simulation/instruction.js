@@ -1,6 +1,4 @@
 App.SimulationInstruction = function(level,x,y,color,type,data){
-	// this assumes valid input from the planning level
-
 	level.instructions.push(this);
 	level.getCell(x,y).instructions[color] = this;
 
@@ -24,9 +22,15 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			case App.COLORS.YELLOW: rx=this.x*cs+cs/2; ry=this.y*cs+cs/2; break;
 		}
 
+		var data = this.data;
 		var streamBkg = false;
 		if(this.type === App.InstCatalog.TYPES['IN'] || this.type === App.InstCatalog.TYPES['OUT'])streamBkg = true;
-		App.InstCatalog.render(this.gfx,this.type,rx,ry,this.color,cs/2,this.data,streamBkg);
+		if(this.type === App.InstCatalog.TYPES['FLIP FLOP U']
+		|| this.type === App.InstCatalog.TYPES['FLIP FLOP D']
+		|| this.type === App.InstCatalog.TYPES['FLIP FLOP L']
+		|| this.type === App.InstCatalog.TYPES['FLIP FLOP R'])
+			data = App.Game.flipFlop[this.color];
+		App.InstCatalog.render(this.gfx,this.type,rx,ry,this.color,cs/2,data,streamBkg);
 		this.gfx.restore();
 	}
 
@@ -90,12 +94,16 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld !== undefined)return;
 
-				var stackNum = App.Game.inStreams[this.data][3];
-				while(stackNum >= App.Game.inStreams[this.data][2].length-1)
-					App.Game.generateTokenWave();
-				var tokenNum = App.Game.inStreams[this.data][2][stackNum];
-				a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,tokenNum);
-				++App.Game.inStreams[this.data][3];
+				if(this.data){
+					var stackNum = App.Game.inStreams[this.data][3];
+					while(stackNum >= App.Game.inStreams[this.data][2].length-1)
+						App.Game.generateTokenWave();
+					var tokenNum = App.Game.inStreams[this.data][2][stackNum];
+					a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,tokenNum);
+					++App.Game.inStreams[this.data][3];
+				}else{
+					a.tokenHeld = new App.SimulationToken(this.level,this.x,this.y,Math.floor(Math.random()*10));
+				}
 			};break;
 
 		case App.InstCatalog.TYPES['OUT']:
@@ -104,15 +112,19 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
 
-				var stackNum = App.Game.outStreams[this.data][3];
-				while(stackNum >= App.Game.outStreams[this.data][2].length-1)
-					App.Game.generateTokenWave();
-				var tokenNum = App.Game.outStreams[this.data][2][stackNum];
-				if(a.tokenHeld.number !== tokenNum){
-					App.Game.simulationError(a.tokenHeld.number+" !== "+tokenNum);
-					return;
-				}a.tokenHeld = undefined;
-				++App.Game.outStreams[this.data][3];
+				if(this.data){
+					var stackNum = App.Game.outStreams[this.data][3];
+					while(stackNum >= App.Game.outStreams[this.data][2].length-1)
+						App.Game.generateTokenWave();
+					var tokenNum = App.Game.outStreams[this.data][2][stackNum];
+					if(a.tokenHeld.number !== tokenNum){
+						App.Game.simulationError(a.tokenHeld.number+" !== "+tokenNum);
+						return;
+					}a.tokenHeld = undefined;
+					++App.Game.outStreams[this.data][3];
+				}else{
+					a.tokenHeld = undefined;
+				}
 			};break;
 
 		case App.InstCatalog.TYPES['GRAB']:
@@ -156,14 +168,30 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld !== undefined)a.tokenHeld.increment();
+				if(a.tokenHeld !== undefined){
+					if(this.cell.topToken() !== undefined)
+						a.tokenHeld.add(this.cell.topToken());
+					else a.tokenHeld.add(1);
+				}
 			};break;
 
 		case App.InstCatalog.TYPES['DEC']:
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld !== undefined)a.tokenHeld.decrement();
+				if(a.tokenHeld !== undefined){
+					if(this.cell.topToken() !== undefined)
+						a.tokenHeld.sub(this.cell.topToken());
+					else a.tokenHeld.sub(1);
+				}
+			};break;
+
+		case App.InstCatalog.TYPES['SET']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld !== undefined && this.cell.topToken() !== undefined)
+					a.tokenHeld.number = this.cell.topToken();
 			};break;
 
 		case App.InstCatalog.TYPES['SYNC']:
@@ -183,43 +211,6 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				App.Game.requestPause = true;
-			};break;
-
-		case App.InstCatalog.TYPES['COND 0 U']:
-
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
-				a.direction = App.DIRECTIONS.UP;
-					
-			};break;
-
-		case App.InstCatalog.TYPES['COND 0 D']:
-
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
-				a.direction = App.DIRECTIONS.DOWN;
-			};break;
-
-		case App.InstCatalog.TYPES['COND 0 L']:
-
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
-				a.direction = App.DIRECTIONS.LEFT;
-			};break;
-
-		case App.InstCatalog.TYPES['COND 0 R']:
-
-			this.execute = function(a){
-				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
-				if(a.tokenHeld.number !== 0)return;
-				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 
 		case App.InstCatalog.TYPES['COND TOKEN U']:
@@ -251,6 +242,50 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
+				a.direction = App.DIRECTIONS.RIGHT;
+			};break;
+
+		case App.InstCatalog.TYPES['COND EQUAL U']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(this.cell.topToken() !== undefined){
+					if(this.cell.topToken() !== a.tokenHeld.number)return;
+				}else if(a.tokenHeld.number !== 0)return;
+				a.direction = App.DIRECTIONS.UP;
+			};break;
+
+		case App.InstCatalog.TYPES['COND EQUAL D']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(this.cell.topToken() !== undefined){
+					if(this.cell.topToken() !== a.tokenHeld.number)return;
+				}else if(a.tokenHeld.number !== 0)return;
+				a.direction = App.DIRECTIONS.DOWN;
+			};break;
+
+		case App.InstCatalog.TYPES['COND EQUAL L']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(this.cell.topToken() !== undefined){
+					if(this.cell.topToken() !== a.tokenHeld.number)return;
+				}else if(a.tokenHeld.number !== 0)return;
+				a.direction = App.DIRECTIONS.LEFT;
+			};break;
+
+		case App.InstCatalog.TYPES['COND EQUAL R']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				if(a.tokenHeld === undefined)return;
+				if(this.cell.topToken() !== undefined){
+					if(this.cell.topToken() !== a.tokenHeld.number)return;
+				}else if(a.tokenHeld.number !== 0)return;
 				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 
@@ -287,6 +322,46 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 				if(!a.colorFlags[this.color])return;
 				if(a.tokenHeld === undefined)return;
 				if(a.tokenHeld.number <= 0)return;
+				a.direction = App.DIRECTIONS.RIGHT;
+			};break;
+
+		case App.InstCatalog.TYPES['FLIP FLOP U']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				App.Game.flipFlop[this.color] = !App.Game.flipFlop[this.color];
+				App.GameRenderer.requestStaticRenderUpdate = true;
+				if(App.Game.flipFlop[this.color] === true)return;
+				a.direction = App.DIRECTIONS.UP;
+			};break;
+
+		case App.InstCatalog.TYPES['FLIP FLOP D']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				App.Game.flipFlop[this.color] = !App.Game.flipFlop[this.color];
+				App.GameRenderer.requestStaticRenderUpdate = true;
+				if(App.Game.flipFlop[this.color] === true)return;
+				a.direction = App.DIRECTIONS.DOWN;
+			};break;
+
+		case App.InstCatalog.TYPES['FLIP FLOP L']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				App.Game.flipFlop[this.color] = !App.Game.flipFlop[this.color];
+				App.GameRenderer.requestStaticRenderUpdate = true;
+				if(App.Game.flipFlop[this.color] === true)return;
+				a.direction = App.DIRECTIONS.LEFT;
+			};break;
+
+		case App.InstCatalog.TYPES['FLIP FLOP R']:
+
+			this.execute = function(a){
+				if(!a.colorFlags[this.color])return;
+				App.Game.flipFlop[this.color] = !App.Game.flipFlop[this.color];
+				App.GameRenderer.requestStaticRenderUpdate = true;
+				if(App.Game.flipFlop[this.color] === true)return;
 				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 	}
