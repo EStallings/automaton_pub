@@ -10,7 +10,7 @@ App.PlanningLevel = function(){
 	this.undoStack = [];
 	this.redoStack = [];
 	this.locks = [false, false, false, false]; // R,G,B,Y
-	this.userOverlapSetting = 1; // 0 - reject operation, 1 - overwrite
+	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
 	this.graphics = new App.PlanningGraphics();
 
 	// ---------------------------------------------
