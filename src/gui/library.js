@@ -10,7 +10,10 @@ App.setupLibrary = function(){
 		library.requestStaticRenderUpdate = true;
 		App.ModeHandler.popMode();
 	},false,null,null);
-	library.backButton.hoverColor = '#10af10';
+
+	library.backButton.hoverColor       = '#00ff00';
+	library.backButton.activeColor      = '#008000';
+	library.backButton.activeTextColor  = '#00ff00';
 
 	var go = function(){
 		var type = library.typeButton.txt;
@@ -48,6 +51,10 @@ App.setupLibrary = function(){
 		else if(library.diffButton.txt === 'Hard')
 			library.diffButton.txt = 'Easy';
 	});
+
+	library.diffButton.hoverColor       = '#00ff00';
+	library.diffButton.activeColor      = '#008000';
+	library.diffButton.activeTextColor  = '#00ff00';
 	library.diffButton.w = 300;
 	library.diffButton.dointerp = false;
 
@@ -63,19 +70,27 @@ App.setupLibrary = function(){
 			library.gui.addComponent(library.queryBox);
 		}
 	}, false, null, null);
+
+	library.typeButton.hoverColor       = '#00ff00';
+	library.typeButton.activeColor      = '#008000';
+	library.typeButton.activeTextColor  = '#00ff00';
 	library.typeButton.w = 128;
 
 	library.goButton = new App.GuiTextButton(15 + 128 + 20 + 300, 56+28*2, 200, 000, 'Search!', go, false, null, null);
+
+	library.goButton.hoverColor       = '#00ff00';
+	library.goButton.activeColor      = '#008000';
+	library.goButton.activeTextColor  = '#00ff00';
 	library.goButton.w = 128;
+
 	library.table = new App.GuiTable(15, 150, 20, [{id:'title', name:"Title"},{id:'description', name:"Description"},{id:'difficulty', name:"Difficulty"},{id:'author_id', name:"Author"},{id:'created', name:"Created"}]);
 
 	library.loadButton = new App.GuiTextButton(library.table.w + 30, 152, 200, 000, 'Load Level', loadLevel, false, null, null);
+
+	library.loadButton.hoverColor       = '#00ff00';
+	library.loadButton.activeColor      = '#008000';
+	library.loadButton.activeTextColor  = '#00ff00';
 	library.loadButton.w = 128;
-
-
-
-
-
 
 	library.gui.addComponent(library.table);
 	library.gui.addComponent(library.typeButton);
