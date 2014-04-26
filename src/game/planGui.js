@@ -270,6 +270,10 @@ App.setupPlanGui = function(){
 		planMode.requestStaticRenderUpdate = true;
 	});
 
+	planMode.registerKeyDownFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = true; });
+	
+	planMode.registerKeyUpFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = false; });
+
 	planMode.registerKeyDownFunc('Delete',function(){
 		if(App.Game.currentPlanningLevel.currentSelection !== []){
 			App.Game.currentPlanningLevel.delete(App.Game.currentPlanningLevel.currentSelection);
@@ -347,7 +351,7 @@ App.setupPlanGui = function(){
 			var shiftX = App.GameRenderer.mouseX-planMode.moveStart[0];
 			var shiftY = App.GameRenderer.mouseY-planMode.moveStart[1];
 
-			if(App.InputHandler.keysDown['Ctrl'])
+			if(App.Game.currentPlanningLevel.graphics.copying)
 				App.Game.currentPlanningLevel.copy(App.Game.currentPlanningLevel.currentSelection,shiftX,shiftY);
 			else
 				App.Game.currentPlanningLevel.move(App.Game.currentPlanningLevel.currentSelection,shiftX,shiftY);

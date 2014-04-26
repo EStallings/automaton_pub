@@ -8,6 +8,7 @@ App.PlanningGraphics = function(){
 	this.mousePos = [-1,-1,-1,-1,-1]; // current mouse position [scrnX, scrnY, cellX, cellY, cellC]
 
 	this.moving = false;
+	this.copying = false;
 
 	this.mouseMove = function(cellX, cellY){
 		that.mousePos[0] = App.InputHandler.mouseX;
