@@ -93,6 +93,7 @@ App.PlanningLevel = function(){
 	// fills currentSelection list of all unlocked instructions in cells between the specified coordinates
 	this.selectInstructions = function(x1, y1, c1, x2, y2, c2){
 		var that = App.Game.currentPlanningLevel; // TODO wierd bug with 'that'. not sure why this was needed
+		that.currentSelection = [];
 		if(x1 === x2 && y1 === y2 && c1 === c2){ // click select
 			if(that.getInstruction(x1,y1,c1) && !that.isLocked(that.getInstruction(x1,y1,c1).color)){
 				that.currentSelection[0] = that.getInstruction(x1,y1,c1);
