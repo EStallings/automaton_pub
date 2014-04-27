@@ -195,6 +195,7 @@ App.PlanningLevel = function(){
 		that.undoStack.push(new that.operation('ins', instructions, null, null, null, null, null, overwriteList));
 		that.killRedo('kill redo: insert');
 		that.validateGrid();
+		App.GameRenderer.requestStaticRenderUpdate = true;
 		return true;
 	}
 
@@ -210,6 +211,7 @@ App.PlanningLevel = function(){
 		that.undoStack.push(new that.operation('del', instructions, null, null, null, null));
 		that.killRedo('kill redo: delete');
 		that.currentSelection = [];
+		App.GameRenderer.requestStaticRenderUpdate = true;
 		that.validateGrid();
 	}
 
@@ -259,6 +261,7 @@ App.PlanningLevel = function(){
 
 		that.undoStack.push(new that.operation('mov', instructions, shiftX, shiftY, null, null));
 		that.killRedo('kill redo: move');
+		App.GameRenderer.requestStaticRenderUpdate = true;
 		that.validateGrid();
 	}
 
@@ -300,6 +303,7 @@ App.PlanningLevel = function(){
 
 		that.undoStack.push(new that.operation('cpy', instructions, shiftX, shiftY, null, null));
 		that.killRedo('kill redo: move');
+		App.GameRenderer.requestStaticRenderUpdate = true;
 		that.validateGrid();
 	}
 
@@ -360,6 +364,7 @@ App.PlanningLevel = function(){
 				that.redoStack.push(op);
 			}
 		}
+		App.GameRenderer.requestStaticRenderUpdate = true;
 		that.validateGrid();
 	};
 
@@ -410,6 +415,7 @@ App.PlanningLevel = function(){
 				that.undoStack.push(op);
 			}
 		}
+		App.GameRenderer.requestStaticRenderUpdate = true;
 		that.validateGrid();
 	}
 

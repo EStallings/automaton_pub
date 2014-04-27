@@ -103,13 +103,21 @@ App.PlanningGraphics = function(){
 	}
 
 	this.drag = function(){
-		// if nothing is selected or drag started off of selection, drag select - show drag select box, selection boxes appear
 		if(App.Game.currentPlanningLevel.currentSelection.length === 0 || !that.lmbStartOnTile){
 			var s = that.lmbDown;
 			var f = that.lmbUp;
 			App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], f[0], f[1], f[2]);
 		}
-		// if drag started on selected instruction, move / copy - shadow graphics
+		else if(App.Game.currentPlanningLevel.currentSelection.length !== 0 && that.lmbStartOnTile){
+			var shiftX = that.lmbUp[0] - that.lmbDown[0];
+			var shiftY = that.lmbUp[1] - that.lmbDown[1];
+			if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Ctrl']] === true){
+				App.Game.currentPlanningLevel.copy(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+			}
+			else{
+				App.Game.currentPlanningLevel.move(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+			}
+		}
 	}
 
 	this.single = function(){
