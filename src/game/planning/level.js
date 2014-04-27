@@ -165,6 +165,15 @@ App.PlanningLevel = function(){
 		return x;
 	}
 
+	this.hasStream = function(x,y){
+		if(that.grid[x] && that.grid[x][y]){
+			for(instr in that.grid[x][y]){
+				if(that.grid[x][y][instr].type === 9 || that.grid[x][y][instr].type === 8){ return true; }
+			}
+		}
+		return false;
+	}
+
 	// this function takes a list of PlanningInstructions and inserts them into the grid
 	this.insert = function(instructions){
 		instructions = that.toList(instructions);
@@ -176,6 +185,7 @@ App.PlanningLevel = function(){
 			if(that.height !== 0 && (instructions[i].y < 0 || instructions[i].y >= that.height)){ /* console.log('insert out of bounds'); */ return false; }
 			if(that.isLocked(instructions[i].color)){ /* console.log('layer locked'); */ return; }
 			if(that.instructionLock === true && instructions[i].locked){ return; }
+			if( (instructions[i].type === 8 || instructions[i].type === 9) && that.hasStream(instructions[i].x,instructions[i].y) ){ return; }
 			if(that.getInstruction(instructions[i].x, instructions[i].y, instructions[i].color))
 			{
 				if(that.userOverlapSetting === 0){ /* console.log('tile blocked'); */ return; } // if there is a conflict in any space and overwrite is disabled, reject

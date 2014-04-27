@@ -271,7 +271,6 @@ App.setupPlanGui = function(){
 	});
 
 	planMode.registerKeyDownFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = true; });
-	
 	planMode.registerKeyUpFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = false; });
 
 	planMode.registerKeyDownFunc('Delete',function(){
