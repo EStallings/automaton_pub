@@ -68,18 +68,21 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 		//prevent dropping instructions behind gui elements
 		//check upper left
 		this.ignoreCollide = true;
+		var flag = false;
 		var c = this.gui.testCoordinates(this.getx()-this.w/2, this.gety()-this.h/2);
-		if(c.f.length > 0 || c.p.length > 0) return;
+		if(c.f.length > 0 || c.p.length > 0) flag = true;
 		//bottom left
 		c = this.gui.testCoordinates(this.getx()-this.w/2, this.gety()+this.h/2);
-		if(c.f.length > 0 || c.p.length > 0) return;
+		if(c.f.length > 0 || c.p.length > 0) flag = true;
 		//upper right
 		c = this.gui.testCoordinates(this.getx()+this.w/2, this.gety()-this.h/2);
-		if(c.f.length > 0 || c.p.length > 0) return;
+		if(c.f.length > 0 || c.p.length > 0) flag = true;
 		//lower right
 		c = this.gui.testCoordinates(this.getx()+this.w/2, this.gety()+this.h/2);
-		if(c.f.length > 0 || c.p.length > 0) return;
+		if(c.f.length > 0 || c.p.length > 0) flag = true;
 		this.ignoreCollide = false;
+		if(flag)
+			return;
 
 		//place the instruction
 		App.GameRenderer.screenToGridCoords(this.getx(), this.gety());

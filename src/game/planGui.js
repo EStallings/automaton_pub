@@ -42,11 +42,16 @@ App.setupPlanGui = function(){
 	planMode.undoBut = new App.GuiToolbarButton(-212,-73-5, 46, 0, '#a0a0a0', 'center', 'bottom', false, 'Undo', function(){App.Game.currentPlanningLevel.undo()});
 	planMode.redoBut = new App.GuiToolbarButton(-212,-25-5, 46, 0, '#a0a0a0', 'center', 'bottom', false, 'Redo', function(){App.Game.currentPlanningLevel.redo()});
 
+	var setRed    = function(){planMode.toggles[1].toggled = planMode.toggles[2].toggled = planMode.toggles[3].toggled = false; planMode.toggles[0].toggled = true; App.GuiInstDrag.changeGlobalColor(0); planMode.color = App.COLORS.RED;    planMode.requestStaticRenderUpdate = true};
+	var setGreen  = function(){planMode.toggles[0].toggled = planMode.toggles[2].toggled = planMode.toggles[3].toggled = false; planMode.toggles[1].toggled = true; App.GuiInstDrag.changeGlobalColor(1); planMode.color = App.COLORS.GREEN;  planMode.requestStaticRenderUpdate = true};
+	var setBlue   = function(){planMode.toggles[0].toggled = planMode.toggles[1].toggled = planMode.toggles[3].toggled = false; planMode.toggles[2].toggled = true; App.GuiInstDrag.changeGlobalColor(2); planMode.color = App.COLORS.BLUE;   planMode.requestStaticRenderUpdate = true};
+	var setYellow = function(){planMode.toggles[0].toggled = planMode.toggles[1].toggled = planMode.toggles[2].toggled = false; planMode.toggles[3].toggled = true; App.GuiInstDrag.changeGlobalColor(3); planMode.color = App.COLORS.YELLOW; planMode.requestStaticRenderUpdate = true};
+
 	planMode.toggles = [];
-	planMode.toggles[ 0] = new App.GuiToolbarButton(260,-81-5, 30, 0, 0, 'center', 'bottom', true, 'Red Active',    function(){planMode.toggles[1].toggled = planMode.toggles[2].toggled = planMode.toggles[3].toggled = false; App.GuiInstDrag.changeGlobalColor(0)});
-	planMode.toggles[ 1] = new App.GuiToolbarButton(292,-81-5, 30, 0, 1, 'center', 'bottom', true, 'Green Active',  function(){planMode.toggles[0].toggled = planMode.toggles[2].toggled = planMode.toggles[3].toggled = false; App.GuiInstDrag.changeGlobalColor(1)});
-	planMode.toggles[ 2] = new App.GuiToolbarButton(324,-81-5, 30, 0, 2, 'center', 'bottom', true, 'Blue Active',   function(){planMode.toggles[0].toggled = planMode.toggles[1].toggled = planMode.toggles[3].toggled = false; App.GuiInstDrag.changeGlobalColor(2)});
-	planMode.toggles[ 3] = new App.GuiToolbarButton(356,-81-5, 30, 0, 3, 'center', 'bottom', true, 'Yellow Active', function(){planMode.toggles[0].toggled = planMode.toggles[1].toggled = planMode.toggles[2].toggled = false; App.GuiInstDrag.changeGlobalColor(3)});
+	planMode.toggles[ 0] = new App.GuiToolbarButton(260,-81-5, 30, 0, 0, 'center', 'bottom', true, 'Red Active',    setRed);
+	planMode.toggles[ 1] = new App.GuiToolbarButton(292,-81-5, 30, 0, 1, 'center', 'bottom', true, 'Green Active',  setGreen);
+	planMode.toggles[ 2] = new App.GuiToolbarButton(324,-81-5, 30, 0, 2, 'center', 'bottom', true, 'Blue Active',   setBlue);
+	planMode.toggles[ 3] = new App.GuiToolbarButton(356,-81-5, 30, 0, 3, 'center', 'bottom', true, 'Yellow Active', setYellow);
 	planMode.toggles[ 4] = new App.GuiToolbarButton(260,-49-5, 30, 0, 0, 'center', 'bottom', true, 'Red Locked',    function(){App.Game.currentPlanningLevel.toggleLock(0)});
 	planMode.toggles[ 5] = new App.GuiToolbarButton(292,-49-5, 30, 0, 1, 'center', 'bottom', true, 'Green Locked',  function(){App.Game.currentPlanningLevel.toggleLock(1)});
 	planMode.toggles[ 6] = new App.GuiToolbarButton(324,-49-5, 30, 0, 2, 'center', 'bottom', true, 'Blue Locked',   function(){App.Game.currentPlanningLevel.toggleLock(2)});
@@ -107,20 +112,13 @@ App.setupPlanGui = function(){
 
 
 
-	planMode.anchor = new App.GuiToolbarButton (0,-25,46,0,'#a0a0a0', 'center', 'bottom');
-	planMode.anchor2 = new App.GuiToolbarButton(0,-5-48,46,0,'#a0a0a0', 'center', 'bottom');
 	planMode.instPanel = new App.GuiTools.Component(0,-54,794,98,0,0,'center','bottom');
 	planMode.instPanel.render = function(gfx){
 		gfx.fillStyle = 'rgba(0,0,0,0.8)';
 		gfx.fillRect(planMode.instPanel.getx(), planMode.instPanel.gety(), planMode.instPanel.w, planMode.instPanel.h);
 	}
 
-	planMode.submitButton = new App.GuiTextButton(15, 56+28*0, 200, 000, 'Submit', 			function(){
-			planMode.gui.setOverlay(planMode.submitOverlay);
-		}, false, null, null);
 
-
-//	planMode.gui.addComponent(planMode.submitButton);
 	planMode.gui.addComponent(planMode.instPanel);
 	planMode.gui.addComponent(planMode.butNav);
 	planMode.gui.addComponent(planMode.undoBut);
@@ -288,29 +286,13 @@ App.setupPlanGui = function(){
 		planMode.requestStaticRenderUpdate = true;
 	});
 
-	planMode.registerKeyDownFunc('1',function(){
-		planMode.color = App.COLORS.RED;
-		App.GuiInstDrag.changeGlobalColor(App.COLORS.RED);
-		planMode.requestStaticRenderUpdate = true;
-	});
+	planMode.registerKeyDownFunc('1', setRed);
 
-	planMode.registerKeyDownFunc('2',function(){
-		planMode.color = App.COLORS.GREEN;
-		App.GuiInstDrag.changeGlobalColor(App.COLORS.GREEN);
-		planMode.requestStaticRenderUpdate = true;
-	});
+	planMode.registerKeyDownFunc('2', setGreen);
 
-	planMode.registerKeyDownFunc('3',function(){
-		planMode.color = App.COLORS.BLUE;
-		App.GuiInstDrag.changeGlobalColor(App.COLORS.BLUE);
-		planMode.requestStaticRenderUpdate = true;
-	});
+	planMode.registerKeyDownFunc('3', setBlue);
 
-	planMode.registerKeyDownFunc('4',function(){
-		planMode.color = App.COLORS.YELLOW;
-		App.GuiInstDrag.changeGlobalColor(App.COLORS.YELLOW);
-		planMode.requestStaticRenderUpdate = true;
-	});
+	planMode.registerKeyDownFunc('4', setYellow);
 
 	planMode.registerKeyDownFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = true; });
 	planMode.registerKeyUpFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = false; });
