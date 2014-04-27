@@ -94,14 +94,14 @@ App.setupPlanGui = function(){
 	planMode.activeToggle[1] = addBtn(292,-81-5,30,1,false,'Green Active',  setGreen);
 	planMode.activeToggle[2] = addBtn(324,-81-5,30,2,false,'Blue Active',   setBlue);
 	planMode.activeToggle[3] = addBtn(356,-81-5,30,3,false,'Yellow Active', setYellow);
-	addBtn(260,-49-5,30,0,true ,'Red Locked',    function(){App.Game.currentPlanningLevel.toggleLock(0)});
-	addBtn(292,-49-5,30,1,true ,'Green Locked',  function(){App.Game.currentPlanningLevel.toggleLock(1)});
-	addBtn(324,-49-5,30,2,true ,'Blue Locked',   function(){App.Game.currentPlanningLevel.toggleLock(2)});
-	addBtn(356,-49-5,30,3,true ,'Yellow Locked', function(){App.Game.currentPlanningLevel.toggleLock(3)});
-	addBtn(260,-17-5,30,0,true ,'Red Visible');
-	addBtn(292,-17-5,30,1,true ,'Green Visible');
-	addBtn(324,-17-5,30,2,true ,'Blue Visible');
-	addBtn(356,-17-5,30,3,true ,'Yellow Visible');
+	addBtn(260,-49-5,30,0,true,'Red Locked',    function(){App.Game.currentPlanningLevel.toggleLock(0)});
+	addBtn(292,-49-5,30,1,true,'Green Locked',  function(){App.Game.currentPlanningLevel.toggleLock(1)});
+	addBtn(324,-49-5,30,2,true,'Blue Locked',   function(){App.Game.currentPlanningLevel.toggleLock(2)});
+	addBtn(356,-49-5,30,3,true,'Yellow Locked', function(){App.Game.currentPlanningLevel.toggleLock(3)});
+	addBtn(260,-17-5,30,0,true,'Red Visible');
+	addBtn(292,-17-5,30,1,true,'Green Visible');
+	addBtn(324,-17-5,30,2,true,'Blue Visible');
+	addBtn(356,-17-5,30,3,true,'Yellow Visible');
 
 	addBtn(384,-85-5,22,'#a0a0a0',false,'New',function(){planMode.showConfirm("Create A Blank Level?", newLevel)});
 	addBtn(384,-61-5,22,'#a0a0a0',false,'Upload', function(){
