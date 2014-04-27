@@ -40,12 +40,12 @@ App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin,toggle, 
 			gfx.fillStyle = App.FILL_COLOR[that.color];
 			//this.tooltipTextColor = '#ffffff';
 		}
-		gfx.fillRect(that.getx(), that.gety(), that.w, that.h);
-		gfx.strokeRect(that.getx(), that.gety(), that.w, that.h);
+		gfx.fillRect  (that.getx()+1, that.gety()+1, that.w-2, that.h-2);
+		gfx.strokeRect(that.getx()+1, that.gety()+1, that.w-2, that.h-2);
 
 		if(that.hovering){
 			var w = textWidth(gfx, that.tooltip, 24-6, -2);
-			gfx.fillRect(that.getx()+1, App.Canvases.height-103-24, w+6, 24);
+			gfx.fillRect(that.getx(), App.Canvases.height-103-24, w+6, 24);
 			gfx.fillStyle = that.tooltipTextColor;
 			text(gfx, that.tooltip, that.getx() + 3, App.Canvases.height-103-21, 24-6, -2);
 		}

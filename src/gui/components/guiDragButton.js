@@ -30,14 +30,14 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 		App.InstCatalog.render(
 			gfx,
 			that.instruction,
-			that.getx()-2, that.gety()-2,
+			that.getx()-1, that.gety()-1,
 			App.GuiInstDrag.globalColor,
-			that.w+4);
+			that.w+2);
 
 		if(that.hovering){
 			var w = textWidth(gfx, that.tooltip, 24-6, -2);
 			gfx.fillStyle = App.FILL_COLOR[App.GuiInstDrag.globalColor];
-			gfx.fillRect(that.getx()+1, App.Canvases.height-103-24, w+6, 24);
+			gfx.fillRect(that.getx(), App.Canvases.height-103-24, w+6, 24);
 			gfx.fillStyle = '#000000';
 			text(gfx, that.tooltip, that.getx() + 3, App.Canvases.height-103-21, 24-6, -2);
 		}
