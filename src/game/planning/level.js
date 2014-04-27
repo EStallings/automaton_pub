@@ -96,7 +96,9 @@ App.PlanningLevel = function(){
 		that.currentSelection = [];
 		if(x1 === x2 && y1 === y2 && c1 === c2){ // click select
 			if(that.getInstruction(x1,y1,c1) && !that.isLocked(that.getInstruction(x1,y1,c1).color)){
-				that.currentSelection[0] = that.getInstruction(x1,y1,c1);
+				if(that.instructionLock && !that.getInstruction(x1,y1,c1).locked){
+					that.currentSelection[0] = that.getInstruction(x1,y1,c1);
+				}
 			}
 			else{ // click in empty space - clear selection
 				that.currentSelection = [];
@@ -118,8 +120,10 @@ App.PlanningLevel = function(){
 				for(var i = upperLeft[0]; i <= lowerRight[0]; i += .5){
 					temp = that.getInstruction(that.ijToxyc(i,j)[0], that.ijToxyc(i,j)[1], that.ijToxyc(i,j)[2]);
 					if(temp && !that.isLocked(temp.color)){
-						that.currentSelection[numInstr] = temp;
-						++numInstr;
+						if(that.lockInstructions && !temp.locked){
+							that.currentSelection[numInstr] = temp;
+							++numInstr;
+						}
 					}
 				}
 			}
