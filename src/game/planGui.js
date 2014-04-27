@@ -21,8 +21,7 @@ App.setupPlanGui = function(){
 		App.confirmGui.yes = function(){
 			App.ModeHandler.popMode();
 			App.loadDemo();
-		};App.confirmGui.no = function(){}
-		App.ModeHandler.pushMode('confirm');
+		};App.ModeHandler.pushMode('confirm');
 	}
 
 	var addDragBtn = function(x,y,type,dirSense,tooltip,hotkey,data){
@@ -93,8 +92,7 @@ App.setupPlanGui = function(){
 		App.confirmGui.yes = function(){
 			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
 			App.GameRenderer.bestFit();
-		};App.confirmGui.no = function(){}
-		App.ModeHandler.pushMode('confirm');
+		};App.ModeHandler.pushMode('confirm');
 	});
 	addBtn(384,-61-5,22,'#a0a0a0',false,'Upload', function(){
 		App.ModeHandler.pushMode('submit level');
