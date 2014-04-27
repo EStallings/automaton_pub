@@ -42,7 +42,7 @@ App.setupPlanGui = function(){
 		gfx.fillRect(planMode.instPanel.getx(), planMode.instPanel.gety(), planMode.instPanel.w, planMode.instPanel.h);
 	};planMode.gui.addComponent(planMode.instPanel);
 
-	addBtn(-348, -49-5, 94,'#a0a0a0',false,'NAVIGATION');
+	addBtn(-348, -49-5, 94,'#808080',false,'NAVIGATION');
 
 	addDragBtn(-164,-73-5, 0,true ,'[ Q ] Spawn Automaton','Q');
 	addDragBtn(-116,-73-5, 4,false,'[ W ] Change Direction Up','W');
@@ -63,43 +63,47 @@ App.setupPlanGui = function(){
 	addDragBtn( 172,-25-5,18,false,'[ K ] Pause','K');
 	addDragBtn( 220,-25-5, 9,false,'[ L ] Output Stream','');
 
-	addBtn(-284,-81-5,30,'#a0a0a0',false,'Low Speed');
-	addBtn(-284,-49-5,30,'#a0a0a0',false,'High Speed');
-	addBtn(-284,-17-5,30,'#a0a0a0',false,'Stop');
-	addBtn(-252,-81-5,30,'#a0a0a0',false,'Med Speed');
-	addBtn(-252,-49-5,30,'#a0a0a0',false,'MAX Speed');
-	addBtn(-252,-17-5,30,'#a0a0a0',false,'Pause');
+	addBtn(-284,-81-5,30,'#808080',false,'Low Speed');
+	addBtn(-284,-49-5,30,'#808080',false,'High Speed');
+	addBtn(-284,-17-5,30,'#808080',false,'Stop');
+	addBtn(-252,-81-5,30,'#808080',false,'Med Speed');
+	addBtn(-252,-49-5,30,'#808080',false,'MAX Speed');
+	addBtn(-252,-17-5,30,'#808080',false,'Pause');
 
-	addBtn(-212,-73-5,46,'#a0a0a0',false,'Undo',function(){App.Game.currentPlanningLevel.undo()});
-	addBtn(-212,-25-5,46,'#a0a0a0',false,'Redo',function(){App.Game.currentPlanningLevel.redo()});
+	addBtn(-212,-73-5,46,'#808080',false,'Undo',function(){App.Game.currentPlanningLevel.undo()});
+	addBtn(-212,-25-5,46,'#808080',false,'Redo',function(){App.Game.currentPlanningLevel.redo()});
 
 	planMode.activeToggle = [];
 	planMode.activeToggle[0] = addBtn(260,-81-5,30,0,false,'Red Active',    setRed);
 	planMode.activeToggle[1] = addBtn(292,-81-5,30,1,false,'Green Active',  setGreen);
 	planMode.activeToggle[2] = addBtn(324,-81-5,30,2,false,'Blue Active',   setBlue);
 	planMode.activeToggle[3] = addBtn(356,-81-5,30,3,false,'Yellow Active', setYellow);
-	addBtn(260,-49-5,30,0,true,'Red Locked',    function(){App.Game.currentPlanningLevel.toggleLock(0)});
-	addBtn(292,-49-5,30,1,true,'Green Locked',  function(){App.Game.currentPlanningLevel.toggleLock(1)});
-	addBtn(324,-49-5,30,2,true,'Blue Locked',   function(){App.Game.currentPlanningLevel.toggleLock(2)});
-	addBtn(356,-49-5,30,3,true,'Yellow Locked', function(){App.Game.currentPlanningLevel.toggleLock(3)});
-	addBtn(260,-17-5,30,0,true,'Red Visible').toggled = true;
-	addBtn(292,-17-5,30,1,true,'Green Visible').toggled = true;
-	addBtn(324,-17-5,30,2,true,'Blue Visible').toggled = true;
-	addBtn(356,-17-5,30,3,true,'Yellow Visible').toggled = true;
 
-	addBtn(384,-85-5,22,'#a0a0a0',false,'New',function(){
+	planMode.lockedToggle = [];
+	planMode.lockedToggle[0] = addBtn(260,-49-5,30,0,true,'Red Locked',    function(){App.Game.currentPlanningLevel.toggleLock(0)});
+	planMode.lockedToggle[1] = addBtn(292,-49-5,30,1,true,'Green Locked',  function(){App.Game.currentPlanningLevel.toggleLock(1)});
+	planMode.lockedToggle[2] = addBtn(324,-49-5,30,2,true,'Blue Locked',   function(){App.Game.currentPlanningLevel.toggleLock(2)});
+	planMode.lockedToggle[3] = addBtn(356,-49-5,30,3,true,'Yellow Locked', function(){App.Game.currentPlanningLevel.toggleLock(3)});
+
+	planMode.visibleToggle = [];
+	planMode.visibleToggle[0] = addBtn(260,-17-5,30,0,true,'Red Visible');
+	planMode.visibleToggle[1] = addBtn(292,-17-5,30,1,true,'Green Visible');
+	planMode.visibleToggle[2] = addBtn(324,-17-5,30,2,true,'Blue Visible');
+	planMode.visibleToggle[3] = addBtn(356,-17-5,30,3,true,'Yellow Visible');
+
+	addBtn(384,-85-5,22,'#808080',false,'New',function(){
 		App.confirmGui.title = "Create A New Level?";
 		App.confirmGui.yes = function(){
 			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
 			App.GameRenderer.bestFit();
 		};App.ModeHandler.pushMode('confirm');
 	});
-	addBtn(384,-61-5,22,'#a0a0a0',false,'Upload', function(){
+	addBtn(384,-61-5,22,'#808080',false,'Upload', function(){
 		App.ModeHandler.pushMode('submit level');
 		planMode.requestStaticRenderUpdate = true;
 	});
-	addBtn(384,-37-5,22,'#a0a0a0',false,'Properties');
-	addBtn(384,-13-5,22,'#a0a0a0',false,'Return',returnToMenu);
+	addBtn(384,-37-5,22,'#808080',false,'Properties');
+	addBtn(384,-13-5,22,'#808080',false,'Return',returnToMenu);
 
 //============================================================================//
 
@@ -111,6 +115,8 @@ App.setupPlanGui = function(){
 
 		planMode.gui.enter();
 		setRed();
+		// TODO: reset locks
+		// TODO: reset visibilities
 
 		App.Game.setMode(App.Game.modes.PLANNING);
 		App.GuiInstDrag.changeDirection(App.DIRECTIONS.UP);

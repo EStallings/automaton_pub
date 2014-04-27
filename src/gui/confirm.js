@@ -27,7 +27,6 @@ App.setupConfirm = function(){
 		confirm.requestStaticRenderUpdate = true;
 		confirm.updatingActive = true;
 		confirm.exitFlag = false;
-		App.GameRenderer.bestFit();
 
 		confirm.gui.enter();
 		confirm.goalAlpha = 1;
