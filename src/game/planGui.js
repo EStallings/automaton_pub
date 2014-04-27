@@ -63,10 +63,12 @@ App.setupPlanGui = function(){
 	planMode.toggles[0].toggled = true;
 
 
-	planMode.showConfirm = function(){
+	planMode.showConfirm = function(txt, callback){
 		for (var c in planMode.confirm){
 			planMode.gui.addComponent(planMode.confirm[c]);
 		}
+		planMode.confirm[0].txt = txt;
+		planMode.confirm[1].callback = callback;
 	}
 
 	planMode.hideConfirm = function(){
@@ -75,13 +77,19 @@ App.setupPlanGui = function(){
 		}
 	}
 
-	planMode.newLevelBut   = new App.GuiToolbarButton(384,-85-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'New');
+	var newLevel = function(){
+		App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
+		App.GameRenderer.bestFit();
+		planMode.hideConfirm();
+	}
+
+	planMode.newLevelBut   = new App.GuiToolbarButton(384,-85-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'New', function(){planMode.showConfirm("Create A Blank Level?", newLevel)});
 	planMode.saveLevelBut  = new App.GuiToolbarButton(384,-61-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'Upload', function(){
 		App.ModeHandler.pushMode('submit level');
 		planMode.requestStaticRenderUpdate = true;
 	});
 	planMode.propertiesBut = new App.GuiToolbarButton(384,-37-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'Properties');
-	planMode.backBut       = new App.GuiToolbarButton(384,-13-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'Return', planMode.showConfirm);
+	planMode.backBut       = new App.GuiToolbarButton(384,-13-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'Return', function(){planMode.showConfirm("Return To Menu Without Saving?", back)});
 
 
 	var back = function(){
@@ -92,13 +100,13 @@ App.setupPlanGui = function(){
 
 	planMode.confirm = [];
 	planMode.confirm[0] = new App.GuiTools.Component(0,0,10000,10000,0,0,'center','center');
+	planMode.confirm[0].txt = "Return To Menu Without Saving?";
 	planMode.confirm[0].render = function(gfx){
 		gfx.fillStyle = 'rgba(0,0,0,0.5)';
 		gfx.fillRect(planMode.confirm[0].getx(), planMode.confirm[0].gety(), planMode.confirm[0].w, planMode.confirm[0].h);
 		gfx.fillStyle = '#ffffff';
-		var t = "Return To Menu Without Saving?";
-		var w = textWidth(gfx, t, 24, -2);
-		text(gfx, t, App.Canvases.width/2 - w/2, App.Canvases.height/2-55, 24, -2);
+		var w = textWidth(gfx, planMode.confirm[0].txt, 24, -2);
+		text(gfx, planMode.confirm[0].txt, App.Canvases.width/2 - w/2, App.Canvases.height/2-55, 24, -2);
 	}
 	planMode.confirm[1] = new App.GuiTextButton(-66,0,0,0,"Yes",back, false, 'center', 'center');
 	planMode.confirm[1].dointerp = false;
