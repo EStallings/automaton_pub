@@ -82,10 +82,10 @@ App.setupPlanGui = function(){
 	addBtn(292,-49-5,30,1,true,'Green Locked',  function(){App.Game.currentPlanningLevel.toggleLock(1)});
 	addBtn(324,-49-5,30,2,true,'Blue Locked',   function(){App.Game.currentPlanningLevel.toggleLock(2)});
 	addBtn(356,-49-5,30,3,true,'Yellow Locked', function(){App.Game.currentPlanningLevel.toggleLock(3)});
-	addBtn(260,-17-5,30,0,true,'Red Visible');
-	addBtn(292,-17-5,30,1,true,'Green Visible');
-	addBtn(324,-17-5,30,2,true,'Blue Visible');
-	addBtn(356,-17-5,30,3,true,'Yellow Visible');
+	addBtn(260,-17-5,30,0,true,'Red Visible').toggled = true;
+	addBtn(292,-17-5,30,1,true,'Green Visible').toggled = true;
+	addBtn(324,-17-5,30,2,true,'Blue Visible').toggled = true;
+	addBtn(356,-17-5,30,3,true,'Yellow Visible').toggled = true;
 
 	addBtn(384,-85-5,22,'#a0a0a0',false,'New',function(){
 		App.confirmGui.title = "Create A New Level?";
