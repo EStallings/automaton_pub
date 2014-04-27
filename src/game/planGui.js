@@ -9,26 +9,26 @@ App.setupPlanGui = function(){
 	planMode.joystick = new App.GuiJoystick(100, 500, 50, 100, null);
 
 	planMode.topRow = [];
-	planMode.topRow[0] = new App.GuiInstDrag  (-164, -73-5, 0,  0, true , 'center', 'bottom', planMode.gui, 'Spawn Automaton');
-	planMode.topRow[1] = new App.GuiInstDrag  (-116, -73-5, 0,  4, false, 'center', 'bottom', planMode.gui, 'Change Direction Up');
-	planMode.topRow[2] = new App.GuiInstDrag  ( -68, -73-5, 0, 12, false, 'center', 'bottom', planMode.gui, 'Grab/Drop Token');
-	planMode.topRow[3] = new App.GuiInstDrag  ( -20, -73-5, 0, 27, true , 'center', 'bottom', planMode.gui, 'Positive Switch');
-	planMode.topRow[4] = new App.GuiInstDrag  (  28, -73-5, 0, 31, true , 'center', 'bottom', planMode.gui, 'Flip-Flop');
-	planMode.topRow[5] = new App.GuiInstDrag  (  76, -73-5, 0, 16, false, 'center', 'bottom', planMode.gui, 'Sync');
-	planMode.topRow[6] = new App.GuiInstDrag  ( 124, -73-5, 0, 13, false, 'center', 'bottom', planMode.gui, 'Add');
-	planMode.topRow[7] = new App.GuiInstDrag  ( 172, -73-5, 0, 15, false, 'center', 'bottom', planMode.gui, 'Set Value');
-	planMode.topRow[8] = new App.GuiInstDrag  ( 220, -73-5, 0,  8, false, 'center', 'bottom', planMode.gui, 'Input Stream');
+	planMode.topRow[0] = new App.GuiInstDrag  (-164, -73-5, 0,  0, true , 'center', 'bottom', planMode.gui, 'Spawn Automaton','Q');
+	planMode.topRow[1] = new App.GuiInstDrag  (-116, -73-5, 0,  4, false, 'center', 'bottom', planMode.gui, 'Change Direction Up','W');
+	planMode.topRow[2] = new App.GuiInstDrag  ( -68, -73-5, 0, 12, false, 'center', 'bottom', planMode.gui, 'Grab/Drop Token','E');
+	planMode.topRow[3] = new App.GuiInstDrag  ( -20, -73-5, 0, 27, true , 'center', 'bottom', planMode.gui, 'Positive Switch','R');
+	planMode.topRow[4] = new App.GuiInstDrag  (  28, -73-5, 0, 31, true , 'center', 'bottom', planMode.gui, 'Flip-Flop','T');
+	planMode.topRow[5] = new App.GuiInstDrag  (  76, -73-5, 0, 16, false, 'center', 'bottom', planMode.gui, 'Sync','Y');
+	planMode.topRow[6] = new App.GuiInstDrag  ( 124, -73-5, 0, 13, false, 'center', 'bottom', planMode.gui, 'Add','U');
+	planMode.topRow[7] = new App.GuiInstDrag  ( 172, -73-5, 0, 15, false, 'center', 'bottom', planMode.gui, 'Set Value','I');
+	planMode.topRow[8] = new App.GuiInstDrag  ( 220, -73-5, 0,  8, false, 'center', 'bottom', planMode.gui, 'Input Stream','');
 
 	planMode.botRow = [];
-	planMode.botRow[0] = new App.GuiInstDrag     (-164, -25-5, 0,  7, false, 'center', 'bottom', planMode.gui, 'Change Direction Left');
-	planMode.botRow[1] = new App.GuiInstDrag     (-116, -25-5, 0,  6, false, 'center', 'bottom', planMode.gui, 'Change Direction Down');
-	planMode.botRow[2] = new App.GuiInstDrag     ( -68, -25-5, 0,  5, false, 'center', 'bottom', planMode.gui, 'Change Direction Right');
-	planMode.botRow[3] = new App.GuiInstDrag     ( -20, -25-5, 0, 23, true , 'center', 'bottom', planMode.gui, 'Equality Switch');
-	planMode.botRow[4] = new App.GuiInstDrag     (  28, -25-5, 0, 19, true , 'center', 'bottom', planMode.gui, 'Token Switch');
-	planMode.botRow[5] = new App.GuiInstDrag     (  76, -25-5, 0, 17, false, 'center', 'bottom', planMode.gui, 'Toggle Color');
-	planMode.botRow[6] = new App.GuiInstDrag     ( 124, -25-5, 0, 14, false, 'center', 'bottom', planMode.gui, 'Subtract');
-	planMode.botRow[7] = new App.GuiInstDrag     ( 172, -25-5, 0, 18, false, 'center', 'bottom', planMode.gui, 'Pause');
-	planMode.botRow[8] = new App.GuiInstDrag     ( 220, -25-5, 0,  9, false, 'center', 'bottom', planMode.gui, 'Output Stream');
+	planMode.botRow[0] = new App.GuiInstDrag     (-164, -25-5, 0,  7, false, 'center', 'bottom', planMode.gui, 'Change Direction Left','A');
+	planMode.botRow[1] = new App.GuiInstDrag     (-116, -25-5, 0,  6, false, 'center', 'bottom', planMode.gui, 'Change Direction Down','S');
+	planMode.botRow[2] = new App.GuiInstDrag     ( -68, -25-5, 0,  5, false, 'center', 'bottom', planMode.gui, 'Change Direction Right','D');
+	planMode.botRow[3] = new App.GuiInstDrag     ( -20, -25-5, 0, 23, true , 'center', 'bottom', planMode.gui, 'Equality Switch','F');
+	planMode.botRow[4] = new App.GuiInstDrag     (  28, -25-5, 0, 19, true , 'center', 'bottom', planMode.gui, 'Token Switch','G');
+	planMode.botRow[5] = new App.GuiInstDrag     (  76, -25-5, 0, 17, false, 'center', 'bottom', planMode.gui, 'Toggle Color','H');
+	planMode.botRow[6] = new App.GuiInstDrag     ( 124, -25-5, 0, 14, false, 'center', 'bottom', planMode.gui, 'Subtract','J');
+	planMode.botRow[7] = new App.GuiInstDrag     ( 172, -25-5, 0, 18, false, 'center', 'bottom', planMode.gui, 'Pause','K');
+	planMode.botRow[8] = new App.GuiInstDrag     ( 220, -25-5, 0,  9, false, 'center', 'bottom', planMode.gui, 'Output Stream','');
 
 	planMode.butNav = new App.GuiToolbarButton(-348, -49-5, 94, 0, '#a0a0a0', 'center', 'bottom', false, 'FOO');
 	planMode.playback = [];
@@ -42,11 +42,16 @@ App.setupPlanGui = function(){
 	planMode.undoBut = new App.GuiToolbarButton(-212,-73-5, 46, 0, '#a0a0a0', 'center', 'bottom', false, 'Undo', function(){App.Game.currentPlanningLevel.undo()});
 	planMode.redoBut = new App.GuiToolbarButton(-212,-25-5, 46, 0, '#a0a0a0', 'center', 'bottom', false, 'Redo', function(){App.Game.currentPlanningLevel.redo()});
 
+	var setRed    = function(){planMode.toggles[1].toggled = planMode.toggles[2].toggled = planMode.toggles[3].toggled = false; planMode.toggles[0].toggled = true; App.GuiInstDrag.changeGlobalColor(0); planMode.color = App.COLORS.RED;    planMode.requestStaticRenderUpdate = true};
+	var setGreen  = function(){planMode.toggles[0].toggled = planMode.toggles[2].toggled = planMode.toggles[3].toggled = false; planMode.toggles[1].toggled = true; App.GuiInstDrag.changeGlobalColor(1); planMode.color = App.COLORS.GREEN;  planMode.requestStaticRenderUpdate = true};
+	var setBlue   = function(){planMode.toggles[0].toggled = planMode.toggles[1].toggled = planMode.toggles[3].toggled = false; planMode.toggles[2].toggled = true; App.GuiInstDrag.changeGlobalColor(2); planMode.color = App.COLORS.BLUE;   planMode.requestStaticRenderUpdate = true};
+	var setYellow = function(){planMode.toggles[0].toggled = planMode.toggles[1].toggled = planMode.toggles[2].toggled = false; planMode.toggles[3].toggled = true; App.GuiInstDrag.changeGlobalColor(3); planMode.color = App.COLORS.YELLOW; planMode.requestStaticRenderUpdate = true};
+
 	planMode.toggles = [];
-	planMode.toggles[ 0] = new App.GuiToolbarButton(260,-81-5, 30, 0, 0, 'center', 'bottom', false, 'Red Active',    function(){planMode.toggles[1].toggled = planMode.toggles[2].toggled = planMode.toggles[3].toggled = false; planMode.toggles[0].toggled = true; App.GuiInstDrag.changeGlobalColor(0); planMode.color = 0;});
-	planMode.toggles[ 1] = new App.GuiToolbarButton(292,-81-5, 30, 0, 1, 'center', 'bottom', false, 'Green Active',  function(){planMode.toggles[0].toggled = planMode.toggles[2].toggled = planMode.toggles[3].toggled = false; planMode.toggles[1].toggled = true; App.GuiInstDrag.changeGlobalColor(1); planMode.color = 1;});
-	planMode.toggles[ 2] = new App.GuiToolbarButton(324,-81-5, 30, 0, 2, 'center', 'bottom', false, 'Blue Active',   function(){planMode.toggles[0].toggled = planMode.toggles[1].toggled = planMode.toggles[3].toggled = false; planMode.toggles[2].toggled = true; App.GuiInstDrag.changeGlobalColor(2); planMode.color = 2;});
-	planMode.toggles[ 3] = new App.GuiToolbarButton(356,-81-5, 30, 0, 3, 'center', 'bottom', false, 'Yellow Active', function(){planMode.toggles[0].toggled = planMode.toggles[1].toggled = planMode.toggles[2].toggled = false; planMode.toggles[3].toggled = true; App.GuiInstDrag.changeGlobalColor(3); planMode.color = 3;});
+	planMode.toggles[ 0] = new App.GuiToolbarButton(260,-81-5, 30, 0, 0, 'center', 'bottom', true, 'Red Active',    setRed);
+	planMode.toggles[ 1] = new App.GuiToolbarButton(292,-81-5, 30, 0, 1, 'center', 'bottom', true, 'Green Active',  setGreen);
+	planMode.toggles[ 2] = new App.GuiToolbarButton(324,-81-5, 30, 0, 2, 'center', 'bottom', true, 'Blue Active',   setBlue);
+	planMode.toggles[ 3] = new App.GuiToolbarButton(356,-81-5, 30, 0, 3, 'center', 'bottom', true, 'Yellow Active', setYellow);
 	planMode.toggles[ 4] = new App.GuiToolbarButton(260,-49-5, 30, 0, 0, 'center', 'bottom', true, 'Red Locked',    function(){App.Game.currentPlanningLevel.toggleLock(0)});
 	planMode.toggles[ 5] = new App.GuiToolbarButton(292,-49-5, 30, 0, 1, 'center', 'bottom', true, 'Green Locked',  function(){App.Game.currentPlanningLevel.toggleLock(1)});
 	planMode.toggles[ 6] = new App.GuiToolbarButton(324,-49-5, 30, 0, 2, 'center', 'bottom', true, 'Blue Locked',   function(){App.Game.currentPlanningLevel.toggleLock(2)});
@@ -58,10 +63,12 @@ App.setupPlanGui = function(){
 	planMode.toggles[0].toggled = true;
 
 
-	planMode.showConfirm = function(){
+	planMode.showConfirm = function(txt, callback){
 		for (var c in planMode.confirm){
 			planMode.gui.addComponent(planMode.confirm[c]);
 		}
+		planMode.confirm[0].txt = txt;
+		planMode.confirm[1].callback = callback;
 	}
 
 	planMode.hideConfirm = function(){
@@ -70,13 +77,19 @@ App.setupPlanGui = function(){
 		}
 	}
 
-	planMode.newLevelBut   = new App.GuiToolbarButton(384,-85-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'New');
+	var newLevel = function(){
+		App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
+		App.GameRenderer.bestFit();
+		planMode.hideConfirm();
+	}
+
+	planMode.newLevelBut   = new App.GuiToolbarButton(384,-85-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'New', function(){planMode.showConfirm("Create A Blank Level?", newLevel)});
 	planMode.saveLevelBut  = new App.GuiToolbarButton(384,-61-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'Upload', function(){
 		App.ModeHandler.pushMode('submit level');
 		planMode.requestStaticRenderUpdate = true;
 	});
 	planMode.propertiesBut = new App.GuiToolbarButton(384,-37-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'Properties');
-	planMode.backBut       = new App.GuiToolbarButton(384,-13-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'Return', planMode.showConfirm);
+	planMode.backBut       = new App.GuiToolbarButton(384,-13-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'Return', function(){planMode.showConfirm("Return To Menu Without Saving?", back)});
 
 
 	var back = function(){
@@ -87,13 +100,13 @@ App.setupPlanGui = function(){
 
 	planMode.confirm = [];
 	planMode.confirm[0] = new App.GuiTools.Component(0,0,10000,10000,0,0,'center','center');
+	planMode.confirm[0].txt = "Return To Menu Without Saving?";
 	planMode.confirm[0].render = function(gfx){
 		gfx.fillStyle = 'rgba(0,0,0,0.5)';
 		gfx.fillRect(planMode.confirm[0].getx(), planMode.confirm[0].gety(), planMode.confirm[0].w, planMode.confirm[0].h);
 		gfx.fillStyle = '#ffffff';
-		var t = "Return To Menu Without Saving?";
-		var w = textWidth(gfx, t, 24, -2);
-		text(gfx, t, App.Canvases.width/2 - w/2, App.Canvases.height/2-55, 24, -2);
+		var w = textWidth(gfx, planMode.confirm[0].txt, 24, -2);
+		text(gfx, planMode.confirm[0].txt, App.Canvases.width/2 - w/2, App.Canvases.height/2-55, 24, -2);
 	}
 	planMode.confirm[1] = new App.GuiTextButton(-66,0,0,0,"Yes",back, false, 'center', 'center');
 	planMode.confirm[1].dointerp = false;
@@ -107,8 +120,6 @@ App.setupPlanGui = function(){
 
 
 
-	planMode.anchor = new App.GuiToolbarButton (0,-25,46,0,'#a0a0a0', 'center', 'bottom');
-	planMode.anchor2 = new App.GuiToolbarButton(0,-5-48,46,0,'#a0a0a0', 'center', 'bottom');
 	planMode.instPanel = new App.GuiTools.Component(0,-54,794,98,0,0,'center','bottom');
 	planMode.instPanel.render = function(gfx){
 		gfx.fillStyle = 'rgba(0,0,0,0.8)';
@@ -116,11 +127,9 @@ App.setupPlanGui = function(){
 	}
 
 	planMode.submitButton = new App.GuiTextButton(15, 56+28*0, 200, 000, 'Submit', function(){
-			planMode.gui.setOverlay(planMode.submitOverlay);
-		}, false, null, null);
+		planMode.gui.setOverlay(planMode.submitOverlay);
+	}, false, null, null);
 
-
-//	planMode.gui.addComponent(planMode.submitButton);
 	planMode.gui.addComponent(planMode.instPanel);
 	planMode.gui.addComponent(planMode.butNav);
 	planMode.gui.addComponent(planMode.undoBut);
@@ -266,29 +275,13 @@ App.setupPlanGui = function(){
 		planMode.requestStaticRenderUpdate = true;
 	});
 
-	planMode.registerKeyDownFunc('1',function(){
-		planMode.color = App.COLORS.RED;
-		App.GuiInstDrag.changeGlobalColor(App.COLORS.RED);
-		planMode.requestStaticRenderUpdate = true;
-	});
+	planMode.registerKeyDownFunc('1', setRed);
 
-	planMode.registerKeyDownFunc('2',function(){
-		planMode.color = App.COLORS.GREEN;
-		App.GuiInstDrag.changeGlobalColor(App.COLORS.GREEN);
-		planMode.requestStaticRenderUpdate = true;
-	});
+	planMode.registerKeyDownFunc('2', setGreen);
 
-	planMode.registerKeyDownFunc('3',function(){
-		planMode.color = App.COLORS.BLUE;
-		App.GuiInstDrag.changeGlobalColor(App.COLORS.BLUE);
-		planMode.requestStaticRenderUpdate = true;
-	});
+	planMode.registerKeyDownFunc('3', setBlue);
 
-	planMode.registerKeyDownFunc('4',function(){
-		planMode.color = App.COLORS.YELLOW;
-		App.GuiInstDrag.changeGlobalColor(App.COLORS.YELLOW);
-		planMode.requestStaticRenderUpdate = true;
-	});
+	planMode.registerKeyDownFunc('4', setYellow);
 
 	planMode.registerKeyDownFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = true; });
 	planMode.registerKeyUpFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = false; });
@@ -324,20 +317,20 @@ App.setupPlanGui = function(){
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Q']] === true)insCode =  0+planMode.direction;
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['W']] === true)insCode =  4;
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['E']] === true)insCode = 12;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['R']] === true)insCode = 15;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['T']] === true)insCode = 13;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Y']] === true)insCode = 18+planMode.direction;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['U']] === true)insCode = 26+planMode.direction;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['I']] === true)insCode =  8;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['R']] === true)insCode = 27+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['T']] === true)insCode = 31+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Y']] === true)insCode = 16;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['U']] === true)insCode = 13;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['I']] === true)insCode = 15;
 
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['A']] === true)insCode =  7;
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['S']] === true)insCode =  6;
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['D']] === true)insCode =  5;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['F']] === true)insCode = 16;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['G']] === true)insCode = 14;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['H']] === true)insCode = 22+planMode.direction;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['J']] === true)insCode = 17;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['K']] === true)insCode =  9;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['F']] === true)insCode = 23+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['G']] === true)insCode = 19+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['H']] === true)insCode = 17;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['J']] === true)insCode = 14;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['K']] === true)insCode = 18;
 
 		if(insCode !== undefined){
 			var ins = new App.PlanningInstruction(App.GameRenderer.mouseX,App.GameRenderer.mouseY,planMode.color,insCode);
