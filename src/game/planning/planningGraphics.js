@@ -199,7 +199,7 @@ App.PlanningGraphics = function(){
 		var mY = that.mousePos[1];
 		
 		// drag line
-		gfx.strokeStyle = 'rgba(200,200,200,.5)';
+		gfx.strokeStyle = 'rgba(200,0,0,.5)';
 		gfx.beginPath();
 		gfx.moveTo(that.lmb[1], that.lmb[2]);
 		gfx.lineTo(mX, mY);
@@ -207,7 +207,7 @@ App.PlanningGraphics = function(){
 
 		// move shadows
 		var size = App.GameRenderer.cellSize/2;
-		gfx.fillStyle = 'rgba(200,200,200,.5)';
+		//gfx.fillStyle = 'rgba(200,200,200,.5)';
 
 		var selected = App.Game.currentPlanningLevel.currentSelection;
 		var offX; var offY; var offCX = 0; var offCY = 0;
@@ -216,10 +216,14 @@ App.PlanningGraphics = function(){
 
 		for(instr in selected){
 			
-			iX = selected[instr].x; iY = selected[instr].y; iC = selected[instr].color;
+			iX = selected[instr].x; 
+			iY = selected[instr].y; 
+			iC = selected[instr].color;
 			
-			offX = msX - iX; offY = msY - iY;
-			offX = offX * size * 2; offY = offY * size * 2;
+			offX = msX - iX; 
+			offY = msY - iY;
+			offX = offX * size * 2; 
+			offY = offY * size * 2;
 
 			if(msC !== iC){
 				if(msC % 2 === 0 && iC % 2 !== 0){ offCX = size; } // shift right
@@ -227,7 +231,20 @@ App.PlanningGraphics = function(){
 				if(msC < 2 && iC >= 2){ offCY = size; } // shift down
 				if(msC >= 2 && iC < 2){ offCY = -size; } // shift up
 			}
-
+			switch (iC){
+				case 0:  
+					gfx.fillStyle = 'rgba(100,0,0,.5)';
+					break;
+				case 1: 
+					gfx.fillStyle = 'rgba(0,100,0,.5)';
+					break;
+				case 2: 
+					gfx.fillStyle = 'rgba(0,0,100,.5)';
+					break;
+				case 4:
+					gfx.fillStyle = 'rgba(100,100,0,.5)';
+					break;
+			}
 			gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size);
 		}
 
