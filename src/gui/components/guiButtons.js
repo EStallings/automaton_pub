@@ -18,7 +18,7 @@ App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin,toggle, 
 	App.GuiTools.Button.call(this, x, y, d, d, delay, delay, callback, false, xorigin, yorigin);
 	this.toggle = toggle;
 	this.toggled = false;
-	this.baseColor = '#ffffff';
+	this.baseColor = '#303030';
 	this.hoverColor = color;
 	this.tooltip = tooltip;
 	this.tooltipTextColor = '#000000';
@@ -29,19 +29,31 @@ App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin,toggle, 
 	delete(this.renderLayers['Rect']);
 
 	this.renderLayers['Button'] = function(gfx){
-		if(that.toggle && that.toggled)
+		gfx.lineCap  = 'round';
+		gfx.lineJoin = 'round';
+
+		gfx.lineWidth = 2;
+		if(/*that.toggle && */that.toggled)
 			that.color = that.hoverColor;
 		if(typeof that.color === 'string'){
-			gfx.strokeStyle = '#808080';
+			gfx.strokeStyle = '#202020';
 			gfx.fillStyle = that.color;
-		}
-		else{
+		}else{
 			gfx.strokeStyle = App.STROKE_COLOR[that.color];
 			gfx.fillStyle = App.FILL_COLOR[that.color];
 			//this.tooltipTextColor = '#ffffff';
 		}
 		gfx.fillRect  (that.getx()+1, that.gety()+1, that.w-2, that.h-2);
 		gfx.strokeRect(that.getx()+1, that.gety()+1, that.w-2, that.h-2);
+
+		gfx.lineWidth = (Math.round(Math.log(d/6)/Math.log(2)+2)-3)*2;
+		gfx.strokeStyle = '#ffffff';
+		gfx.beginPath();
+		gfx.moveTo(that.getx()+  d/4,that.gety()+  d/4);
+		gfx.lineTo(that.getx()+3*d/4,that.gety()+3*d/4);
+		gfx.moveTo(that.getx()+  d/4,that.gety()+3*d/4);
+		gfx.lineTo(that.getx()+3*d/4,that.gety()+  d/4);
+		gfx.stroke();
 
 		if(that.hovering){
 			var w = textWidth(gfx, that.tooltip, 24-6, -2);
