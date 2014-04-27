@@ -1,7 +1,7 @@
 App.setupPlanGui = function(){
 	var planMode = App.ModeHandler.addNewMode('planning');
 
-		// ---------------------------------------------
+//============================================================================//
 
 	planMode.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	planMode.direction = App.DIRECTIONS.UP;
@@ -50,7 +50,7 @@ App.setupPlanGui = function(){
 		return btn;
 	}
 
-		// ---------------------------------------------
+//============================================================================//
 
 	planMode.instPanel = new App.GuiTools.Component(0,-54,794,98,0,0,'center','bottom');
 	planMode.instPanel.render = function(gfx){
@@ -111,7 +111,7 @@ App.setupPlanGui = function(){
 	addBtn(384,-37-5,22,'#a0a0a0',false,'Properties');
 	addBtn(384,-13-5,22,'#a0a0a0',false,'Return', function(){planMode.showConfirm("Return To Menu Without Saving?", back)});
 
-		// ---------------------------------------------
+//============================================================================//
 
 	planMode.confirm = [];
 	planMode.confirm[0] = new App.GuiTools.Component(0,0,10000,10000,0,0,'center','center');
@@ -136,7 +136,7 @@ App.setupPlanGui = function(){
 		planMode.gui.setOverlay(planMode.submitOverlay);
 	}, false, null, null);
 
-		// ---------------------------------------------
+//============================================================================//
 
 	planMode.enterFunc = function(){
 		planMode.requestStaticRenderUpdate = true;
@@ -170,7 +170,7 @@ App.setupPlanGui = function(){
 			planMode.requestStaticRenderUpdate = true;
 		}
 
-	// TOP BAR -----------------------------------------------------
+		// TOP BAR -------------------------------------
 
 		var keys = Object.keys(App.Game.inStreams);
 		for(var i in keys){
@@ -204,7 +204,7 @@ App.setupPlanGui = function(){
 			text(planMode.gfx,'accepts '+stream[0],10+i*100,120,8,-1);
 		}
 
-	// BOTTOM BAR --------------------------------------------------
+		// BOTTOM BAR ----------------------------------
 
 		var xOffset = Math.floor((App.Canvases.width-50*8)/2)+1;
 		var yOffset = App.Canvases.height-100-2-5;
@@ -216,14 +216,7 @@ App.setupPlanGui = function(){
 		}
 	}
 
-	planMode.exitFunc = function(){
-		planMode.requestStaticRenderUpdate = true;
-		planMode.exitFlag = true;
-		planMode.goalAlpha = 0;
-		planMode.gui.exit();
-	}
-
-		// ---------------------------------------------
+//============================================================================//
 
 	planMode.registerKeyDownFunc('Esc',function(){
 		App.loadDemo();
@@ -235,29 +228,18 @@ App.setupPlanGui = function(){
 		App.ModeHandler.modes['simulation'].renderStreams = true;
 	});
 
-	planMode.registerKeyDownFunc('W',function(){
-		planMode.direction = App.DIRECTIONS.UP;
-		App.GuiInstDrag.changeDirection(App.DIRECTIONS.UP);
-		planMode.requestStaticRenderUpdate = true;
-	});
+	var registerDirectional = function(key,direction){
+		planMode.registerKeyDownFunc(key,function(){
+			planMode.direction = direction;
+			App.GuiInstDrag.changeDirection(direction);
+			planMode.requestStaticRenderUpdate = true;
+		});
+	}
 
-	planMode.registerKeyDownFunc('S',function(){
-		planMode.direction = App.DIRECTIONS.DOWN;
-		App.GuiInstDrag.changeDirection(App.DIRECTIONS.DOWN);
-		planMode.requestStaticRenderUpdate = true;
-	});
-
-	planMode.registerKeyDownFunc('A',function(){
-		planMode.direction = App.DIRECTIONS.LEFT;
-		App.GuiInstDrag.changeDirection(App.DIRECTIONS.LEFT);
-		planMode.requestStaticRenderUpdate = true;
-	});
-
-	planMode.registerKeyDownFunc('D',function(){
-		planMode.direction = App.DIRECTIONS.RIGHT;
-		App.GuiInstDrag.changeDirection(App.DIRECTIONS.RIGHT);
-		planMode.requestStaticRenderUpdate = true;
-	});
+	registerDirectional('W',App.DIRECTIONS.UP);
+	registerDirectional('S',App.DIRECTIONS.DOWN);
+	registerDirectional('A',App.DIRECTIONS.LEFT);
+	registerDirectional('D',App.DIRECTIONS.RIGHT);
 
 	planMode.registerKeyDownFunc('1', setRed);
 	planMode.registerKeyDownFunc('2', setGreen);
@@ -273,8 +255,8 @@ App.setupPlanGui = function(){
 		}
 	});
 
-	planMode.registerKeyDownFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = true; });
-	planMode.registerKeyUpFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = false; });
+	planMode.registerKeyDownFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = true;  });
+	planMode.registerKeyUpFunc  ('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = false; });
 
 	planMode.registerKeyDownFunc('Delete',function(){
 		if(App.Game.currentPlanningLevel.currentSelection !== []){
@@ -303,24 +285,11 @@ App.setupPlanGui = function(){
 		planMode.gui.mouseDown(x, y);
 
 		var insCode = undefined;
+		var d = planMode.direction;
+		var set = function(key,code){if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode[key]] === true)insCode = code;}
 
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Q']] === true)insCode =  0+planMode.direction;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['W']] === true)insCode =  4;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['E']] === true)insCode = 12;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['R']] === true)insCode = 27+planMode.direction;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['T']] === true)insCode = 31+planMode.direction;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Y']] === true)insCode = 16;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['U']] === true)insCode = 13;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['I']] === true)insCode = 15;
-
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['A']] === true)insCode =  7;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['S']] === true)insCode =  6;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['D']] === true)insCode =  5;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['F']] === true)insCode = 23+planMode.direction;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['G']] === true)insCode = 19+planMode.direction;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['H']] === true)insCode = 17;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['J']] === true)insCode = 14;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['K']] === true)insCode = 18;
+		set('Q', 0+d);set('W', 4);set('E',12);set('R',27+d);set('T',31+d);set('Y',16);set('U',13);set('I',15);
+		set('A', 7  );set('S', 6);set('D', 5);set('F',23+d);set('G',19+d);set('H',17);set('J',14);set('K',18);
 
 		if(insCode !== undefined){
 			var ins = new App.PlanningInstruction(App.GameRenderer.mouseX,App.GameRenderer.mouseY,planMode.color,insCode);
