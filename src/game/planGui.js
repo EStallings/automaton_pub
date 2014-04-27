@@ -354,18 +354,15 @@ App.setupPlanGui = function(){
 		if(insCode !== undefined){
 			var ins = new App.PlanningInstruction(App.GameRenderer.mouseX,App.GameRenderer.mouseY,planMode.color,insCode);
 			App.Game.currentPlanningLevel.insert(ins);
+			App.Game.currentPlanningLevel.graphics.inserted = true;
 			App.GameRenderer.requestStaticRenderUpdate = true;
 		}
-
-		if(App.Game.currentPlanningLevel.currentSelection.length !== 0)
-			planMode.moveStart = [App.GameRenderer.mouseX,App.GameRenderer.mouseY,App.GameRenderer.mouseC];
+		else{ App.Game.currentPlanningLevel.graphics.inserted = false; }
 
 		App.Game.currentPlanningLevel.graphics.mouseDown('lmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);
 	});
 
 	planMode.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.MIDDLE,function(x,y){
-		planMode.selectStart = [App.GameRenderer.mouseX,App.GameRenderer.mouseY,App.GameRenderer.mouseC];
-		App.Game.currentPlanningLevel.currentSelection = [];
 		App.Game.currentPlanningLevel.graphics.mouseDown('mmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);
 	});
 
@@ -376,30 +373,10 @@ App.setupPlanGui = function(){
 
 	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){
 		planMode.gui.mouseUp(x, y);
-
-		if(planMode.moveStart !== undefined){
-			console.log("TEST");
-			var shiftX = App.GameRenderer.mouseX-planMode.moveStart[0];
-			var shiftY = App.GameRenderer.mouseY-planMode.moveStart[1];
-
-			if(App.Game.currentPlanningLevel.graphics.copying)
-				App.Game.currentPlanningLevel.copy(App.Game.currentPlanningLevel.currentSelection,shiftX,shiftY);
-			else
-				App.Game.currentPlanningLevel.move(App.Game.currentPlanningLevel.currentSelection,shiftX,shiftY);
-			App.GameRenderer.requestStaticRenderUpdate = true;
-
-			planMode.moveStart = undefined;
-		}
-
 		App.Game.currentPlanningLevel.graphics.mouseUp('lmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);
 	});
 
 	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.MIDDLE,function(x,y){
-		if(planMode.selectStart !== undefined){
-			App.Game.currentPlanningLevel.selectInstructions(planMode.selectStart[0],planMode.selectStart[1],planMode.selectStart[2],
-		                                                         App.GameRenderer.mouseX,App.GameRenderer.mouseY,App.GameRenderer.mouseC);
-			planMode.selectStart = undefined;
-		}
 		App.Game.currentPlanningLevel.graphics.mouseUp('mmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);
 	});
 

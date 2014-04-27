@@ -66,7 +66,10 @@ App.makeGame = function(){
 					game.outStreams[d]=[data[i][5],p,[],0,data[i][6],data[i][7],c];
 					break;
 			}game.streams[d] = true;
-		}return lvl;
+		}
+
+		lvl.killUndo();
+		return lvl;
 	}
 
 		/*--------------------------------------------*/
