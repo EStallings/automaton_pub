@@ -38,6 +38,7 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 	this.changed         = false;
 	this.overridepos     = false;
 	this.dointerp        = true;
+	this.ignoreCollide   = false;
 
 	this.baseColor       = '#ffffff';
 	this.baseTextColor   = '#000000';
@@ -105,6 +106,8 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 
 	//Tests if a point is inside of the rectangle
 	this.collides = function(x, y){
+		if(this.ignoreCollide)
+			return false;
 		return ((x > this.getx()) && (x < (this.getx() + this.w)) &&
 			   	(y > this.gety()) && (y < (this.gety() + this.h)));
 	}

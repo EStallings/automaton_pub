@@ -61,6 +61,7 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 	this.subClickEnd = function(){
 		//prevent dropping instructions behind gui elements
 		//check upper left
+		this.ignoreCollide = true;
 		var c = this.gui.testCoordinates(this.getx()-this.w/2, this.gety()-this.h/2);
 		if(c.f.length > 0 || c.p.length > 0) return;
 		//bottom left
@@ -72,6 +73,7 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 		//lower right
 		c = this.gui.testCoordinates(this.getx()+this.w/2, this.gety()+this.h/2);
 		if(c.f.length > 0 || c.p.length > 0) return;
+		this.ignoreCollide = false;
 
 		//place the instruction
 		App.GameRenderer.screenToGridCoords(this.getx(), this.gety());
