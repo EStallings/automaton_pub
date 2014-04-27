@@ -33,6 +33,7 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 
 	this.functional      = false;
 	this.active          = false;
+	this.hovering        = false;
 	this.locked          = false;
 	this.changed         = false;
 	this.overridepos     = false;
@@ -112,9 +113,9 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 		if(this.overridepos)
 			return this.x
 		if(this.xorigin == 'right')
-			return this.x + App.Canvases.width - this.w;
+			return this.x + App.Canvases.width - this.w/2;
 		if(this.xorigin == 'center')
-			return this.x + App.Canvases.width/2 - this.w;
+			return this.x + App.Canvases.width/2 - this.w/2;
 		return this.x;
 	}
 
@@ -122,25 +123,25 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 		if(this.overridepos)
 			return this.y
 		if(this.yorigin == 'bottom')
-			return this.y + App.Canvases.height - this.h;
+			return this.y + App.Canvases.height - this.h/2;
 		if(this.yorigin == 'center')
-			return this.y + App.Canvases.height/2 - this.h;
+			return this.y + App.Canvases.height/2 - this.h/2;
 		return this.y
 	}
 
 	this.getleft = function(){
 		if(this.xorigin == 'right')
-			return this.left + App.Canvases.width - this.w;
+			return this.left + App.Canvases.width - this.w/2;
 		if(this.xorigin == 'center')
-			return this.left + App.Canvases.width/2 - this.w;
+			return this.left + App.Canvases.width/2 - this.w/2;
 		return this.left;
 	}
 
 	this.getright = function(){
 		if(this.xorigin == 'right')
-			return this.right + App.Canvases.width - this.w;
+			return this.right + App.Canvases.width - this.w/2;
 		if(this.xorigin == 'center')
-			return this.right + App.Canvases.width/2 - this.w;
+			return this.right + App.Canvases.width/2 - this.w/2;
 		return this.right;
 	}
 
@@ -191,10 +192,11 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 		var otc = this.textColor;
 		var x = App.InputHandler.mouseX;
 		var y = App.InputHandler.mouseY;
-
+		this.hovering = false;
 		if(!this.active && this.collides(x, y)){
 			this.color = this.hoverColor;
 			this.textColor = this.hoverTextColor;
+			this.hovering = true;
 		}else if(!this.active){
 			this.color = this.baseColor;
 			this.textColor = this.baseTextColor;
@@ -254,11 +256,6 @@ g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
 		gfx.fillRect(that.getx() - that.w/2, that.gety() - that.h/2, that.w, that.h);
 	}
 
-	this.collides = function(x, y){
-		return ((x > (this.getx() - this.w/2)) && (x < ((this.getx() - this.w/2) + this.w)) &&
-			   	(y > (this.gety() - this.h/2)) && (y < ((this.gety() - this.h/2) + this.h)));
-	}
-
 	this.clickStart = function(){
 		this.sticky = true;
 		this.overridepos = true;
@@ -270,8 +267,8 @@ g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
 		if(!this.sticky)
 			return;
 
-		this.x = App.InputHandler.mouseX;
-		this.y = App.InputHandler.mouseY;
+		this.x = App.InputHandler.mouseX - this.w/2;
+		this.y = App.InputHandler.mouseY - this.h/2;
 
 		this.changed = true;
 

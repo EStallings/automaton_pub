@@ -15,39 +15,39 @@ App.GuiTextButton.prototype = Object.create(App.GuiTools.Button);
 App.GuiTextButton.prototype.constructor = App.GuiTextButton;
 
 
-App.GuiToolbarButton = function(x, y, delay, color, xorigin, yorigin, pos, callback){
-	App.GuiTools.Button.call(this, x - 41, y - 25, 44, 44, delay, delay, callback, false, xorigin, yorigin);
-	this.pos = pos;
+App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin, tooltip, callback){
+	App.GuiTools.Button.call(this, x, y, d, d, delay, delay, callback, false, xorigin, yorigin);
 	this.c = color;
+	this.color = color;
+	this.hoverColor = color;
+	this.tooltip = tooltip;
+	this.tooltipTextColor = '#000000';
 
 	var that = this;
-	//Draws a box and the text! Nothing fancy. Could use some work maybe.
-	delete(this.renderLayers["Rect"]);
-	this.renderLayers["Button"] = function(gfx){
 
-		var interp = (that.interpmode === 'exit') ?
-		48 - (that.getleft() - that.getx()) :
-		that.getright() - that.getx();
-		var dx = ((interp + 3) * that.pos + (that.getx() - that.x));
 
-		gfx.fillStyle =  '#ffffff'; // TODO App.FILL_COLOR[this.c];
-		gfx.fillRect(dx, that.gety(), that.w, that.h);
+	delete(this.renderLayers['Rect']);
 
+	this.renderLayers['Button'] = function(gfx){
+		if(typeof that.color === 'string'){
+			gfx.strokeStyle = '#808080';
+			gfx.fillStyle = '#ffffff';
+		}
+		else{
+			gfx.strokeStyle = App.STROKE_COLOR[that.color];
+			gfx.fillStyle = App.FILL_COLOR[that.color];
+			//this.tooltipTextColor = '#ffffff';
+		}
+		gfx.fillRect(that.getx(), that.gety(), that.w, that.h);
+		gfx.strokeRect(that.getx(), that.gety(), that.w, that.h);
+
+		if(that.hovering){
+			var w = textWidth(gfx, that.tooltip, 24-6, -2);
+			gfx.fillRect(that.getx()+1, App.Canvases.height-103-24, w+6, 24);
+			gfx.fillStyle = that.tooltipTextColor;
+			text(gfx, that.tooltip, that.getx() + 3, App.Canvases.height-103-21, 24-6, -2);
+		}
 	};
 }
 App.GuiToolbarButton.prototype = Object.create(App.GuiTools.Button);
 App.GuiToolbarButton.prototype.constructor = App.GuiToolbarButton;
-
-
-App.GuiLockButton = function(x, y, delay, color, xorigin, yorigin, pos){
-	App.GuiToolbarButton.call(this, x, y, delay, color, xorigin, yorigin, pos, function(){App.Game.currentPlanningLevel.toggleLock(color)});
-}
-App.GuiLockButton.prototype = Object.create(App.GuiToolbarButton);
-App.GuiLockButton.prototype.constructor = App.GuiLockButton;
-
-App.GuiToggButton = function(x, y, delay, color, xorigin, yorigin, pos){
-	App.GuiToolbarButton.call(this, x, y, delay, color, xorigin, yorigin, pos, function(){App.GuiInstDrag.changeGlobalColor(color)});
-}
-App.GuiToggButton.prototype = Object.create(App.GuiToolbarButton);
-App.GuiToggButton.prototype.constructor = App.GuiToggButton;
-

@@ -9,42 +9,64 @@ App.setupPlanGui = function(){
 	planMode.joystick = new App.GuiJoystick(100, 500, 50, 100, null);
 
 	planMode.topRow = [];
-
-	planMode.topRow[0]  = new App.GuiLockButton(48*-7+2, -38, 800,  0,        'center', 'bottom',               -8);
-	planMode.topRow[1]  = new App.GuiLockButton(48*-6+2, -38, 700,  1,        'center', 'bottom',               -7);
-	planMode.topRow[2]  = new App.GuiLockButton(48*-5+2, -38, 600,  2,        'center', 'bottom',               -6);
-	planMode.topRow[3]  = new App.GuiLockButton(48*-4+2, -38, 500,  3,        'center', 'bottom',               -5);
-	planMode.topRow[4]  = new App.GuiInstDrag  (48*-3+2, -38, 400,  0, true , 'center', 'bottom', planMode.gui, -4);
-	planMode.topRow[5]  = new App.GuiInstDrag  (48*-2+2, -38, 300,  4, false, 'center', 'bottom', planMode.gui, -3);
-	planMode.topRow[6]  = new App.GuiInstDrag  (48*-1+2, -38, 200, 12, false, 'center', 'bottom', planMode.gui, -2);
-	planMode.topRow[7]  = new App.GuiInstDrag  (48* 0+2, -38, 100, 27, true , 'center', 'bottom', planMode.gui, -1);
-	planMode.topRow[8]  = new App.GuiInstDrag  (48* 1+2, -38, 000, 31, true , 'center', 'bottom', planMode.gui,  0);
-	planMode.topRow[9]  = new App.GuiInstDrag  (48* 2+2, -38, 100, 16, false, 'center', 'bottom', planMode.gui,  1);
-	planMode.topRow[10] = new App.GuiInstDrag  (48* 3+2, -38, 200, 13, false, 'center', 'bottom', planMode.gui,  2);
-	planMode.topRow[11] = new App.GuiInstDrag  (48* 4+2, -38, 300, 15, false, 'center', 'bottom', planMode.gui,  3);
-	planMode.topRow[12] = new App.GuiInstDrag  (48* 5+2, -38, 400,  8, false, 'center', 'bottom', planMode.gui,  4);
-
+	planMode.topRow[0] = new App.GuiInstDrag  (-164, -73-5, 0,  0, true , 'center', 'bottom', planMode.gui, 'Spawn Automaton');
+	planMode.topRow[1] = new App.GuiInstDrag  (-116, -73-5, 0,  4, false, 'center', 'bottom', planMode.gui, 'Change Direction Up');
+	planMode.topRow[2] = new App.GuiInstDrag  ( -68, -73-5, 0, 12, false, 'center', 'bottom', planMode.gui, 'Grab/Drop Token');
+	planMode.topRow[3] = new App.GuiInstDrag  ( -20, -73-5, 0, 27, true , 'center', 'bottom', planMode.gui, 'Positive Switch');
+	planMode.topRow[4] = new App.GuiInstDrag  (  28, -73-5, 0, 31, true , 'center', 'bottom', planMode.gui, 'Flip-Flop');
+	planMode.topRow[5] = new App.GuiInstDrag  (  76, -73-5, 0, 16, false, 'center', 'bottom', planMode.gui, 'Sync');
+	planMode.topRow[6] = new App.GuiInstDrag  ( 124, -73-5, 0, 13, false, 'center', 'bottom', planMode.gui, 'Add');
+	planMode.topRow[7] = new App.GuiInstDrag  ( 172, -73-5, 0, 15, false, 'center', 'bottom', planMode.gui, 'Set Value');
+	planMode.topRow[8] = new App.GuiInstDrag  ( 220, -73-5, 0,  8, false, 'center', 'bottom', planMode.gui, 'Input Stream');
 
 	planMode.botRow = [];
-	planMode.botRow[0]  = new App.GuiToolbarButton(48*-8+2, 16, 900, 0,      'center', 'bottom',               -9, function(){App.ModeHandler.pushMode('submit level');});
-	planMode.botRow[1]  = new App.GuiToggButton(48*-7+2, 16, 800,  0,        'center', 'bottom',               -8);
-	planMode.botRow[2]  = new App.GuiToggButton(48*-6+2, 16, 700,  1,        'center', 'bottom',               -7);
-	planMode.botRow[3]  = new App.GuiToggButton(48*-5+2, 16, 600,  2,        'center', 'bottom',               -6);
-	planMode.botRow[4]  = new App.GuiToggButton(48*-4+2, 16, 500,  3,        'center', 'bottom',               -5);
-	planMode.botRow[5]  = new App.GuiInstDrag  (48*-3+2, 16, 450,  7, false, 'center', 'bottom', planMode.gui, -4);
-	planMode.botRow[6]  = new App.GuiInstDrag  (48*-2+2, 16, 350,  6, false, 'center', 'bottom', planMode.gui, -3);
-	planMode.botRow[7]  = new App.GuiInstDrag  (48*-1+2, 16, 250,  5, false, 'center', 'bottom', planMode.gui, -2);
-	planMode.botRow[8]  = new App.GuiInstDrag  (48* 0+2, 16, 150, 23, true , 'center', 'bottom', planMode.gui, -1);
-	planMode.botRow[9]  = new App.GuiInstDrag  (48* 1+2, 16, 050, 19, true , 'center', 'bottom', planMode.gui,  0);
-	planMode.botRow[10]  = new App.GuiInstDrag  (48* 2+2, 16, 150, 17, false, 'center', 'bottom', planMode.gui,  1);
-	planMode.botRow[11] = new App.GuiInstDrag  (48* 3+2, 16, 250, 14, false, 'center', 'bottom', planMode.gui,  2);
-	planMode.botRow[12] = new App.GuiInstDrag  (48* 4+2, 16, 350, 18, false, 'center', 'bottom', planMode.gui,  3);
-	planMode.botRow[13] = new App.GuiInstDrag  (48* 5+2, 16, 450,  9, false, 'center', 'bottom', planMode.gui,  4);
+	planMode.botRow[0] = new App.GuiInstDrag     (-164, -25-5, 0,  7, false, 'center', 'bottom', planMode.gui, 'Change Direction Left');
+	planMode.botRow[1] = new App.GuiInstDrag     (-116, -25-5, 0,  6, false, 'center', 'bottom', planMode.gui, 'Change Direction Down');
+	planMode.botRow[2] = new App.GuiInstDrag     ( -68, -25-5, 0,  5, false, 'center', 'bottom', planMode.gui, 'Change Direction Right');
+	planMode.botRow[3] = new App.GuiInstDrag     ( -20, -25-5, 0, 23, true , 'center', 'bottom', planMode.gui, 'Equality Switch');
+	planMode.botRow[4] = new App.GuiInstDrag     (  28, -25-5, 0, 19, true , 'center', 'bottom', planMode.gui, 'Token Switch');
+	planMode.botRow[5] = new App.GuiInstDrag     (  76, -25-5, 0, 17, false, 'center', 'bottom', planMode.gui, 'Toggle Color');
+	planMode.botRow[6] = new App.GuiInstDrag     ( 124, -25-5, 0, 14, false, 'center', 'bottom', planMode.gui, 'Subtract');
+	planMode.botRow[7] = new App.GuiInstDrag     ( 172, -25-5, 0, 18, false, 'center', 'bottom', planMode.gui, 'Pause');
+	planMode.botRow[8] = new App.GuiInstDrag     ( 220, -25-5, 0,  9, false, 'center', 'bottom', planMode.gui, 'Output Stream');
 
-	planMode.instPanel = new App.GuiTools.Component(0,0,500,116,0,0,null,'bottom');
+	planMode.butNav = new App.GuiToolbarButton(-348, -49-5, 94, 0, '#ffffff', 'center', 'bottom', 'FOO');
+	planMode.playback = [];
+	planMode.playback[0] = new App.GuiToolbarButton(-284,-81-5, 30, 0, '#ffffff', 'center', 'bottom', 'Low Speed');
+	planMode.playback[1] = new App.GuiToolbarButton(-284,-49-5, 30, 0, '#ffffff', 'center', 'bottom', 'High Speed');
+	planMode.playback[2] = new App.GuiToolbarButton(-284,-17-5, 30, 0, '#ffffff', 'center', 'bottom', 'Stop');
+	planMode.playback[3] = new App.GuiToolbarButton(-252,-81-5, 30, 0, '#ffffff', 'center', 'bottom', 'Med Speed');
+	planMode.playback[4] = new App.GuiToolbarButton(-252,-49-5, 30, 0, '#ffffff', 'center', 'bottom', 'MAX Speed');
+	planMode.playback[5] = new App.GuiToolbarButton(-252,-17-5, 30, 0, '#ffffff', 'center', 'bottom', 'Pause');
+
+	planMode.undoBut = new App.GuiToolbarButton(-212,-73-5, 46, 0, '#ffffff', 'center', 'bottom', 'Undo');
+	planMode.redoBut = new App.GuiToolbarButton(-212,-25-5, 46, 0, '#ffffff', 'center', 'bottom', 'Redo');
+
+	planMode.toggles = [];
+	planMode.toggles[ 0] = new App.GuiToolbarButton(260,-81-5, 30, 0, 0, 'center', 'bottom', 'Red Active');
+	planMode.toggles[ 1] = new App.GuiToolbarButton(292,-81-5, 30, 0, 1, 'center', 'bottom', 'Green Active');
+	planMode.toggles[ 2] = new App.GuiToolbarButton(324,-81-5, 30, 0, 2, 'center', 'bottom', 'Blue Active');
+	planMode.toggles[ 3] = new App.GuiToolbarButton(356,-81-5, 30, 0, 3, 'center', 'bottom', 'Yellow Active');
+	planMode.toggles[ 4] = new App.GuiToolbarButton(260,-49-5, 30, 0, 0, 'center', 'bottom', 'Red Locked');
+	planMode.toggles[ 5] = new App.GuiToolbarButton(292,-49-5, 30, 0, 1, 'center', 'bottom', 'Green Locked');
+	planMode.toggles[ 6] = new App.GuiToolbarButton(324,-49-5, 30, 0, 2, 'center', 'bottom', 'Blue Locked');
+	planMode.toggles[ 7] = new App.GuiToolbarButton(356,-49-5, 30, 0, 3, 'center', 'bottom', 'Yellow Locked');
+	planMode.toggles[ 8] = new App.GuiToolbarButton(260,-17-5, 30, 0, 0, 'center', 'bottom', 'Red Hidden');
+	planMode.toggles[ 9] = new App.GuiToolbarButton(292,-17-5, 30, 0, 1, 'center', 'bottom', 'Green Hidden');
+	planMode.toggles[10] = new App.GuiToolbarButton(324,-17-5, 30, 0, 2, 'center', 'bottom', 'Blue Hidden');
+	planMode.toggles[11] = new App.GuiToolbarButton(356,-17-5, 30, 0, 3, 'center', 'bottom', 'Yellow Hidden');
+
+	planMode.newLevelBut   = new App.GuiToolbarButton(384,-85-5, 22, 0, '#ffffff', 'center', 'bottom', 'New');
+	planMode.saveLevelBut  = new App.GuiToolbarButton(384,-61-5, 22, 0, '#ffffff', 'center', 'bottom', 'Upload');
+	planMode.propertiesBut = new App.GuiToolbarButton(384,-37-5, 22, 0, '#ffffff', 'center', 'bottom', 'Properties');
+	planMode.backBut       = new App.GuiToolbarButton(384,-13-5, 22, 0, '#ffffff', 'center', 'bottom', 'Return');
+
+	planMode.anchor = new App.GuiToolbarButton (0,-25,46,0,'#ffffff', 'center', 'bottom');
+	planMode.anchor2 = new App.GuiToolbarButton(0,-5-48,46,0,'#ffffff', 'center', 'bottom');
+	planMode.instPanel = new App.GuiTools.Component(0,-54,794,98,0,0,'center','bottom');
 	planMode.instPanel.render = function(gfx){
 		gfx.fillStyle = 'rgba(0,0,0,0.8)';
-		gfx.fillRect(planMode.instPanel.getx(), planMode.instPanel.gety(), App.Canvases.width, planMode.instPanel.h);
+		gfx.fillRect(planMode.instPanel.getx(), planMode.instPanel.gety(), planMode.instPanel.w, planMode.instPanel.h);
 	}
 
 	planMode.submitButton = new App.GuiTextButton(15, 56+28*0, 200, 000, 'Submit', 			function(){
@@ -54,11 +76,20 @@ App.setupPlanGui = function(){
 
 //	planMode.gui.addComponent(planMode.submitButton);
 	planMode.gui.addComponent(planMode.instPanel);
+	planMode.gui.addComponent(planMode.butNav);
+	planMode.gui.addComponent(planMode.undoBut);
+	planMode.gui.addComponent(planMode.redoBut);
+	planMode.gui.addComponent(planMode.newLevelBut);
+	planMode.gui.addComponent(planMode.saveLevelBut);
+	planMode.gui.addComponent(planMode.propertiesBut);
+	planMode.gui.addComponent(planMode.backBut);
+
 	for(var c in planMode.topRow) planMode.gui.addComponent(planMode.topRow[c]);
 	for(var c in planMode.botRow) planMode.gui.addComponent(planMode.botRow[c]);
-
+	for(var c in planMode.playback) planMode.gui.addComponent(planMode.playback[c]);
+	for(var c in planMode.toggles) planMode.gui.addComponent(planMode.toggles[c]);
 //	planMode.gui.addComponent(planMode.joystick);
-
+//planMode.gui.addComponent(planMode.anchor);
 	planMode.direction = App.DIRECTIONS.UP;
 	planMode.color = App.COLORS.RED;
 
