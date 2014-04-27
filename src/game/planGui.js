@@ -314,20 +314,20 @@ App.setupPlanGui = function(){
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Q']] === true)insCode =  0+planMode.direction;
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['W']] === true)insCode =  4;
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['E']] === true)insCode = 12;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['R']] === true)insCode = 15;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['T']] === true)insCode = 13;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Y']] === true)insCode = 18+planMode.direction;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['U']] === true)insCode = 26+planMode.direction;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['I']] === true)insCode =  8;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['R']] === true)insCode = 27+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['T']] === true)insCode = 31+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Y']] === true)insCode = 16;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['U']] === true)insCode = 13;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['I']] === true)insCode = 15;
 
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['A']] === true)insCode =  7;
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['S']] === true)insCode =  6;
 		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['D']] === true)insCode =  5;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['F']] === true)insCode = 16;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['G']] === true)insCode = 14;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['H']] === true)insCode = 22+planMode.direction;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['J']] === true)insCode = 17;
-		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['K']] === true)insCode =  9;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['F']] === true)insCode = 23+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['G']] === true)insCode = 19+planMode.direction;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['H']] === true)insCode = 17;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['J']] === true)insCode = 14;
+		if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['K']] === true)insCode = 18;
 
 		if(insCode !== undefined){
 			var ins = new App.PlanningInstruction(App.GameRenderer.mouseX,App.GameRenderer.mouseY,planMode.color,insCode);
