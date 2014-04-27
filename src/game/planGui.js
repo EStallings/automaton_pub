@@ -16,28 +16,13 @@ App.setupPlanGui = function(){
 	var setBlue   = function(){planMode.activeToggle[0].toggled = planMode.activeToggle[1].toggled = planMode.activeToggle[3].toggled = false; planMode.activeToggle[2].toggled = true; App.GuiInstDrag.changeGlobalColor(2); planMode.color = App.COLORS.BLUE;   planMode.requestStaticRenderUpdate = true};
 	var setYellow = function(){planMode.activeToggle[0].toggled = planMode.activeToggle[1].toggled = planMode.activeToggle[2].toggled = false; planMode.activeToggle[3].toggled = true; App.GuiInstDrag.changeGlobalColor(3); planMode.color = App.COLORS.YELLOW; planMode.requestStaticRenderUpdate = true};
 
-	planMode.showConfirm = function(txt, callback){
-		for (var c in planMode.confirm)
-			planMode.gui.addComponent(planMode.confirm[c]);
-		planMode.confirm[0].txt = txt;
-		planMode.confirm[1].callback = callback;
-	}
-
-	planMode.hideConfirm = function(){
-		for (var c in planMode.confirm)
-			planMode.gui.removeComponent(planMode.confirm[c]);
-	}
-
-	var newLevel = function(){
-		App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
-		App.GameRenderer.bestFit();
-		planMode.hideConfirm();
-	}
-
-	var back = function(){
-		planMode.hideConfirm();
-		App.loadDemo();
-		App.ModeHandler.popMode();
+	var returnToMenu = function(){
+		App.confirmGui.title = "Return To Menu Without Saving?";
+		App.confirmGui.yes = function(){
+			App.ModeHandler.popMode();
+			App.loadDemo();
+		};App.confirmGui.no = function(){}
+		App.ModeHandler.pushMode('confirm');
 	}
 
 	var addDragBtn = function(x,y,type,dirSense,tooltip,hotkey,data){
@@ -103,38 +88,20 @@ App.setupPlanGui = function(){
 	addBtn(324,-17-5,30,2,true,'Blue Visible');
 	addBtn(356,-17-5,30,3,true,'Yellow Visible');
 
-	addBtn(384,-85-5,22,'#a0a0a0',false,'New',function(){planMode.showConfirm("Create A Blank Level?", newLevel)});
+	addBtn(384,-85-5,22,'#a0a0a0',false,'New',function(){
+		App.confirmGui.title = "Create A New Level?";
+		App.confirmGui.yes = function(){
+			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
+			App.GameRenderer.bestFit();
+		};App.confirmGui.no = function(){}
+		App.ModeHandler.pushMode('confirm');
+	});
 	addBtn(384,-61-5,22,'#a0a0a0',false,'Upload', function(){
 		App.ModeHandler.pushMode('submit level');
 		planMode.requestStaticRenderUpdate = true;
 	});
 	addBtn(384,-37-5,22,'#a0a0a0',false,'Properties');
-	addBtn(384,-13-5,22,'#a0a0a0',false,'Return', function(){planMode.showConfirm("Return To Menu Without Saving?", back)});
-
-//============================================================================//
-
-	planMode.confirm = [];
-	planMode.confirm[0] = new App.GuiTools.Component(0,0,10000,10000,0,0,'center','center');
-	planMode.confirm[0].txt = "Return To Menu Without Saving?";
-	planMode.confirm[0].render = function(gfx){
-		gfx.fillStyle = 'rgba(0,0,0,0.5)';
-		gfx.fillRect(planMode.confirm[0].getx(), planMode.confirm[0].gety(), planMode.confirm[0].w, planMode.confirm[0].h);
-		gfx.fillStyle = '#ffffff';
-		var w = textWidth(gfx, planMode.confirm[0].txt, 24, -2);
-		text(gfx, planMode.confirm[0].txt, App.Canvases.width/2 - w/2, App.Canvases.height/2-55, 24, -2);
-	}
-	planMode.confirm[1] = new App.GuiTextButton(-66,0,0,0,"Yes",back, false, 'center', 'center');
-	planMode.confirm[1].dointerp = false;
-	planMode.confirm[1].w = 128;
-	planMode.confirm[1].hoverColor = '#ff0000'
-	planMode.confirm[2] = new App.GuiTextButton(66,0,0,0,"No",planMode.hideConfirm, false, 'center', 'center');
-	planMode.confirm[2].w = 128;
-	planMode.confirm[2].dointerp = false;
-	planMode.confirm[2].hoverColor = '#00ff00'
-
-	planMode.submitButton = new App.GuiTextButton(15, 56+28*0, 200, 000, 'Submit', function(){
-		planMode.gui.setOverlay(planMode.submitOverlay);
-	}, false, null, null);
+	addBtn(384,-13-5,22,'#a0a0a0',false,'Return',returnToMenu);
 
 //============================================================================//
 
@@ -150,6 +117,13 @@ App.setupPlanGui = function(){
 		App.Game.setMode(App.Game.modes.PLANNING);
 		App.GuiInstDrag.changeDirection(App.DIRECTIONS.UP);
 		App.Shade.turnOff();
+	}
+
+	planMode.exitFunc = function(){
+		planMode.requestStaticRenderUpdate = true;
+		planMode.exitFlag = true;
+		planMode.goalAlpha = 0;
+		planMode.gui.exit();
 	}
 
 	planMode.updateFunc = function(){
@@ -218,10 +192,7 @@ App.setupPlanGui = function(){
 
 //============================================================================//
 
-	planMode.registerKeyDownFunc('Esc',function(){
-		App.loadDemo();
-		App.ModeHandler.popMode();
-	});
+	planMode.registerKeyDownFunc('Esc',function(){returnToMenu();});
 
 	planMode.registerKeyDownFunc('Space',function(){
 		App.ModeHandler.pushMode('simulation');
