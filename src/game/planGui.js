@@ -135,7 +135,7 @@ App.setupPlanGui = function(){
 	for(var c in planMode.playback) planMode.gui.addComponent(planMode.playback[c]);
 	for(var c in planMode.toggles) planMode.gui.addComponent(planMode.toggles[c]);
 //	planMode.gui.addComponent(planMode.joystick);
-//planMode.gui.addComponent(planMode.anchor);
+//	planMode.gui.addComponent(planMode.anchor);
 	planMode.direction = App.DIRECTIONS.UP;
 	planMode.color = App.COLORS.RED;
 
@@ -217,28 +217,6 @@ App.setupPlanGui = function(){
 		var yOffset = App.Canvases.height-100-2-5;
 
 		planMode.gfx.fillStyle = 'rgba(0,0,0,0.8)';
-		//planMode.gfx.fillRect(xOffset-5,yOffset-5,50*8-2+10,100-2+10);
-/*
-		var x=0;
-		App.InstCatalog.render(planMode.gfx, 0+planMode.direction,xOffset+x++*50,yOffset,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx, 4,xOffset+x++*50,yOffset,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,12,xOffset+x++*50,yOffset,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,15,xOffset+x++*50,yOffset,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,13,xOffset+x++*50,yOffset,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,18+planMode.direction,xOffset+x++*50,yOffset,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,26+planMode.direction,xOffset+x++*50,yOffset,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx, 8,xOffset+x++*50,yOffset,planMode.color,48,'I');
-
-		var x=0;
-		App.InstCatalog.render(planMode.gfx, 7,xOffset+x++*50,yOffset+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx, 6,xOffset+x++*50,yOffset+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx, 5,xOffset+x++*50,yOffset+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,16,xOffset+x++*50,yOffset+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,14,xOffset+x++*50,yOffset+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,22+planMode.direction,xOffset+x++*50,yOffset+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx,17,xOffset+x++*50,yOffset+50,planMode.color,48);
-		App.InstCatalog.render(planMode.gfx, 9,xOffset+x++*50,yOffset+50,planMode.color,48,'O');
-*/
 		if(planMode.exitFlag && planMode.requestStaticRenderUpdate === false){
 			planMode.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			planMode.updatingActive = false;
