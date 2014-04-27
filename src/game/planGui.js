@@ -42,7 +42,7 @@ App.setupPlanGui = function(){
 		gfx.fillRect(planMode.instPanel.getx(), planMode.instPanel.gety(), planMode.instPanel.w, planMode.instPanel.h);
 	};planMode.gui.addComponent(planMode.instPanel);
 
-	addBtn(-348, -49-5, 94,'#808080',false,'NAVIGATION');
+	addBtn(-348, -49-5, 94,'#808080',false,'NAVIGATION', function(){}); // TODO: REPLACE WITH NAVIGATION COMPONENT
 
 	addDragBtn(-164,-73-5, 0,true ,'[ Q ] Spawn Automaton','Q');
 	addDragBtn(-116,-73-5, 4,false,'[ W ] Change Direction Up','W');
@@ -63,12 +63,12 @@ App.setupPlanGui = function(){
 	addDragBtn( 172,-25-5,18,false,'[ K ] Pause','K');
 	addDragBtn( 220,-25-5, 9,false,'[ L ] Output Stream','');
 
-	addBtn(-284,-81-5,30,'#808080',false,'Low Speed');
-	addBtn(-284,-49-5,30,'#808080',false,'High Speed');
-	addBtn(-284,-17-5,30,'#808080',false,'Stop');
-	addBtn(-252,-81-5,30,'#808080',false,'Med Speed');
-	addBtn(-252,-49-5,30,'#808080',false,'MAX Speed');
-	addBtn(-252,-17-5,30,'#808080',false,'Pause');
+	addBtn(-284,-81-5,30,'#808080',false,'Low Speed',  function(){/* TODO: IMPLEMENT ME */});
+	addBtn(-284,-49-5,30,'#808080',false,'High Speed', function(){/* TODO: IMPLEMENT ME */});
+	addBtn(-284,-17-5,30,'#808080',false,'Stop',       function(){/* TODO: IMPLEMENT ME */});
+	addBtn(-252,-81-5,30,'#808080',false,'Med Speed',  function(){/* TODO: IMPLEMENT ME */});
+	addBtn(-252,-49-5,30,'#808080',false,'MAX Speed',  function(){/* TODO: IMPLEMENT ME */});
+	addBtn(-252,-17-5,30,'#808080',false,'Pause',      function(){/* TODO: IMPLEMENT ME */});
 
 	addBtn(-212,-73-5,46,'#808080',false,'Undo',function(){App.Game.currentPlanningLevel.undo()});
 	addBtn(-212,-25-5,46,'#808080',false,'Redo',function(){App.Game.currentPlanningLevel.redo()});
@@ -86,10 +86,10 @@ App.setupPlanGui = function(){
 	planMode.lockedToggle[3] = addBtn(356,-49-5,30,3,true,'Yellow Locked', function(){App.Game.currentPlanningLevel.toggleLock(3)});
 
 	planMode.visibleToggle = [];
-	planMode.visibleToggle[0] = addBtn(260,-17-5,30,0,true,'Red Visible');
-	planMode.visibleToggle[1] = addBtn(292,-17-5,30,1,true,'Green Visible');
-	planMode.visibleToggle[2] = addBtn(324,-17-5,30,2,true,'Blue Visible');
-	planMode.visibleToggle[3] = addBtn(356,-17-5,30,3,true,'Yellow Visible');
+	planMode.visibleToggle[0] = addBtn(260,-17-5,30,0,true,'Red Visible',    function(){/* TODO: IMPLEMENT ME */});
+	planMode.visibleToggle[1] = addBtn(292,-17-5,30,1,true,'Green Visible',  function(){/* TODO: IMPLEMENT ME */});
+	planMode.visibleToggle[2] = addBtn(324,-17-5,30,2,true,'Blue Visible',   function(){/* TODO: IMPLEMENT ME */});
+	planMode.visibleToggle[3] = addBtn(356,-17-5,30,3,true,'Yellow Visible', function(){/* TODO: IMPLEMENT ME */});
 
 	addBtn(384,-85-5,22,'#808080',false,'New',function(){
 		App.confirmGui.title = "Create A New Level?";
@@ -102,7 +102,7 @@ App.setupPlanGui = function(){
 		App.ModeHandler.pushMode('submit level');
 		planMode.requestStaticRenderUpdate = true;
 	});
-	addBtn(384,-37-5,22,'#808080',false,'Properties');
+	addBtn(384,-37-5,22,'#808080',false,'Properties',function(){/* TODO: IMPLEMENT ME */});
 	addBtn(384,-13-5,22,'#808080',false,'Return',returnToMenu);
 
 //============================================================================//
