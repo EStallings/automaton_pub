@@ -50,7 +50,7 @@ App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin,toggle, 
 		gfx.strokeRect(that.getx()+1, that.gety()+1, that.w-2, that.h-2);
 
 		gfx.lineWidth = (Math.round(Math.log(d/6)/Math.log(2)+2)-3)*2; // TODO: THIS CALCULATION IS OFF
-		gfx.strokeStyle = '#ffffff';
+		gfx.strokeStyle = gfx.fillStyle = '#ffffff';
 		gfx.save();
 		gfx.translate(that.getx(),that.gety());
 		if(that.glyph)that.glyph(gfx,d);
