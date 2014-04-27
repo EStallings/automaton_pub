@@ -1,8 +1,8 @@
-App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, gui, pos, data){
-	App.GuiTools.Drag.call(this, x, y, 48, 48, delay, delay, xorigin, yorigin);
+App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, gui, tooltip, data){
+	App.GuiTools.Drag.call(this, x, y, 46, 46, delay, delay, xorigin, yorigin);
 	this.functional = true;
 	this.gui = gui;
-	this.pos = pos;
+	this.tooltip = tooltip;
 
 	//for streams and flipflops
 	this.data = data;
@@ -30,9 +30,17 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 		App.InstCatalog.render(
 			gfx,
 			that.instruction,
-			dx, that.gety()-that.h/2,
+			that.getx()-2, that.gety()-2,
 			App.GuiInstDrag.globalColor,
-			that.w);
+			that.w+4);
+
+		if(that.hovering){
+			var w = textWidth(gfx, that.tooltip, 24-6, -2);
+			gfx.fillStyle = App.FILL_COLOR[App.GuiInstDrag.globalColor];
+			gfx.fillRect(that.getx()+1, App.Canvases.height-103-24, w+6, 24);
+			gfx.fillStyle = '#000000';
+			text(gfx, that.tooltip, that.getx() + 3, App.Canvases.height-103-21, 24-6, -2);
+		}
 	}
 
 	this.subClickStart = function(){

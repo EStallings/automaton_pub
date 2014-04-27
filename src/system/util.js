@@ -19,6 +19,11 @@ function expInterp(val,goal,speed,threshold){
 	return retVal;
 }
 
+function textWidth(gfx, string, size, spacing){
+	gfx.font = "800 "+size*1.37+"px arial";
+	return gfx.measureText(string).width + (spacing * (string.length-1));
+}
+
 //draws a special subsection a certain color if specified
 function text(gfx,string,x,y,size,spacing){
 	gfx.textBaseline = "alphabetic";
