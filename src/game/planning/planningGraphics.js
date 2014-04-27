@@ -197,11 +197,40 @@ App.PlanningGraphics = function(){
 	this.moveCopy = function(gfx){
 		var mX = that.mousePos[0];
 		var mY = that.mousePos[1];
+		
+		// drag line
 		gfx.strokeStyle = 'rgba(200,200,200,.5)';
 		gfx.beginPath();
 		gfx.moveTo(that.lmb[1], that.lmb[2]);
 		gfx.lineTo(mX, mY);
 		gfx.stroke();
+
+		// move shadows
+		var size = App.GameRenderer.cellSize/2;
+		gfx.fillStyle = 'rgba(200,200,200,.5)';
+
+		var selected = App.Game.currentPlanningLevel.currentSelection;
+		var offX; var offY; var offCX = 0; var offCY = 0;
+		var msX = that.lmbDown[0]; var msY = that.lmbDown[1]; var msC = that.lmbDown[2];
+		var iX; var iY; var iC;
+
+		for(instr in selected){
+			
+			iX = selected[instr].x; iY = selected[instr].y; iC = selected[instr].color;
+			
+			offX = msX - iX; offY = msY - iY;
+			offX = offX * size * 2; offY = offY * size * 2;
+
+			if(msC !== iC){
+				if(msC % 2 === 0 && iC % 2 !== 0){ offCX = size; } // shift right
+				if(msC % 2 === 1 && iC % 2 !== 1){ offCX = -size; } // shift left
+				if(msC < 2 && iC >= 2){ offCY = size; } // shift down
+				if(msC >= 2 && iC < 2){ offCY = -size; } // shift up
+			}
+
+			gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size);
+		}
+
 	}
 
 	this.drawSelectionBox = function(gfx){	
