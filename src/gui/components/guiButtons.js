@@ -14,11 +14,11 @@ App.GuiTextButton = function(x, y, enterDelay, exitDelay, txt, callback, continu
 App.GuiTextButton.prototype = Object.create(App.GuiTools.Button);
 App.GuiTextButton.prototype.constructor = App.GuiTextButton;
 
-
-App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin, tooltip, callback){
+App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin,toggle, tooltip, callback){
 	App.GuiTools.Button.call(this, x, y, d, d, delay, delay, callback, false, xorigin, yorigin);
-	this.c = color;
-	this.color = color;
+	this.toggle = toggle;
+	this.toggled = false;
+	this.baseColor = '#ffffff';
 	this.hoverColor = color;
 	this.tooltip = tooltip;
 	this.tooltipTextColor = '#000000';
@@ -29,9 +29,11 @@ App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin, tooltip
 	delete(this.renderLayers['Rect']);
 
 	this.renderLayers['Button'] = function(gfx){
+		if(that.toggle && that.toggled)
+			that.color = that.hoverColor;
 		if(typeof that.color === 'string'){
 			gfx.strokeStyle = '#808080';
-			gfx.fillStyle = '#ffffff';
+			gfx.fillStyle = that.color;
 		}
 		else{
 			gfx.strokeStyle = App.STROKE_COLOR[that.color];

@@ -39,11 +39,12 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 	this.overridepos     = false;
 	this.dointerp        = true;
 	this.ignoreCollide   = false;
+	this.ignoreHover     = false;
 
 	this.baseColor       = '#ffffff';
 	this.baseTextColor   = '#000000';
-	this.hoverColor      = '#ff0000';
-	this.hoverTextColor  = '#ffffff';
+	this.hoverColor      = '#dadada';
+	this.hoverTextColor  = '#000000';
 	this.activeColor     = '#000000';
 	this.activeTextColor = '#ffffff';
 	this.lockedColor     = '#d2d2d2';
@@ -196,7 +197,7 @@ g.Component = function(x, y, w, h, enterDelay, exitDelay, xorigin, yorigin){
 		var x = App.InputHandler.mouseX;
 		var y = App.InputHandler.mouseY;
 		this.hovering = false;
-		if(!this.active && this.collides(x, y)){
+		if(!this.active && this.collides(x, y) && !this.ignoreHover){
 			this.color = this.hoverColor;
 			this.textColor = this.hoverTextColor;
 			this.hovering = true;
@@ -220,6 +221,8 @@ g.Button = function(x, y, w, h, en, ex, callback, continuous, xorigin, yorigin){
 	g.Component.call(this, x, y, w, h, en, ex, xorigin, yorigin);
 	this.functional = true;
 	this.clicked = false;
+	this.toggle = false;
+	this.toggled = false;
 	this.continuous = continuous;
 	this.callback = callback;
 
@@ -237,6 +240,8 @@ g.Button = function(x, y, w, h, en, ex, callback, continuous, xorigin, yorigin){
 	this.clickEnd = function(){
 		if(this.callback)
 			this.callback();
+		if(this.toggle)
+			this.toggled = !this.toggled;
 	}
 
 }
@@ -250,6 +255,7 @@ g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
 
 	this.functional = true;
 	this.sticky = false;
+	this.preventDrag = false;
 	this.mx = this.x;
 	this.my = this.y;
 
@@ -260,9 +266,11 @@ g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
 	}
 
 	this.clickStart = function(){
+		this.subClickStart();
+		if(this.preventDrag)
+			return;
 		this.sticky = true;
 		this.overridepos = true;
-		this.subClickStart();
 		this.gui.lastActive = this;
 	}
 
@@ -275,7 +283,7 @@ g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
 
 		this.changed = true;
 
-		if(!App.InputHandler.lmb){
+		if(!App.InputHandler.lmb || !this.sticky){
 			this.subClickEnd();
 			this.sticky = false;
 			this.overridepos = false;
@@ -284,6 +292,7 @@ g.Drag = function(x, y, w, h, en, ex, xorigin, yorigin){
 		}
 		this.subUpdate();
 	}
+
 
 	this.clickEnd = function(){
 	}

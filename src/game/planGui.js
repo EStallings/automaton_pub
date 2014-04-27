@@ -30,39 +30,85 @@ App.setupPlanGui = function(){
 	planMode.botRow[7] = new App.GuiInstDrag     ( 172, -25-5, 0, 18, false, 'center', 'bottom', planMode.gui, 'Pause');
 	planMode.botRow[8] = new App.GuiInstDrag     ( 220, -25-5, 0,  9, false, 'center', 'bottom', planMode.gui, 'Output Stream');
 
-	planMode.butNav = new App.GuiToolbarButton(-348, -49-5, 94, 0, '#ffffff', 'center', 'bottom', 'FOO');
+	planMode.butNav = new App.GuiToolbarButton(-348, -49-5, 94, 0, '#a0a0a0', 'center', 'bottom', false, 'FOO');
 	planMode.playback = [];
-	planMode.playback[0] = new App.GuiToolbarButton(-284,-81-5, 30, 0, '#ffffff', 'center', 'bottom', 'Low Speed');
-	planMode.playback[1] = new App.GuiToolbarButton(-284,-49-5, 30, 0, '#ffffff', 'center', 'bottom', 'High Speed');
-	planMode.playback[2] = new App.GuiToolbarButton(-284,-17-5, 30, 0, '#ffffff', 'center', 'bottom', 'Stop');
-	planMode.playback[3] = new App.GuiToolbarButton(-252,-81-5, 30, 0, '#ffffff', 'center', 'bottom', 'Med Speed');
-	planMode.playback[4] = new App.GuiToolbarButton(-252,-49-5, 30, 0, '#ffffff', 'center', 'bottom', 'MAX Speed');
-	planMode.playback[5] = new App.GuiToolbarButton(-252,-17-5, 30, 0, '#ffffff', 'center', 'bottom', 'Pause');
+	planMode.playback[0] = new App.GuiToolbarButton(-284,-81-5, 30, 0, '#a0a0a0', 'center', 'bottom', true, 'Low Speed');
+	planMode.playback[1] = new App.GuiToolbarButton(-284,-49-5, 30, 0, '#a0a0a0', 'center', 'bottom', true, 'High Speed');
+	planMode.playback[2] = new App.GuiToolbarButton(-284,-17-5, 30, 0, '#a0a0a0', 'center', 'bottom', true, 'Stop');
+	planMode.playback[3] = new App.GuiToolbarButton(-252,-81-5, 30, 0, '#a0a0a0', 'center', 'bottom', true, 'Med Speed');
+	planMode.playback[4] = new App.GuiToolbarButton(-252,-49-5, 30, 0, '#a0a0a0', 'center', 'bottom', true, 'MAX Speed');
+	planMode.playback[5] = new App.GuiToolbarButton(-252,-17-5, 30, 0, '#a0a0a0', 'center', 'bottom', true, 'Pause');
 
-	planMode.undoBut = new App.GuiToolbarButton(-212,-73-5, 46, 0, '#ffffff', 'center', 'bottom', 'Undo');
-	planMode.redoBut = new App.GuiToolbarButton(-212,-25-5, 46, 0, '#ffffff', 'center', 'bottom', 'Redo');
+	planMode.undoBut = new App.GuiToolbarButton(-212,-73-5, 46, 0, '#a0a0a0', 'center', 'bottom', false, 'Undo', function(){App.Game.currentPlanningLevel.undo()});
+	planMode.redoBut = new App.GuiToolbarButton(-212,-25-5, 46, 0, '#a0a0a0', 'center', 'bottom', false, 'Redo', function(){App.Game.currentPlanningLevel.redo()});
 
 	planMode.toggles = [];
-	planMode.toggles[ 0] = new App.GuiToolbarButton(260,-81-5, 30, 0, 0, 'center', 'bottom', 'Red Active');
-	planMode.toggles[ 1] = new App.GuiToolbarButton(292,-81-5, 30, 0, 1, 'center', 'bottom', 'Green Active');
-	planMode.toggles[ 2] = new App.GuiToolbarButton(324,-81-5, 30, 0, 2, 'center', 'bottom', 'Blue Active');
-	planMode.toggles[ 3] = new App.GuiToolbarButton(356,-81-5, 30, 0, 3, 'center', 'bottom', 'Yellow Active');
-	planMode.toggles[ 4] = new App.GuiToolbarButton(260,-49-5, 30, 0, 0, 'center', 'bottom', 'Red Locked');
-	planMode.toggles[ 5] = new App.GuiToolbarButton(292,-49-5, 30, 0, 1, 'center', 'bottom', 'Green Locked');
-	planMode.toggles[ 6] = new App.GuiToolbarButton(324,-49-5, 30, 0, 2, 'center', 'bottom', 'Blue Locked');
-	planMode.toggles[ 7] = new App.GuiToolbarButton(356,-49-5, 30, 0, 3, 'center', 'bottom', 'Yellow Locked');
-	planMode.toggles[ 8] = new App.GuiToolbarButton(260,-17-5, 30, 0, 0, 'center', 'bottom', 'Red Hidden');
-	planMode.toggles[ 9] = new App.GuiToolbarButton(292,-17-5, 30, 0, 1, 'center', 'bottom', 'Green Hidden');
-	planMode.toggles[10] = new App.GuiToolbarButton(324,-17-5, 30, 0, 2, 'center', 'bottom', 'Blue Hidden');
-	planMode.toggles[11] = new App.GuiToolbarButton(356,-17-5, 30, 0, 3, 'center', 'bottom', 'Yellow Hidden');
+	planMode.toggles[ 0] = new App.GuiToolbarButton(260,-81-5, 30, 0, 0, 'center', 'bottom', true, 'Red Active',    function(){planMode.toggles[1].toggled = planMode.toggles[2].toggled = planMode.toggles[3].toggled = false; App.GuiInstDrag.changeGlobalColor(0)});
+	planMode.toggles[ 1] = new App.GuiToolbarButton(292,-81-5, 30, 0, 1, 'center', 'bottom', true, 'Green Active',  function(){planMode.toggles[0].toggled = planMode.toggles[2].toggled = planMode.toggles[3].toggled = false; App.GuiInstDrag.changeGlobalColor(1)});
+	planMode.toggles[ 2] = new App.GuiToolbarButton(324,-81-5, 30, 0, 2, 'center', 'bottom', true, 'Blue Active',   function(){planMode.toggles[0].toggled = planMode.toggles[1].toggled = planMode.toggles[3].toggled = false; App.GuiInstDrag.changeGlobalColor(2)});
+	planMode.toggles[ 3] = new App.GuiToolbarButton(356,-81-5, 30, 0, 3, 'center', 'bottom', true, 'Yellow Active', function(){planMode.toggles[0].toggled = planMode.toggles[1].toggled = planMode.toggles[2].toggled = false; App.GuiInstDrag.changeGlobalColor(3)});
+	planMode.toggles[ 4] = new App.GuiToolbarButton(260,-49-5, 30, 0, 0, 'center', 'bottom', true, 'Red Locked',    function(){App.Game.currentPlanningLevel.toggleLock(0)});
+	planMode.toggles[ 5] = new App.GuiToolbarButton(292,-49-5, 30, 0, 1, 'center', 'bottom', true, 'Green Locked',  function(){App.Game.currentPlanningLevel.toggleLock(1)});
+	planMode.toggles[ 6] = new App.GuiToolbarButton(324,-49-5, 30, 0, 2, 'center', 'bottom', true, 'Blue Locked',   function(){App.Game.currentPlanningLevel.toggleLock(2)});
+	planMode.toggles[ 7] = new App.GuiToolbarButton(356,-49-5, 30, 0, 3, 'center', 'bottom', true, 'Yellow Locked', function(){App.Game.currentPlanningLevel.toggleLock(3)});
+	planMode.toggles[ 8] = new App.GuiToolbarButton(260,-17-5, 30, 0, 0, 'center', 'bottom', true, 'Red Hidden');
+	planMode.toggles[ 9] = new App.GuiToolbarButton(292,-17-5, 30, 0, 1, 'center', 'bottom', true, 'Green Hidden');
+	planMode.toggles[10] = new App.GuiToolbarButton(324,-17-5, 30, 0, 2, 'center', 'bottom', true, 'Blue Hidden');
+	planMode.toggles[11] = new App.GuiToolbarButton(356,-17-5, 30, 0, 3, 'center', 'bottom', true, 'Yellow Hidden');
+	planMode.toggles[0].toggled = true;
 
-	planMode.newLevelBut   = new App.GuiToolbarButton(384,-85-5, 22, 0, '#ffffff', 'center', 'bottom', 'New');
-	planMode.saveLevelBut  = new App.GuiToolbarButton(384,-61-5, 22, 0, '#ffffff', 'center', 'bottom', 'Upload');
-	planMode.propertiesBut = new App.GuiToolbarButton(384,-37-5, 22, 0, '#ffffff', 'center', 'bottom', 'Properties');
-	planMode.backBut       = new App.GuiToolbarButton(384,-13-5, 22, 0, '#ffffff', 'center', 'bottom', 'Return');
 
-	planMode.anchor = new App.GuiToolbarButton (0,-25,46,0,'#ffffff', 'center', 'bottom');
-	planMode.anchor2 = new App.GuiToolbarButton(0,-5-48,46,0,'#ffffff', 'center', 'bottom');
+	planMode.showConfirm = function(){
+		for (var c in planMode.confirm){
+			planMode.gui.addComponent(planMode.confirm[c]);
+		}
+	}
+
+	planMode.hideConfirm = function(){
+		for (var c in planMode.confirm){
+			planMode.gui.removeComponent(planMode.confirm[c]);
+		}
+	}
+
+	planMode.newLevelBut   = new App.GuiToolbarButton(384,-85-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'New');
+	planMode.saveLevelBut  = new App.GuiToolbarButton(384,-61-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'Upload', function(){
+		App.ModeHandler.pushMode('submit level');
+		planMode.requestStaticRenderUpdate = true;
+	});
+	planMode.propertiesBut = new App.GuiToolbarButton(384,-37-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'Properties');
+	planMode.backBut       = new App.GuiToolbarButton(384,-13-5, 22, 0, '#a0a0a0', 'center', 'bottom', false, 'Return', planMode.showConfirm);
+
+
+	var back = function(){
+		planMode.hideConfirm();
+		App.loadDemo();
+		App.ModeHandler.popMode();
+	}
+
+	planMode.confirm = [];
+	planMode.confirm[0] = new App.GuiTools.Component(0,0,10000,10000,0,0,'center','center');
+	planMode.confirm[0].render = function(gfx){
+		gfx.fillStyle = 'rgba(0,0,0,0.5)';
+		gfx.fillRect(planMode.confirm[0].getx(), planMode.confirm[0].gety(), planMode.confirm[0].w, planMode.confirm[0].h);
+		gfx.fillStyle = '#ffffff';
+		var t = "Return To Menu Without Saving?";
+		var w = textWidth(gfx, t, 24, -2);
+		text(gfx, t, App.Canvases.width/2 - w/2, App.Canvases.height/2-55, 24, -2);
+	}
+	planMode.confirm[1] = new App.GuiTextButton(-66,0,0,0,"Yes",back, false, 'center', 'center');
+	planMode.confirm[1].dointerp = false;
+	planMode.confirm[1].w = 128;
+	planMode.confirm[1].hoverColor = '#ff0000'
+	planMode.confirm[2] = new App.GuiTextButton(66,0,0,0,"No",planMode.hideConfirm, false, 'center', 'center');
+	planMode.confirm[2].w = 128;
+	planMode.confirm[2].dointerp = false;
+	planMode.confirm[2].hoverColor = '#00ff00'
+
+
+
+
+	planMode.anchor = new App.GuiToolbarButton (0,-25,46,0,'#a0a0a0', 'center', 'bottom');
+	planMode.anchor2 = new App.GuiToolbarButton(0,-5-48,46,0,'#a0a0a0', 'center', 'bottom');
 	planMode.instPanel = new App.GuiTools.Component(0,-54,794,98,0,0,'center','bottom');
 	planMode.instPanel.render = function(gfx){
 		gfx.fillStyle = 'rgba(0,0,0,0.8)';
@@ -96,41 +142,6 @@ App.setupPlanGui = function(){
 	planMode.selectStart = undefined;
 	planMode.moveStart = undefined;
 	planMode.alpha = planMode.goalAlpha = 0;
-
-/*
-	planMode.submitOverlay = [];
-	planMode.submitOverlay[0] = new App.GuiTools.BlockingPanel();
-	planMode.submitOverlay[1] = new App.GuiTextButton(200, 100, 200, 000, 'Cancel', 			function(){
-		planMode.gui.removeOverlay();
-	}, false, null, null);
-	planMode.submitOverlay[2] = new App.GuiTextButton(200, 140, 200, 000, 'Confirm', function(){
-		App.Server.putLevel(App.Game.currentPlanningLevel.generateParseString(),
-			planMode.submitOverlay[3].txt,
-			planMode.submitOverlay[4].txt,
-			planMode.submitOverlay[7].txt,
-			planMode.submitOverlay[5].txt,
-			planMode.submitOverlay[6].txt,
-			App.Server.testPostCallback);
-		planMode.gui.removeOverlay();
-		planMode.submitOverlay[3].txt = "Username";
-		planMode.submitOverlay[4].txt = "Password";
-		planMode.submitOverlay[5].txt = "Level Name";
-		planMode.submitOverlay[6].txt = "Description";
-		planMode.submitOverlay[7].txt = "Easy";
-	}, false, null, null);
-	planMode.submitOverlay[3] = new App.GuiTextBox(200, 300, 200, 25, "Username", 100, 100, null, null);
-	planMode.submitOverlay[4] = new App.GuiTextBox(200, 340, 200, 25, "Password", 100, 100, null, null);
-	planMode.submitOverlay[5] = new App.GuiTextBox(200, 380, 200, 25, "Level Name", 100, 100, null, null);
-	planMode.submitOverlay[6] = new App.GuiTextBox(200, 420, 200, 25, "Description", 100, 100, null, null);
-	planMode.submitOverlay[7] = new App.GuiTextButton(200, 460, 200, 000, 'Easy', function(){
-		if(planMode.submitOverlay[7].txt === 'Easy')   planMode.submitOverlay[7].txt = 'Medium';
-		if(planMode.submitOverlay[7].txt === 'Medium') planMode.submitOverlay[7].txt = 'Hard';
-		if(planMode.submitOverlay[7].txt === 'Hard')   planMode.submitOverlay[7].txt = 'Easy';
-
-	}, false, null, null);
-
-	for(var c in planMode.submitOverlay) planMode.submitOverlay[c].dointerp = false;
-*/
 
 
 		// ---------------------------------------------

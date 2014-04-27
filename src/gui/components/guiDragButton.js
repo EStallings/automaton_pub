@@ -44,8 +44,14 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 	}
 
 	this.subClickStart = function(){
+		if(App.Game.currentPlanningLevel.locks[App.GuiInstDrag.globalColor]){
+			this.preventDrag = true;
+			return;
+		}
+		this.preventDrag = false;
 		if(this.instruction >=4 && this.instruction <= 7)
 			App.GuiInstDrag.changeDirection(this.instruction-4);
+		this.ignoreHover = true;
 	};
 
 	//The drag part of 'drag and drop'
