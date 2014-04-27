@@ -97,13 +97,13 @@ App.setupPlanGui = function(){
 			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
 			App.GameRenderer.bestFit();
 		};App.ModeHandler.pushMode('confirm');
-	});
+	},App.NewGlyph);
 	addBtn(384,-61-5,22,'#808080',false,'Upload', function(){
 		App.ModeHandler.pushMode('submit level');
 		planMode.requestStaticRenderUpdate = true;
-	});
-	addBtn(384,-37-5,22,'#808080',false,'Properties',function(){/* TODO: IMPLEMENT ME */});
-	addBtn(384,-13-5,22,'#808080',false,'Return',returnToMenu);
+	},App.SaveGlyph);
+	addBtn(384,-37-5,22,'#808080',false,'Properties',function(){/* TODO: IMPLEMENT ME */},App.PropertiesGlyph);
+	addBtn(384,-13-5,22,'#808080',false,'Return',returnToMenu,App.BackGlyph);
 
 //============================================================================//
 
