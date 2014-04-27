@@ -171,9 +171,8 @@ App.PlanningGraphics = function(){
 				gfx.clearRect(scrnX+offsetX+5, scrnY+offsetY-2, size-10, size+4);
 				gfx.clearRect(scrnX+offsetX-2, scrnY+offsetY+5, size+4, size-10);
 			}
-
 			++i;
-		}while(i < currentSelection.length);
+		} while(i < currentSelection.length);
 		gfx.restore();
 	}
 
@@ -192,6 +191,8 @@ App.PlanningGraphics = function(){
 		// move / copy graphics
 		if(App.Game.currentPlanningLevel.currentSelection.length !== 0
 			&& that.moving && that.lmbStartOnTile){ that.moveCopy(gfx); }
+			// there's a bug that keeps displaying the ghost instructions.
+			// sheould we clear the selection array here?
 	}
 
 	this.moveCopy = function(gfx){
@@ -199,15 +200,16 @@ App.PlanningGraphics = function(){
 		var mY = that.mousePos[1];
 		
 		// drag line
+		/* I don't think we need this
 		gfx.strokeStyle = 'rgba(200,0,0,.5)';
 		gfx.beginPath();
 		gfx.moveTo(that.lmb[1], that.lmb[2]);
 		gfx.lineTo(mX, mY);
 		gfx.stroke();
+		*/
 
 		// move shadows
 		var size = App.GameRenderer.cellSize/2;
-		//gfx.fillStyle = 'rgba(200,200,200,.5)';
 
 		var selected = App.Game.currentPlanningLevel.currentSelection;
 		var offX; var offY; var offCX = 0; var offCY = 0;
@@ -219,33 +221,44 @@ App.PlanningGraphics = function(){
 			iX = selected[instr].x; 
 			iY = selected[instr].y; 
 			iC = selected[instr].color;
+			iT = selected[instr].type;
 			
 			offX = msX - iX; 
 			offY = msY - iY;
 			offX = offX * size * 2; 
 			offY = offY * size * 2;
 
+			// I think something is wrong with this.  Ask Kevin
 			if(msC !== iC){
 				if(msC % 2 === 0 && iC % 2 !== 0){ offCX = size; } // shift right
 				if(msC % 2 === 1 && iC % 2 !== 1){ offCX = -size; } // shift left
 				if(msC < 2 && iC >= 2){ offCY = size; } // shift down
 				if(msC >= 2 && iC < 2){ offCY = -size; } // shift up
 			}
+			// shadows for icons
+			// TODO: draw icons at .5 opacity
 			switch (iC){
-				case 0:  
+				case App.COLORS.RED: 
+					gfx.strokeStyle = 'rgba(100,0,0,1)'; 
 					gfx.fillStyle = 'rgba(100,0,0,.5)';
 					break;
-				case 1: 
+				case App.COLORS.GREEN: 
+					gfx.strokeStyle = 'rgba(0,100,0,1)'; 
 					gfx.fillStyle = 'rgba(0,100,0,.5)';
 					break;
-				case 2: 
+				case App.COLORS.BLUE: 
+					gfx.strokeStyle = 'rgba(0,0,100,1)'; 
 					gfx.fillStyle = 'rgba(0,0,100,.5)';
 					break;
-				case 4:
+				case App.COLORS.YELLOW:
+					gfx.strokeStyle = 'rgba(100,100,0,1)'; 
 					gfx.fillStyle = 'rgba(100,100,0,.5)';
 					break;
 			}
+			
 			gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size);
+			gfx.strokeRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size);
+			
 		}
 
 	}
