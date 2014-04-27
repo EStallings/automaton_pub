@@ -14,11 +14,12 @@ App.GuiTextButton = function(x, y, enterDelay, exitDelay, txt, callback, continu
 App.GuiTextButton.prototype = Object.create(App.GuiTools.Button);
 App.GuiTextButton.prototype.constructor = App.GuiTextButton;
 
-App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin,toggle, tooltip, callback){
+App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin,toggle, tooltip, callback, glyph){
 	App.GuiTools.Button.call(this, x, y, d, d, delay, delay, callback, false, xorigin, yorigin);
-	this.toggle = toggle;
+	this.toggle  = toggle;
 	this.toggled = false;
 	this.tooltip = tooltip;
+	this.glyph   = glyph;
 
 	this.baseColor        = '#303030';
 	this.hoverColor       = color; // TODO: PUT THIS SOMEWHERE ELSE, WE NEED AN INDICATION OF THE HOVER STATE
@@ -48,14 +49,12 @@ App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin,toggle, 
 		gfx.fillRect  (that.getx()+1, that.gety()+1, that.w-2, that.h-2);
 		gfx.strokeRect(that.getx()+1, that.gety()+1, that.w-2, that.h-2);
 
-		gfx.lineWidth = (Math.round(Math.log(d/6)/Math.log(2)+2)-3)*2;
+		gfx.lineWidth = (Math.round(Math.log(d/6)/Math.log(2)+2)-3)*2; // TODO: THIS CALCULATION IS OFF
 		gfx.strokeStyle = '#ffffff';
-		gfx.beginPath();
-		gfx.moveTo(that.getx()+  d/4,that.gety()+  d/4);
-		gfx.lineTo(that.getx()+3*d/4,that.gety()+3*d/4);
-		gfx.moveTo(that.getx()+  d/4,that.gety()+3*d/4);
-		gfx.lineTo(that.getx()+3*d/4,that.gety()+  d/4);
-		gfx.stroke();
+		gfx.save();
+		gfx.translate(that.getx(),that.gety());
+		if(that.glyph)that.glyph(gfx,d);
+		gfx.restore();
 
 		if(that.hovering){
 			var w = textWidth(gfx, that.tooltip, 24-6, -2);

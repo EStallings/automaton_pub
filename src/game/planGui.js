@@ -28,8 +28,8 @@ App.setupPlanGui = function(){
 		planMode.gui.addComponent(new App.GuiInstDrag(x,y,0,type,dirSense,'center','bottom',planMode.gui,tooltip,hotkey,data));
 	}
 
-	var addBtn = function(x,y,size,color,toggle,tooltip,callback){
-		var btn = new App.GuiToolbarButton(x,y,size,0,color,'center','bottom',toggle,tooltip,callback);
+	var addBtn = function(x,y,size,color,toggle,tooltip,callback,glyph){
+		var btn = new App.GuiToolbarButton(x,y,size,0,color,'center','bottom',toggle,tooltip,callback,glyph);
 		planMode.gui.addComponent(btn);
 		return btn;
 	}
@@ -63,15 +63,15 @@ App.setupPlanGui = function(){
 	addDragBtn( 172,-25-5,18,false,'[ K ] Pause','K');
 	addDragBtn( 220,-25-5, 9,false,'[ L ] Output Stream','');
 
-	addBtn(-284,-81-5,30,'#808080',false,'Low Speed',  function(){/* TODO: IMPLEMENT ME */});
-	addBtn(-284,-49-5,30,'#808080',false,'High Speed', function(){/* TODO: IMPLEMENT ME */});
-	addBtn(-284,-17-5,30,'#808080',false,'Stop',       function(){/* TODO: IMPLEMENT ME */});
-	addBtn(-252,-81-5,30,'#808080',false,'Med Speed',  function(){/* TODO: IMPLEMENT ME */});
-	addBtn(-252,-49-5,30,'#808080',false,'MAX Speed',  function(){/* TODO: IMPLEMENT ME */});
-	addBtn(-252,-17-5,30,'#808080',false,'Pause',      function(){/* TODO: IMPLEMENT ME */});
+	addBtn(-284,-81-5,30,'#808080',false,'Low Speed', function(){/* TODO: IMPLEMENT ME */},App.LowSpeedGlyph);
+	addBtn(-252,-81-5,30,'#808080',false,'Med Speed', function(){/* TODO: IMPLEMENT ME */},App.MedSpeedGlyph);
+	addBtn(-284,-49-5,30,'#808080',false,'Hi Speed',  function(){/* TODO: IMPLEMENT ME */},App.HiSpeedGlyph);
+	addBtn(-252,-49-5,30,'#808080',false,'MAX Speed', function(){/* TODO: IMPLEMENT ME */},App.MaxSpeedGlyph);
+	addBtn(-284,-17-5,30,'#808080',false,'Stop',      function(){/* TODO: IMPLEMENT ME */},App.StopGlyph);
+	addBtn(-252,-17-5,30,'#808080',false,'Pause',     function(){/* TODO: IMPLEMENT ME */},App.PauseGlyph);
 
-	addBtn(-212,-73-5,46,'#808080',false,'Undo',function(){App.Game.currentPlanningLevel.undo()});
-	addBtn(-212,-25-5,46,'#808080',false,'Redo',function(){App.Game.currentPlanningLevel.redo()});
+	addBtn(-212,-73-5,46,'#808080',false,'Undo',function(){App.Game.currentPlanningLevel.undo()},App.UndoGlyph);
+	addBtn(-212,-25-5,46,'#808080',false,'Redo',function(){App.Game.currentPlanningLevel.redo()},App.RedoGlyph);
 
 	planMode.activeToggle = [];
 	planMode.activeToggle[0] = addBtn(260,-81-5,30,0,false,'Red Active',    setRed);
