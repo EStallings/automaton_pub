@@ -44,24 +44,24 @@ App.setupPlanGui = function(){
 
 	addBtn(-348, -49-5, 94,'#a0a0a0',false,'NAVIGATION');
 
-	addDragBtn(-164,-73-5, 0,true ,'Spawn Automaton','Q');
-	addDragBtn(-116,-73-5, 4,false,'Change Direction Up','W');
-	addDragBtn( -68,-73-5,12,false,'Grab/Drop Token','E');
-	addDragBtn( -20,-73-5,27,true ,'Positive Switch','R');
-	addDragBtn(  28,-73-5,31,true ,'Flip-Flop','T');
-	addDragBtn(  76,-73-5,16,false,'Sync','Y');
-	addDragBtn( 124,-73-5,13,false,'Add','U');
-	addDragBtn( 172,-73-5,15,false,'Set Value','I');
-	addDragBtn( 220,-73-5, 8,false,'Input Stream','');
-	addDragBtn(-164,-25-5, 7,false,'Change Direction Left','A');
-	addDragBtn(-116,-25-5, 6,false,'Change Direction Down','S');
-	addDragBtn( -68,-25-5, 5,false,'Change Direction Right','D');
-	addDragBtn( -20,-25-5,23,true ,'Equality Switch','F');
-	addDragBtn(  28,-25-5,19,true ,'Token Switch','G');
-	addDragBtn(  76,-25-5,17,false,'Toggle Color','H');
-	addDragBtn( 124,-25-5,14,false,'Subtract','J');
-	addDragBtn( 172,-25-5,18,false,'Pause','K');
-	addDragBtn( 220,-25-5, 9,false,'Output Stream','');
+	addDragBtn(-164,-73-5, 0,true ,'[ Q ] Spawn Automaton','Q');
+	addDragBtn(-116,-73-5, 4,false,'[ W ] Change Direction Up','W');
+	addDragBtn( -68,-73-5,12,false,'[ E ] Grab/Drop Token','E');
+	addDragBtn( -20,-73-5,27,true ,'[ R ] Positive Switch','R');
+	addDragBtn(  28,-73-5,31,true ,'[ T ] Flip-Flop','T');
+	addDragBtn(  76,-73-5,16,false,'[ Y ] Sync','Y');
+	addDragBtn( 124,-73-5,13,false,'[ U ] Add','U');
+	addDragBtn( 172,-73-5,15,false,'[ I ] Set Value','I');
+	addDragBtn( 220,-73-5, 8,false,'[ O ] Input Stream','');
+	addDragBtn(-164,-25-5, 7,false,'[ A ] Change Direction Left','A');
+	addDragBtn(-116,-25-5, 6,false,'[ S ] Change Direction Down','S');
+	addDragBtn( -68,-25-5, 5,false,'[ D ] Change Direction Right','D');
+	addDragBtn( -20,-25-5,23,true ,'[ F ] Equality Switch','F');
+	addDragBtn(  28,-25-5,19,true ,'[ G ] Token Switch','G');
+	addDragBtn(  76,-25-5,17,false,'[ H ] Toggle Color','H');
+	addDragBtn( 124,-25-5,14,false,'[ J ] Subtract','J');
+	addDragBtn( 172,-25-5,18,false,'[ K ] Pause','K');
+	addDragBtn( 220,-25-5, 9,false,'[ L ] Output Stream','');
 
 	addBtn(-284,-81-5,30,'#a0a0a0',false,'Low Speed');
 	addBtn(-284,-49-5,30,'#a0a0a0',false,'High Speed');
@@ -257,8 +257,8 @@ App.setupPlanGui = function(){
 		var d = planMode.direction;
 		var set = function(key,code){if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode[key]] === true)insCode = code;}
 
-		set('Q', 0+d);set('W', 4);set('E',12);set('R',27+d);set('T',31+d);set('Y',16);set('U',13);set('I',15);
-		set('A', 7  );set('S', 6);set('D', 5);set('F',23+d);set('G',19+d);set('H',17);set('J',14);set('K',18);
+		set('Q', 0+d);set('W', 4);set('E',12);set('R',27+d);set('T',31+d);set('Y',16);set('U',13);set('I',15);set('O',8);
+		set('A', 7  );set('S', 6);set('D', 5);set('F',23+d);set('G',19+d);set('H',17);set('J',14);set('K',18);set('L',9);
 
 		if(insCode !== undefined){
 			var ins = new App.PlanningInstruction(App.GameRenderer.mouseX,App.GameRenderer.mouseY,planMode.color,insCode);
