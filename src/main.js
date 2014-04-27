@@ -9,7 +9,6 @@ window.onload = function(){
 	App.Game         = App.makeGame();
 	App.GameRenderer = App.makeGameRenderer();
 
-	App.setupComingSoon();
 	App.setupMainMenu();
 	App.setupLevelSelect();
 	App.setupLibrary();
