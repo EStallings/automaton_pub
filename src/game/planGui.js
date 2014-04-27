@@ -276,12 +276,18 @@ App.setupPlanGui = function(){
 	});
 
 	planMode.registerKeyDownFunc('1', setRed);
-
 	planMode.registerKeyDownFunc('2', setGreen);
-
 	planMode.registerKeyDownFunc('3', setBlue);
-
 	planMode.registerKeyDownFunc('4', setYellow);
+	planMode.registerKeyDownFunc('Tab',function(){
+		planMode.color = (planMode.color+1)%4;
+		switch(planMode.color){
+			case App.COLORS.RED:    setRed();break;
+			case App.COLORS.GREEN:  setGreen();break;
+			case App.COLORS.BLUE:   setBlue();break;
+			case App.COLORS.YELLOW: setYellow();break;
+		}
+	});
 
 	planMode.registerKeyDownFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = true; });
 	planMode.registerKeyUpFunc('Ctrl',function(){ App.Game.currentPlanningLevel.graphics.copying = false; });
