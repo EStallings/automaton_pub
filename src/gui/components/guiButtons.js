@@ -18,13 +18,15 @@ App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin,toggle, 
 	App.GuiTools.Button.call(this, x, y, d, d, delay, delay, callback, false, xorigin, yorigin);
 	this.toggle = toggle;
 	this.toggled = false;
-	this.baseColor = '#303030';
-	this.hoverColor = color;
 	this.tooltip = tooltip;
+
+	this.baseColor        = '#303030';
+	this.hoverColor       = color; // TODO: PUT THIS SOMEWHERE ELSE, WE NEED AN INDICATION OF THE HOVER STATE
+	this.activeColor      = '#c0c0c0';
+	this.lockedColor      = '#101010';
 	this.tooltipTextColor = '#000000';
 
 	var that = this;
-
 
 	delete(this.renderLayers['Rect']);
 
@@ -63,5 +65,6 @@ App.GuiToolbarButton = function(x, y, d, delay, color, xorigin, yorigin,toggle, 
 		}
 	};
 }
+
 App.GuiToolbarButton.prototype = Object.create(App.GuiTools.Button);
 App.GuiToolbarButton.prototype.constructor = App.GuiToolbarButton;

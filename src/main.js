@@ -13,7 +13,7 @@ window.onload = function(){
 	App.setupLevelSelect();
 	App.setupLibrary();
 	App.setupSettings();
-	App.setupConfirm();
+	App.confirmGui = App.setupConfirm();
 	App.setupSubmitLevel();
 	App.setupCreateAccount();
 

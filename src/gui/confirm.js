@@ -9,15 +9,14 @@ App.setupConfirm = function(){
 
 	// MUST OVERWRITE THE BELOW 3 WHEN YOU PUSH THIS MODE
 	confirm.title = "Confirm";
-	confirm.yes = function(){confirm.requestStaticRenderUpdate = true;App.ModeHandler.popMode();App.Shade.turnOff();}
-	confirm.no  = function(){confirm.requestStaticRenderUpdate = true;App.ModeHandler.popMode();App.Shade.turnOff();}
+	confirm.yes = function(){}
 
-	confirm.yesBtn = new App.GuiTextButton(15,56+28*0,200,000,'Yes',function(){confirm.yes();},false,null,null);
-	confirm.noBtn  = new App.GuiTextButton(15,56+28*0,200,000,'No' ,function(){confirm.no(); },false,null,null);
+	confirm.yesBtn = new App.GuiTextButton(15,56+28*0,200,000,'Yes',function(){confirm.requestStaticRenderUpdate = true;App.ModeHandler.popMode();App.Shade.turnOff();confirm.yes();},false,null,null);
+	confirm.noBtn  = new App.GuiTextButton(15,56+28*1,200,000,'No' ,function(){confirm.requestStaticRenderUpdate = true;App.ModeHandler.popMode();App.Shade.turnOff();},false,null,null);
 
-	confirm.yesBtn.hoverColor      = confirm.noBtn.hoverColor      = '#ffff00';
+	confirm.yesBtn.hoverColor      = confirm.noBtn.hoverColor      = '#ff0000';
 	confirm.yesBtn.activeColor     = confirm.noBtn.activeColor     = '#800000';
-	confirm.yesBtn.activeTextColor = confirm.noBtn.activeTextColor = '#ffff00';
+	confirm.yesBtn.activeTextColor = confirm.noBtn.activeTextColor = '#ff0000';
 
 	confirm.gui.addComponent(confirm.yesBtn);
 	confirm.gui.addComponent(confirm.noBtn);
@@ -28,7 +27,6 @@ App.setupConfirm = function(){
 		confirm.requestStaticRenderUpdate = true;
 		confirm.updatingActive = true;
 		confirm.exitFlag = false;
-		App.GameRenderer.bestFit();
 
 		confirm.gui.enter();
 		confirm.goalAlpha = 1;
@@ -77,6 +75,10 @@ App.setupConfirm = function(){
 	confirm.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT, confirm.gui.mouseUp);
 
 	confirm.registerKeyDownFunc('Esc',function(){
-		confirm.no();
+		confirm.requestStaticRenderUpdate = true;
+		App.ModeHandler.popMode();
+		App.Shade.turnOff();
 	});
+
+	return confirm;
 }
