@@ -92,7 +92,7 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 			return;
 
 		//place the instruction
-		App.GameRenderer.screenToGridCoords(this.getx(), this.gety());
+		App.GameRenderer.screenToGridCoords(this.getx() + this.w/2, this.gety() + this.h/2);
 		App.GameRenderer.requestStaticRenderUpdate = true;
 		var nx = App.GameRenderer.mouseX;
 		var ny = App.GameRenderer.mouseY;
