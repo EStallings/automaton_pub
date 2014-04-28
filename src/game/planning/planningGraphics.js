@@ -9,6 +9,7 @@ App.PlanningGraphics = function(){
 
 	this.lmbDown = []; this.lmbUp = [];
 	this.lmbDrag = false; this.lmbStartOnTile = false;
+	this.inMenu = false;
 
 	this.inserted = false;
 	this.moving = false;
@@ -36,7 +37,9 @@ App.PlanningGraphics = function(){
 			that.lmb[4] = cellY;
 			that.lmb[5] = App.GameRenderer.mouseC;
 
-			console.log(App.ModeHandler.currentMode.gui.testCoordinates(that.lmb[1],that.lmb[2]));
+			var menuTest = App.ModeHandler.currentMode.gui.testCoordinates(that.lmb[1],that.lmb[2]);
+
+			if(menuTest.p.length > 0 || menuTest.f.length > 0){ that.inMenu = true; } else { that.inMenu = false; }
 
 			that.lmbDown[0] = cellX;
 			that.lmbDown[1] = cellY;
@@ -105,28 +108,32 @@ App.PlanningGraphics = function(){
 	}
 
 	this.drag = function(){
-		if(App.Game.currentPlanningLevel.currentSelection.length === 0 || !that.lmbStartOnTile){
-			var s = that.lmbDown;
-			var f = that.lmbUp;
-			App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], f[0], f[1], f[2]);
-		}
-		else if(App.Game.currentPlanningLevel.currentSelection.length !== 0 && that.lmbStartOnTile){
-			var shiftX = that.lmbUp[0] - that.lmbDown[0];
-			var shiftY = that.lmbUp[1] - that.lmbDown[1];
-			if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Ctrl']] === true){
-				App.Game.currentPlanningLevel.copy(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+		if(!that.inMenu){
+			if(App.Game.currentPlanningLevel.currentSelection.length === 0 || !that.lmbStartOnTile){
+				var s = that.lmbDown;
+				var f = that.lmbUp;
+				App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], f[0], f[1], f[2]);
 			}
-			else{
-				App.Game.currentPlanningLevel.move(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+			else if(App.Game.currentPlanningLevel.currentSelection.length !== 0 && that.lmbStartOnTile){
+				var shiftX = that.lmbUp[0] - that.lmbDown[0];
+				var shiftY = that.lmbUp[1] - that.lmbDown[1];
+				if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Ctrl']] === true){
+					App.Game.currentPlanningLevel.copy(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+				}
+				else{
+					App.Game.currentPlanningLevel.move(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+				}
 			}
 		}
 	}
 
 	this.single = function(){
-		if(!that.inserted){
-			var s = that.lmbDown;
-			var f = that.lmbUp;
-			App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], f[0], f[1], f[2]);
+		if(!that.inMenu){
+			if(!that.inserted){
+				var s = that.lmbDown;
+				var f = that.lmbUp;
+				App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], f[0], f[1], f[2]);
+			}
 		}
 	}
 
@@ -270,10 +277,12 @@ App.PlanningGraphics = function(){
 		var curY = that.mousePos[1];
 		var downX = that.lmb[1];
 		var downY = that.lmb[2];
-		gfx.fillStyle = 'rgba(255,255,255,0.1)';
-		gfx.fillRect(curX, curY, (downX-curX), (downY-curY) );
-		gfx.strokeStyle = '#ffffff';
-		gfx.lineWidth = 2;
-		gfx.strokeRect(curX, curY, (downX-curX), (downY-curY) );
+		if(!that.inMenu){
+			gfx.fillStyle = 'rgba(255,255,255,0.1)';
+			gfx.fillRect(curX, curY, (downX-curX), (downY-curY) );
+			gfx.strokeStyle = '#ffffff';
+			gfx.lineWidth = 2;
+			gfx.strokeRect(curX, curY, (downX-curX), (downY-curY) );
+		}
 	}
 }
