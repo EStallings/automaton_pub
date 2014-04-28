@@ -36,6 +36,8 @@ App.PlanningGraphics = function(){
 			that.lmb[4] = cellY;
 			that.lmb[5] = App.GameRenderer.mouseC;
 
+			console.log(App.ModeHandler.currentMode.gui.testCoordinates(that.lmb[1],that.lmb[2]));
+
 			that.lmbDown[0] = cellX;
 			that.lmbDown[1] = cellY;
 			that.lmbDown[2] = App.GameRenderer.mouseC;
