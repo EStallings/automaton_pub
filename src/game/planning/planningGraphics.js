@@ -209,16 +209,17 @@ App.PlanningGraphics = function(){
 		var mY = that.mousePos[1];
 		
 		// drag line
-		/* I don't think we need this
-		gfx.strokeStyle = 'rgba(200,0,0,.5)';
+		// I don't think we need this
+		gfx.strokeStyle = 'rgba(200,200,200,.75)';
+		gfx.lineWidth = 2;
 		gfx.beginPath();
 		gfx.moveTo(that.lmb[1], that.lmb[2]);
 		gfx.lineTo(mX, mY);
 		gfx.stroke();
-		*/
+		
 
 		// move shadows
-		var size = App.GameRenderer.cellSize/2;
+		/*var size = App.GameRenderer.cellSize/2;
 
 		var selected = App.Game.currentPlanningLevel.currentSelection;
 		var offX; var offY; var offCX = 0; var offCY = 0;
@@ -268,7 +269,7 @@ App.PlanningGraphics = function(){
 			gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size);
 			gfx.strokeRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size);
 			
-		}
+		}*/
 
 	}
 
