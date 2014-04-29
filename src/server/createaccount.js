@@ -36,7 +36,7 @@ App.setupCreateAccount = function(){
 		create.username.txt = create.username.defaultText;
 	}
 
-	create.serverstatus = new App.GuiServerStatus(55, 200,returnFunc, endServerStatus);
+	create.serverstatus = new App.GuiServerStatus(0, 200,returnFunc, endServerStatus);
 	create.entrybox = [create.username, create.password, create.createButton, create.cancelButton];
 
 

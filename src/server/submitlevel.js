@@ -59,7 +59,7 @@ App.setupSubmitLevel = function(){
 		submit.username.txt = submit.username.defaultText;
 	}
 
-	submit.serverstatus = new App.GuiServerStatus(50, 200, returnFunc, endServerStatus);
+	submit.serverstatus = new App.GuiServerStatus(0, 200, returnFunc, endServerStatus);
 
 	submit.gui.addComponent(submit.cancelButton);
 	submit.gui.addComponent(submit.submitButton);

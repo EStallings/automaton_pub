@@ -4,7 +4,7 @@ For displaying leaderboards and level select.
 
 
 App.GuiServerStatus = function(x, y, successFunc, failFunc){
-	App.GuiTools.Component.call(this, x, y, 200, 24, 100, 100, null , null);
+	App.GuiTools.Component.call(this, x, y, 200, 24, 100, 100, 'center' , null);
 
 	this.waiting = 0.0;
 	this.waiting2 = 0;
