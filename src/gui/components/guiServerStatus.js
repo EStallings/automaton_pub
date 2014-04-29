@@ -8,6 +8,7 @@ App.GuiServerStatus = function(x, y, successFunc, failFunc){
 
 	this.waiting = 0.0;
 	this.waiting2 = 0;
+	this.waiting3 = 0;
 	this.docycle = true;
 	this.mode = 'waiting';
 	this.functional = true;
@@ -15,6 +16,15 @@ App.GuiServerStatus = function(x, y, successFunc, failFunc){
 	this.successFunc = successFunc;
 	this.failFunc = failFunc;
 	this.colorlerp = 255;
+	this.dotCoords = [];
+	var i=0;
+	for(var j = -100; j < 100; j+=20){
+		this.dotCoords[i]    = {x:j,   y:-100};
+		this.dotCoords[i+10] = {x:100, y:j};
+		this.dotCoords[i+20] = {x:0-j, y:100};
+		this.dotCoords[i+30] = {x:-100,y:0-j};
+		i++;
+	}
 
 	var step = Math.PI/20;
 	//this.functional = true;
@@ -69,22 +79,20 @@ App.GuiServerStatus = function(x, y, successFunc, failFunc){
 
 	this.renderWaiting = function(gfx){
 		var alpha = 1;
-		var stepper = this.waiting;
-		for(var k = 0; k <= 20; k ++){
-			gfx.fillStyle =
-			'rgba(255,255,255,' + alpha + ')';
-			var x = Math.cos(stepper)*100 + this.getx() + this.w/2;
-			var y = Math.sin(stepper)*100 + this.gety() + this.h/2;
+		var stepper = this.waiting3;
+		for(var k = 0; k <= 40; k ++){
+			gfx.fillStyle = 'rgba(255,255,255,' + alpha + ')';
+			var x = this.dotCoords[stepper].x + this.getx() + this.w/2;
+			var y = this.dotCoords[stepper].y + this.gety() + this.h/2;
 			gfx.fillRect(x, y, 10, 10);
-			x = Math.cos(stepper + Math.PI) * 100 + this.getx() + this.w/2;
-			y = Math.sin(stepper + Math.PI)*100 + this.gety() + this.h/2;
-			gfx.fillRect(x, y, 10, 10);
-			stepper  -= step;
+			stepper  --;
+			if(stepper < 0) stepper = this.dotCoords.length-1;
 			alpha -= 0.025;
 		}
+
 		var txt = "Please Wait ";
-		if(this.waiting2 > 20)   txt += '.';
-		if(this.waiting2 > 40)     txt += '.';
+		if(this.waiting2 > 20) txt += '.';
+		if(this.waiting2 > 40) txt += '.';
 		if(this.waiting2 > 60) txt += '.';
 
 		gfx.fillStyle = "#ffffff";
@@ -92,13 +100,14 @@ App.GuiServerStatus = function(x, y, successFunc, failFunc){
 	}
 
 	this.renderSuccess = function(gfx){
-		var stepper = this.waiting;
+		var stepper = this.waiting3;
 		gfx.fillStyle = 'rgba(' + this.colorlerp + ',255,'+ this.colorlerp + ',1)';
 		for(var k = 0; k <= 40; k ++){
-			var x = Math.cos(stepper)*100 + this.getx() + this.w/2;
-			var y = Math.sin(stepper)*100 + this.gety() + this.h/2;
+			var x = this.dotCoords[stepper].x + this.getx() + this.w/2;
+			var y = this.dotCoords[stepper].y + this.gety() + this.h/2;
 			gfx.fillRect(x, y, 10, 10);
-			stepper  -= step;
+			stepper  --;
+			if(stepper < 0) stepper = this.dotCoords.length-1;
 		}
 
 		var txt = "Success!"
@@ -110,13 +119,14 @@ App.GuiServerStatus = function(x, y, successFunc, failFunc){
 	}
 
 	this.renderFailure = function(gfx){
-		var stepper = this.waiting;
+		var stepper = this.waiting3;
 		gfx.fillStyle = 'rgba(255,' + this.colorlerp + ',' + this.colorlerp + ',1)';
 		for(var k = 0; k <= 40; k ++){
-			var x = Math.cos(stepper)*100 + this.getx() + this.w/2;
-			var y = Math.sin(stepper)*100 + this.gety() + this.h/2;
+			var x = this.dotCoords[stepper].x + this.getx() + this.w/2;
+			var y = this.dotCoords[stepper].y + this.gety() + this.h/2;
 			gfx.fillRect(x, y, 10, 10);
-			stepper  -= step;
+			stepper  --;
+			if(stepper < 0) stepper = this.dotCoords.length-1;
 		}
 
 		text(gfx, 'Failed', this.getx() + this.w/2 - 32, this.gety() + this.h/2 - 9, 18, -2);
@@ -130,6 +140,10 @@ App.GuiServerStatus = function(x, y, successFunc, failFunc){
 	this.update = function(){
 		if(this.docycle){
 			this.waiting += step/2;
+			this.waiting3++;
+			if(this.waiting3 >= this.dotCoords.length){
+				this.waiting3 = 0;
+			}
 			if(this.waiting >= 2*Math.PI){
 				this.waiting = 0;
 				if(!(this.mode == 'waiting'))

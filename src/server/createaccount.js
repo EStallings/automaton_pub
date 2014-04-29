@@ -57,11 +57,8 @@ App.setupCreateAccount = function(){
 
 
 	var createCallback = function(data){
-		var d = data.split(':')[1];
-
-		d = d.substring(1, d.indexOf('}')-1);
-		var success = (d.indexOf('created') !== -1);
-		var message = d;
+		var success = (data.status.indexOf('created') !== -1);
+		var message = data.status;
 		create.serverstatus.callback(success, message);
 	}
 

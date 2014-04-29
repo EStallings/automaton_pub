@@ -45,7 +45,6 @@ App.setupMainMenu = function(){
 	mainMenu.gui.addComponent(mainMenu.libraryButton);
 	mainMenu.gui.addComponent(mainMenu.sandboxButton);
 	mainMenu.gui.addComponent(mainMenu.settingsButton);
-
 	mainMenu.alpha = mainMenu.goalAlpha = 0;
 
 		// ---------------------------------------------
