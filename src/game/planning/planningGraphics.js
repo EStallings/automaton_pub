@@ -219,7 +219,7 @@ App.PlanningGraphics = function(){
 		
 
 		// move shadows
-		/*var size = App.GameRenderer.cellSize/2;
+		var size = App.GameRenderer.cellSize/2;
 
 		var selected = App.Game.currentPlanningLevel.currentSelection;
 		var offX; var offY; var offCX = 0; var offCY = 0;
@@ -245,31 +245,38 @@ App.PlanningGraphics = function(){
 				if(msC < 2 && iC >= 2){ offCY = size; } // shift down
 				if(msC >= 2 && iC < 2){ offCY = -size; } // shift up
 			}
+
 			// shadows for icons
+			var ghostCtx = App.GameRenderer.ghostGfx;
+			var streamBkg = false;
+			var cs = App.GameRenderer.cellSize;
+			ghostCtx.globalAlpha = .5;
+
 			// TODO: draw icons at .5 opacity
 			switch (iC){
 				case App.COLORS.RED: 
-					gfx.strokeStyle = 'rgba(100,0,0,1)'; 
-					gfx.fillStyle = 'rgba(100,0,0,.5)';
+					ghostCtx.translate(0, 0);
 					break;
 				case App.COLORS.GREEN: 
-					gfx.strokeStyle = 'rgba(0,100,0,1)'; 
-					gfx.fillStyle = 'rgba(0,100,0,.5)';
+					ghostCtx.translate(cs/2, 0);
 					break;
-				case App.COLORS.BLUE: 
-					gfx.strokeStyle = 'rgba(0,0,100,1)'; 
-					gfx.fillStyle = 'rgba(0,0,100,.5)';
+				case App.COLORS.BLUE:
+					ghostCtx.translate(0, cs/2); 
 					break;
 				case App.COLORS.YELLOW:
-					gfx.strokeStyle = 'rgba(100,100,0,1)'; 
-					gfx.fillStyle = 'rgba(100,100,0,.5)';
+					ghostCtx.translate(cs/2, cs/2);
 					break;
 			}
 			
-			gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size);
-			gfx.strokeRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size);
-			
-		}*/
+			//App.InstCatalog.render(App.GameRenderer.ghostGfx,selected[instr].type
+			//	,that.mousePos[0]+offX,that.mousePos[1]+offY
+			//	,selected[instr].color,cs/2,selected[instr].data,streamBkg);
+
+			ghostCtx.fillStyle='rgba(200,200,200,.5)';
+			ghostCtx.fillRect(that.mousePos[0]-cs/2,that.mousePos[1]-cs/2,cs,cs);
+
+			ghostCtx.restore();
+		}
 
 	}
 
