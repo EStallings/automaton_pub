@@ -21,6 +21,7 @@ App.setupLevelSelect = function(){
 			++yOffset;
 		}timeOffset+=30;
 		btn.hoverColor      = '#ff0000';
+		btn.hoverTextColor  = '#ffffff';
 		btn.activeColor     = '#800000';
 		btn.activeTextColor = '#ff0000';
 		btn.w = 168;
@@ -78,6 +79,7 @@ App.setupLevelSelect = function(){
 
 	levelSelect.backButton 	= new App.GuiTextButton(15,56+28*(yOffset+1+(xOffset===0?0:1)),timeOffset+200,timeOffset,'Back to Main Menu', function(){App.ModeHandler.popMode(); levelSelect.requestStaticRenderUpdate = true;}, false, null, null);
 	levelSelect.backButton.hoverColor      = '#ff0000';
+	levelSelect.backButton.hoverTextColor  = '#ffffff';
 	levelSelect.backButton.activeColor     = '#800000';
 	levelSelect.backButton.activeTextColor = '#ff0000';
 	levelSelect.gui.addComponent(levelSelect.backButton);
@@ -109,6 +111,7 @@ App.setupLevelSelect = function(){
 
 		levelSelect.gfx.fillStyle = '#fff';
 		text(levelSelect.gfx,"Level Select",15,15,36,-3);
+		levelSelect.gfx.fillStyle = '#f00';
 		for(var i in levelSelect.sectionText)
 			text(levelSelect.gfx,levelSelect.sectionText[i].title,15,56+28*levelSelect.sectionText[i].y+3,18,-2);
 

@@ -29,15 +29,19 @@ App.setupMainMenu = function(){
 	}, false, null, null);
 
 	mainMenu.playButton.hoverColor          = '#ff0000';
+	mainMenu.playButton.hoverTextColor      = '#ffffff';
 	mainMenu.playButton.activeColor         = '#800000';
 	mainMenu.playButton.activeTextColor     = '#ff0000';
 	mainMenu.libraryButton.hoverColor       = '#00ff00';
+	mainMenu.libraryButton.hoverTextColor   = '#ffffff';
 	mainMenu.libraryButton.activeColor      = '#008000';
 	mainMenu.libraryButton.activeTextColor  = '#00ff00';
 	mainMenu.sandboxButton.hoverColor       = '#0000ff';
+	mainMenu.sandboxButton.hoverTextColor   = '#ffffff';
 	mainMenu.sandboxButton.activeColor      = '#000080';
 	mainMenu.sandboxButton.activeTextColor  = '#0000ff';
 	mainMenu.settingsButton.hoverColor      = '#ffff00';
+	mainMenu.settingsButton.hoverTextColor  = '#ffffff';
 	mainMenu.settingsButton.activeColor     = '#808000';
 	mainMenu.settingsButton.activeTextColor = '#ffff00';
 
