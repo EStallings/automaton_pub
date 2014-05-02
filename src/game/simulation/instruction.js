@@ -217,7 +217,7 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
+				if(this.cell.tokens.length === 0)return;
 				a.direction = App.DIRECTIONS.UP;
 			};break;
 
@@ -225,7 +225,7 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
+				if(this.cell.tokens.length === 0)return;
 				a.direction = App.DIRECTIONS.DOWN;
 			};break;
 
@@ -233,7 +233,7 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
+				if(this.cell.tokens.length === 0)return;
 				a.direction = App.DIRECTIONS.LEFT;
 			};break;
 
@@ -241,7 +241,7 @@ App.SimulationInstruction = function(level,x,y,color,type,data){
 
 			this.execute = function(a){
 				if(!a.colorFlags[this.color])return;
-				if(a.tokenHeld === undefined)return;
+				if(this.cell.tokens.length === 0)return;
 				a.direction = App.DIRECTIONS.RIGHT;
 			};break;
 

@@ -2,13 +2,14 @@ App.makeGameRenderer = function(){
 	var game = {};
 
 	game.debugGfx       = App.Canvases.addNewLayer(99).getContext('2d');
-	game.tempGfx        = App.Canvases.addNewLayer( 0).getContext('2d');
-	game.automGfx       = App.Canvases.addNewLayer(-1).getContext('2d');
-	game.tokenDGfx      = App.Canvases.addNewLayer(-2).getContext('2d');
-	game.tokenSGfx      = App.Canvases.addNewLayer(-3).getContext('2d');
-	game.instructionGfx = App.Canvases.addNewLayer(-4).getContext('2d');
-	game.gridGfx        = App.Canvases.addNewLayer(-5).getContext('2d');
-	game.bkgndGfx       = App.Canvases.addNewLayer(-6).getContext('2d');
+	game.ghostGfx       = App.Canvases.addNewLayer( 0).getContext('2d');
+	game.tempGfx        = App.Canvases.addNewLayer(-1).getContext('2d'); 
+	game.automGfx       = App.Canvases.addNewLayer(-2).getContext('2d'); // need to set App.Game.ghostGfx.globalAlpha
+	game.tokenDGfx      = App.Canvases.addNewLayer(-3).getContext('2d');
+	game.tokenSGfx      = App.Canvases.addNewLayer(-4).getContext('2d');
+	game.instructionGfx = App.Canvases.addNewLayer(-5).getContext('2d');
+	game.gridGfx        = App.Canvases.addNewLayer(-6).getContext('2d');
+	game.bkgndGfx       = App.Canvases.addNewLayer(-7).getContext('2d');
 
 	game.translateCanvas = function(gfx){ // TODO: OPTIMIZE THIS, THIS IS A BOTTLENECK
 		gfx.save();
@@ -179,7 +180,12 @@ App.makeGameRenderer = function(){
 
 		// dynamic rendering
 		if(App.Game.mode === App.Game.modes.PLANNING && App.Game.currentPlanningLevel !== undefined){
+			
+			game.ghostGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
+			//game.translateCanvas(game.ghostGfx);
 			App.Game.currentPlanningLevel.dynamicRender();
+			//game.ghostGfx.restore();
+
 		}else if(App.Game.currentSimulationLevel !== undefined){
 			game.interpolation = (App.Engine.tick-App.Game.lastCycleTick)/(App.Game.nextCycleTick-App.Game.lastCycleTick);
 

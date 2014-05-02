@@ -72,7 +72,9 @@ App.setupSuccessGui = function(){
 			App.ModeHandler.popMode(2);
 			success.requestStaticRenderUpdate = true;
 		}if(success.returnButton.collide(x,y)){
-			App.ModeHandler.popMode(3);
+			App.ModeHandler.popMode();
+			App.ModeHandler.popMode();
+			App.ModeHandler.popMode();
 			success.requestStaticRenderUpdate = true;
 			App.loadDemo();
 		}

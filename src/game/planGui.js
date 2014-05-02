@@ -86,10 +86,10 @@ App.setupPlanGui = function(){
 	planMode.lockedToggle[3] = addBtn(356,-49-5,30,3,true,'Yellow Locked', function(){App.Game.currentPlanningLevel.toggleLock(3)});
 
 	planMode.visibleToggle = [];
-	planMode.visibleToggle[0] = addBtn(260,-17-5,30,0,true,'Red Visible',    function(){/* TODO: IMPLEMENT ME */});
-	planMode.visibleToggle[1] = addBtn(292,-17-5,30,1,true,'Green Visible',  function(){/* TODO: IMPLEMENT ME */});
-	planMode.visibleToggle[2] = addBtn(324,-17-5,30,2,true,'Blue Visible',   function(){/* TODO: IMPLEMENT ME */});
-	planMode.visibleToggle[3] = addBtn(356,-17-5,30,3,true,'Yellow Visible', function(){/* TODO: IMPLEMENT ME */});
+	planMode.visibleToggle[0] = addBtn(260,-17-5,30,0,true,'Red Visible',    function(){/* TODO: IMPLEMENT ME */}).toggled = true; // TODO: move the toggled = true somewhere else
+	planMode.visibleToggle[1] = addBtn(292,-17-5,30,1,true,'Green Visible',  function(){/* TODO: IMPLEMENT ME */}).toggled = true; // TODO: move the toggled = true somewhere else
+	planMode.visibleToggle[2] = addBtn(324,-17-5,30,2,true,'Blue Visible',   function(){/* TODO: IMPLEMENT ME */}).toggled = true; // TODO: move the toggled = true somewhere else
+	planMode.visibleToggle[3] = addBtn(356,-17-5,30,3,true,'Yellow Visible', function(){/* TODO: IMPLEMENT ME */}).toggled = true; // TODO: move the toggled = true somewhere else
 
 	addBtn(384,-85-5,22,'#808080',false,'New',function(){
 		App.confirmGui.title = "Create A New Level?";
@@ -282,5 +282,5 @@ App.setupPlanGui = function(){
 	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.MIDDLE,function(x,y){App.Game.currentPlanningLevel.graphics.mouseUp('mmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);});
 	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.RIGHT,function(x,y){App.Game.currentPlanningLevel.graphics.mouseUp('rmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);});
 	planMode.registerMouseWheelFunc(function(w){App.GameRenderer.zoom(App.InputHandler.mouseX,App.InputHandler.mouseY,w);});
-	planMode.registerResizeFunc(function(){/* TODO: move grid relative to center of screen, NOT a bestFit() */});
+	//planMode.registerResizeFunc(function(){/* TODO: move grid relative to center of screen, NOT a bestFit() */});
 }

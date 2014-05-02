@@ -59,7 +59,7 @@ App.setupSubmitLevel = function(){
 		submit.username.txt = submit.username.defaultText;
 	}
 
-	submit.serverstatus = new App.GuiServerStatus(50, 200, returnFunc, endServerStatus);
+	submit.serverstatus = new App.GuiServerStatus(0, 200, returnFunc, endServerStatus);
 
 	submit.gui.addComponent(submit.cancelButton);
 	submit.gui.addComponent(submit.submitButton);
@@ -86,11 +86,9 @@ App.setupSubmitLevel = function(){
 	}
 
 	var submitCallback = function(data){
-		var d = data.split(':')[1];
 
-		d = d.substring(1, d.indexOf('}')-1);
-		var success = (d == 'level saved');
-		var message = d;
+		var success = (data.status == 'level saved');
+		var message = data.status;
 		submit.serverstatus.callback(success, message);
 	}
 

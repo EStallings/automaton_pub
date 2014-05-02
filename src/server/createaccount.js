@@ -36,7 +36,7 @@ App.setupCreateAccount = function(){
 		create.username.txt = create.username.defaultText;
 	}
 
-	create.serverstatus = new App.GuiServerStatus(55, 200,returnFunc, endServerStatus);
+	create.serverstatus = new App.GuiServerStatus(0, 200,returnFunc, endServerStatus);
 	create.entrybox = [create.username, create.password, create.createButton, create.cancelButton];
 
 
@@ -57,11 +57,8 @@ App.setupCreateAccount = function(){
 
 
 	var createCallback = function(data){
-		var d = data.split(':')[1];
-
-		d = d.substring(1, d.indexOf('}')-1);
-		var success = (d.indexOf('created') !== -1);
-		var message = d;
+		var success = (data.status.indexOf('created') !== -1);
+		var message = data.status;
 		create.serverstatus.callback(success, message);
 	}
 

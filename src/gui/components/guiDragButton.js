@@ -74,6 +74,7 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 		//prevent dropping instructions behind gui elements
 		//check upper left
 		this.ignoreCollide = true;
+		this.ignoreHover = false;
 		var flag = false;
 		var c = this.gui.testCoordinates(this.getx()-this.w/2, this.gety()-this.h/2);
 		if(c.f.length > 0 || c.p.length > 0) flag = true;
@@ -91,7 +92,7 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 			return;
 
 		//place the instruction
-		App.GameRenderer.screenToGridCoords(this.getx(), this.gety());
+		App.GameRenderer.screenToGridCoords(this.getx() + this.w/2, this.gety() + this.h/2);
 		App.GameRenderer.requestStaticRenderUpdate = true;
 		var nx = App.GameRenderer.mouseX;
 		var ny = App.GameRenderer.mouseY;

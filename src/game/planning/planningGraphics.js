@@ -9,6 +9,7 @@ App.PlanningGraphics = function(){
 
 	this.lmbDown = []; this.lmbUp = [];
 	this.lmbDrag = false; this.lmbStartOnTile = false;
+	this.inMenu = false;
 
 	this.inserted = false;
 	this.moving = false;
@@ -35,6 +36,10 @@ App.PlanningGraphics = function(){
 			that.lmb[3] = cellX;
 			that.lmb[4] = cellY;
 			that.lmb[5] = App.GameRenderer.mouseC;
+
+			var menuTest = App.ModeHandler.currentMode.gui.testCoordinates(that.lmb[1],that.lmb[2]);
+
+			if(menuTest.p.length > 0 || menuTest.f.length > 0){ that.inMenu = true; } else { that.inMenu = false; }
 
 			that.lmbDown[0] = cellX;
 			that.lmbDown[1] = cellY;
@@ -103,28 +108,32 @@ App.PlanningGraphics = function(){
 	}
 
 	this.drag = function(){
-		if(App.Game.currentPlanningLevel.currentSelection.length === 0 || !that.lmbStartOnTile){
-			var s = that.lmbDown;
-			var f = that.lmbUp;
-			App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], f[0], f[1], f[2]);
-		}
-		else if(App.Game.currentPlanningLevel.currentSelection.length !== 0 && that.lmbStartOnTile){
-			var shiftX = that.lmbUp[0] - that.lmbDown[0];
-			var shiftY = that.lmbUp[1] - that.lmbDown[1];
-			if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Ctrl']] === true){
-				App.Game.currentPlanningLevel.copy(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+		if(!that.inMenu){
+			if(App.Game.currentPlanningLevel.currentSelection.length === 0 || !that.lmbStartOnTile){
+				var s = that.lmbDown;
+				var f = that.lmbUp;
+				App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], f[0], f[1], f[2]);
 			}
-			else{
-				App.Game.currentPlanningLevel.move(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+			else if(App.Game.currentPlanningLevel.currentSelection.length !== 0 && that.lmbStartOnTile){
+				var shiftX = that.lmbUp[0] - that.lmbDown[0];
+				var shiftY = that.lmbUp[1] - that.lmbDown[1];
+				if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Ctrl']] === true){
+					App.Game.currentPlanningLevel.copy(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+				}
+				else{
+					App.Game.currentPlanningLevel.move(App.Game.currentPlanningLevel.currentSelection, shiftX, shiftY);
+				}
 			}
 		}
 	}
 
 	this.single = function(){
-		if(!that.inserted){
-			var s = that.lmbDown;
-			var f = that.lmbUp;
-			App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], f[0], f[1], f[2]);
+		if(!that.inMenu){
+			if(!that.inserted){
+				var s = that.lmbDown;
+				var f = that.lmbUp;
+				App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], f[0], f[1], f[2]);
+			}
 		}
 	}
 
@@ -200,13 +209,14 @@ App.PlanningGraphics = function(){
 		var mY = that.mousePos[1];
 		
 		// drag line
-		/* I don't think we need this
-		gfx.strokeStyle = 'rgba(200,0,0,.5)';
+		// I don't think we need this
+		gfx.strokeStyle = 'rgba(200,200,200,.75)';
+		gfx.lineWidth = 2;
 		gfx.beginPath();
 		gfx.moveTo(that.lmb[1], that.lmb[2]);
 		gfx.lineTo(mX, mY);
 		gfx.stroke();
-		*/
+		
 
 		// move shadows
 		var size = App.GameRenderer.cellSize/2;
@@ -228,39 +238,15 @@ App.PlanningGraphics = function(){
 			offX = offX * size * 2; 
 			offY = offY * size * 2;
 
-			// I think something is wrong with this.  Ask Kevin
-			/*
-			if(msC !== iC){
-				if(msC % 2 === 0 && iC % 2 !== 0){ offCX = size; } // shift right
-				if(msC % 2 === 1 && iC % 2 !== 1){ offCX = -size; } // shift left
-				if(msC < 2 && iC >= 2){ offCY = size; } // shift down
-				if(msC >= 2 && iC < 2){ offCY = -size; } // shift up
-			}
-			*/
+
 			// shadows for icons
-			// TODO: render instruction with less opacity
-			// App.InstructionCatalog ins.render
-			switch (iC){
-				case App.COLORS.RED: 
-					gfx.strokeStyle = 'rgba(100,0,0,1)'; 
-					gfx.fillStyle = 'rgba(100,0,0,.5)';
-					break;
-				case App.COLORS.GREEN: 
-					gfx.strokeStyle = 'rgba(0,100,0,1)'; 
-					gfx.fillStyle = 'rgba(0,100,0,.5)';
-					break;
-				case App.COLORS.BLUE: 
-					gfx.strokeStyle = 'rgba(0,0,100,1)'; 
-					gfx.fillStyle = 'rgba(0,0,100,.5)';
-					break;
-				case App.COLORS.YELLOW:
-					gfx.strokeStyle = 'rgba(100,100,0,1)'; 
-					gfx.fillStyle = 'rgba(100,100,0,.5)';
-					break;
-			}
-			gfx.lineWidth = 2;
-			gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size-2, size-2);
-			gfx.strokeRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size-2, size-2);
+			var ghostCtx = App.GameRenderer.ghostGfx;
+			var streamBkg = false;
+			var cs = App.GameRenderer.cellSize;
+			ghostCtx.globalAlpha = .5;
+
+
+
 		}
 	}
 
@@ -269,10 +255,12 @@ App.PlanningGraphics = function(){
 		var curY = that.mousePos[1];
 		var downX = that.lmb[1];
 		var downY = that.lmb[2];
-		gfx.fillStyle = 'rgba(255,255,255,0.1)';
-		gfx.fillRect(curX, curY, (downX-curX), (downY-curY) );
-		gfx.strokeStyle = '#ffffff';
-		gfx.lineWidth = 2;
-		gfx.strokeRect(curX, curY, (downX-curX), (downY-curY) );
+		if(!that.inMenu){
+			gfx.fillStyle = 'rgba(255,255,255,0.1)';
+			gfx.fillRect(curX, curY, (downX-curX), (downY-curY) );
+			gfx.strokeStyle = '#ffffff';
+			gfx.lineWidth = 2;
+			gfx.strokeRect(curX, curY, (downX-curX), (downY-curY) );
+		}
 	}
 }

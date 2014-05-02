@@ -12,6 +12,7 @@ App.setupSettings = function(){
 	},false,null,null);
 
 	settings.backButton.hoverColor      = '#ffff00';
+	settings.backButton.hoverTextColor  = '#ffffff';
 	settings.backButton.activeColor     = '#808000';
 	settings.backButton.activeTextColor = '#ffff00';
 
