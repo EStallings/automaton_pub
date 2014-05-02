@@ -229,14 +229,17 @@ App.PlanningGraphics = function(){
 			offY = offY * size * 2;
 
 			// I think something is wrong with this.  Ask Kevin
+			/*
 			if(msC !== iC){
 				if(msC % 2 === 0 && iC % 2 !== 0){ offCX = size; } // shift right
 				if(msC % 2 === 1 && iC % 2 !== 1){ offCX = -size; } // shift left
 				if(msC < 2 && iC >= 2){ offCY = size; } // shift down
 				if(msC >= 2 && iC < 2){ offCY = -size; } // shift up
 			}
+			*/
 			// shadows for icons
-			// TODO: draw icons at .5 opacity
+			// TODO: render instruction with less opacity
+			// App.InstructionCatalog ins.render
 			switch (iC){
 				case App.COLORS.RED: 
 					gfx.strokeStyle = 'rgba(100,0,0,1)'; 
@@ -255,12 +258,10 @@ App.PlanningGraphics = function(){
 					gfx.fillStyle = 'rgba(100,100,0,.5)';
 					break;
 			}
-			
-			gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size);
-			gfx.strokeRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size);
-			
+			gfx.lineWidth = 2;
+			gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size-2, size-2);
+			gfx.strokeRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size-2, size-2);
 		}
-
 	}
 
 	this.drawSelectionBox = function(gfx){	
