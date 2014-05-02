@@ -238,6 +238,15 @@ App.PlanningGraphics = function(){
 			offX = offX * size * 2; 
 			offY = offY * size * 2;
 
+			// I think something is wrong with this.  Ask Kevin
+			/*
+			if(msC !== iC){
+				if(msC % 2 === 0 && iC % 2 !== 0){ offCX = size; } // shift right
+				if(msC % 2 === 1 && iC % 2 !== 1){ offCX = -size; } // shift left
+				if(msC < 2 && iC >= 2){ offCY = size; } // shift down
+				if(msC >= 2 && iC < 2){ offCY = -size; } // shift up
+			}
+			*/
 
 			// shadows for icons
 			var ghostCtx = App.GameRenderer.ghostGfx;
@@ -245,7 +254,36 @@ App.PlanningGraphics = function(){
 			var cs = App.GameRenderer.cellSize;
 			ghostCtx.globalAlpha = .5;
 
+			// TODO: draw icons at .5 opacity
 
+			switch (iC){
+				case App.COLORS.RED: 
+					ghostCtx.translate(0, 0);
+					break;
+				case App.COLORS.GREEN: 
+					ghostCtx.translate(cs/2, 0);
+					break;
+				case App.COLORS.BLUE:
+					ghostCtx.translate(0, cs/2); 
+					break;
+				case App.COLORS.YELLOW:
+					ghostCtx.translate(cs/2, cs/2);
+					break;
+			}
+
+			gfx.lineWidth = 2;
+			gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size-2, size-2);
+			gfx.strokeRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size-2, size-2);
+
+			
+			//App.InstCatalog.render(App.GameRenderer.ghostGfx,selected[instr].type
+			//	,that.mousePos[0]+offX,that.mousePos[1]+offY
+			//	,selected[instr].color,cs/2,selected[instr].data,streamBkg);
+
+			ghostCtx.fillStyle='rgba(200,200,200,.5)';
+			ghostCtx.fillRect(that.mousePos[0]-cs/2,that.mousePos[1]-cs/2,cs,cs);
+
+			ghostCtx.restore();
 
 		}
 	}
