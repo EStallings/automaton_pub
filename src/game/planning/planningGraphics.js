@@ -239,11 +239,14 @@ App.PlanningGraphics = function(){
 			offY = offY * size * 2;
 			
 			if(msC !== iC){
-				if(msC % 2 === 0 && iC % 2 !== 0){ offCX = size; } // shift right
+				if(msC % 4 === 0 && iC % 4 !== 0){ 
+					offCX = size; 
+				} // shift right
 				
 				if(msC % 2 === 1 && iC % 2 !== 1){ offCX = -size; } // shift left
 				
 				if(msC < 2 && iC >= 2){ offCY = size; } // shift down
+
 				if(msC >= 2 && iC < 2){ offCY = -size; } // shift up
 			}
 			
@@ -254,49 +257,62 @@ App.PlanningGraphics = function(){
 			var cs = App.GameRenderer.cellSize;
 			ghostCtx.globalAlpha = .5;
 
-			// TODO: draw icons at .5 opacity
-
 			switch (iC){
 				case App.COLORS.RED: 
-					//ghostCtx.translate(0, 0);
+					/*
+					ghostCtx.translate(0, 0);
 					ghostCtx.fillStyle='#ff0000';
 					ghostCtx.strokeStyle='#aa0000';
 					ghostCtx.lineWidth = 2;
 					ghostCtx.fillRect(mX,mY, size-2, size-2);
 					ghostCtx.strokeRect(mX,mY, size-2, size-2);
+					*/
+
+					App.InstCatalog.render(App.GameRenderer.ghostGfx,selected[instr].type
+			    			,mX+offX,mY+offY
+						,selected[instr].color,cs/2,selected[instr].data,streamBkg);
 					break;
 				case App.COLORS.GREEN:
-					//ghostCtx.translate(cs/2, 0);
+					/*
+					ghostCtx.translate(cs/2, 0);
 					ghostCtx.fillStyle='#00ff00';
 					ghostCtx.strokeStyle='#00aa00';
 					ghostCtx.lineWidth = 2;
 					ghostCtx.fillRect(mX+size-2,mY, size-2, size-2);
 					ghostCtx.strokeRect(mX+size-2,mY, size-2, size-2);
+					*/
+					App.InstCatalog.render(App.GameRenderer.ghostGfx,selected[instr].type
+			    			,mX+size-2+offX,mY+offY
+						,selected[instr].color,cs/2,selected[instr].data,streamBkg);
 					break;
 				case App.COLORS.BLUE:
-					//ghostCtx.translate(0, cs/2); 
+					/*
+					ghostCtx.translate(0, cs/2); 
 					ghostCtx.fillStyle='#0000ff';
 					ghostCtx.strokeStyle='#0000aa';
 					ghostCtx.lineWidth = 2;
 					ghostCtx.fillRect(mX,mY+size-2, size-2, size-2);
 					ghostCtx.strokeRect(mX,mY+size-2, size-2, size-2);
+					*/					
+					App.InstCatalog.render(App.GameRenderer.ghostGfx,selected[instr].type
+			    			,mX+offX,mY+size-2+offY
+						,selected[instr].color,cs/2,selected[instr].data,streamBkg);
 					break;
 				case App.COLORS.YELLOW:
-					//ghostCtx.translate(cs/2, cs/2);
+					/*
+					ghostCtx.translate(cs/2, cs/2);
 					ghostCtx.fillStyle='#ffff00';
 					ghostCtx.strokeStyle='#aaaa00';
 					ghostCtx.lineWidth = 2;
 					ghostCtx.fillRect(mX+size-2,mY+size-2, size-2, size-2);
 					ghostCtx.strokeRect(mX+size-2,mY+size-2, size-2, size-2);
+					*/					
+					App.InstCatalog.render(App.GameRenderer.ghostGfx,selected[instr].type
+			    			,mX+size-2+offX,mY+size-2+offY
+						,selected[instr].color,cs/2,selected[instr].data,streamBkg);
 					break;
 			}
 
-
-
-			
-			App.InstCatalog.render(App.GameRenderer.ghostGfx,selected[instr].type
-			    ,that.mousePos[0]+offX,that.mousePos[1]+offY
-				,selected[instr].color,cs/2,selected[instr].data,streamBkg);
 
 
 
