@@ -22,6 +22,6 @@ window.onload = function(){
 	App.setupSimGui();
 	App.setupErrorGui();
 	App.setupSuccessGui();
-	
+
 	App.Engine.run();
 }
