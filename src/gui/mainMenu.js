@@ -23,8 +23,8 @@ App.setupMainMenu = function(){
 		mainMenu.requestStaticRenderUpdate = true;
 	}, false, null, null);
 
-	mainMenu.settingsButton = new App.GuiTextButton(15, 56+28*3, 500, 300, 'Settings', function(){
-		App.ModeHandler.pushMode('settings');
+	mainMenu.settingsButton = new App.GuiTextButton(15, 56+28*3, 500, 300, 'Leaderboard', function(){
+		App.ModeHandler.pushMode('leaderboard');
 		mainMenu.requestStaticRenderUpdate = true;
 	}, false, null, null);
 
