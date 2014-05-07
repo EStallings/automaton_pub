@@ -63,12 +63,57 @@ App.setupPlanGui = function(){
 	addDragBtn( 172,-25-5,18,false,'[ K ] Pause','K');
 	addDragBtn( 220,-25-5, 9,false,'[ L ] Output Stream','');
 
-	addBtn(-284,-81-5,30,'#808080',false,'Low Speed', function(){/* TODO: IMPLEMENT ME */},App.LowSpeedGlyph);
-	addBtn(-252,-81-5,30,'#808080',false,'Med Speed', function(){/* TODO: IMPLEMENT ME */},App.MedSpeedGlyph);
-	addBtn(-284,-49-5,30,'#808080',false,'Hi Speed',  function(){/* TODO: IMPLEMENT ME */},App.HiSpeedGlyph);
-	addBtn(-252,-49-5,30,'#808080',false,'MAX Speed', function(){/* TODO: IMPLEMENT ME */},App.MaxSpeedGlyph);
-	addBtn(-284,-17-5,30,'#808080',false,'Stop',      function(){/* TODO: IMPLEMENT ME */},App.StopGlyph);
-	addBtn(-252,-17-5,30,'#808080',false,'Pause',     function(){/* TODO: IMPLEMENT ME */},App.PauseGlyph);
+	addBtn(-284,-81-5,30,'#808080',false,'Low Speed', function(){
+		App.Game.setSimulationSpeed(512);
+		console.log(App.ModeHandler.currentMode.name === 'planning');
+		if(App.ModeHandler.currentMode.name === 'planning'){
+			App.ModeHandler.pushMode('simulation');
+			App.ModeHandler.modes['simulation'].renderStreams = true;
+		}
+	},App.LowSpeedGlyph);
+
+	addBtn(-252,-81-5,30,'#808080',false,'Med Speed', function(){
+		App.Game.setSimulationSpeed(128);
+		console.log(App.ModeHandler.currentMode.name === 'planning');
+		if(App.ModeHandler.currentMode.name === 'planning'){
+			App.ModeHandler.pushMode('simulation');
+			App.ModeHandler.modes['simulation'].renderStreams = true;
+		}
+	},App.MedSpeedGlyph);
+
+	addBtn(-284,-49-5,30,'#808080',false,'Hi Speed',  function(){
+		App.Game.setSimulationSpeed(32);
+		console.log(App.ModeHandler.currentMode.name === 'planning');
+		if(App.ModeHandler.currentMode.name === 'planning'){
+			App.ModeHandler.pushMode('simulation');
+			App.ModeHandler.modes['simulation'].renderStreams = true;
+		}
+	},App.HiSpeedGlyph);
+
+	addBtn(-252,-49-5,30,'#808080',false,'MAX Speed', function(){
+		App.Game.setSimulationSpeed(1);
+		console.log(App.ModeHandler.currentMode.name === 'planning');
+		if(App.ModeHandler.currentMode.name === 'planning'){
+			App.ModeHandler.pushMode('simulation');
+
+			App.ModeHandler.modes['simulation'].renderStreams = true;
+		}
+	},App.MaxSpeedGlyph);
+	addBtn(-284,-17-5,30,'#808080',false,'Stop',      function(){
+		console.log(App.ModeHandler.currentMode.name === 'simulation');
+		if(App.ModeHandler.currentMode.name === 'simulation'){
+			App.ModeHandler.popMode();
+		}
+	},App.StopGlyph);
+
+	addBtn(-252,-17-5,30,'#808080',false,'Pause',     function(){
+		App.Game.pause();
+		if(App.ModeHandler.currentMode.name === 'planning'){
+			App.ModeHandler.pushMode('simulation');
+			App.ModeHandler.modes['simulation'].renderStreams = true;
+		}
+
+	},App.PauseGlyph);
 
 	addBtn(-212,-73-5,46,'#808080',false,'Undo',function(){App.Game.currentPlanningLevel.undo()},App.UndoGlyph);
 	addBtn(-212,-25-5,46,'#808080',false,'Redo',function(){App.Game.currentPlanningLevel.redo()},App.RedoGlyph);
@@ -112,7 +157,7 @@ App.setupPlanGui = function(){
 		planMode.updatingActive = true;
 		planMode.exitFlag = false;
 		planMode.goalAlpha = 1;
-
+		planMode.gui.gfx = planMode.gfx;
 		planMode.gui.enter();
 		setRed();
 		// TODO: reset locks
@@ -278,7 +323,9 @@ App.setupPlanGui = function(){
 
 	planMode.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.MIDDLE,function(x,y){App.Game.currentPlanningLevel.graphics.mouseDown('mmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);});
 	planMode.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.RIGHT,function(x,y){App.GameRenderer.beginPan(x,y);App.Game.currentPlanningLevel.graphics.mouseDown('rmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);});
+
 	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT,function(x,y){planMode.gui.mouseUp(x, y);App.Game.currentPlanningLevel.graphics.mouseUp('lmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);});
+
 	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.MIDDLE,function(x,y){App.Game.currentPlanningLevel.graphics.mouseUp('mmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);});
 	planMode.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.RIGHT,function(x,y){App.Game.currentPlanningLevel.graphics.mouseUp('rmb',App.GameRenderer.mouseX,App.GameRenderer.mouseY);});
 	planMode.registerMouseWheelFunc(function(w){App.GameRenderer.zoom(App.InputHandler.mouseX,App.InputHandler.mouseY,w);});

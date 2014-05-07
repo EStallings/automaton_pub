@@ -129,3 +129,8 @@ App.GuiInstDrag.changeDirection = function(dir){
 	}
 }
 
+App.GuiInstDrag.lockAll = function(){
+	for(var i = 0; i < this.registry.length; i++){
+
+	}
+}

@@ -94,6 +94,10 @@ App.GuiTable = function(x, y, maxRows, descrip){
 	}
 
 	this.update = function(){
+		this.changed = false;
+		var oldbutclick = this.butClick;
+		var oldbuthover  = this.butHover;
+		var oldhoverrow = this.hoverRow;
 		if(!App.InputHandler.lmb)
 			this.butClick = null;
 		var c = this.getLocalCoords();
@@ -109,6 +113,8 @@ App.GuiTable = function(x, y, maxRows, descrip){
 		else{
 			this.hoverRow = y;
 		}
+
+		if(this.butClick !== oldbutclick || this.butHover !== oldbuthover || this.hoverRow !== this.oldhoverrow)
 		this.changed = true;
 	}
 
