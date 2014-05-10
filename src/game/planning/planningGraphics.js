@@ -236,7 +236,7 @@ App.PlanningGraphics = function(){
 				if(msC >= 2 && iC < 2){ offCY = -size; } // shift up
 			}
 
-			gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size);
+			if(that.lmb[0] === 'down'){ gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size); }
 		}
  	}
 
