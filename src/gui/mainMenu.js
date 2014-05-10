@@ -74,6 +74,12 @@ App.setupMainMenu = function(){
 
 		mainMenu.gfx.fillStyle = '#fff';
 		text(mainMenu.gfx,"Automaton",15,15,36,-3);
+		text(mainMenu.gfx, 'Created by:',    15, App.Canvases.height - 130+18*0, 12, -1);
+		text(mainMenu.gfx, 'Luke Balaoro',   20, App.Canvases.height - 130+18*1, 12, -1);
+		text(mainMenu.gfx, 'Ezra Stallings', 20, App.Canvases.height - 130+18*2, 12, -1);
+		text(mainMenu.gfx, 'Kevin Dilts',    20, App.Canvases.height - 130+18*3, 12, -1);
+		text(mainMenu.gfx, 'Khabbab Saleem', 20, App.Canvases.height - 130+18*4, 12, -1);
+		text(mainMenu.gfx, 'Cameron Smith',  20, App.Canvases.height - 130+18*5, 12, -1);
 
 		if(mainMenu.gui.render())
 			mainMenu.requestStaticRenderUpdate = true;
