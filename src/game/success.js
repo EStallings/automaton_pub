@@ -19,6 +19,13 @@ App.setupSuccessGui = function(){
 		App.loadDemo();
 	}, false, null, null);
 
+	//TODO add:
+	// 1) enter name box
+	// 2) submit high score backButton
+
+	// 3) leaderboards for other metrics
+  // 4) auto refresh leaderboards upon submit high score.
+
 	success.tickLeaderboard = new App.GuiTable(15, 150, 20, [{id:'username', name:"Player"},{id:'numticks', name:"Ticks"}]);
 	success.tickLeaderboard.emptyMessage = 'Level not found';
 
