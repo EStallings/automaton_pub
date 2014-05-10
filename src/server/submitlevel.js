@@ -156,8 +156,4 @@ App.setupSubmitLevel = function(){
 
 	submit.registerKeyDownFunc('Enter', submitLevel);
 	submit.registerKeyDownFunc('Esc', returnFunc);
-
-	submit.registerResizeFunc(function(){
-		App.GameRenderer.bestFit();
-	});
 }

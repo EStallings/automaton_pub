@@ -119,8 +119,4 @@ App.setupCreateAccount = function(){
 
 	create.registerKeyDownFunc('Enter', createRequest);
 	create.registerKeyDownFunc('Esc', returnFunc);
-
-	create.registerResizeFunc(function(){
-		App.GameRenderer.bestFit();
-	});
 }

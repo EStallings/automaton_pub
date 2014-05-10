@@ -3,7 +3,7 @@ App.makeGameRenderer = function(){
 
 	game.debugGfx       = App.Canvases.addNewLayer(99).getContext('2d');
 	game.ghostGfx       = App.Canvases.addNewLayer( 0).getContext('2d');
-	game.tempGfx        = App.Canvases.addNewLayer(-1).getContext('2d'); 
+	game.tempGfx        = App.Canvases.addNewLayer(-1).getContext('2d');
 	game.automGfx       = App.Canvases.addNewLayer(-2).getContext('2d'); // need to set App.Game.ghostGfx.globalAlpha
 	game.tokenDGfx      = App.Canvases.addNewLayer(-3).getContext('2d');
 	game.tokenSGfx      = App.Canvases.addNewLayer(-4).getContext('2d');
@@ -180,7 +180,7 @@ App.makeGameRenderer = function(){
 
 		// dynamic rendering
 		if(App.Game.mode === App.Game.modes.PLANNING && App.Game.currentPlanningLevel !== undefined){
-			
+
 			game.ghostGfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 			//game.translateCanvas(game.ghostGfx);
 			App.Game.currentPlanningLevel.dynamicRender();
