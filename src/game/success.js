@@ -19,15 +19,27 @@ App.setupSuccessGui = function(){
 		App.loadDemo();
 	}, false, null, null);
 
+	success.tickLeaderboard = new App.GuiTable(15, 150, 20, [{id:'username', name:"Player"},{id:'numticks', name:"Ticks"}]);
+	success.tickLeaderboard.emptyMessage = 'Level not found';
+
 	success.gui.addComponent(success.backButton);
 	success.gui.addComponent(success.returnButton);
+	success.gui.addComponent(success.tickLeaderboard);
 
 	success.alpha = success.goalAlpha = 0;
+
+	success.serverCallback = function(json){
+		console.log(json);
+		success.tickLeaderboard.setData(json.tickCount);
+	}
 
 	success.enterFunc = function(){
 		success.requestStaticRenderUpdate = true;
 		success.updatingActive = true;
 		success.exitFlag = false;
+
+		//get the scoreboard json
+		App.Server.getScore(App.Game.currentPlanningLevel.id, success.serverCallback);
 
 		success.gui.enter();
 		success.goalAlpha = 1;

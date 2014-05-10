@@ -3,6 +3,7 @@ App.PlanningLevel = function(){
 
 	this.name;
 	this.dateCreated;
+	this.id = 1; //used for leaderboards
 	this.width;
 	this.height;
 	this.grid = [];
@@ -454,9 +455,20 @@ App.PlanningLevel = function(){
 		str.push(this.name+'`'+this.dateCreated+'`'+this.width+'`'+this.height);
 		for(var i in this.grid)
 		for(var j in this.grid[i])
-		for(var c in this.grid[i][j])
-		if(this.grid[i][j][c])
-			str.push(i+'`'+j+'`'+c+'`'+this.grid[i][j][c].type);
+		for(var c in this.grid[i][j]){
+			var s = "";
+			var inst = this.grid[i][j][c];
+			if(inst){
+				s = i+'`'+j+'`'+c+'`'+ inst.type;
+
+				if(inst.type === App.InstCatalog.TYPES['IN'] || inst.type === App.InstCatalog.TYPES['OUT']){
+					var e = "";
+					e = App.Game.inStreams[inst.data] || App.Game.outStreams[inst.data];
+					s += ('`'+inst.data + '`' + e[0]);
+				}
+				str.push(s);
+			}
+		}
 		return str.join('~');
 	};
 

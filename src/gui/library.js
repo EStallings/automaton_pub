@@ -36,6 +36,8 @@ App.setupLibrary = function(){
 		if(e == null)
 			return;
 		App.Game.currentPlanningLevel = App.Game.parseLevel(e.level_str);
+		console.log(e);
+		App.Game.currentPlanningLevel.id = e._id;
 		App.GameRenderer.bestFit();
 		App.ModeHandler.pushMode('planning');
 		library.requestStaticRenderUpdate = true;

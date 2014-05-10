@@ -56,11 +56,15 @@ App.makeGame = function(){
 			if(!lvl.insert(ins))return undefined;
 			switch(t){ // TODO: MOVE THIS TO PLANNING LEVEL INSERT | ADD APPROPRIATE STUFF TO PLANNING LEVEL DELETE
 				case App.InstCatalog.TYPES['IN']:
+					if(data[i].length <= 4)
+						return undefined;
 					var p = Parser.parse(data[i][5]);
 					if(p === undefined)return undefined;
 					game.inStreams[d]=[data[i][5],p,[],0,c];
 					break;
 				case App.InstCatalog.TYPES['OUT']:
+					if(data[i].length <= 4)
+							return undefined;
 					var p = Parser.parse(data[i][5]);
 					if(p === undefined)return undefined;
 					game.outStreams[d]=[data[i][5],p,[],0,data[i][6],data[i][7],c];

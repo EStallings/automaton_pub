@@ -26,7 +26,13 @@ App.Server.putLevel = function(levelstr, username, password,difficulty, title, d
 	if(!(username && levelstr && password && difficulty && title && difficulty && description && callback) || (title === 'Level Name') || (description === 'Level Description')){
 		callback({status:"Do not leave any fields blank!"});
 		return;
-	}var data = {"username":username,"password":password,"title":title,"description":description,"difficulty":difficulty,"level_str":levelstr }
+	}
+	//test level to make sure it's valid!
+	if(!App.Game.parseLevel(levelstr)){
+		callback({status:"Level format incorrect!"});
+		return;
+	}
+	var data = {"username":username,"password":password,"title":title,"description":description,"difficulty":difficulty,"level_str":levelstr }
 	$.post( u, data, callback);
 }
 
@@ -41,4 +47,18 @@ App.Server.createAccount = function(username, password, callback){
 		return;
 	}var data = {"username":username, "password":password};
 	$.post(u, data, callback);
+}
+
+App.Server.getScore = function(levelID, callback){
+	var u = App.Server.url + "api/levels/getScore/" + levelID;
+	if(!(levelID && callback)){
+		callback({status:"Callback and ID required!"});
+		return;
+	}
+	$.getJSON(u, callback);
+}
+
+App.Server.postScore = function(levelID, name, autoCount, instruCount, cellCount, tickCount, callback){
+	var u = App.Server.url + "api/levels/upDateScore/" + levelID;
+
 }
