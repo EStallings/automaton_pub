@@ -120,7 +120,7 @@ App.makeGameRenderer = function(){
 	game.bestFit = function(){
 		var level = App.Game.currentPlanningLevel;
 		if(!level)return;
-		App.Game.setSimulationSpeed(512);
+		//App.Game.setSimulationSpeed(512);
 		game.cellSizeFactor = 4; // TODO: MAKE THIS BETTER
 		game.goalCellSize = 3*Math.pow(2,game.cellSizeFactor);
 		game.goalRenderX = Math.round((App.Canvases.width-level.width*game.goalCellSize)/2);
