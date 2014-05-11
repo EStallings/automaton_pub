@@ -6,7 +6,7 @@ App.PlanningGraphics = function(){
 	this.mmb = ['up',-1,-1,-1,-1,-1];
 	this.rmb = ['up',-1,-1,-1,-1,-1];
 	this.mousePos = [-1,-1,-1,-1,-1]; // current mouse position [scrnX, scrnY, cellX, cellY, cellC]
-	this.click1 = false;
+	this.tickClicked = 0;
 
 	this.lmbDown = []; // cellX, cellY, color
 	this.lmbUp = [];
@@ -41,8 +41,7 @@ App.PlanningGraphics = function(){
 
 	this.mouseDown = function(button, cellX, cellY){
 		if(button === 'lmb'){
-
-			if(that.click1){
+			if(that.tickClicked + 250 > App.Engine.tick){
 				if(cellX === that.lmb[3] && cellY === that.lmb[4] && App.GameRenderer.mouseC === that.lmb[5]){
 					var inst = null;
 					if(App.Game.currentPlanningLevel.grid[cellX] && App.Game.currentPlanningLevel.grid[cellX][cellY])
@@ -50,11 +49,11 @@ App.PlanningGraphics = function(){
 					if(!inst) return;
 					App.ModeHandler.pushMode('modder');
 					App.ModeHandler.currentMode.init(inst);
-					console.log('double click');
 					return;
 				}
-				that.click1 = false;
 			}
+
+			that.tickClicked = App.Engine.tick;
 
 			that.lmb[0] = 'down';
 			that.lmb[1] = App.InputHandler.mouseX;
@@ -62,7 +61,6 @@ App.PlanningGraphics = function(){
 			that.lmb[3] = cellX;
 			that.lmb[4] = cellY;
 			that.lmb[5] = App.GameRenderer.mouseC;
-			that.click1 = true;
 
 			var menuTest = App.ModeHandler.currentMode.gui.testCoordinates(that.lmb[1],that.lmb[2]);
 
