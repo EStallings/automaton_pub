@@ -8,8 +8,10 @@ App.PlanningGraphics = function(){
 	this.mousePos = [-1,-1,-1,-1,-1]; // current mouse position [scrnX, scrnY, cellX, cellY, cellC]
 	this.click1 = false;
 
-	this.lmbDown = []; this.lmbUp = [];
+	this.lmbDown = []; // cellX, cellY, color
+	this.lmbUp = [];
 	this.lmbDrag = false; this.lmbStartOnTile = false;
+	this.singleDrag = false;
 	this.inMenu = false;
 
 	this.inserted = false;
@@ -27,6 +29,15 @@ App.PlanningGraphics = function(){
 			that.moving = true;
 		}
 		else{ that.moving = false; }
+
+		if(that.lmb[0] === 'down' && that.moving){ // TODO needs to make sure that the click started on a placed instruction before selection
+			if(!that.singleDrag){
+				console.log(that.lmbStartOnTile);
+				var s = that.lmbDown;
+				App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], s[0], s[1], s[2]);
+				that.singleDrag = true;
+			}
+		}
 	}
 
 	this.mouseDown = function(button, cellX, cellY){
@@ -56,7 +67,7 @@ App.PlanningGraphics = function(){
 			that.lmbDown[2] = App.GameRenderer.mouseC;
 
 			var instr = App.Game.currentPlanningLevel.getInstruction(cellX, cellY, App.GameRenderer.mouseC);
-			if(instr && App.Game.currentPlanningLevel.currentSelection.indexOf(instr) !== -1){
+			if(instr){ //&& App.Game.currentPlanningLevel.currentSelection.indexOf(instr) !== -1){
 				that.lmbStartOnTile = true;
 			}
 			else{
@@ -83,6 +94,7 @@ App.PlanningGraphics = function(){
 
 	this.mouseUp = function(button, cellX, cellY){
 		if(button === 'lmb'){
+			
 			that.lmb[0] = 'up';
 			that.lmb[1] = App.InputHandler.mouseX;
 			that.lmb[2] = App.InputHandler.mouseY;
@@ -93,6 +105,8 @@ App.PlanningGraphics = function(){
 			that.lmbUp[0] = cellX;
 			that.lmbUp[1] = cellY;
 			that.lmbUp[2] = App.GameRenderer.mouseC;
+
+			if(that.singleDrag){ that.drag(); that.singleDrag = false; return;}
 
 			if(that.lmbDown[0] === that.lmbUp[0] && that.lmbDown[1] === that.lmbUp[1]
 				&& that.lmbDown[2] === that.lmbUp[2]){ that.lmbDrag = false; } else { that.lmbDrag = true; }
@@ -118,6 +132,7 @@ App.PlanningGraphics = function(){
 	}
 
 	this.drag = function(){
+		console.log('a');
 		if(!that.inMenu){
 			if(App.Game.currentPlanningLevel.currentSelection.length === 0 || !that.lmbStartOnTile){
 				var s = that.lmbDown;
