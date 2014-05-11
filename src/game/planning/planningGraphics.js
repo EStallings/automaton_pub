@@ -10,7 +10,7 @@ App.PlanningGraphics = function(){
 
 	this.lmbDown = []; // cellX, cellY, color
 	this.lmbUp = [];
-	this.lmbDrag = false; this.lmbStartOnTile = false;
+	this.lmbDrag = false; this.lmbStartOnTile = false; // TODO fix it so you can't cause move to happen by clicking on an unselected instruction
 	this.singleDrag = false;
 	this.inMenu = false;
 
@@ -32,7 +32,6 @@ App.PlanningGraphics = function(){
 
 		if(that.lmb[0] === 'down' && that.moving && App.Game.currentPlanningLevel.currentSelection.length === 0){ // TODO needs to make sure that the click started on a placed instruction before selection
 			if(!that.singleDrag){
-				console.log(that.lmbStartOnTile);
 				var s = that.lmbDown;
 				App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], s[0], s[1], s[2]);
 				that.singleDrag = true;
@@ -132,7 +131,6 @@ App.PlanningGraphics = function(){
 	}
 
 	this.drag = function(){
-		console.log('a');
 		if(!that.inMenu){
 			if(App.Game.currentPlanningLevel.currentSelection.length === 0 || !that.lmbStartOnTile){
 				var s = that.lmbDown;
