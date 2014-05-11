@@ -43,8 +43,8 @@ App.setupLevelSelect = function(){
 	levelSelect.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	levelSelect.gui = new App.guiFrame(levelSelect.gfx);
 
-	addSection("Misc...");
-	addLevel("Instruction Set" , '0', "AllInstructions`0`10`13~1`1`0`0~2`1`0`1~3`1`0`2~4`1`0`3~1`2`0`4~2`2`0`5~3`2`0`6~4`2`0`7~1`3`0`19~2`3`0`20~3`3`0`21~4`3`0`22~1`4`0`23~2`4`0`24~3`4`0`25~4`4`0`26~1`5`0`27~2`5`0`28~3`5`0`29~4`5`0`30~1`6`0`31~2`6`0`32~3`6`0`33~4`6`0`34~6`1`0`10~7`1`0`11~8`1`0`12~6`2`0`13~7`2`0`14~8`2`0`15~6`3`0`18~6`5`0`16~6`5`1`16~6`5`2`16~6`5`3`16~8`5`0`17~8`5`1`17~8`5`2`17~8`5`3`17~1`8`0`8`A`0~2`8`0`8`B`0~3`8`0`8`C`0~4`8`0`8`D`0~5`8`0`8`E`0~6`8`0`8`F`0~7`8`0`8`G`0~8`8`0`8`H`0~1`9`1`8`I`0~2`9`1`8`J`0~3`9`1`8`K`0~4`9`1`8`L`0~5`9`1`8`M`0~6`9`1`8`N`0~7`9`1`8`O`0~8`9`1`8`P`0~1`10`2`8`Q`0~2`10`2`8`R`0~3`10`2`8`S`0~4`10`2`8`T`0~5`10`2`8`U`0~6`10`2`8`V`0~7`10`2`8`W`0~8`10`2`8`X`0~4`11`3`8`Y`0~5`11`3`8`Z`0",[]);
+	// addSection("Misc...");
+	// addLevel("Instruction Set" , '0', "AllInstructions`0`10`13~1`1`0`0~2`1`0`1~3`1`0`2~4`1`0`3~1`2`0`4~2`2`0`5~3`2`0`6~4`2`0`7~1`3`0`19~2`3`0`20~3`3`0`21~4`3`0`22~1`4`0`23~2`4`0`24~3`4`0`25~4`4`0`26~1`5`0`27~2`5`0`28~3`5`0`29~4`5`0`30~1`6`0`31~2`6`0`32~3`6`0`33~4`6`0`34~6`1`0`10~7`1`0`11~8`1`0`12~6`2`0`13~7`2`0`14~8`2`0`15~6`3`0`18~6`5`0`16~6`5`1`16~6`5`2`16~6`5`3`16~8`5`0`17~8`5`1`17~8`5`2`17~8`5`3`17~1`8`0`8`A`0~2`8`0`8`B`0~3`8`0`8`C`0~4`8`0`8`D`0~5`8`0`8`E`0~6`8`0`8`F`0~7`8`0`8`G`0~8`8`0`8`H`0~1`9`1`8`I`0~2`9`1`8`J`0~3`9`1`8`K`0~4`9`1`8`L`0~5`9`1`8`M`0~6`9`1`8`N`0~7`9`1`8`O`0~8`9`1`8`P`0~1`10`2`8`Q`0~2`10`2`8`R`0~3`10`2`8`S`0~4`10`2`8`T`0~5`10`2`8`U`0~6`10`2`8`V`0~7`10`2`8`W`0~8`10`2`8`X`0~4`11`3`8`Y`0~5`11`3`8`Z`0",[]);
 
 	addSection("Introductory");
 	addLevel("Moving"          , '536de1dc5d67b80b00ca1c4b', "move`0`9`5~2`2`0`8`I`random(0,10)~6`2`0`9`O`I`10", [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]);
@@ -80,7 +80,7 @@ App.setupLevelSelect = function(){
 	addLevel("Factorial"       , '536de6745d67b80b00ca1c7b', "fact`12344`11`11~2`2`0`8`I`random(1,6)~2`8`1`8`Z`0~8`5`2`9`O`fac(I)`10", [8, 9]);
 	addLevel("Single-Out Sort" , '536de6915d67b80b00ca1c7d', "ssort`0`11`5", [8, 9]); // TODO: IMPLEMENT THIS
 
-	levelSelect.backButton 	= new App.GuiTextButton(15,56+28*(yOffset+1+(xOffset===0?0:1)),timeOffset+200,timeOffset,'Back to Main Menu', function(){App.ModeHandler.popMode(); levelSelect.requestStaticRenderUpdate = true;}, false, null, null);
+	levelSelect.backButton 	= new App.GuiTextButton(15,56,timeOffset+200,timeOffset,'Back to Main Menu', function(){App.ModeHandler.popMode(); levelSelect.requestStaticRenderUpdate = true;}, false, null, null);
 	levelSelect.backButton.hoverColor      = '#ff0000';
 	levelSelect.backButton.hoverTextColor  = '#ffffff';
 	levelSelect.backButton.activeColor     = '#800000';
