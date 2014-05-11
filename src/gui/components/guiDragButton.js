@@ -61,6 +61,7 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 		if(this.instruction >=4 && this.instruction <= 7)
 			App.GuiInstDrag.changeDirection(this.instruction-4);
 		this.ignoreHover = true;
+		this.gui.blocking = this;
 	};
 
 	//The drag part of 'drag and drop'

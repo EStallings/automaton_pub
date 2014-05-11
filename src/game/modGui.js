@@ -54,8 +54,12 @@ App.setupModificationGui = function(){
 	modder.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	modder.gui = new App.guiFrame(modder.gfx);
 
-	modder.applyButton = new App.GuiTextButton(15,56,200,000,'Apply', returnFunc,false,null,null);
-	modder.applyButton.hoverColor = '#af1010';
+	modder.applyButton = new App.GuiTools.BlockingPanel();
+	modder.applyButton.hoverColor = modder.applyButton.baseColor = 'rgba(0,0,0,0)';
+	modder.applyButton.functional = true;
+	modder.applyButton.clickStart = returnFunc;
+	modder.applyButton.clickEnd = modder.applyButton.update = function(){};
+
 
 	modder.colorComps  = []; //for the components that are used for color
 	modder.streamComps = []; //for the components used for streams
