@@ -119,6 +119,29 @@ App.makeInputHandler = function(){
 		input.lmb = input.mmb = input.rmb = false;
 	},false);
 
+	var touchEvtFunc = function(e){
+		var touches = e.changedTouches,
+		first = touches[0],
+		type = "";
+		switch(e.type) {
+	    case "touchstart":type = "mousedown"; break;
+			case "touchmove":type = "mousemove"; break;
+			case "touchend": type = "mouseup"; break;
+			default: return;
+	   }
+		var simulatedEvent = document.createEvent("MouseEvent");
+		simulatedEvent.initMouseEvent(type, true, true, window, 1,
+								first.screenX, first.screenY,
+								first.clientX, first.clientY, false,
+								false, false, false, 0, null);
+		first.target.dispatchEvent(simulatedEvent);
+		e.preventDefault();
+	}
+	input.canvas.addEventListener("touchstart", touchEvtFunc, true);
+	input.canvas.addEventListener("touchmove", touchEvtFunc, true);
+	input.canvas.addEventListener("touchend", touchEvtFunc, true);
+	input.canvas.addEventListener("touchcancel", touchEvtFunc, true);
+
 	var wheelEvtFunc = function(e){
 		var event = window.event || e;
 		var delta = event.detail?event.detail*-1:event.wheelDelta;
