@@ -448,12 +448,12 @@ App.PlanningLevel = function(){
 					}
 				}
 
-				if(instructions[i].type === 8){
-					App.Game.inStreams[instructions[i].data] = instructions[i].streamData;
+				if(op.instructions[i].type === 8){
+					App.Game.inStreams[op.instructions[i].data] = op.instructions[i].streamData;
 				}
 
-				if(instructions[i].type === 9){
-					App.Game.outStreams[instructions[i].data] = instructions[i].streamData;
+				if(op.instructions[i].type === 9){
+					App.Game.outStreams[op.instructions[i].data] = op.instructions[i].streamData;
 				}
 
 			}
@@ -493,8 +493,8 @@ App.PlanningLevel = function(){
 				var y = op.instructions[i].y;
 				var c = op.instructions[i].color;
 
-				if(instructions[i].type === 8 || instructions[i].type === 9){
-					App.Game.streams[instructions[i].data] = false;
+				if(op.instructions[i].type === 8 || op.instructions[i].type === 9){
+					App.Game.streams[op.instructions[i].data] = false;
 				}
 
 				that.grid[x][y][c] = null;
@@ -542,12 +542,12 @@ App.PlanningLevel = function(){
 					}
 				}
 
-				if(instructions[i].type === 8){
-					App.Game.inStreams[instructions[i].data] = instructions[i].streamData;
+				if(op.instructions[i].type === 8){
+					App.Game.inStreams[op.instructions[i].data] = op.instructions[i].streamData;
 				}
 
-				if(instructions[i].type === 9){
-					App.Game.outStreams[instructions[i].data] = instructions[i].streamData;
+				if(op.instructions[i].type === 9){
+					App.Game.outStreams[op.instructions[i].data] = op.instructions[i].streamData;
 				}
 			}
 			that.undoStack.push(op);
