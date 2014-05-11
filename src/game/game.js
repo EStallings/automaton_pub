@@ -65,6 +65,7 @@ App.makeGame = function(){
 					var p = Parser.parse(data[i][5]);
 					if(p === undefined)return undefined;
 					game.inStreams[d]=[data[i][5],p,[],0,c];
+					ins.data2 = data[i][5];
 					break;
 				case App.InstCatalog.TYPES['OUT']:
 					if(data[i].length <= 4)
@@ -72,12 +73,29 @@ App.makeGame = function(){
 					var p = Parser.parse(data[i][5]);
 					if(p === undefined)return undefined;
 					game.outStreams[d]=[data[i][5],p,[],0,data[i][6],data[i][7],c];
+					ins.data2 = data[i][5];
+					console.log(d + " " + data[i][5]);
 					break;
 			}game.streams[d] = true;
 		}
 
 		lvl.killUndo();
 		return lvl;
+	}
+
+	game.addStream = function(letter, isInStream, func, total, color){
+		var p = Parser.parse(func);
+		if(p ===  undefined) return false;
+		game.streams[letter] = true;
+		if(!isInStream)
+			game.outStreams[letter] = [func, p, [], 0, total, undefined, color];
+		else
+			game.inStreams[letter] = [func, p, [], 0, color];
+	}
+	game.removeStream = function(letter){
+		delete(App.Game.outStreams[letter]);
+		delete(App.Game.inStreams[letter]);
+		delete(App.Game.streams[letter]);
 	}
 
 		/*--------------------------------------------*/

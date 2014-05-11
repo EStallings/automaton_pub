@@ -6,9 +6,7 @@ App.setupModificationGui = function(){
 	}
 
 	var changeColor = function(color){
-		App.Game.currentPlanningLevel.grid[modder.instruction.x][modder.instruction.y][modder.instruction.color] = null;
-		modder.instruction.color = color;
-		App.Game.currentPlanningLevel.grid[modder.instruction.x][modder.instruction.y][modder.instruction.color] = modder.instruction;
+		App.Game.currentPlanningLevel.modify(modder.instruction, 'color', color);
 		App.GameRenderer.requestStaticRenderUpdate = true;
 	}
 
@@ -21,22 +19,41 @@ App.setupModificationGui = function(){
 	}
 
 	var changeDirection = function(direction){
-		modder.instruction.type = modder.baseType + direction;
+		App.Game.currentPlanningLevel.modify(modder.instruction, 'type', modder.baseType + direction);
 		App.GameRenderer.requestStaticRenderUpdate = true;
 	}
 
 	var changeLetter = function(letter){
+		if(letter.length > 1 || letter < 'A' || letter > 'Z')
+			letter = '?';
+		if(App.Game.streams[letter])
+			letter = '?';
 
+		if(letter !== '?' && !modder.syntaxError && modder.fn !== null){
+			App.Game.removeStream(letter);
+			App.Game.addStream(letter, (modder.instruction.type === 8), modder.streamComps[1].txt, 10, modder.instruction.color);
+		}
+		modder.instruction.data = letter; //not undo-able
+		App.GameRenderer.requestStaticRenderUpdate = true;
 	}
-
+	//change the function for an input stream
 	var changeFunction = function(fn){
+		modder.fn = null;
+
+		try {
+			modder.syntaxError = false;
+			modder.fn = Parser.parse("" + fn);
+		}
+		catch(err) {modder.syntaxError = true; }
 
 	}
+	modder.syntaxError = false;
+
 
 	modder.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	modder.gui = new App.guiFrame(modder.gfx);
 
-	modder.applyButton = new App.GuiTextButton(15,100,200,000,'Apply', returnFunc,false,null,null);
+	modder.applyButton = new App.GuiTextButton(15,56,200,000,'Apply', returnFunc,false,null,null);
 	modder.applyButton.hoverColor = '#af1010';
 
 	modder.colorComps  = []; //for the components that are used for color
@@ -56,7 +73,7 @@ App.setupModificationGui = function(){
 	modder.colorComps[3].baseColor = modder.colorComps[3].hoverColor = App.FILL_COLOR[3];
 	modder.colorComps[3].doInterp = false;
 
-	modder.dirComps[0] = new App.GuiTools.Button(15+50*0, 200, 30, 30, 0, 0, function(){changeDirection(0)}, false, null, null);
+	modder.dirComps[0] = new App.GuiTools.Button(15+50*0, 250, 30, 30, 0, 0, function(){changeDirection(0)}, false, null, null);
 	modder.dirComps[0].render = function(gfx){
 		App.InstCatalog.render(
 			gfx,
@@ -66,7 +83,7 @@ App.setupModificationGui = function(){
 			modder.dirComps[0].w+2,
 			modder.dirComps[0].data);
 	}
-	modder.dirComps[1] = new App.GuiTools.Button(15+50*1, 200, 30, 30, 0, 0, function(){changeDirection(1)}, false, null, null);
+	modder.dirComps[1] = new App.GuiTools.Button(15+50*1, 250, 30, 30, 0, 0, function(){changeDirection(1)}, false, null, null);
 	modder.dirComps[1].render = function(gfx){
 		App.InstCatalog.render(
 			gfx,
@@ -76,7 +93,7 @@ App.setupModificationGui = function(){
 			modder.dirComps[1].w+2,
 			modder.dirComps[1].data);
 	}
-	modder.dirComps[2] = new App.GuiTools.Button(15+50*2, 200, 30, 30, 0, 0, function(){changeDirection(2)}, false, null, null);
+	modder.dirComps[2] = new App.GuiTools.Button(15+50*2, 250, 30, 30, 0, 0, function(){changeDirection(2)}, false, null, null);
 	modder.dirComps[2].render = function(gfx){
 		App.InstCatalog.render(
 			gfx,
@@ -86,7 +103,7 @@ App.setupModificationGui = function(){
 			modder.dirComps[2].w+2,
 			modder.dirComps[2].data);
 	}
-	modder.dirComps[3] = new App.GuiTools.Button(15+50*3, 200, 30, 30, 0, 0, function(){changeDirection(3)}, false, null, null);
+	modder.dirComps[3] = new App.GuiTools.Button(15+50*3, 250, 30, 30, 0, 0, function(){changeDirection(3)}, false, null, null);
 	modder.dirComps[3].render = function(gfx){
 		App.InstCatalog.render(
 			gfx,
@@ -97,13 +114,21 @@ App.setupModificationGui = function(){
 			modder.dirComps[3].data);
 	}
 
-
+	modder.streamComps[0] = new App.GuiTextBox(15, 250, 30, 20, "?", 0, 0, null, null);
+	modder.streamComps[0].limit = 1;
+	modder.streamComps[0].imposeUppercase = true;
+	modder.streamComps[0].changeListener = function(){changeLetter(modder.streamComps[0].txt)};
+	modder.streamComps[1] = new App.GuiTextBox(15+50, 250, 465, 20, '', 0, 0, null, null);
+	modder.streamComps[1].changeListener = function(){changeFunction(modder.streamComps[1].txt)};
+	modder.fn = null;
 
 	modder.gui.addComponent(modder.applyButton);
 	modder.alpha = modder.goalAlpha = 0;
 	modder.callback = null;
 	modder.instruction = null;
 	modder.baseType = 0;
+	modder.dir = false;
+	modder.str = false;
 	for(var c in modder.colorComps){
 		modder.gui.addComponent(modder.colorComps[c]);
 	}
@@ -115,12 +140,29 @@ App.setupModificationGui = function(){
 		var f = false;
 		for(var b in bases) if(instruction.type === bases[b]) f = true;
 		if(modder.baseType !== modder.instruction.type || f){
+			modder.dir = true;
 			for(var c in modder.dirComps)
 				modder.gui.addComponent(modder.dirComps[c]);
 		}
 		else{
+			modder.dir = false;
 			for(var c in modder.dirComps)
 				modder.gui.removeComponent(modder.dirComps[c]);
+		}
+		if(modder.baseType == 8 || modder.baseType == 9){
+			modder.str = true;
+			for(var c in modder.streamComps)
+				modder.gui.addComponent(modder.streamComps[c])
+			if(modder.baseType == 8)
+				modder.streamComps[1].txt = 'random(0, 10)';
+			else
+				modder.streamComps[1].txt = 'I';
+			modder.fn = Parser.parse(modder.streamComps[1].txt);
+		}
+		else{
+			modder.str = false;
+			for(var c in modder.streamComps)
+				modder.gui.removeComponent(modder.streamComps[c])
 		}
 	}
 
@@ -145,6 +187,14 @@ App.setupModificationGui = function(){
 
 		modder.gfx.fillStyle = '#fff';
 		text(modder.gfx,"Edit Instruction",15,15,36,-3);
+		text(modder.gfx, 'Change Color', 15, 120, 20, -2);
+		if(modder.str){
+			text(modder.gfx, 'Stream ID      Stream Function', 15, 220, 20, -2);
+			if(modder.syntaxError)
+				text(modder.gfx, 'Syntax Error!', 15, 270, 15, -2)
+		}
+		else if(modder.dir)
+			text(modder.gfx, 'Change Direction', 15, 220, 20, -2);
 
 		if(modder.gui.render())
 			modder.requestStaticRenderUpdate = true;

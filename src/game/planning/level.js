@@ -173,8 +173,8 @@ App.PlanningLevel = function(){
 
 	this.hasStream = function(x,y){
 		if(that.grid[x] && that.grid[x][y]){
-			for(instr in that.grid[x][y]){
-				if(that.grid[x][y][instr].type === 9 || that.grid[x][y][instr].type === 8){ return true; }
+			for(var instr in that.grid[x][y]){
+				if(that.grid[x][y][instr] && (that.grid[x][y][instr].type === 9 || that.grid[x][y][instr].type === 8)){ return true; }
 			}
 		}
 		return false;
@@ -224,6 +224,7 @@ App.PlanningLevel = function(){
 			if(that.instructionLock === true && instructions[i].locked){ return; }
 			if(instructions[i].isProtected) { continue; }
 			that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = null;
+			if(instructions[i].data) App.Game.removeStream(instructions[i].data);
 		}
 		that.undoStack.push(new that.operation('del', instructions, null, null, null, null));
 		that.killRedo('kill redo: delete');
