@@ -25,9 +25,11 @@ App.setupCreateAccount = function(){
 	create.password.passwordMode = true;
 	create.username.next = create.password;
 
-	var endServerStatus = function(){
-		for(var b in create.entrybox){
-			create.gui.addComponent(create.entrybox[b]);
+	var endServerStatus = function(dontkeep){
+		if(!dontkeep){
+			for(var b in create.entrybox){
+				create.gui.addComponent(create.entrybox[b]);
+			}
 		}
 		create.gui.removeComponent(create.serverstatus);
 		create.serverstatus.reset();
@@ -71,6 +73,7 @@ App.setupCreateAccount = function(){
 		create.updatingActive = true;
 		create.exitFlag = false;
 		create.gui.enter();
+		create.endServerStatus(true);
 		create.goalAlpha = 1;
 		create.username.txt = create.username.defaultText;
 		create.password.txt = create.password.defaultText;

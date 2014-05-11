@@ -106,7 +106,7 @@ App.setupPlanGui = function(){
 		}
 	},App.StopGlyph);
 
-	addBtn(-252,-17-5,30,'#808080',false,'Pause',     function(){
+	addBtn(-252,-17-5,30,'#808080',false,'[Space] Pause',     function(){
 		App.Game.pause();
 		if(App.ModeHandler.currentMode.name === 'planning'){
 			App.ModeHandler.pushMode('simulation');
@@ -115,14 +115,14 @@ App.setupPlanGui = function(){
 
 	},App.PauseGlyph);
 
-	addBtn(-212,-73-5,46,'#808080',false,'Undo',function(){App.Game.currentPlanningLevel.undo()},App.UndoGlyph);
-	addBtn(-212,-25-5,46,'#808080',false,'Redo',function(){App.Game.currentPlanningLevel.redo()},App.RedoGlyph);
+	addBtn(-212,-73-5,46,'#808080',false,'[Ctrl+Z] Undo',function(){App.Game.currentPlanningLevel.undo()},App.UndoGlyph);
+	addBtn(-212,-25-5,46,'#808080',false,'[Ctrl+Shift+Z] Redo',function(){App.Game.currentPlanningLevel.redo()},App.RedoGlyph);
 
 	planMode.activeToggle = [];
-	planMode.activeToggle[0] = addBtn(260,-81-5,30,0,false,'Red Active',    setRed);
-	planMode.activeToggle[1] = addBtn(292,-81-5,30,1,false,'Green Active',  setGreen);
-	planMode.activeToggle[2] = addBtn(324,-81-5,30,2,false,'Blue Active',   setBlue);
-	planMode.activeToggle[3] = addBtn(356,-81-5,30,3,false,'Yellow Active', setYellow);
+	planMode.activeToggle[0] = addBtn(260,-81-5,30,0,false,'[1] Red Active',    setRed);
+	planMode.activeToggle[1] = addBtn(292,-81-5,30,1,false,'[2] Green Active',  setGreen);
+	planMode.activeToggle[2] = addBtn(324,-81-5,30,2,false,'[3] Blue Active',   setBlue);
+	planMode.activeToggle[3] = addBtn(356,-81-5,30,3,false,'[4] Yellow Active', setYellow);
 
 	planMode.lockedToggle = [];
 	planMode.lockedToggle[0] = addBtn(260,-49-5,30,0,true,'Red Locked',    function(){App.Game.currentPlanningLevel.toggleLock(0)});
@@ -148,7 +148,7 @@ App.setupPlanGui = function(){
 		planMode.requestStaticRenderUpdate = true;
 	},App.SaveGlyph);
 	addBtn(384,-37-5,22,'#808080',false,'Properties',function(){/* TODO: IMPLEMENT ME */},App.PropertiesGlyph);
-	addBtn(384,-13-5,22,'#808080',false,'Return',returnToMenu,App.BackGlyph);
+	addBtn(384,-13-5,22,'#808080',false,'[Esc] Return',returnToMenu,App.BackGlyph);
 
 //============================================================================//
 

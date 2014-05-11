@@ -48,9 +48,12 @@ App.setupSubmitLevel = function(){
 
 	submit.entrybox = [submit.cancelButton, submit.submitButton, submit.levelname, submit.leveldesc, submit.diffButton, submit.username, submit.password, submit.accountButton];
 
-	var endServerStatus = function(){
-		for(var b in submit.entrybox){
-			submit.gui.addComponent(submit.entrybox[b]);
+	var endServerStatus = function(dontkeep){
+
+		if(dontkeep){
+			for(var b in submit.entrybox){
+				submit.gui.addComponent(submit.entrybox[b]);
+			}
 		}
 		submit.serverstatus.reset();
 		submit.gui.removeComponent(submit.serverstatus);
@@ -108,7 +111,7 @@ App.setupSubmitLevel = function(){
 		submit.exitFlag = false;
 		submit.gui.enter();
 		submit.goalAlpha = 1;
-		endServerStatus();
+		endServerStatus(true);
 		submit.username.txt = submit.username.defaultText;
 		submit.password.txt = submit.password.defaultText;
 		submit.password.passwordString = '';

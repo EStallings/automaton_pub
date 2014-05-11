@@ -58,7 +58,26 @@ App.Server.getScore = function(levelID, callback){
 	$.getJSON(u, callback);
 }
 
-App.Server.postScore = function(levelID, name, autoCount, instruCount, cellCount, tickCount, callback){
+App.Server.postScore = function(levelID, name, autoCount, instCount, cellCount, tickCount, callback){
 	var u = App.Server.url + "api/levels/upDateScore/" + levelID;
+	if(!(levelID && name && callback)){
+		callback({status:"data not defined"});
+		return;
+	}
+	var dat = {"name":name, "autoCount":autoCount, "instruCount":instCount, "cellCount":cellCount, "tickCount":tickCount};
+	$.ajax({
+   url: u,
+   type: 'PUT',
+   data:dat,
+   success: callback
+	});
+}
 
+App.Server.updatePlayCount = function(levelID, callback){
+	var u = App.Server.url + 'api/levels/updatePlayCount/' + levelID;
+	$.ajax({
+   url: u,
+   type: 'PUT',
+   success: callback
+	});
 }

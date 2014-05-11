@@ -35,9 +35,15 @@ App.setupLibrary = function(){
 		var e = library.table.getSelectedEntry();
 		if(e == null)
 			return;
-		App.Game.currentPlanningLevel = App.Game.parseLevel(e.level_str);
-		console.log(e);
+		var level = App.Game.parseLevel(e.level_str);
+		if(!level){
+			console.log(e);
+			return;
+		}
+		App.Game.currentPlanningLevel = level;
 		App.Game.currentPlanningLevel.id = e._id;
+		console.log(e);
+		App.Server.updatePlayCount(e._id, App.Server.testPostCallback);
 		App.GameRenderer.bestFit();
 		App.ModeHandler.pushMode('planning');
 		library.requestStaticRenderUpdate = true;

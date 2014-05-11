@@ -40,12 +40,12 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 			gfx.fillStyle = App.FILL_COLOR[App.GuiInstDrag.globalColor];
 			gfx.fillRect(that.getx(), App.Canvases.height-103-24, w+6, 24);
 			w = textWidth(gfx, that.hotkey, 24-6, -2);
-			gfx.fillRect(App.Canvases.width/2-394, App.Canvases.height-103-24, w+6, 24);
+
 			gfx.fillStyle = '#000000';
 			text(gfx, that.tooltip, that.getx() + 3, App.Canvases.height-103-21, 24-6, -2);
 
 
-			text(gfx, that.hotkey, App.Canvases.width/2-391, App.Canvases.height-103-21, 24-6, -2);
+
 		}
 	}
 

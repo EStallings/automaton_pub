@@ -19,6 +19,16 @@ App.setupSuccessGui = function(){
 		App.loadDemo();
 	}, false, null, null);
 
+	success.username = new App.GuiTextBox(15, 150, 200, 25, "Name", 100, 100, null, null);
+	success.submitButton = new App.GuiTextButton(250, 150, 200, 000, 'Submit Scores', function(){
+		App.Server.postScore(App.Game.currentPlanningLevel.id, success.username.txt, success.scores[2], success.scores[1], success.scores[3], success.scores[0], function(){
+			App.Server.getScore(App.Game.currentPlanningLevel.id, success.serverCallback);
+		} )
+	}, false, null, null);
+	success.submitButton.w = 200;
+
+	success.scores = [0,0,0,0];
+
 	//TODO add:
 	// 1) enter name box
 	// 2) submit high score backButton
@@ -26,24 +36,48 @@ App.setupSuccessGui = function(){
 	// 3) leaderboards for other metrics
   // 4) auto refresh leaderboards upon submit high score.
 
-	success.tickLeaderboard = new App.GuiTable(15, 150, 20, [{id:'username', name:"Player"},{id:'numticks', name:"Ticks"}]);
-	success.tickLeaderboard.emptyMessage = 'Level not found';
+	success.tickLeaderboard = new App.GuiTable(15+260*0, 190, 20, [{id:'name', name:"Name"},{id:'score', name:"Cycles"}]);
+	success.tickLeaderboard.emptyMessage = '';
+	success.instLeaderboard = new App.GuiTable(15+260*1, 190, 20, [{id:'name', name:"Name"},{id:'score', name:"Instructions"}]);
+	success.instLeaderboard.emptyMessage = '';
+	success.autoLeaderboard = new App.GuiTable(15+260*2, 190, 20, [{id:'name', name:"Name"},{id:'score', name:"Automaton"}]);
+	success.autoLeaderboard.emptyMessage = '';
+	success.cellLeaderboard = new App.GuiTable(15+260*3, 190, 20, [{id:'name', name:"Name"},{id:'score', name:"Cells"}]);
+	success.cellLeaderboard.emptyMessage = '';
 
 	success.gui.addComponent(success.backButton);
 	success.gui.addComponent(success.returnButton);
 	success.gui.addComponent(success.tickLeaderboard);
-
+	success.gui.addComponent(success.instLeaderboard);
+	success.gui.addComponent(success.autoLeaderboard);
+	success.gui.addComponent(success.cellLeaderboard);
+	success.gui.addComponent(success.submitButton);
+	success.gui.addComponent(success.username);
 	success.alpha = success.goalAlpha = 0;
 
 	success.serverCallback = function(json){
 		console.log(json);
 		success.tickLeaderboard.setData(json.tickCount);
+		success.instLeaderboard.setData(json.instruCount);
+		success.autoLeaderboard.setData(json.autoCount);
+		success.cellLeaderboard.setData(json.cellCount);
 	}
 
 	success.enterFunc = function(){
 		success.requestStaticRenderUpdate = true;
 		success.updatingActive = true;
 		success.exitFlag = false;
+
+		var cellCount = 0;
+		for(var i in App.Game.currentPlanningLevel.grid)
+			for(var j in App.Game.currentPlanningLevel.grid[i])
+				if(App.Game.currentPlanningLevel.grid[i][j])
+					cellCount++;
+
+		success.scores[0] = App.Game.cycle;
+		success.scores[1] = App.Game.currentSimulationLevel.instructions.length;
+		success.scores[2] = App.Game.currentSimulationLevel.automatons.length;
+		success.scores[3] = cellCount;
 
 		//get the scoreboard json
 		App.Server.getScore(App.Game.currentPlanningLevel.id, success.serverCallback);
@@ -67,6 +101,7 @@ App.setupSuccessGui = function(){
 
 		success.gfx.fillStyle = '#fff';
 		text(success.gfx,"Success",15,15,36,-3);
+		text(success.gfx, 'Your Scores: Cycles Elapsed: ' + success.scores[0] + ', Instructions Used: ' + success.scores[1] + ', Automaton Used: ' + success.scores[2] + ', Cells Used: ' + success.scores[3], 15, 125, 15, -1);
 
 		if(success.gui.render())
 			success.requestStaticRenderUpdate = true;
