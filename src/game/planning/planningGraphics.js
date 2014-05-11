@@ -44,7 +44,14 @@ App.PlanningGraphics = function(){
 
 			if(that.click1){
 				if(cellX === that.lmb[3] && cellY === that.lmb[4] && App.GameRenderer.mouseC === that.lmb[5]){
+					var inst = null;
+					if(App.Game.currentPlanningLevel.grid[cellX] && App.Game.currentPlanningLevel.grid[cellX][cellY])
+						inst = App.Game.currentPlanningLevel.grid[cellX][cellY][App.GameRenderer.mouseC];
+					if(!inst) return;
+					App.ModeHandler.pushMode('modder');
+					App.ModeHandler.currentMode.init(inst);
 					console.log('double click');
+					return;
 				}
 				that.click1 = false;
 			}
@@ -93,7 +100,7 @@ App.PlanningGraphics = function(){
 
 	this.mouseUp = function(button, cellX, cellY){
 		if(button === 'lmb'){
-			
+
 			that.lmb[0] = 'up';
 			that.lmb[1] = App.InputHandler.mouseX;
 			that.lmb[2] = App.InputHandler.mouseY;
@@ -168,7 +175,7 @@ App.PlanningGraphics = function(){
 		gfx.fillStyle = 'rgba(100,100,100,.5)';
 		gfx.strokeStyle = '#ffffff';
 
-		var gridX, gridY, color, size, scrnX, scrnY, offsetX, offsetY;		
+		var gridX, gridY, color, size, scrnX, scrnY, offsetX, offsetY;
 		var i = 0;
 
 		App.GameRenderer.translateCanvas(gfx);
@@ -282,7 +289,7 @@ App.PlanningGraphics = function(){
 		}
  	}
 
-	this.drawSelectionBox = function(gfx){	
+	this.drawSelectionBox = function(gfx){
 		var curX = that.mousePos[0];
 		var curY = that.mousePos[1];
 		var downX = that.lmb[1];

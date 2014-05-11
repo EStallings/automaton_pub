@@ -30,8 +30,9 @@ App.setupModificationGui = function(){
 			letter = '?';
 
 		if(letter !== '?' && !modder.syntaxError && modder.fn !== null){
-			App.Game.removeStream(letter);
+			App.Game.removeStream(modder.oldLetter);
 			App.Game.addStream(letter, (modder.instruction.type === 8), modder.streamComps[1].txt, 10, modder.instruction.color);
+			modder.oldLetter = letter;
 		}
 		modder.instruction.data = letter; //not undo-able
 		App.GameRenderer.requestStaticRenderUpdate = true;
@@ -48,7 +49,7 @@ App.setupModificationGui = function(){
 
 	}
 	modder.syntaxError = false;
-
+	modder.oldLetter = 'I';
 
 	modder.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	modder.gui = new App.guiFrame(modder.gfx);
