@@ -12,6 +12,9 @@ App.makeGame = function(){
 	game.inStreams  = []; // inStreams[variable] = [raw,parsed,[gives],stackPtr,color]
 	game.outStreams = []; // outStreams[variable] = [raw,parsed,[wants],stackPtr,quota,description,color]
 	game.flipFlop   = [true,true,true,true];
+	game.visibilities=[true,true,true,true];
+
+	game.toggleVisible = function(c){game.visibilities[c] = !game.visibilities[c]; App.GameRenderer.requestStaticRenderUpdate = true;}
 
 	game.createNewLevel = function(name,width,height){
 		var lvl = new App.PlanningLevel();

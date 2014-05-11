@@ -131,10 +131,10 @@ App.setupPlanGui = function(){
 	planMode.lockedToggle[3] = addBtn(356,-49-5,30,3,true,'Yellow Locked', function(){App.Game.currentPlanningLevel.toggleLock(3)});
 
 	planMode.visibleToggle = [];
-	planMode.visibleToggle[0] = addBtn(260,-17-5,30,0,true,'Red Visible',    function(){/* TODO: IMPLEMENT ME */}).toggled = true; // TODO: move the toggled = true somewhere else
-	planMode.visibleToggle[1] = addBtn(292,-17-5,30,1,true,'Green Visible',  function(){/* TODO: IMPLEMENT ME */}).toggled = true; // TODO: move the toggled = true somewhere else
-	planMode.visibleToggle[2] = addBtn(324,-17-5,30,2,true,'Blue Visible',   function(){/* TODO: IMPLEMENT ME */}).toggled = true; // TODO: move the toggled = true somewhere else
-	planMode.visibleToggle[3] = addBtn(356,-17-5,30,3,true,'Yellow Visible', function(){/* TODO: IMPLEMENT ME */}).toggled = true; // TODO: move the toggled = true somewhere else
+	planMode.visibleToggle[0] = addBtn(260,-17-5,30,0,true,'Red Visible',    function(){App.Game.toggleVisible(0)}).toggled = true; // TODO: move the toggled = true somewhere else
+	planMode.visibleToggle[1] = addBtn(292,-17-5,30,1,true,'Green Visible',  function(){App.Game.toggleVisible(1)}).toggled = true; // TODO: move the toggled = true somewhere else
+	planMode.visibleToggle[2] = addBtn(324,-17-5,30,2,true,'Blue Visible',   function(){App.Game.toggleVisible(2)}).toggled = true; // TODO: move the toggled = true somewhere else
+	planMode.visibleToggle[3] = addBtn(356,-17-5,30,3,true,'Yellow Visible', function(){App.Game.toggleVisible(3)}).toggled = true; // TODO: move the toggled = true somewhere else
 
 	addBtn(384,-85-5,22,'#808080',false,'New',function(){
 		App.confirmGui.title = "Create A New Level?";

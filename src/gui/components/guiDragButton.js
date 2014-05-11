@@ -4,6 +4,7 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 	this.gui = gui;
 	this.tooltip = tooltip;
 	this.hotkey  = hotkey;
+	this.setLocked = false; //remembers if
 
 	//for streams and flipflops
 	this.data = data;
@@ -43,9 +44,6 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 
 			gfx.fillStyle = '#000000';
 			text(gfx, that.tooltip, that.getx() + 3, App.Canvases.height-103-21, 24-6, -2);
-
-
-
 		}
 	}
 
@@ -100,7 +98,6 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 
 		//TODO make instructino update based on direction if applicable
 		var t = this.instruction;
-		console.log('dragged to ' + nx + ',' + ny);
 		App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(nx,ny,c,t));
 	}
 

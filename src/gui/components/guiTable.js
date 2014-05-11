@@ -18,6 +18,7 @@ App.GuiTable = function(x, y, maxRows, descrip){
 	this.loadingMessage='Loading...';
 	this.loading = false;
 	this.functional = true;
+	this.sortAlphabetical = true;
 
 	this.rowHeight       = 24;
 	this.colWidth        = 130;
@@ -179,10 +180,16 @@ App.GuiTable = function(x, y, maxRows, descrip){
 		var sign = (this.lastSortedCol === col)? this.lastSortedSign * -1 : 1;
 		this.lastSortedCol = col;
 		this.lastSortedSign = sign;
-
-		this.json.sort(function(a, b){
-			return (a[col].toLowerCase() < b[col].toLowerCase()) ? (-1 * sign) : (1 * sign);
-		});
+		if(!this.sortAlphabetical){
+			this.json.sort(function(a, b){
+				return (parseInt(a[col]) < parseInt(b[col])) ? (-1 * sign) : (1 * sign);
+			});
+		}
+		else{
+			this.json.sort(function(a, b){
+				return (a[col].toLowerCase() < b[col].toLowerCase()) ? (-1 * sign) : (1 * sign);
+			});
+		}
 	}
 }
 App.GuiTable.prototype = Object.create(g.Component);

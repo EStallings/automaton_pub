@@ -477,6 +477,8 @@ App.PlanningLevel = function(){
 	this.staticRender = function(){
 		var cs = App.GameRenderer.cellSize;
 		for(var c=0;c<4;++c){
+			if(!App.Game.visibilities[c])
+				continue;
 			App.GameRenderer.instructionGfx.save();
 			switch(c){
 				case 0:App.GameRenderer.instructionGfx.translate(0,0);break;

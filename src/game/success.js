@@ -29,21 +29,18 @@ App.setupSuccessGui = function(){
 
 	success.scores = [0,0,0,0];
 
-	//TODO add:
-	// 1) enter name box
-	// 2) submit high score backButton
-
-	// 3) leaderboards for other metrics
-  // 4) auto refresh leaderboards upon submit high score.
-
 	success.tickLeaderboard = new App.GuiTable(15+260*0, 190, 20, [{id:'name', name:"Name"},{id:'score', name:"Cycles"}]);
 	success.tickLeaderboard.emptyMessage = '';
+	success.tickLeaderboard.sortAlphabetical = false;
 	success.instLeaderboard = new App.GuiTable(15+260*1, 190, 20, [{id:'name', name:"Name"},{id:'score', name:"Instructions"}]);
 	success.instLeaderboard.emptyMessage = '';
+	success.instLeaderboard.sortAlphabetical = false;
 	success.autoLeaderboard = new App.GuiTable(15+260*2, 190, 20, [{id:'name', name:"Name"},{id:'score', name:"Automaton"}]);
 	success.autoLeaderboard.emptyMessage = '';
+	success.autoLeaderboard.sortAlphabetical = false;
 	success.cellLeaderboard = new App.GuiTable(15+260*3, 190, 20, [{id:'name', name:"Name"},{id:'score', name:"Cells"}]);
 	success.cellLeaderboard.emptyMessage = '';
+	success.cellLeaderboard.sortAlphabetical = false;
 
 	success.gui.addComponent(success.backButton);
 	success.gui.addComponent(success.returnButton);
