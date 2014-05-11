@@ -17,7 +17,7 @@ window.onload = function(){
 	App.setupSubmitLevel();
 	App.setupCreateAccount();
 	App.setupSuccessGui();
-
+	App.setupModificationGui();
 
 	// TODO: split below into normal and sandbox versions?
 	App.setupPlanGui();

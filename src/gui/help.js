@@ -43,7 +43,7 @@ App.setupHelp = function(){
 		help.gfx.clearRect(0,0,App.Canvases.width,App.Canvases.height);
 
 		help.gfx.fillStyle = '#ffffff';
-		text(help.gfx,"How to Play",15,15,36,-3);
+		text(help.gfx,"Help",15,15,36,-3);
 
 		if(help.gui.render())
 			help.requestStaticRenderUpdate = true;

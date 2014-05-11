@@ -103,6 +103,10 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 
 		//TODO make instructino update based on direction if applicable
 		var t = this.instruction;
+		if(t === 8 || t === 9)// for streams
+		{
+			App.ModeHandler.pushMode('modder');
+		}
 		App.Game.currentPlanningLevel.insert(new App.PlanningInstruction(nx,ny,c,t));
 	}
 

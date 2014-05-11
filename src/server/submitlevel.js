@@ -1,8 +1,7 @@
 App.setupSubmitLevel = function(){
 	var submit = App.ModeHandler.addNewMode('submit level');
 
-		// ---------------------------------------------
-
+	// ---------------------------------------------
 
 	submit.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	submit.gui = new App.guiFrame(submit.gfx);
