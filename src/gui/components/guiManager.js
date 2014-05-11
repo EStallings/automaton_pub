@@ -8,6 +8,7 @@ App.guiFrame = function(gfx){
 	this.gfx = gfx;
 	this.frame = [];
 	this.lastActive = null;
+	this.blocking = null;
 
 	//gets reset after one frame.
 	var that = this;
@@ -70,8 +71,11 @@ App.guiFrame = function(gfx){
 
 		for(var fn in comps.f){
 			if(comps.f[fn].locked) continue;
-			comps.f[fn].clickEnd();
+			if((that.blocking && comps.f[fn] === that.blocking) || !that.blocking)
+				comps.f[fn].clickEnd();
 		}
+		that.blocking = null;
+
 		for(var f in that.frame)
 			that.frame[f]._clickEnd();
 		for(var f in that.overlay)
