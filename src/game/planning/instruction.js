@@ -5,4 +5,5 @@ App.PlanningInstruction = function(x,y,color,type,data,locked){
 	this.type     = type;
 	this.data     = data;
 	this.locked = locked;
+	this.isProtected = false;
 }

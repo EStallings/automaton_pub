@@ -222,6 +222,7 @@ App.PlanningLevel = function(){
 		for(i in instructions){
 			if(that.isLocked(instructions[i].color)){ /* console.log('layer locked'); */ return; }
 			if(that.instructionLock === true && instructions[i].locked){ return; }
+			if(instructions[i].isProtected) { continue; }
 			that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = null;
 		}
 		that.undoStack.push(new that.operation('del', instructions, null, null, null, null));

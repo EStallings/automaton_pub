@@ -52,7 +52,7 @@ App.setupPlanGui = function(){
 	addDragBtn(  76,-73-5,16,false,'[ Y ] Sync','Y');
 	addDragBtn( 124,-73-5,13,false,'[ U ] Add','U');
 	addDragBtn( 172,-73-5,15,false,'[ I ] Set Value','I');
-	addDragBtn( 220,-73-5, 8,false,'[ O ] Input Stream','');
+	addDragBtn( 220,-73-5, 8,false,'[ O ] Input Stream','','I');
 	addDragBtn(-164,-25-5, 7,false,'[ A ] Change Direction Left','A');
 	addDragBtn(-116,-25-5, 6,false,'[ S ] Change Direction Down','S');
 	addDragBtn( -68,-25-5, 5,false,'[ D ] Change Direction Right','D');
@@ -61,7 +61,7 @@ App.setupPlanGui = function(){
 	addDragBtn(  76,-25-5,17,false,'[ H ] Toggle Color','H');
 	addDragBtn( 124,-25-5,14,false,'[ J ] Subtract','J');
 	addDragBtn( 172,-25-5,18,false,'[ K ] Pause','K');
-	addDragBtn( 220,-25-5, 9,false,'[ L ] Output Stream','');
+	addDragBtn( 220,-25-5, 9,false,'[ L ] Output Stream','','O');
 
 	addBtn(-284,-81-5,30,'#808080',false,'Low Speed', function(){
 		App.Game.setSimulationSpeed(512);

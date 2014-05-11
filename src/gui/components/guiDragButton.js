@@ -4,7 +4,6 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 	this.gui = gui;
 	this.tooltip = tooltip;
 	this.hotkey  = hotkey;
-	this.setLocked = false; //remembers if
 
 	//for streams and flipflops
 	this.data = data;
@@ -19,6 +18,8 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 
 	delete(this.renderLayers['Drag']);
 	this.renderLayers['Inst'] = function(gfx){
+		if(that.islocked())
+			return;
 		gfx.lineWidth = 2;
 
 		var interp = (that.interpmode === 'exit') ?
@@ -34,7 +35,8 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 			that.instruction,
 			that.getx()-1, that.gety()-1,
 			App.GuiInstDrag.globalColor,
-			that.w+2);
+			that.w+2,
+			that.data);
 
 		if(that.hovering){
 			var w = textWidth(gfx, that.tooltip, 24-6, -2);
@@ -46,9 +48,12 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 			text(gfx, that.tooltip, that.getx() + 3, App.Canvases.height-103-21, 24-6, -2);
 		}
 	}
+	this.islocked = function(){
+		return App.GuiInstDrag.lockedInstructions.indexOf(this.instruction) != -1;
+	}
 
 	this.subClickStart = function(){
-		if(App.Game.currentPlanningLevel.locks[App.GuiInstDrag.globalColor]){
+		if(App.Game.currentPlanningLevel.locks[App.GuiInstDrag.globalColor] || this.islocked()){
 			this.preventDrag = true;
 			return;
 		}
@@ -110,6 +115,7 @@ App.GuiInstDrag.registry = [];
 App.GuiInstDrag.globalColor = 0;
 App.GuiInstDrag.colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00'];
 App.GuiInstDrag.direction = 0;
+App.GuiInstDrag.lockedInstructions = [];
 App.GuiInstDrag.changeGlobalColor = function(color){
 	this.globalColor = color;
 	for(var i = 0; i < this.registry.length; i++){

@@ -56,6 +56,7 @@ App.makeGame = function(){
 			if(d !== undefined && game.streams[d])return undefined;
 		//	if(!lvl.insert(x,y,c,t,d))return undefined;
 			var ins = new App.PlanningInstruction(x,y,c,t,d);
+			ins.isProtected = true;
 			if(!lvl.insert(ins))return undefined;
 			switch(t){ // TODO: MOVE THIS TO PLANNING LEVEL INSERT | ADD APPROPRIATE STUFF TO PLANNING LEVEL DELETE
 				case App.InstCatalog.TYPES['IN']:
