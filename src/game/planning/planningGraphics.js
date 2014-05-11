@@ -6,6 +6,7 @@ App.PlanningGraphics = function(){
 	this.mmb = ['up',-1,-1,-1,-1,-1];
 	this.rmb = ['up',-1,-1,-1,-1,-1];
 	this.mousePos = [-1,-1,-1,-1,-1]; // current mouse position [scrnX, scrnY, cellX, cellY, cellC]
+	this.click1 = false;
 
 	this.lmbDown = []; this.lmbUp = [];
 	this.lmbDrag = false; this.lmbStartOnTile = false;
@@ -30,12 +31,21 @@ App.PlanningGraphics = function(){
 
 	this.mouseDown = function(button, cellX, cellY){
 		if(button === 'lmb'){
+
+			if(that.click1){
+				if(cellX === that.lmb[3] && cellY === that.lmb[4] && App.GameRenderer.mouseC === that.lmb[5]){
+					console.log('double click');
+				}
+				that.click1 = false;
+			}
+
 			that.lmb[0] = 'down';
 			that.lmb[1] = App.InputHandler.mouseX;
 			that.lmb[2] = App.InputHandler.mouseY;
 			that.lmb[3] = cellX;
 			that.lmb[4] = cellY;
 			that.lmb[5] = App.GameRenderer.mouseC;
+			that.click1 = true;
 
 			var menuTest = App.ModeHandler.currentMode.gui.testCoordinates(that.lmb[1],that.lmb[2]);
 

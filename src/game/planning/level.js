@@ -233,8 +233,7 @@ App.PlanningLevel = function(){
 	}
 
 	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
-	// TODO overwrite
-	// TODO disallow moving outside grid boundary
+	// TODO prevent moving one stream into the same cell as another
 	this.move = function(instructions,shiftX,shiftY){
 
 		instructions = that.toList(instructions);
@@ -319,14 +318,46 @@ App.PlanningLevel = function(){
 		}
 
 		that.undoStack.push(new that.operation('cpy', instructions, shiftX, shiftY, null, null));
-		that.killRedo('kill redo: move');
+		that.killRedo('kill redo: cpy');
 		App.GameRenderer.requestStaticRenderUpdate = true;
 		that.validateGrid();
 	}
 
-	// TODO
-	// this function takes a list of coordinate triplets and changes the specified parameter of all of them to value
-	this.modify = function(instructions, parameter, value){}
+	// this function takes a list of instructions and changes the specified parameter of all of them to value
+	this.modify = function(instructions, parameter, value){
+		instructions = that.toList(instructions);
+		// check locks and store old colors
+		// TODO if more than one instruction is in the same cell and a color change happens it will cause problems
+		oldVal = [];
+		for(i in instructions){
+			if(that.instructionLock === true && instructions[i].locked){ return; }
+			oldVal[i] = instructions[i].color;
+		}
+
+		if(parameter === 'color'){ // color change
+			// check that spaces are free for the new colors
+			for(i in instructions){
+				if(that.getInstruction(instructions[i].x,instructions[i].y, value)){ return; }
+			}
+			// change value and move
+			for(i in instructions){
+				instructions[i].color = value;
+				that.grid[instructions[i].x][instructions[i].y][instructions[i].color] = instructions[i];
+				that.grid[instructions[i].x][instructions[i].y][oldVal[i]] = null;
+			}
+		}else{ // changes other than color
+			for(i in instructions){
+				oldVal[i] = instructions[i][parameter];
+				instructions[i][parameter] = value;
+			}
+		}
+
+		// undo stuff
+		that.undoStack.push(new that.operation('mod', instructions, 0, 0, parameter, value, oldVal));
+		that.killRedo('kill redo: mod');
+		App.GameRenderer.requestStaticRenderUpdate = true;
+		that.validateGrid();
+	}
 
 	// each call to this function pops the undo stack, and undoes whatever operation it finds
 	this.undo = function(){
@@ -368,7 +399,7 @@ App.PlanningLevel = function(){
 				that.grid[x-op.shiftX][y-op.shiftY][c].x -= op.shiftX;
 				that.grid[x-op.shiftX][y-op.shiftY][c].y -= op.shiftY;
 				that.grid[x][y][c] = null;
-				that.redoStack.push(op);
+				that.redoStack.push(op); //// TODO should definently be outside loop
 			}
 		}
 		else if(op.opId === 'cpy'){
@@ -378,6 +409,27 @@ App.PlanningLevel = function(){
 				var c = op.instructions[i].color;
 
 				that.grid[x+op.shiftX][y+op.shiftY][c] = null;
+				that.redoStack.push(op);
+			}
+		}
+		else if(op.opId === 'mod'){
+			for(i in op.instructions){
+				var x = op.instructions[i].x;
+				var y = op.instructions[i].y;
+				var c = op.instructions[i].color;
+
+				if(op.param === 'color'){
+					for(i in op.instructions){
+						op.instructions[i][op.param] = op.oldVal[i];
+						that.grid[x][y][op.newVal] = null;
+						that.grid[x][y][op.oldVal[i]] = op.instructions[i];
+					}
+				}else{
+					for(i in op.instructions){
+						op.instructions[i][op.param] = op.oldVal[i];
+					}
+				}
+
 				that.redoStack.push(op);
 			}
 		}
