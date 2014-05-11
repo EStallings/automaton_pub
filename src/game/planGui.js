@@ -64,7 +64,7 @@ App.setupPlanGui = function(){
 	addDragBtn( 172,-25-5,18,false,'[ K ] Pause','K');
 	addDragBtn( 220,-25-5, 9,false,'[ L ] Output Stream','','O');
 
-	var panSpeed = 0.15;
+	var panSpeed = 0.25;
 	addBtn(-348, -81-5, 30,'#808080',false,'Nav Up',    function(){App.GameRenderer.goalRenderY += App.Engine.elapsed*panSpeed; App.GameRenderer.constrain(); App.GameRenderer.requestStaticRenderUpdate = true;}, null, true);
 	addBtn(-380, -49-5, 30,'#808080',false,'Nav Left',  function(){App.GameRenderer.goalRenderX += App.Engine.elapsed*panSpeed; App.GameRenderer.constrain(); App.GameRenderer.requestStaticRenderUpdate = true;}, null, true);
 	addBtn(-348, -49-5, 30,'#808080',false,'Nav Reset', function(){App.GameRenderer.bestFit();}, null, false);
