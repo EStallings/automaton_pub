@@ -254,7 +254,7 @@ info[7] = function(gfx) {
 }
 
 info[8] = function(gfx) {
-	var title = "Fork";
+	var title = "Flip Flop";
 	var str = [];
 	str[0] = ""
 	help(gfx, title, str);
@@ -274,7 +274,7 @@ info[10] = function(gfx) {
 	help(gfx, title, str);
 }
 info[11] = function(gfx) {
-	var title = "Operators";
+	var title = "Add & Subtract";
 	var str = [];
 	str[0] = ""
 	help(gfx, title, str);
@@ -287,24 +287,30 @@ info[12] = function(gfx) {
 
 }
 info[13] = function(gfx) {
-	var title = "Conditional Token";
+	var title = "Positive Switch";
 	var str = [];
 	str[0] = ""
 	help(gfx, title, str);
 }
 info[14] = function(gfx) {
-	var title = "Conditional +";
+	var title = "Equality Switch";
 	var str = [];
 	str[0] = ""
 	help(gfx, title, str);
 }
 info[15] = function(gfx) {
-	var title = "Conditional Equal";
+	var title = "Token Switch";
 	var str = [];
 	str[0] = ""
 	help(gfx, title, str);
 }
 info[16] = function(gfx) {
+	var title = "Sync";
+	var str = [];
+	str[0] = ""
+	help(gfx, title, str);
+}
+info[17] = function(gfx) {
 	var title = "Pause";
 	var str = [];
 	str[0] = ""
