@@ -316,7 +316,8 @@ App.PlanningLevel = function(){
 		oldVal = [];
 		for(i in instructions){
 			if(that.instructionLock === true && instructions[i].locked){ return; }
-			oldVal[i] = instructions[i].color;
+			oldVal[i] = instructions[i][parameter];
+			if(oldVal[i] === value){ return; }
 		}
 
 		if(parameter === 'color'){ // color change
