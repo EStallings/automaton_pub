@@ -1,6 +1,12 @@
 App.setupModificationGui = function(){
 	var modder = App.ModeHandler.addNewMode('modder');
 	var returnFunc = function(){
+		if(modder.timeout > 0) return;
+
+		if(modder.str){
+			changeLetter(modder.streamComps[0].txt);
+			changeFunction(modder.streamComps[1].txt);
+		}
 		modder.requestStaticRenderUpdate = true;
 		App.ModeHandler.popMode();
 	}
@@ -23,18 +29,37 @@ App.setupModificationGui = function(){
 		App.GameRenderer.requestStaticRenderUpdate = true;
 	}
 
+	var changeGrabDrop = function(grabdrop){
+		if(grabdrop == 'grab')
+			App.Game.currentPlanningLevel.modify(modder.instruction, 'type', 10);
+		else if(grabdrop == 'drop')
+			App.Game.currentPlanningLevel.modify(modder.instruction, 'type', 11);
+		else
+			App.Game.currentPlanningLevel.modify(modder.instruction, 'type', 12);
+
+		App.GameRenderer.requestStaticRenderUpdate = true;
+	}
+
 	var changeLetter = function(letter){
 		if(letter.length > 1 || letter < 'A' || letter > 'Z')
 			letter = '?';
-		if(App.Game.streams[letter])
+		if(App.Game.streams[letter] && letter !== modder.instruction.data)
 			letter = '?';
+		console.log('start');
+		console.log(letter);
 
 		if(letter !== '?' && !modder.syntaxError && modder.fn !== null){
-			App.Game.removeStream(modder.oldLetter);
-			App.Game.addStream(letter, (modder.instruction.type === 8), modder.streamComps[1].txt, 10, modder.instruction.color);
-			modder.oldLetter = letter;
+			App.Game.removeStream(modder.instruction.data);
+			console.log(modder.instruction.data);
+			App.Game.addStream(letter,
+				(modder.instruction.type === 8),
+				modder.fn,
+				modder.streamComps[1].txt,
+				10,
+				modder.instruction.color);
 		}
-		modder.instruction.data = letter; //not undo-able
+		if(letter !== '?')
+			App.Game.currentPlanningLevel.modify(modder.instruction, 'data', letter);
 		App.GameRenderer.requestStaticRenderUpdate = true;
 	}
 	//change the function for an input stream
@@ -44,22 +69,26 @@ App.setupModificationGui = function(){
 		try {
 			modder.syntaxError = false;
 			modder.fn = Parser.parse("" + fn);
+			changeLetter(modder.instruction.data);
 		}
-		catch(err) {modder.syntaxError = true; }
+		catch(err) { modder.syntaxError = true; }
 
 	}
 	modder.syntaxError = false;
-	modder.oldLetter = 'I';
+	modder.timeout = 0;
 
 	modder.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	modder.gui = new App.guiFrame(modder.gfx);
 
-	modder.applyButton = new App.GuiTextButton(15,56,200,000,'Apply', returnFunc,false,null,null);
-	modder.applyButton.hoverColor = '#af1010';
+	modder.applyButton = new App.GuiTools.Button(0, 0, App.Canvases.width, App.Canvases.height, 0, 0, returnFunc, false, null, null);
+	modder.applyButton.render = function(){};
+	modder.applyButton.updatePosition = function(){modder.applyButton.w = App.Canvases.width; modder.applyButton.h = App.Canvases.height;};
+	modder.applyButton.refuseOthers = true;
 
 	modder.colorComps  = []; //for the components that are used for color
 	modder.streamComps = []; //for the components used for streams
 	modder.dirComps    = []; //for the components used for directional instructions
+	modder.grabComps   = []; //for grab/drop and grab-drop
 
 	modder.colorComps[0] = new App.GuiTools.Button(15+50*0, 150, 30, 30, 0, 0, function(){changeColor(0)}, false, null, null);
 	modder.colorComps[0].baseColor = modder.colorComps[0].hoverColor = App.FILL_COLOR[0];
@@ -115,7 +144,38 @@ App.setupModificationGui = function(){
 			modder.dirComps[3].data);
 	}
 
-	modder.streamComps[0] = new App.GuiTextBox(15, 250, 30, 20, "?", 0, 0, null, null);
+	modder.grabComps[0] = new App.GuiTools.Button(15+50*0, 250, 30, 30, 0, 0, function(){changeGrabDrop('grab')}, false, null, null);
+	modder.grabComps[0].render = function(gfx){
+		App.InstCatalog.render(
+			gfx,
+			10,
+			modder.grabComps[0].getx()-1, modder.grabComps[0].gety()-1,
+			modder.instruction.color,
+			modder.grabComps[0].w+2,
+			modder.grabComps[0].data);
+	}
+	modder.grabComps[1] = new App.GuiTools.Button(15+50*1, 250, 30, 30, 0, 0, function(){changeGrabDrop('drop')}, false, null, null);
+	modder.grabComps[1].render = function(gfx){
+		App.InstCatalog.render(
+			gfx,
+			11,
+			modder.grabComps[1].getx()-1, modder.grabComps[1].gety()-1,
+			modder.instruction.color,
+			modder.grabComps[1].w+2,
+			modder.grabComps[1].data);
+	}
+	modder.grabComps[2] = new App.GuiTools.Button(15+50*2, 250, 30, 30, 0, 0, function(){changeGrabDrop('grabdrop')}, false, null, null);
+	modder.grabComps[2].render = function(gfx){
+		App.InstCatalog.render(
+			gfx,
+			12,
+			modder.grabComps[2].getx()-1, modder.grabComps[2].gety()-1,
+			modder.instruction.color,
+			modder.grabComps[2].w+2,
+			modder.grabComps[2].data);
+	}
+
+	modder.streamComps[0] = new App.GuiTextBox(15, 250, 30, 20, "X", 0, 0, null, null);
 	modder.streamComps[0].limit = 1;
 	modder.streamComps[0].imposeUppercase = true;
 	modder.streamComps[0].changeListener = function(){changeLetter(modder.streamComps[0].txt)};
@@ -130,12 +190,14 @@ App.setupModificationGui = function(){
 	modder.baseType = 0;
 	modder.dir = false;
 	modder.str = false;
+	modder.gd = false;
 	for(var c in modder.colorComps){
 		modder.gui.addComponent(modder.colorComps[c]);
 	}
 
 		// ---------------------------------------------
 	modder.init = function(instruction){
+		modder.timeout = 60;
 		modder.instruction = instruction;
 		modder.baseType = getBase(instruction.type);
 		var f = false;
@@ -154,16 +216,30 @@ App.setupModificationGui = function(){
 			modder.str = true;
 			for(var c in modder.streamComps)
 				modder.gui.addComponent(modder.streamComps[c])
-			if(modder.baseType == 8)
+			if(modder.baseType == 8){
 				modder.streamComps[1].txt = 'random(0, 10)';
-			else
+				modder.streamComps[0].txt = 'I';
+			}
+			else{
+				modder.streamComps[0].txt = 'O';
 				modder.streamComps[1].txt = 'I';
+			}
 			modder.fn = Parser.parse(modder.streamComps[1].txt);
 		}
 		else{
 			modder.str = false;
 			for(var c in modder.streamComps)
 				modder.gui.removeComponent(modder.streamComps[c])
+		}
+		if(modder.baseType >= 10 && modder.baseType <= 12){
+			modder.gd = true;
+			for(var c in modder.grabComps)
+				modder.gui.addComponent(modder.grabComps[c]);
+		}
+		else{
+			modder.gd = false;
+			for(var c in modder.grabComps)
+				modder.gui.removeComponent(modder.grabComps[c]);
 		}
 	}
 
@@ -178,6 +254,7 @@ App.setupModificationGui = function(){
 	}
 
 	modder.updateFunc = function(){
+		modder.timeout --;
 		if(modder.gui.update())
 			modder.requestStaticRenderUpdate = true;
 
@@ -196,6 +273,9 @@ App.setupModificationGui = function(){
 		}
 		else if(modder.dir)
 			text(modder.gfx, 'Change Direction', 15, 220, 20, -2);
+
+		else if(modder.gd)
+			text(modder.gfx, 'Grab/Drop', 15, 220, 20, -2);
 
 		if(modder.gui.render())
 			modder.requestStaticRenderUpdate = true;

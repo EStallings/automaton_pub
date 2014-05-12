@@ -61,6 +61,7 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 		if(this.instruction >=4 && this.instruction <= 7)
 			App.GuiInstDrag.changeDirection(this.instruction-4);
 		this.ignoreHover = true;
+		this.gui.blocking = this;
 	};
 
 	//The drag part of 'drag and drop'
@@ -104,11 +105,6 @@ App.GuiInstDrag = function(x, y, delay, instruction, dirsens, xorigin, yorigin, 
 		//TODO make instructino update based on direction if applicable
 		var t = this.instruction;
 		var instruction = new App.PlanningInstruction(nx,ny,c,t);
-		if(t === 8 || t === 9)// for streams
-		{
-			App.ModeHandler.pushMode('modder');
-			App.ModeHandler.currentMode.init(instruction);
-		}
 		App.Game.currentPlanningLevel.insert(instruction);
 	}
 

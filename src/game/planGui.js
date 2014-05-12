@@ -10,6 +10,7 @@ App.setupPlanGui = function(){
 	planMode.moveStart = undefined;
 	planMode.alpha = planMode.goalAlpha = 0;
 	planMode.gui = new App.guiFrame(planMode.gfx);
+	planMode.isSandbox = false;
 
 	var setRed    = function(){planMode.activeToggle[1].toggled = planMode.activeToggle[2].toggled = planMode.activeToggle[3].toggled = false; planMode.activeToggle[0].toggled = true; App.GuiInstDrag.changeGlobalColor(0); planMode.color = App.COLORS.RED;    planMode.requestStaticRenderUpdate = true};
 	var setGreen  = function(){planMode.activeToggle[0].toggled = planMode.activeToggle[2].toggled = planMode.activeToggle[3].toggled = false; planMode.activeToggle[1].toggled = true; App.GuiInstDrag.changeGlobalColor(1); planMode.color = App.COLORS.GREEN;  planMode.requestStaticRenderUpdate = true};
@@ -28,8 +29,9 @@ App.setupPlanGui = function(){
 		planMode.gui.addComponent(new App.GuiInstDrag(x,y,0,type,dirSense,'center','bottom',planMode.gui,tooltip,hotkey,data));
 	}
 
-	var addBtn = function(x,y,size,color,toggle,tooltip,callback,glyph){
+	var addBtn = function(x,y,size,color,toggle,tooltip,callback,glyph,continuous){
 		var btn = new App.GuiToolbarButton(x,y,size,0,color,'center','bottom',toggle,tooltip,callback,glyph);
+		btn.continuous = continuous || false;
 		planMode.gui.addComponent(btn);
 		return btn;
 	}
@@ -42,7 +44,7 @@ App.setupPlanGui = function(){
 		gfx.fillRect(planMode.instPanel.getx(), planMode.instPanel.gety(), planMode.instPanel.w, planMode.instPanel.h);
 	};planMode.gui.addComponent(planMode.instPanel);
 
-	addBtn(-348, -49-5, 94,'#808080',false,'NAVIGATION', function(){}); // TODO: REPLACE WITH NAVIGATION COMPONENT
+
 
 	addDragBtn(-164,-73-5, 0,true ,'[ Q ] Spawn Automaton','Q');
 	addDragBtn(-116,-73-5, 4,false,'[ W ] Change Direction Up','W');
@@ -62,6 +64,15 @@ App.setupPlanGui = function(){
 	addDragBtn( 124,-25-5,14,false,'[ J ] Subtract','J');
 	addDragBtn( 172,-25-5,18,false,'[ K ] Pause','K');
 	addDragBtn( 220,-25-5, 9,false,'[ L ] Output Stream','','O');
+
+	var panSpeed = 0.25;
+	addBtn(-348, -81-5, 30,'#808080',false,'Nav Up',    function(){App.GameRenderer.goalRenderY += App.Engine.elapsed*panSpeed; App.GameRenderer.constrain(); App.GameRenderer.requestStaticRenderUpdate = true;}, null, true);
+	addBtn(-380, -49-5, 30,'#808080',false,'Nav Left',  function(){App.GameRenderer.goalRenderX += App.Engine.elapsed*panSpeed; App.GameRenderer.constrain(); App.GameRenderer.requestStaticRenderUpdate = true;}, null, true);
+	addBtn(-348, -49-5, 30,'#808080',false,'Nav Reset', function(){App.GameRenderer.bestFit();}, null, false);
+	addBtn(-316, -49-5, 30,'#808080',false,'Nav Right', function(){App.GameRenderer.goalRenderX -= App.Engine.elapsed*panSpeed; App.GameRenderer.constrain(); App.GameRenderer.requestStaticRenderUpdate = true;}, null, true);
+	addBtn(-380, -17-5, 30,'#808080',false,'Zoom In',   function(){console.log('zoom in'); App.GameRenderer.zoom(App.Canvases.width/2, App.Canvases.height/2, 1); }, null, false);
+	addBtn(-348, -17-5, 30,'#808080',false,'Nav Down',  function(){App.GameRenderer.goalRenderY -= App.Engine.elapsed*panSpeed; App.GameRenderer.constrain(); App.GameRenderer.requestStaticRenderUpdate = true;}, null, true);
+	addBtn(-316, -17-5, 30,'#808080',false,'Zoom Out',  function(){App.GameRenderer.zoom(App.Canvases.width/2, App.Canvases.height/2, -1)}, null, false);
 
 	addBtn(-284,-81-5,30,'#808080',false,'Low Speed', function(){
 		App.Game.setSimulationSpeed(512);
@@ -136,18 +147,21 @@ App.setupPlanGui = function(){
 	planMode.visibleToggle[2] = addBtn(324,-17-5,30,2,true,'Blue Visible',   function(){App.Game.toggleVisible(2)}).toggled = true; // TODO: move the toggled = true somewhere else
 	planMode.visibleToggle[3] = addBtn(356,-17-5,30,3,true,'Yellow Visible', function(){App.Game.toggleVisible(3)}).toggled = true; // TODO: move the toggled = true somewhere else
 
-	addBtn(384,-85-5,22,'#808080',false,'New',function(){
+	planMode.newBut = addBtn(384,-85-5,22,'#808080',false,'New',function(){
 		App.confirmGui.title = "Create A New Level?";
 		App.confirmGui.yes = function(){
 			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
 			App.GameRenderer.bestFit();
 		};App.ModeHandler.pushMode('confirm');
 	},App.NewGlyph);
-	addBtn(384,-61-5,22,'#808080',false,'Upload', function(){
+
+	planMode.uploadBut = addBtn(384,-61-5,22,'#808080',false,'Upload', function(){
 		App.ModeHandler.pushMode('submit level');
 		planMode.requestStaticRenderUpdate = true;
 	},App.SaveGlyph);
-	addBtn(384,-37-5,22,'#808080',false,'Properties',function(){/* TODO: IMPLEMENT ME */},App.PropertiesGlyph);
+	planMode.propBut = addBtn(384,-37-5,22,'#808080',false,'Properties',function(){
+		App.ModeHandler.pushMode('properties');
+	},App.PropertiesGlyph);
 	addBtn(384,-13-5,22,'#808080',false,'[Esc] Return',returnToMenu,App.BackGlyph);
 
 //============================================================================//
@@ -159,6 +173,16 @@ App.setupPlanGui = function(){
 		planMode.goalAlpha = 1;
 		planMode.gui.gfx = planMode.gfx;
 		planMode.gui.enter();
+		if(planMode.isSandbox){
+			planMode.uploadBut.locked = false;
+			planMode.newBut.locked = false;
+			planMode.propBut.locked = false;
+		}
+		else{
+			planMode.uploadBut.locked = true;
+			planMode.newBut.locked = true;
+			planMode.propBut.locked = true;
+		}
 		setRed();
 		// TODO: reset locks
 		// TODO: reset visibilities
@@ -313,11 +337,7 @@ App.setupPlanGui = function(){
 
 		if(insCode !== undefined){
 			var ins = new App.PlanningInstruction(App.GameRenderer.mouseX,App.GameRenderer.mouseY,planMode.color,insCode);
-			if(ins.type === 8 || ins.type === 9)// for streams
-			{
-				App.ModeHandler.pushMode('modder');
-				App.ModeHandler.currentMode.init(ins);
-			}
+
 			App.Game.currentPlanningLevel.insert(ins);
 			App.Game.currentPlanningLevel.graphics.inserted = true;
 			App.GameRenderer.requestStaticRenderUpdate = true;
