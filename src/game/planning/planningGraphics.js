@@ -46,7 +46,7 @@ App.PlanningGraphics = function(){
 					var inst = null;
 					if(App.Game.currentPlanningLevel.grid[cellX] && App.Game.currentPlanningLevel.grid[cellX][cellY])
 						inst = App.Game.currentPlanningLevel.grid[cellX][cellY][App.GameRenderer.mouseC];
-					if(!inst) return;
+					if(!inst || inst.isProtected) return;
 					App.ModeHandler.pushMode('modder');
 					App.ModeHandler.currentMode.init(inst);
 					return;

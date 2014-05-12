@@ -12,7 +12,7 @@ App.setupPlanGui = function(){
 	planMode.gui = new App.guiFrame(planMode.gfx);
 	planMode.isSandbox = false;
 
-	var setRed    = function(){planMode.activeToggle[1].toggled = planMode.activeToggle[2].toggled = planMode.activeToggle[3].toggled = false; planMode.activeToggle[0].toggled = true; App.GuiInstDrag.changeGlobalColor(0); planMode.color = App.COLORS.RED;    planMode.requestStaticRenderUpdate = true};
+	var setRed    = function(){console.log('red'); planMode.activeToggle[1].toggled = planMode.activeToggle[2].toggled = planMode.activeToggle[3].toggled = false; planMode.activeToggle[0].toggled = true; App.GuiInstDrag.changeGlobalColor(0); planMode.color = App.COLORS.RED;    planMode.requestStaticRenderUpdate = true};
 	var setGreen  = function(){planMode.activeToggle[0].toggled = planMode.activeToggle[2].toggled = planMode.activeToggle[3].toggled = false; planMode.activeToggle[1].toggled = true; App.GuiInstDrag.changeGlobalColor(1); planMode.color = App.COLORS.GREEN;  planMode.requestStaticRenderUpdate = true};
 	var setBlue   = function(){planMode.activeToggle[0].toggled = planMode.activeToggle[1].toggled = planMode.activeToggle[3].toggled = false; planMode.activeToggle[2].toggled = true; App.GuiInstDrag.changeGlobalColor(2); planMode.color = App.COLORS.BLUE;   planMode.requestStaticRenderUpdate = true};
 	var setYellow = function(){planMode.activeToggle[0].toggled = planMode.activeToggle[1].toggled = planMode.activeToggle[2].toggled = false; planMode.activeToggle[3].toggled = true; App.GuiInstDrag.changeGlobalColor(3); planMode.color = App.COLORS.YELLOW; planMode.requestStaticRenderUpdate = true};

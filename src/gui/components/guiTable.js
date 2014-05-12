@@ -169,7 +169,6 @@ App.GuiTable = function(x, y, maxRows, descrip){
 		if((typeof json) === 'string'){
 			return;
 		}
-		console.log(json);
 		that.json = json;
 	}
 

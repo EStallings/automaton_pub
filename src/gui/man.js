@@ -74,6 +74,10 @@ var x_off = 15;
 var y_off = 15;
 var button_h = 28;
 
+// glyph dim
+var glyph_w = 128;
+var glyph_h = 128;
+
 // font sizes
 var title_font_size = 30;
 var text_font_size = 12;
@@ -105,9 +109,6 @@ drawText = function(gfx,str) {
 help = function(gfx, title, info, height) {
 	// dynammmic height	
 	var h = info.length * text_font_size + info.length*(text_font_size/2) + title_font_size + y_off*3;
-
-	var glyph_w = 128;
-	var glyph_h = 128;
 
 	if(h<128+y_off*2) { 
 		h = 128+y_off*2; 
@@ -156,6 +157,7 @@ info[1] = function(gfx) {
 	str[7] = "variable with the value the Stream" 
 	str[8] = "accepts."
 	help(gfx, title, str);
+	App.renderToken(gfx,w-glyph_w,56+28*2+x_off,0,128)
 }
 
 // grid text
@@ -220,24 +222,30 @@ info[6] = function(gfx) {
 	help(gfx, title, str);
 }
 
-// move right
 info[7] = function(gfx) {
 	var title = "Spawn";
 	var str = [];
 	str[0] = "Spawn instructions create an Automaton"
-	str[1] = "at a Grid Cell. The direction of the"
-	str[2] = "spawned instruction can be Up, Down,"
+	str[1] = "on Cell. The direction of the spawned"
+	str[2] = "instruction can be Up, Down, "
 	str[3] = "Right, or Left."
 	help(gfx, title, str);
 }
-/*
-// move left
+
 info[8] = function(gfx) {
-
+	var title = "Fork";
+	var str = [];
+	str[0] = "...................................."
+	help(gfx, title, str);
 }
+
 info[9] = function(gfx) {
-
+	var title = "Color Toggle";
+	var str = [];
+	str[0] = "...................................."
+	help(gfx, title, str);
 }
+/*
 info[10] = function(gfx) {
 
 }
