@@ -323,11 +323,7 @@ App.setupPlanGui = function(){
 
 		if(insCode !== undefined){
 			var ins = new App.PlanningInstruction(App.GameRenderer.mouseX,App.GameRenderer.mouseY,planMode.color,insCode);
-			if(ins.type === 8 || ins.type === 9)// for streams
-			{
-				App.ModeHandler.pushMode('modder');
-				App.ModeHandler.currentMode.init(ins);
-			}
+
 			App.Game.currentPlanningLevel.insert(ins);
 			App.Game.currentPlanningLevel.graphics.inserted = true;
 			App.GameRenderer.requestStaticRenderUpdate = true;

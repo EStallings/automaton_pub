@@ -71,7 +71,7 @@ App.guiFrame = function(gfx){
 
 		for(var fn in comps.f){
 			if(comps.f[fn].locked) continue;
-			if((that.blocking && comps.f[fn] === that.blocking) || !that.blocking)
+			if(((comps.f.length == 1) || !comps.f[fn].refuseOthers) && ((that.blocking && comps.f[fn] === that.blocking) || !that.blocking))
 				comps.f[fn].clickEnd();
 		}
 		that.blocking = null;

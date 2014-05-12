@@ -2,6 +2,8 @@ App.setupModificationGui = function(){
 	var modder = App.ModeHandler.addNewMode('modder');
 	var returnFunc = function(){
 		if(modder.timeout > 0) return;
+		changeLetter(modder.streamComps[0].txt);
+		changeFunction(modder.streamComps[1].txt);
 		modder.requestStaticRenderUpdate = true;
 		App.ModeHandler.popMode();
 	}
@@ -27,10 +29,8 @@ App.setupModificationGui = function(){
 	var changeGrabDrop = function(grabdrop){
 		if(grabdrop == 'grab')
 			App.Game.currentPlanningLevel.modify(modder.instruction, 'type', 10);
-
 		else if(grabdrop == 'drop')
 			App.Game.currentPlanningLevel.modify(modder.instruction, 'type', 11);
-
 		else
 			App.Game.currentPlanningLevel.modify(modder.instruction, 'type', 12);
 
@@ -40,15 +40,23 @@ App.setupModificationGui = function(){
 	var changeLetter = function(letter){
 		if(letter.length > 1 || letter < 'A' || letter > 'Z')
 			letter = '?';
-		if(App.Game.streams[letter])
+		if(App.Game.streams[letter] && letter !== modder.instruction.data)
 			letter = '?';
+		console.log('start');
+		console.log(letter);
 
 		if(letter !== '?' && !modder.syntaxError && modder.fn !== null){
-			App.Game.removeStream(modder.oldLetter);
-			App.Game.addStream(letter, (modder.instruction.type === 8), modder.streamComps[1].txt, 10, modder.instruction.color);
-			modder.oldLetter = letter;
+			App.Game.removeStream(modder.instruction.data);
+			console.log(modder.instruction.data);
+			App.Game.addStream(letter,
+				(modder.instruction.type === 8),
+				modder.fn,
+				modder.streamComps[1].txt,
+				10,
+				modder.instruction.color);
 		}
-		modder.instruction.data = letter; //not undo-able
+		if(letter !== '?')
+			App.Game.currentPlanningLevel.modify(modder.instruction, 'data', letter);
 		App.GameRenderer.requestStaticRenderUpdate = true;
 	}
 	//change the function for an input stream
@@ -58,12 +66,12 @@ App.setupModificationGui = function(){
 		try {
 			modder.syntaxError = false;
 			modder.fn = Parser.parse("" + fn);
+			changeLetter(modder.instruction.data);
 		}
-		catch(err) {modder.syntaxError = true; }
+		catch(err) { modder.syntaxError = true; }
 
 	}
 	modder.syntaxError = false;
-	modder.oldLetter = 'I';
 	modder.timeout = 0;
 
 	modder.gfx = App.Canvases.addNewLayer(2).getContext('2d');
@@ -72,6 +80,7 @@ App.setupModificationGui = function(){
 	modder.applyButton = new App.GuiTools.Button(0, 0, App.Canvases.width, App.Canvases.height, 0, 0, returnFunc, false, null, null);
 	modder.applyButton.render = function(){};
 	modder.applyButton.updatePosition = function(){modder.applyButton.w = App.Canvases.width; modder.applyButton.h = App.Canvases.height;};
+	modder.applyButton.refuseOthers = true;
 
 	modder.colorComps  = []; //for the components that are used for color
 	modder.streamComps = []; //for the components used for streams
@@ -163,7 +172,7 @@ App.setupModificationGui = function(){
 			modder.grabComps[2].data);
 	}
 
-	modder.streamComps[0] = new App.GuiTextBox(15, 250, 30, 20, "?", 0, 0, null, null);
+	modder.streamComps[0] = new App.GuiTextBox(15, 250, 30, 20, "X", 0, 0, null, null);
 	modder.streamComps[0].limit = 1;
 	modder.streamComps[0].imposeUppercase = true;
 	modder.streamComps[0].changeListener = function(){changeLetter(modder.streamComps[0].txt)};
@@ -204,10 +213,14 @@ App.setupModificationGui = function(){
 			modder.str = true;
 			for(var c in modder.streamComps)
 				modder.gui.addComponent(modder.streamComps[c])
-			if(modder.baseType == 8)
+			if(modder.baseType == 8){
 				modder.streamComps[1].txt = 'random(0, 10)';
-			else
+				modder.streamComps[0].txt = 'I';
+			}
+			else{
+				modder.streamComps[0].txt = 'O';
 				modder.streamComps[1].txt = 'I';
+			}
 			modder.fn = Parser.parse(modder.streamComps[1].txt);
 		}
 		else{

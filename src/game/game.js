@@ -83,19 +83,17 @@ App.makeGame = function(){
 		return lvl;
 	}
 
-	game.addStream = function(letter, isInStream, func, total, color){
-		var p = Parser.parse(func);
-		if(p ===  undefined) return false;
+	game.addStream = function(letter, isInStream, func, funcString, total, color){
 		game.streams[letter] = true;
 		if(!isInStream)
-			game.outStreams[letter] = [func, p, [], 0, total, undefined, color];
+			game.outStreams[letter] = [funcString, func, [], 0, total, undefined, color];
 		else
-			game.inStreams[letter] = [func, p, [], 0, color];
+			game.inStreams[letter] =  [funcString, func, [], 0, color];
 	}
 	game.removeStream = function(letter){
 		delete(App.Game.outStreams[letter]);
 		delete(App.Game.inStreams[letter]);
-		delete(App.Game.streams[letter]);
+		App.Game.streams[letter] = false;
 	}
 
 		/*--------------------------------------------*/
