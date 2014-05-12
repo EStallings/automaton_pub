@@ -74,7 +74,6 @@ App.makeGame = function(){
 					if(p === undefined)return undefined;
 					game.outStreams[d]=[data[i][5],p,[],0,data[i][6],data[i][7],c];
 					ins.data2 = data[i][5];
-					console.log(d + " " + data[i][5]);
 					break;
 			}game.streams[d] = true;
 		}
