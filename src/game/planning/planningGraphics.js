@@ -171,7 +171,7 @@ App.PlanningGraphics = function(){
 	this.selectionOverlay = function(gfx){
 
 		var currentSelection = App.Game.currentPlanningLevel.currentSelection;
-		gfx.fillStyle = 'rgba(100,100,100,.5)';
+		gfx.fillStyle = 'rgba(100,100,100,.3)';
 		gfx.strokeStyle = '#ffffff';
 
 		var gridX, gridY, color, size, scrnX, scrnY, offsetX, offsetY;
@@ -179,7 +179,7 @@ App.PlanningGraphics = function(){
 
 		App.GameRenderer.translateCanvas(gfx);
 		do{
-			gfx.fillStyle = 'rgba(100,100,100,.5)';
+			gfx.fillStyle = 'rgba(100,100,100,.3)';
 			gfx.strokeStyle = '#ffffff';
 
 			gridX = currentSelection[i].x;
@@ -238,7 +238,7 @@ App.PlanningGraphics = function(){
  		var mY = that.mousePos[1];
 
 		// drag line
- 		gfx.strokeStyle = 'rgba(200,200,200,.5)';
+ 		gfx.strokeStyle = 'rgba(200,200,200,.3)';
  		gfx.beginPath();
  		gfx.moveTo(that.lmb[1], that.lmb[2]);
  		gfx.lineTo(mX, mY);
@@ -246,7 +246,7 @@ App.PlanningGraphics = function(){
 
 		// move shadows
 		var size = App.GameRenderer.cellSize/2;
-		gfx.fillStyle = 'rgba(200,200,200,.5)';
+		gfx.fillStyle = 'rgba(200,200,200,.3)';
 		var selected = App.Game.currentPlanningLevel.currentSelection;
 		var offX; var offY; var offCX = 0; var offCY = 0;
 		var msX = that.lmbDown[0]; var msY = that.lmbDown[1]; var msC = that.lmbDown[2];
@@ -258,34 +258,37 @@ App.PlanningGraphics = function(){
 			offX = offX * size * 2; offY = offY * size * 2;
 
 			if(msC === App.COLORS.RED){
-				if(iC === App.COLORS.RED){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(200,0,0,.5)'; }
-				if(iC === App.COLORS.GREEN){ offCX = -size; offCY = 0; gfx.fillStyle = 'rgba(0,200,0,.5)'; }
-				if(iC === App.COLORS.BLUE){ offCX = 0; offCY = -size; gfx.fillStyle = 'rgba(0,0,200,.5)'; }
-				if(iC === App.COLORS.YELLOW){ offCX = -size; offCY = -size; gfx.fillStyle = 'rgba(200,200,0,.5)'; }
+				if(iC === App.COLORS.RED){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(255,0,0,.3)'; gfx.strokeStyle = 'rgba(128,0,0,.3)'; }
+				if(iC === App.COLORS.GREEN){ offCX = -size; offCY = 0; gfx.fillStyle = 'rgba(0,255,0,.3)'; gfx.strokeStyle = 'rgba(0,128,0,.3)'; }
+				if(iC === App.COLORS.BLUE){ offCX = 0; offCY = -size; gfx.fillStyle = 'rgba(0,0,255,.3)'; gfx.strokeStyle = 'rgba(0,0,128,.3)'; }
+				if(iC === App.COLORS.YELLOW){ offCX = -size; offCY = -size; gfx.fillStyle = 'rgba(200,255,0,.3)'; gfx.strokeStyle = 'rgba(128,128,0,.3)'; }
 			}
 
 			if(msC === App.COLORS.GREEN){
-				if(iC === App.COLORS.RED){ offCX = size; offCY = 0;  gfx.fillStyle = 'rgba(200,0,0,.5)'; }
-				if(iC === App.COLORS.GREEN){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(0,200,0,.5)'; }
-				if(iC === App.COLORS.BLUE){ offCX = size; offCY = -size; gfx.fillStyle = 'rgba(0,0,200,.5)'; }
-				if(iC === App.COLORS.YELLOW){ offCX = 0; offCY = -size; gfx.fillStyle = 'rgba(200,200,0,.5)'; }
+				if(iC === App.COLORS.RED){ offCX = size; offCY = 0;  gfx.fillStyle = 'rgba(255,0,0,.3)'; gfx.strokeStyle = 'rgba(128,0,0,.3)'; }
+				if(iC === App.COLORS.GREEN){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(0,255,0,.3)'; gfx.strokeStyle = 'rgba(0,128,0,.3)'; }
+				if(iC === App.COLORS.BLUE){ offCX = size; offCY = -size; gfx.fillStyle = 'rgba(0,0,255,.3)'; gfx.strokeStyle = 'rgba(0,0,128,.3)'; }
+				if(iC === App.COLORS.YELLOW){ offCX = 0; offCY = -size; gfx.fillStyle = 'rgba(200,255,0,.3)'; gfx.strokeStyle = 'rgba(128,128,0,.3)'; }
 			}
 
 			if(msC === App.COLORS.BLUE){
-				if(iC === App.COLORS.RED){ offCX = 0; offCY = size; gfx.fillStyle = 'rgba(200,0,0,.5)'; }
-				if(iC === App.COLORS.GREEN){ offCX = -size; offCY = size; gfx.fillStyle = 'rgba(0,200,0,.5)'; }
-				if(iC === App.COLORS.BLUE){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(0,0,200,.5)'; }
-				if(iC === App.COLORS.YELLOW){ offCX = -size; offCY = 0; gfx.fillStyle = 'rgba(200,200,0,.5)'; }
+				if(iC === App.COLORS.RED){ offCX = 0; offCY = size; gfx.fillStyle = 'rgba(255,0,0,.3)'; gfx.strokeStyle = 'rgba(128,0,0,.3)'; }
+				if(iC === App.COLORS.GREEN){ offCX = -size; offCY = size; gfx.fillStyle = 'rgba(0,255,0,.3)'; gfx.strokeStyle = 'rgba(0,128,0,.3)'; }
+				if(iC === App.COLORS.BLUE){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(0,0,255,.3)'; gfx.strokeStyle = 'rgba(0,0,128,.3)'; }
+				if(iC === App.COLORS.YELLOW){ offCX = -size; offCY = 0; gfx.fillStyle = 'rgba(255,255,0,.3)'; gfx.strokeStyle = 'rgba(128,128,0,.3)'; }
 			}
 
 			if(msC === App.COLORS.YELLOW){
-				if(iC === App.COLORS.RED){ offCX = size; offCY = size; gfx.fillStyle = 'rgba(200,0,0,.5)'; }
-				if(iC === App.COLORS.GREEN){ offCX = 0; offCY = size; gfx.fillStyle = 'rgba(0,200,0,.5)'; }
-				if(iC === App.COLORS.BLUE){ offCX = size; offCY = 0; gfx.fillStyle = 'rgba(0,0,200,.5)'; }
-				if(iC === App.COLORS.YELLOW){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(200,200,0,.5)'; }
+				if(iC === App.COLORS.RED){ offCX = size; offCY = size; gfx.fillStyle = 'rgba(255,0,0,.3)'; gfx.strokeStyle = 'rgba(128,0,0,.3)'; }
+				if(iC === App.COLORS.GREEN){ offCX = 0; offCY = size; gfx.fillStyle = 'rgba(0,255,0,.3)'; gfx.strokeStyle = 'rgba(0,128,0,.3)'; }
+				if(iC === App.COLORS.BLUE){ offCX = size; offCY = 0; gfx.fillStyle = 'rgba(0,0,255,.3)'; gfx.strokeStyle = 'rgba(0,0,128,.3)'; }
+				if(iC === App.COLORS.YELLOW){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(255,255,0,.3)';  gfx.strokeStyle = 'rgba(128,128,0,.3)'; }
 			}
 
-			if(that.lmb[0] === 'down'){ gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size); }
+			if(that.lmb[0] === 'down'){ 
+				gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size); 
+				gfx.strokeRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size); 			
+			}
 		}
  	}
 
