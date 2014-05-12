@@ -2,8 +2,11 @@ App.setupModificationGui = function(){
 	var modder = App.ModeHandler.addNewMode('modder');
 	var returnFunc = function(){
 		if(modder.timeout > 0) return;
-		changeLetter(modder.streamComps[0].txt);
-		changeFunction(modder.streamComps[1].txt);
+
+		if(modder.str){
+			changeLetter(modder.streamComps[0].txt);
+			changeFunction(modder.streamComps[1].txt);
+		}
 		modder.requestStaticRenderUpdate = true;
 		App.ModeHandler.popMode();
 	}
