@@ -28,8 +28,9 @@ App.setupPlanGui = function(){
 		planMode.gui.addComponent(new App.GuiInstDrag(x,y,0,type,dirSense,'center','bottom',planMode.gui,tooltip,hotkey,data));
 	}
 
-	var addBtn = function(x,y,size,color,toggle,tooltip,callback,glyph){
+	var addBtn = function(x,y,size,color,toggle,tooltip,callback,glyph,continuous){
 		var btn = new App.GuiToolbarButton(x,y,size,0,color,'center','bottom',toggle,tooltip,callback,glyph);
+		btn.continuous = continuous || false;
 		planMode.gui.addComponent(btn);
 		return btn;
 	}
@@ -42,7 +43,7 @@ App.setupPlanGui = function(){
 		gfx.fillRect(planMode.instPanel.getx(), planMode.instPanel.gety(), planMode.instPanel.w, planMode.instPanel.h);
 	};planMode.gui.addComponent(planMode.instPanel);
 
-	addBtn(-348, -49-5, 94,'#808080',false,'NAVIGATION', function(){}); // TODO: REPLACE WITH NAVIGATION COMPONENT
+
 
 	addDragBtn(-164,-73-5, 0,true ,'[ Q ] Spawn Automaton','Q');
 	addDragBtn(-116,-73-5, 4,false,'[ W ] Change Direction Up','W');
@@ -62,6 +63,15 @@ App.setupPlanGui = function(){
 	addDragBtn( 124,-25-5,14,false,'[ J ] Subtract','J');
 	addDragBtn( 172,-25-5,18,false,'[ K ] Pause','K');
 	addDragBtn( 220,-25-5, 9,false,'[ L ] Output Stream','','O');
+
+	var panSpeed = 0.25;
+	addBtn(-348, -81-5, 30,'#808080',false,'Nav Up',    function(){App.GameRenderer.goalRenderY += App.Engine.elapsed*panSpeed; App.GameRenderer.constrain(); App.GameRenderer.requestStaticRenderUpdate = true;}, null, true);
+	addBtn(-380, -49-5, 30,'#808080',false,'Nav Left',  function(){App.GameRenderer.goalRenderX += App.Engine.elapsed*panSpeed; App.GameRenderer.constrain(); App.GameRenderer.requestStaticRenderUpdate = true;}, null, true);
+	addBtn(-348, -49-5, 30,'#808080',false,'Nav Reset', function(){App.GameRenderer.bestFit();}, null, false);
+	addBtn(-316, -49-5, 30,'#808080',false,'Nav Right', function(){App.GameRenderer.goalRenderX -= App.Engine.elapsed*panSpeed; App.GameRenderer.constrain(); App.GameRenderer.requestStaticRenderUpdate = true;}, null, true);
+	addBtn(-380, -17-5, 30,'#808080',false,'Zoom In',   function(){console.log('zoom in'); App.GameRenderer.zoom(App.Canvases.width/2, App.Canvases.height/2, 1); }, null, false);
+	addBtn(-348, -17-5, 30,'#808080',false,'Nav Down',  function(){App.GameRenderer.goalRenderY -= App.Engine.elapsed*panSpeed; App.GameRenderer.constrain(); App.GameRenderer.requestStaticRenderUpdate = true;}, null, true);
+	addBtn(-316, -17-5, 30,'#808080',false,'Zoom Out',  function(){App.GameRenderer.zoom(App.Canvases.width/2, App.Canvases.height/2, -1)}, null, false);
 
 	addBtn(-284,-81-5,30,'#808080',false,'Low Speed', function(){
 		App.Game.setSimulationSpeed(512);
