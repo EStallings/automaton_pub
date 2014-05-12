@@ -10,7 +10,7 @@ App.PlanningGraphics = function(){
 
 	this.lmbDown = []; // cellX, cellY, color
 	this.lmbUp = [];
-	this.lmbDrag = false; this.lmbStartOnTile = false; // TODO fix it so you can't cause move to happen by clicking on an unselected instruction
+	this.lmbDrag = false; this.lmbStartOnTile = false;
 	this.singleDrag = false;
 	this.inMenu = false;
 
@@ -142,7 +142,8 @@ App.PlanningGraphics = function(){
 				var f = that.lmbUp;
 				App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], f[0], f[1], f[2]);
 			}
-			else if(App.Game.currentPlanningLevel.currentSelection.length !== 0 && that.lmbStartOnTile){
+			else if(App.Game.currentPlanningLevel.currentSelection.length !== 0 && that.lmbStartOnTile
+					&& App.Game.currentPlanningLevel.currentSelection.indexOf(App.Game.currentPlanningLevel.getInstruction(that.lmbDown[0], that.lmbDown[1], that.lmbDown[2])) !== -1){
 				var shiftX = that.lmbUp[0] - that.lmbDown[0];
 				var shiftY = that.lmbUp[1] - that.lmbDown[1];
 				if(App.InputHandler.keysDown[App.InputHandler.keyCharToCode['Ctrl']] === true){
@@ -227,7 +228,8 @@ App.PlanningGraphics = function(){
 
 		// move / copy graphics
 		if(App.Game.currentPlanningLevel.currentSelection.length !== 0
-			&& that.moving && that.lmbStartOnTile){ that.moveCopy(gfx); }
+			&& that.moving && that.lmbStartOnTile
+			&& App.Game.currentPlanningLevel.currentSelection.indexOf(App.Game.currentPlanningLevel.getInstruction(that.lmbDown[0], that.lmbDown[1], that.lmbDown[2])) !== -1){ that.moveCopy(gfx); }
 	}
 
 	this.moveCopy = function(gfx){
