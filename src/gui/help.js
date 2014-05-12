@@ -5,7 +5,7 @@ App.setupHelp = function(){
 
 	help.gfx = App.Canvases.addNewLayer(2).getContext('2d');
 	help.gui = new App.guiFrame(help.gfx);
-	help.page = 0;	
+	help.page = 0;
 
 	help.backButton = new App.GuiTextButton(15,56+28*0,200,000,'Back to Main Menu',function(){
 		help.requestStaticRenderUpdate = true;
@@ -21,17 +21,17 @@ App.setupHelp = function(){
 
 	help.nextButton = new App.GuiTextButton(15+257, 56+28*1, 200, 000, 'Next', function(){
 		help.page++;
-		if(help.page > App.INFO_PAGES.length) help.page = App.INFO_PAGES.length-1;
+		if(help.page >= App.INFO_PAGES.length) help.page = App.INFO_PAGES.length-1;
 		help.requestStaticRenderUpdate = true;
 	}, false, null, null);
 	help.nextButton.w = 255;
-	
+
 	help.backButton.hoverColor      = '#ffff00';
 	help.backButton.hoverTextColor  = '#ffffff';
 	help.backButton.activeColor     = '#808000';
 	help.backButton.activeTextColor = '#ffff00';
 	help.gui.addComponent(help.prevButton);
-	help.gui.addComponent(help.nextButton);			
+	help.gui.addComponent(help.nextButton);
 	help.gui.addComponent(help.backButton);
 	help.alpha = help.goalAlpha = 0;
 
