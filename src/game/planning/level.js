@@ -12,7 +12,6 @@ App.PlanningLevel = function(){
 	this.redoStack = [];
 	this.locks = [false, false, false, false]; // R,G,B,Y
 	this.instructionLock = false;
-	this.userOverlapSetting = 0; // 0 - reject operation, 1 - overwrite
 	this.graphics = new App.PlanningGraphics();
 
 	// ---------------------------------------------
@@ -193,14 +192,7 @@ App.PlanningLevel = function(){
 			if( (instructions[i].type === 8 || instructions[i].type === 9) && that.hasStream(instructions[i].x,instructions[i].y) ){ return; }
 			if( instructions[i].type === 8){ inStreamDat = true; }
 			if( instructions[i].type === 9){ outStreamDat = true; }
-			if(that.getInstruction(instructions[i].x, instructions[i].y, instructions[i].color))
-			{
-				if(that.userOverlapSetting === 0){ /* console.log('tile blocked'); */ return; } // if there is a conflict in any space and overwrite is disabled, reject
-
-				// store overwrite info
-				/* console.log('overwrite'); */
-				overwriteList.push(that.getInstruction(instructions[i].x,instructions[i].y,instructions[i].color));
-			}
+			if(that.getInstruction(instructions[i].x, instructions[i].y, instructions[i].color)){ return; }
 		}
 
 		for(var i in instructions){
@@ -259,17 +251,12 @@ App.PlanningLevel = function(){
 			var instr = instructions[i];
 
 			if(that.getInstruction(instr.x, instr.y, instr.color)){
-				if(that.userOverlapSetting === 0){ // reject
-					for(z in instructions){
-						instructions[z].x -= shiftX;
-						instructions[z].y -= shiftY;
-						that.grid[instructions[z].x][instructions[z].y][instructions[z].color] = instructions[z];
-					}
-					return;
+				for(z in instructions){
+					instructions[z].x -= shiftX;
+					instructions[z].y -= shiftY;
+					that.grid[instructions[z].x][instructions[z].y][instructions[z].color] = instructions[z];
 				}
-				else{ // overwrite
-					// TODO
-				}
+				return;
 			}
 		}
 
@@ -304,14 +291,7 @@ App.PlanningLevel = function(){
 		// check that no overlap
 		for(i in newInstr){
 			var instr = newInstr[i];
-			if(that.getInstruction(instr.x, instr.y, instr.color)){
-				if(that.userOverlapSetting === 0){ // reject
-					return;
-				}
-				else{ // overwrite
-					// TODO
-				}
-			}
+			if(that.getInstruction(instr.x, instr.y, instr.color)){ return; }
 		}
 
 		for(i in newInstr){ // place instructions
