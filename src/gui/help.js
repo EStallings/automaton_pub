@@ -22,6 +22,7 @@ App.setupHelp = function(){
 	help.nextButton = new App.GuiTextButton(15+257, 56+28*1, 200, 000, 'Next', function(){
 		help.page++;
 		if(help.page > App.INFO_PAGES.length) help.page = App.INFO_PAGES.length-1;
+		console.log(help.page);
 		help.requestStaticRenderUpdate = true;
 	}, false, null, null);
 	help.nextButton.w = 255;

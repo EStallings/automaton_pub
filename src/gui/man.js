@@ -109,7 +109,9 @@ help = function(gfx, title, info, height) {
 	var glyph_w = 128;
 	var glyph_h = 128;
 
-	if(h<128+y_off*2) { h = 128+y_off*2; }
+	if(h<128+y_off*2) { 
+		h = 128+y_off*2; 
+	}
 
 	// background
 	gfx.lineWidth = 2;
@@ -131,12 +133,12 @@ help = function(gfx, title, info, height) {
 info[0] = function(gfx) {
 	var title = "Automaton";
 	var str = [];
-	str[0] = "An Automaton is an agent which"
-	str[1] = "moves independently on the Grid."
+	str[0] = "Automatons are agents which move"
+	str[1] = "independently across the Grid."
 	str[2] = "Automatons move by the Up, Down,"
 	str[3] = "Left, Right Instructions. The"
 	str[4] = "speed of the Automatons can be"
-	str[5] = "incremented or decremented."
+	str[5] = "increased or decreased."
 	help(gfx, title, str);
 }
 
@@ -144,8 +146,7 @@ info[0] = function(gfx) {
 info[1] = function(gfx) {
 	var title = "Token";
 	var str = [];
-	
-	str[0] = "A Token is a datum holding a"
+	str[0] = "Tokens are a datum holding a"
 	str[1] = "numerical variable that can be" 
 	str[2] = "manipulated by Instructions.  Each"
 	str[3] = "Token can be grabbed, dropped, and"
@@ -161,23 +162,18 @@ info[1] = function(gfx) {
 info[2] = function(gfx) {
 	var title = "Grid";
 	var str = [];
-
 	str[0] = "The Grid is the 2-dimensional world"
 	str[1] = "in which Instructions may operate on"
 	str[2] = "Automatons.  The Grid represents the"
 	str[3] = "set of all possible Cells.  The size of"
-	str[4] = "the Grid is defined by a width and height" 
-	str[5] = "of Cells but the width and height can be"
-	str[6] = "infinite."
+	str[4] = "the Grid can be infinite."
 	help(gfx, title, str);
 }
 
 // cell text
 info[3] = function(gfx) {
-
 	var title = "Cell"
 	var str = [];
-	
 	str[0] = "Cells are locations on the Grid."
 	str[1] = "Each Cell may contain Automatons," 
 	str[2] = "Instructions, Tokens, or Input"
@@ -193,7 +189,6 @@ info[3] = function(gfx) {
 info[4] = function(gfx) {
 	var title = "Color";
 	var str = [];
-
 	str[0] = "Colors are relationships between"
 	str[1] = "Automatons and Instructions. The"
 	str[2] = "colors are Red, Green, Blue, and"
@@ -207,7 +202,6 @@ info[4] = function(gfx) {
 info[5] = function(gfx) {
 	var title = "Menu";
 	var str = [];
-
 	str[0] = "The Menu allows users to drag and"
 	str[1] = "drop Instructions and Streams onto"
 	str[2] = "the Grid. The Menu also includes"
@@ -216,22 +210,27 @@ info[5] = function(gfx) {
 	help(gfx, title, str);
 }
 
-// move down
 info[6] = function(gfx) {
-	var title = "Instruction: Direction";
+	var title = "Direction";
 	var str = [];
-
-	str[0] = "The Direction instruction changes"
+	str[0] = "Direction instructions change"
 	str[1] = "the direction of movement of an"
 	str[2] = "Automaton to either Up, Down, Right,"
 	str[3] = "or Left."
 	help(gfx, title, str);
 }
-/*
+
 // move right
 info[7] = function(gfx) {
-	
+	var title = "Spawn";
+	var str = [];
+	str[0] = "Spawn instructions create an Automaton"
+	str[1] = "at a Grid Cell. The direction of the"
+	str[2] = "spawned instruction can be Up, Down,"
+	str[3] = "Right, or Left."
+	help(gfx, title, str);
 }
+/*
 // move left
 info[8] = function(gfx) {
 
