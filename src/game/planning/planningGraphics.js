@@ -258,31 +258,31 @@ App.PlanningGraphics = function(){
 			offX = offX * size * 2; offY = offY * size * 2;
 
 			if(msC === App.COLORS.RED){
-				if(iC === App.COLORS.RED){ offCX = 0; offCY = 0; }
-				if(iC === App.COLORS.GREEN){ offCX = -size; offCY = 0; }
-				if(iC === App.COLORS.BLUE){ offCX = 0; offCY = -size; }
-				if(iC === App.COLORS.YELLOW){ offCX = -size; offCY = -size; }
+				if(iC === App.COLORS.RED){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(200,0,0,.5)'; }
+				if(iC === App.COLORS.GREEN){ offCX = -size; offCY = 0; gfx.fillStyle = 'rgba(0,200,0,.5)'; }
+				if(iC === App.COLORS.BLUE){ offCX = 0; offCY = -size; gfx.fillStyle = 'rgba(0,0,200,.5)'; }
+				if(iC === App.COLORS.YELLOW){ offCX = -size; offCY = -size; gfx.fillStyle = 'rgba(200,200,0,.5)'; }
 			}
 
 			if(msC === App.COLORS.GREEN){
-				if(iC === App.COLORS.RED){ offCX = size; offCY = 0; }
-				if(iC === App.COLORS.GREEN){ offCX = 0; offCY = 0; }
-				if(iC === App.COLORS.BLUE){ offCX = size; offCY = -size; }
-				if(iC === App.COLORS.YELLOW){ offCX = 0; offCY = -size; }
+				if(iC === App.COLORS.RED){ offCX = size; offCY = 0;  gfx.fillStyle = 'rgba(200,0,0,.5)'; }
+				if(iC === App.COLORS.GREEN){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(0,200,0,.5)'; }
+				if(iC === App.COLORS.BLUE){ offCX = size; offCY = -size; gfx.fillStyle = 'rgba(0,0,200,.5)'; }
+				if(iC === App.COLORS.YELLOW){ offCX = 0; offCY = -size; gfx.fillStyle = 'rgba(200,200,0,.5)'; }
 			}
 
 			if(msC === App.COLORS.BLUE){
-				if(iC === App.COLORS.RED){ offCX = 0; offCY = size; }
-				if(iC === App.COLORS.GREEN){ offCX = -size; offCY = size; }
-				if(iC === App.COLORS.BLUE){ offCX = 0; offCY = 0; }
-				if(iC === App.COLORS.YELLOW){ offCX = -size; offCY = 0; }
+				if(iC === App.COLORS.RED){ offCX = 0; offCY = size; gfx.fillStyle = 'rgba(200,0,0,.5)'; }
+				if(iC === App.COLORS.GREEN){ offCX = -size; offCY = size; gfx.fillStyle = 'rgba(0,200,0,.5)'; }
+				if(iC === App.COLORS.BLUE){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(0,0,200,.5)'; }
+				if(iC === App.COLORS.YELLOW){ offCX = -size; offCY = 0; gfx.fillStyle = 'rgba(200,200,0,.5)'; }
 			}
 
 			if(msC === App.COLORS.YELLOW){
-				if(iC === App.COLORS.RED){ offCX = size; offCY = size; }
-				if(iC === App.COLORS.GREEN){ offCX = 0; offCY = size; }
-				if(iC === App.COLORS.BLUE){ offCX = size; offCY = 0; }
-				if(iC === App.COLORS.YELLOW){ offCX = 0; offCY = 0; }
+				if(iC === App.COLORS.RED){ offCX = size; offCY = size; gfx.fillStyle = 'rgba(200,0,0,.5)'; }
+				if(iC === App.COLORS.GREEN){ offCX = 0; offCY = size; gfx.fillStyle = 'rgba(0,200,0,.5)'; }
+				if(iC === App.COLORS.BLUE){ offCX = size; offCY = 0; gfx.fillStyle = 'rgba(0,0,200,.5)'; }
+				if(iC === App.COLORS.YELLOW){ offCX = 0; offCY = 0; gfx.fillStyle = 'rgba(200,200,0,.5)'; }
 			}
 
 			if(that.lmb[0] === 'down'){ gfx.fillRect(mX-size/2-offX-offCX, mY-size/2-offY-offCY, size, size); }

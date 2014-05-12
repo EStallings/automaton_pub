@@ -110,8 +110,8 @@ help = function(gfx, title, info, height) {
 	// dynammmic height	
 	var h = info.length * text_font_size + info.length*(text_font_size/2) + title_font_size + y_off*3;
 
-	if(h<128+y_off*2) { 
-		h = 128+y_off*2; 
+	if(h<glyph_h+y_off*2) { 
+		h = glyph_h+y_off*2; 
 	}
 
 	// background
@@ -157,7 +157,7 @@ info[1] = function(gfx) {
 	str[7] = "variable with the value the Stream" 
 	str[8] = "accepts."
 	help(gfx, title, str);
-	App.renderToken(gfx,w-glyph_w,56+28*2+x_off,0,128)
+	App.renderToken(gfx,w-glyph_w,56+28*2+x_off,0,128);
 }
 
 // grid text
@@ -217,9 +217,28 @@ info[6] = function(gfx) {
 	var str = [];
 	str[0] = "Direction instructions change"
 	str[1] = "the direction of movement of an"
-	str[2] = "Automaton to either Up, Down, Right,"
-	str[3] = "or Left."
+	str[2] = "Automaton to either Up, Down,"
+	str[3] = "Right,or Left."
 	help(gfx, title, str);
+	
+	gfx.lineCap  = 'round';
+	gfx.lineJoin = 'round';
+
+	var cs = glyph_w;
+	var lw = (Math.round(Math.log(cs/6)/Math.log(2)+2)-3)*2;
+	gfx.strokeStyle =  '#aa0000';
+	gfx.fillStyle = '#ff0000';
+	gfx.lineWidth = lw;
+	gfx.fillRect(w-glyph_w,56+28*2+x_off,glyph_w,glyph_h);
+	gfx.strokeRect(w-glyph_w,56+28*2+x_off,glyph_w,glyph_h);
+	gfx.translate(w-glyph_w,56+28*2+x_off);
+	gfx.beginPath();
+	gfx.moveTo(  cs/4,3*cs/4);
+	gfx.lineTo(  cs/2,  cs/4);
+	gfx.lineTo(3*cs/4,3*cs/4);
+	gfx.lineTo(  cs/4,3*cs/4);
+	gfx.stroke();
+	gfx.translate(-(w-glyph_w),-(56+28*2+x_off));
 }
 
 info[7] = function(gfx) {
@@ -227,37 +246,70 @@ info[7] = function(gfx) {
 	var str = [];
 	str[0] = "Spawn instructions create an Automaton"
 	str[1] = "on Cell. The direction of the spawned"
-	str[2] = "instruction can be Up, Down, "
-	str[3] = "Right, or Left."
+	str[2] = "instruction can be Up, Down, Right,"
+	str[3] = "or Left."
 	help(gfx, title, str);
+
+	// App.InstructionCatalog.render(gfx,'SPAWN_UP',w-glyph_w,56+28*2+x_off,App.COLORS.RED,glyph_w,false,false)
 }
 
 info[8] = function(gfx) {
 	var title = "Fork";
 	var str = [];
-	str[0] = "...................................."
+	str[0] = ""
 	help(gfx, title, str);
 }
 
 info[9] = function(gfx) {
 	var title = "Color Toggle";
 	var str = [];
-	str[0] = "...................................."
+	str[0] = ""
 	help(gfx, title, str);
 }
-/*
-info[10] = function(gfx) {
 
+info[10] = function(gfx) {
+	var title = "Grab & Drop";
+	var str = [];
+	str[0] = ""
+	help(gfx, title, str);
 }
 info[11] = function(gfx) {
-
+	var title = "Operators";
+	var str = [];
+	str[0] = ""
+	help(gfx, title, str);
 }
 info[12] = function(gfx) {
+	var title = "Streams";
+	var str = [];
+	str[0] = ""
+	help(gfx, title, str);
 
 }
 info[13] = function(gfx) {
-
+	var title = "Conditional Token";
+	var str = [];
+	str[0] = ""
+	help(gfx, title, str);
 }
-*/
+info[14] = function(gfx) {
+	var title = "Conditional +";
+	var str = [];
+	str[0] = ""
+	help(gfx, title, str);
+}
+info[15] = function(gfx) {
+	var title = "Conditional Equal";
+	var str = [];
+	str[0] = ""
+	help(gfx, title, str);
+}
+info[16] = function(gfx) {
+	var title = "Pause";
+	var str = [];
+	str[0] = ""
+	help(gfx, title, str);
+}
+
 
 App.INFO_PAGES = info;
