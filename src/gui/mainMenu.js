@@ -8,17 +8,20 @@ App.setupMainMenu = function(){
 
 	mainMenu.playButton = new App.GuiTextButton(15, 56+28*0, 200, 000, 'Play', function(){
 		App.ModeHandler.pushMode('level select');
+		App.ModeHandler.modes['planning'].isSandbox = false;
 		mainMenu.requestStaticRenderUpdate = true;
 	}, false, null, null);
 
 	mainMenu.libraryButton = new App.GuiTextButton(15, 56+28*1, 300, 100, 'Library', function(){
 		App.ModeHandler.pushMode('library');
+		App.ModeHandler.modes['planning'].isSandbox = true;
 		mainMenu.requestStaticRenderUpdate = true;
 	}, false, null, null);
 
 	mainMenu.sandboxButton = new App.GuiTextButton(15, 56+28*2, 400, 200, 'Sandbox', function(){
 		App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
 		App.GameRenderer.bestFit();
+		App.ModeHandler.modes['planning'].isSandbox = true;
 		App.ModeHandler.pushMode('planning'); // TODO: CHANGE THIS
 		mainMenu.requestStaticRenderUpdate = true;
 	}, false, null, null);

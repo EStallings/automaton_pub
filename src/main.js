@@ -16,6 +16,7 @@ window.onload = function(){
 	App.confirmGui = App.setupConfirm();
 	App.setupSubmitLevel();
 	App.setupCreateAccount();
+	App.setupPropertiesGui();
 	App.setupSuccessGui();
 	App.setupModificationGui();
 

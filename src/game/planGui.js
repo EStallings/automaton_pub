@@ -10,6 +10,7 @@ App.setupPlanGui = function(){
 	planMode.moveStart = undefined;
 	planMode.alpha = planMode.goalAlpha = 0;
 	planMode.gui = new App.guiFrame(planMode.gfx);
+	planMode.isSandbox = false;
 
 	var setRed    = function(){planMode.activeToggle[1].toggled = planMode.activeToggle[2].toggled = planMode.activeToggle[3].toggled = false; planMode.activeToggle[0].toggled = true; App.GuiInstDrag.changeGlobalColor(0); planMode.color = App.COLORS.RED;    planMode.requestStaticRenderUpdate = true};
 	var setGreen  = function(){planMode.activeToggle[0].toggled = planMode.activeToggle[2].toggled = planMode.activeToggle[3].toggled = false; planMode.activeToggle[1].toggled = true; App.GuiInstDrag.changeGlobalColor(1); planMode.color = App.COLORS.GREEN;  planMode.requestStaticRenderUpdate = true};
@@ -146,18 +147,21 @@ App.setupPlanGui = function(){
 	planMode.visibleToggle[2] = addBtn(324,-17-5,30,2,true,'Blue Visible',   function(){App.Game.toggleVisible(2)}).toggled = true; // TODO: move the toggled = true somewhere else
 	planMode.visibleToggle[3] = addBtn(356,-17-5,30,3,true,'Yellow Visible', function(){App.Game.toggleVisible(3)}).toggled = true; // TODO: move the toggled = true somewhere else
 
-	addBtn(384,-85-5,22,'#808080',false,'New',function(){
+	planMode.newBut = addBtn(384,-85-5,22,'#808080',false,'New',function(){
 		App.confirmGui.title = "Create A New Level?";
 		App.confirmGui.yes = function(){
 			App.Game.currentPlanningLevel = App.Game.parseLevel("empty`0`10`10");
 			App.GameRenderer.bestFit();
 		};App.ModeHandler.pushMode('confirm');
 	},App.NewGlyph);
-	addBtn(384,-61-5,22,'#808080',false,'Upload', function(){
+
+	planMode.uploadBut = addBtn(384,-61-5,22,'#808080',false,'Upload', function(){
 		App.ModeHandler.pushMode('submit level');
 		planMode.requestStaticRenderUpdate = true;
 	},App.SaveGlyph);
-	addBtn(384,-37-5,22,'#808080',false,'Properties',function(){/* TODO: IMPLEMENT ME */},App.PropertiesGlyph);
+	planMode.propBut = addBtn(384,-37-5,22,'#808080',false,'Properties',function(){
+		App.ModeHandler.pushMode('properties');
+	},App.PropertiesGlyph);
 	addBtn(384,-13-5,22,'#808080',false,'[Esc] Return',returnToMenu,App.BackGlyph);
 
 //============================================================================//
@@ -169,6 +173,16 @@ App.setupPlanGui = function(){
 		planMode.goalAlpha = 1;
 		planMode.gui.gfx = planMode.gfx;
 		planMode.gui.enter();
+		if(planMode.isSandbox){
+			planMode.uploadBut.locked = false;
+			planMode.newBut.locked = false;
+			planMode.propBut.locked = false;
+		}
+		else{
+			planMode.uploadBut.locked = true;
+			planMode.newBut.locked = true;
+			planMode.propBut.locked = true;
+		}
 		setRed();
 		// TODO: reset locks
 		// TODO: reset visibilities

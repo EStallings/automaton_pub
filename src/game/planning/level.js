@@ -10,6 +10,7 @@ App.PlanningLevel = function(){
 	this.currentSelection = [];
 	this.undoStack = [];
 	this.redoStack = [];
+	this.pristine = true; //set to false as soon as first insertion occurs!
 	this.locks = [false, false, false, false]; // R,G,B,Y
 	this.instructionLock = false;
 	this.graphics = new App.PlanningGraphics();
@@ -180,6 +181,7 @@ App.PlanningLevel = function(){
 
 	// this function takes a list of PlanningInstructions and inserts them into the grid
 	this.insert = function(instructions){
+		that.pristine = false; //to prevent level dimension changes
 		instructions = that.toList(instructions);
 		overwriteList = [];
 
