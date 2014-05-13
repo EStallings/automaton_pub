@@ -233,10 +233,15 @@ App.PlanningLevel = function(){
 	}
 
 	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
-	// TODO prevent moving one stream into the same cell as another
 	this.move = function(instructions,shiftX,shiftY){
 
 		instructions = that.toList(instructions);
+
+		for(i in instructions){ // check for multiple streams in same cell
+			if(instructions[i].type === 8 || instructions[i].type === 9){
+				if(that.hasStream(instructions[i].x+shiftX, instructions[i].y+shiftY)){ return; }
+			}
+		}
 
 		for(i in instructions){ // remove all from grid to prevent groups from overlapping themselves also update coordinates and bounds check
 			var instr = instructions[i];
@@ -277,7 +282,6 @@ App.PlanningLevel = function(){
 	}
 
 	// this function takes a list of coordinate triplets and copies the instructions they point to to a new cell shiftX and shiftY away from the first
-	// TODO disallow copying outside of grid
 	this.copy = function(instructions,shiftX,shiftY){
 
 		instructions = that.toList(instructions);
@@ -301,6 +305,8 @@ App.PlanningLevel = function(){
 			if(instr.type === 8 || instr.type === 9){ continue; }
 			if(!that.grid[instr.x]){ that.grid[instr.x] = []; }
 			if(!that.grid[instr.x][instr.y]){ that.grid[instr.x][instr.y] = []; }
+			if(that.width !== 0 && (instr[i].x + shiftX < 0 || instr[i].x + shiftX >= that.width)){ /* console.log('move out of bounds'); */ return; }
+			if(that.height !== 0 && (instr[i].y + shiftY < 0 || instr[i].y + shiftY >= that.height)){ /* console.log('move out of bounds'); */ return; }
 			that.grid[instr.x][instr.y][instr.color] = instr;
 		}
 
