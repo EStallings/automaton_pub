@@ -233,7 +233,6 @@ App.PlanningLevel = function(){
 	}
 
 	// this function takes a list of coordinate triplets and shifts the instructions they point to by shiftX and shiftY
-	// TODO prevent moving one stream into the same cell as another
 	this.move = function(instructions,shiftX,shiftY){
 
 		instructions = that.toList(instructions);
@@ -283,7 +282,6 @@ App.PlanningLevel = function(){
 	}
 
 	// this function takes a list of coordinate triplets and copies the instructions they point to to a new cell shiftX and shiftY away from the first
-	// TODO disallow copying outside of grid
 	this.copy = function(instructions,shiftX,shiftY){
 
 		instructions = that.toList(instructions);
