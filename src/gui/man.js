@@ -57,7 +57,6 @@ the same Color as the Instruction.
 	- Move Down: Moves an Automaton South on the Grid
 	- Move Left: Moves an Automaton West on the Grid
 	- Move Right: Moves an Automaton East on the Grid
-	- Fork: 
 	- Toggle: 
 	- Drop: 
 	- Grab: 
@@ -127,7 +126,7 @@ help = function(gfx, title, info, height) {
 	// foreground
 	drawText(gfx,info);
 	// glyph
-	gfx.strokeRect(w-glyph_w,56+button_h*2+x_off, glyph_w, glyph_h);
+	//gfx.strokeRect(w-glyph_w,56+button_h*2+x_off, glyph_w, glyph_h);
 }
 
 // automaton text
@@ -137,9 +136,7 @@ info[0] = function(gfx) {
 	str[0] = "Automatons are agents which move"
 	str[1] = "independently across the Grid."
 	str[2] = "Automatons move by the Up, Down,"
-	str[3] = "Left, Right Instructions. The"
-	str[4] = "speed of the Automatons can be"
-	str[5] = "increased or decreased."
+	str[3] = "Left, Right Instructions."
 	help(gfx, title, str);
 }
 
@@ -147,15 +144,11 @@ info[0] = function(gfx) {
 info[1] = function(gfx) {
 	var title = "Token";
 	var str = [];
-	str[0] = "Tokens are a datum holding a"
-	str[1] = "numerical variable that can be" 
-	str[2] = "manipulated by Instructions.  Each"
-	str[3] = "Token can be grabbed, dropped, and"
-	str[4] = "held by an Automaton. Tokens are"
-	str[5] = "accepted by Streams. To solve a"
-	str[6] = "puzzle you must equate the Token"
-	str[7] = "variable with the value the Stream" 
-	str[8] = "accepts."
+	str[0] = "Tokens hold a numerical variable"
+	str[1] = "that can be manipulated by Instructions." 
+	str[2] = "Tokens can be grabbed, dropped, and"
+	str[3] = "held by an Automaton. Tokens are"
+	str[4] = "accepted by Streams."
 	help(gfx, title, str);
 	App.renderToken(gfx,w-glyph_w,56+28*2+x_off,0,128);
 }
@@ -179,11 +172,7 @@ info[3] = function(gfx) {
 	str[0] = "Cells are locations on the Grid."
 	str[1] = "Each Cell may contain Automatons," 
 	str[2] = "Instructions, Tokens, or Input"
-	str[3] = "Output Streams. Instructions can" 
-	str[4] = "placed on a Cell by using the mouse" 
-	str[5] = "to drag and drop an Instruction" 
-	str[6] = "from the Instruction Menu Bar located"
-	str[7] = "at the bottom of the display window."
+	str[3] = "Output Streams."
 	help(gfx, title, str);
 }
 
@@ -193,11 +182,9 @@ info[4] = function(gfx) {
 	var str = [];
 	str[0] = "Colors are relationships between"
 	str[1] = "Automatons and Instructions. The"
-	str[2] = "colors are Red, Green, Blue, and"
-	str[3] = "Yellow. Instructions are only"
-	str[4] = "applied to Automatons if the"
-	str[5] = "Instruction and the Automaton"
-	str[6] = "share the same color."
+	str[2] = "Instructions are only applied to"
+	str[3] = "Automatons if the Instruction and"
+	str[4] = "the Automaton share the same color."
 	help(gfx, title, str);
 }
 
@@ -223,7 +210,7 @@ info[6] = function(gfx) {
 	
 	gfx.lineCap  = 'round';
 	gfx.lineJoin = 'round';
-
+/*
 	var cs = glyph_w;
 	var lw = (Math.round(Math.log(cs/6)/Math.log(2)+2)-3)*2;
 	gfx.strokeStyle =  '#aa0000';
@@ -239,6 +226,8 @@ info[6] = function(gfx) {
 	gfx.lineTo(  cs/4,3*cs/4);
 	gfx.stroke();
 	gfx.translate(-(w-glyph_w),-(56+28*2+x_off));
+*/
+	App.InstCatalog.render(gfx,5,w-glyph_w,56+28*2+x_off,App.COLORS.RED,glyph_w,false,false)
 }
 
 info[7] = function(gfx) {
@@ -250,71 +239,94 @@ info[7] = function(gfx) {
 	str[3] = "or Left."
 	help(gfx, title, str);
 
-	// App.InstructionCatalog.render(gfx,'SPAWN_UP',w-glyph_w,56+28*2+x_off,App.COLORS.RED,glyph_w,false,false)
+	App.InstCatalog.render(gfx,0,w-glyph_w,56+28*2+x_off,App.COLORS.GREEN,glyph_w,false,false)
 }
 
 info[8] = function(gfx) {
 	var title = "Flip Flop";
 	var str = [];
-	str[0] = ""
+	str[0] = "Flip Flop Instructions disable and enable"
+	str[1] = "the directions."
 	help(gfx, title, str);
+	App.InstCatalog.render(gfx,31,w-glyph_w,56+28*2+x_off,App.COLORS.BLUE,glyph_w,false,false)
 }
 
 info[9] = function(gfx) {
 	var title = "Color Toggle";
 	var str = [];
-	str[0] = ""
+	str[0] = "The Color Toggle Instruction toggles the"
+	str[1] = "color of the Automaton."
 	help(gfx, title, str);
+	App.InstCatalog.render(gfx,17,w-glyph_w,56+28*2+x_off,App.COLORS.YELLOW,glyph_w,false,false)
 }
 
 info[10] = function(gfx) {
 	var title = "Grab & Drop";
 	var str = [];
-	str[0] = ""
+	str[0] = "The Grab, Drop, and Grab/Drop Instruction"
+	str[1] = "picks up and puts down Tokens."
 	help(gfx, title, str);
+	App.InstCatalog.render(gfx,12,w-glyph_w,56+28*2+x_off,App.COLORS.RED,glyph_w,false,false)
 }
 info[11] = function(gfx) {
 	var title = "Add & Subtract";
 	var str = [];
-	str[0] = ""
+	str[0] = "The Add and Subtract Instruction increment"
+	str[1] = "or decrement the value of the Token."
 	help(gfx, title, str);
+	App.InstCatalog.render(gfx,13,w-glyph_w,56+28*2+x_off,App.COLORS.GREEN,glyph_w,false,false)
 }
 info[12] = function(gfx) {
 	var title = "Streams";
 	var str = [];
-	str[0] = ""
+	str[0] = "The Stream Instruction allow Tokens to enter"
+	str[1] = "and exit the Grid. Input streams give input"
+	str[2] = "within a certain range.  Output streams only"
+	str[3] = "a fixed output value."
 	help(gfx, title, str);
-
+	App.InstCatalog.renderStream(gfx,w-glyph_w,56+28*2+x_off,App.COLORS.RED,glyph_w/2,2,'A',true)
 }
 info[13] = function(gfx) {
-	var title = "Positive Switch";
+	var title = "Cond Token";
 	var str = [];
-	str[0] = ""
+	str[0] = "The Cond Token tests if the Automaton has"
+	str[1] = "a Token and changes the direction."
 	help(gfx, title, str);
+	App.InstCatalog.render(gfx,19,w-glyph_w,56+28*2+x_off,App.COLORS.YELLOW,glyph_w,false,false)
 }
 info[14] = function(gfx) {
-	var title = "Equality Switch";
+	var title = "Cond Equal";
 	var str = [];
-	str[0] = ""
+	str[0] = "The Cond Equal Instruction changes"
+	str[1] = " the direction if the value is equal" 
+	str[2] = "and does nothing if not."
 	help(gfx, title, str);
+	App.InstCatalog.render(gfx,23,w-glyph_w,56+28*2+x_off,App.COLORS.RED,glyph_w,false,false)
 }
 info[15] = function(gfx) {
-	var title = "Token Switch";
+	var title = "Cond +";
 	var str = [];
-	str[0] = ""
+	str[0] = "The Cond + Instruction changes the direction"
+	str[1] = "if the value is greater than zero and does"
+	str[2] = "nothing if not."
 	help(gfx, title, str);
+	App.InstCatalog.render(gfx,27,w-glyph_w,56+28*2+x_off,App.COLORS.GREEN,glyph_w,false,false)
 }
 info[16] = function(gfx) {
 	var title = "Sync";
 	var str = [];
-	str[0] = ""
+	str[0] = "The Sync Instruction hold Automatons"
+	str[1] = "of that color until all Syncs have an"
+	str[2] = "Automaton of that color."
 	help(gfx, title, str);
+	App.InstCatalog.render(gfx,16,w-glyph_w,56+28*2+x_off,App.COLORS.BLUE,glyph_w,false,false)
 }
 info[17] = function(gfx) {
 	var title = "Pause";
 	var str = [];
-	str[0] = ""
+	str[0] = "The Pause Instruction pauses the game."
 	help(gfx, title, str);
+	App.InstCatalog.render(gfx,18,w-glyph_w,56+28*2+x_off,App.COLORS.YELLOW,glyph_w,false,false)
 }
 
 
