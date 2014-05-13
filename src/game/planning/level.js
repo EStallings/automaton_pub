@@ -238,6 +238,12 @@ App.PlanningLevel = function(){
 
 		instructions = that.toList(instructions);
 
+		for(i in instructions){ // check for multiple streams in same cell
+			if(instructions[i].type === 8 || instructions[i].type === 9){
+				if(that.hasStream(instructions[i].x+shiftX, instructions[i].y+shiftY)){ return; }
+			}
+		}
+
 		for(i in instructions){ // remove all from grid to prevent groups from overlapping themselves also update coordinates and bounds check
 			var instr = instructions[i];
 			if(that.width !== 0 && (instructions[i].x + shiftX < 0 || instructions[i].x + shiftX >= that.width)){ /* console.log('move out of bounds'); */ return; }
