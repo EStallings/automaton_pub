@@ -8,7 +8,8 @@ App.setupSubmitLevel = function(){
 	submit.locked = false;
 	var returnFunc = function(){
 		submit.requestStaticRenderUpdate = true;
-		App.ModeHandler.popMode();
+		if(App.ModeHandler.currentMode.name == submit.name)
+			App.ModeHandler.popMode();
 		endServerStatus();
 		submit.levelname.txt = submit.levelname.defaultText;
 		submit.leveldesc.txt = submit.leveldesc.defaultText;
@@ -148,6 +149,10 @@ App.setupSubmitLevel = function(){
 	submit.exitFunc = function(){
 		submit.requestStaticRenderUpdate = true;
 		submit.exitFlag = true;
+		for(var b in submit.entrybox){
+			submit.gui.removeComponent(submit.entrybox[b]);
+		}
+
 
 		submit.gui.exit();
 		submit.goalAlpha = 0;
