@@ -8,7 +8,8 @@ App.setupCreateAccount = function(){
 
 	var returnFunc = function(){
 		create.requestStaticRenderUpdate = true;
-		App.ModeHandler.popMode();
+		if(App.ModeHandler.currentMode.name == create.name)
+			App.ModeHandler.popMode();
 		endServerStatus();
 	}
 
@@ -73,7 +74,7 @@ App.setupCreateAccount = function(){
 		create.updatingActive = true;
 		create.exitFlag = false;
 		create.gui.enter();
-		create.endServerStatus(true);
+		endServerStatus(true);
 		create.goalAlpha = 1;
 		create.username.txt = create.username.defaultText;
 		create.password.txt = create.password.defaultText;
@@ -112,6 +113,7 @@ App.setupCreateAccount = function(){
 	create.exitFunc = function(){
 		create.requestStaticRenderUpdate = true;
 		create.exitFlag = true;
+
 
 		create.gui.exit();
 		create.goalAlpha = 0;

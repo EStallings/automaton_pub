@@ -26,6 +26,8 @@ App.guiFrame = function(gfx){
 	}
 
 	this.addComponent = function(comp){
+		if(this.frame.indexOf(comp) > -1) return;
+
 		this.frame.push(comp);
 		comp.gui = this;
 	}

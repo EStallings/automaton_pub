@@ -30,7 +30,7 @@ App.PlanningGraphics = function(){
 		}
 		else{ that.moving = false; }
 
-		if(that.lmb[0] === 'down' && that.moving && App.Game.currentPlanningLevel.currentSelection.length === 0){ // TODO needs to make sure that the click started on a placed instruction before selection
+		if(that.lmb[0] === 'down' && that.moving && App.Game.currentPlanningLevel.currentSelection.length === 0){
 			if(!that.singleDrag){
 				var s = that.lmbDown;
 				App.Game.currentPlanningLevel.selectInstructions(s[0], s[1], s[2], s[0], s[1], s[2]);
