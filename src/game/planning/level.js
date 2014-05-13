@@ -575,6 +575,8 @@ App.PlanningLevel = function(){
 					var e = "";
 					e = App.Game.inStreams[inst.data] || App.Game.outStreams[inst.data];
 					s += ('`'+inst.data + '`' + e[0]);
+					if(inst.type === App.InstCatalog.TYPES['OUT'])
+						s += ('`'+App.Game.outStreams[inst.data][4]);
 				}
 				str.push(s);
 			}
