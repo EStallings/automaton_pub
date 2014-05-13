@@ -166,7 +166,7 @@ App.GuiTable = function(x, y, maxRows, descrip){
 		that.loading = false;
 		if(!json)
 			return;
-		if((typeof json) === 'string'){
+		if(json['status']){
 			return;
 		}
 		that.json = json;
