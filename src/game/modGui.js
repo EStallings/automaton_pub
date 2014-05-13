@@ -197,7 +197,7 @@ App.setupModificationGui = function(){
 
 		// ---------------------------------------------
 	modder.init = function(instruction){
-		modder.timeout = 60;
+		modder.timeout = 20;
 		modder.instruction = instruction;
 		modder.baseType = getBase(instruction.type);
 		var f = false;
@@ -302,7 +302,7 @@ App.setupModificationGui = function(){
 
 	modder.registerMouseDownFunc(App.InputHandler.MOUSEBUTTON.LEFT, modder.gui.mouseDown);
 	modder.registerMouseUpFunc(App.InputHandler.MOUSEBUTTON.LEFT, modder.gui.mouseUp);
-
+	modder.registerKeyDownFunc('Esc', returnFunc);
 	modder.registerResizeFunc(function(){
 		App.GameRenderer.bestFit();
 	});
