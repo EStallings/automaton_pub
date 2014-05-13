@@ -301,6 +301,8 @@ App.PlanningLevel = function(){
 			if(instr.type === 8 || instr.type === 9){ continue; }
 			if(!that.grid[instr.x]){ that.grid[instr.x] = []; }
 			if(!that.grid[instr.x][instr.y]){ that.grid[instr.x][instr.y] = []; }
+			if(that.width !== 0 && (instr[i].x + shiftX < 0 || instr[i].x + shiftX >= that.width)){ /* console.log('move out of bounds'); */ return; }
+			if(that.height !== 0 && (instr[i].y + shiftY < 0 || instr[i].y + shiftY >= that.height)){ /* console.log('move out of bounds'); */ return; }
 			that.grid[instr.x][instr.y][instr.color] = instr;
 		}
 
